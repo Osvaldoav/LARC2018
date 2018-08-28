@@ -3,7 +3,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////
 const byte pinEncoder = 40;
 #include <_Movements.h>     
-_Movements movements;
+_Movements *movements = new _Movements;
 
 const byte ledRed = 37;
 const byte ledGreen = 36;
@@ -12,12 +12,13 @@ const byte ledBlue = 35;
 /////////////////////////////////////////////SETUP////////////////////////////////////////////////
 void setup() {
     Serial.begin(9600);
-    movements.pid.setupLibraryPID();
-    movements.motors.setupMotors();
+    movements->setupMovements();
+    movements->pid->setupLibraryPID();
+    movements->motors->setupMotors();
+    movements->colorSensor->setupColorSensor();
+    movements->bno055->setupBNO055();
     pinMode(pinEncoder, INPUT_PULLUP);
     attachInterrupt(digitalPinToInterrupt(pinEncoder), encoderStep, CHANGE);
-    movements.colorSensor.setupColorSensor();
-    movements.bno055.setupBNO055();
 
     //LEDS
     pinMode(ledGreen,OUTPUT);
@@ -27,7 +28,7 @@ void setup() {
 
 void loop(){
   Serial.print("oli k ase");
-   movements.forwardP(false);
+   movements->forwardP(false);
 
 //  backwardP_alignWall(6, false, true);
   // PRE_LARC_TEST1();

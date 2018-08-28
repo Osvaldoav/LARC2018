@@ -11,6 +11,7 @@
 class _Movements{
     public:
 // TODO: METHODS
+        void setupMovements();
         void forwardP(bool);
         void forwardP_nTime(int, bool);
         void forwardP_nCM(int, bool);
@@ -23,13 +24,13 @@ class _Movements{
         void spinP(int);
         void turnP();
 // TODO: ATTRIBUTES
-        _BNO055 bno055;
-        _ColorSensor colorSensor;
-        _Encoder encoder;
-        _LibraryPID pid;
-        _Motors motors;
-        _Sharp sharp;
-        _LCD lcd;
+        _BNO055 *bno055;
+        _ColorSensor *colorSensor;
+        _Encoder *encoder;
+        _LibraryPID *pid;
+        _Motors *motors;
+        _Sharp *sharp;
+        _LCD *lcd;
 };
 
 #endif
