@@ -8,18 +8,18 @@ void _Movements::setupMovements(){
     motors = new _Motors;
     sharp = new _Sharp;
     lcd = new _LCD;
+    timeFlight = new _TimeFlight;
 }
 
+/* DIRECTIONS
+    ||  7   ||  8   ||  9   ||          || NorthWest || North || NorthEast ||
+    ||  4   ||      ||  6   ||    =>    ||    West   ||       ||    East   ||
+    ||  1   ||  2   ||  3   ||          || SouthWest || South || SouthEast ||
+*/
 // TODO:
 //forward with P correction
-void _Movements::forwardP(bool goSlow){
-    bno055->offsetAngle = bno055->offsetAngleForward;
-    
+void _Movements::movePID(bool goSlow, int direction){
     bno055->readBNO(pid->Setpoint);
-    // Serial.print(pid->Setpoint);
-    Serial.print(" ");
-    Serial.println(bno055->rawInput);
-    // Serial.print(" ");
     sharp->filtrateDistancesSharp();
     colorSensor->readColor(); 
     if (goSlow) {
@@ -34,50 +34,153 @@ void _Movements::forwardP(bool goSlow){
         pid->backRightOutput = motors->velGenBR;
     }
     int angleDifference = pid->getAngleDifference(bno055->rawInput);
-    // Serial.print(angleDifference);
-    // Serial.print(" ");
     pid->computeOutput(bno055->rawInput, bno055->lastInput);  
-    // Serial.println(pid->Output);
-    if(angleDifference > 0){ // MOVE TO THE LEFT
-        pid->frontLeftOutput -= pid->Output;
-        pid->backLeftOutput -= pid->Output;
-        pid->frontRightOutput += pid->Output;
-        pid->backRightOutput += pid->Output;     
+    switch(direction){
+        case 7:         // NORTHWEST
+            bno055->offsetAngle = bno055->offsetAngleForward;
+            if(angleDifference > 0){ // MOVE TO THE LEFT                
+                pid->frontLeftOutput -= 0;
+                pid->backLeftOutput -= pid->Output;
+                pid->frontRightOutput += pid->Output;
+                pid->backRightOutput += 0;   
+            }
+            else if(angleDifference < 0){ // MOVE TO THE RIGHT
+                pid->frontLeftOutput += 0;
+                pid->backLeftOutput += pid->Output;
+                pid->frontRightOutput -= pid->Output;
+                pid->backRightOutput -= 0;  
+            }    
+            motors->setMotor(0, 0, 1, 0, 1, 0, 0, 0);
+            break;
+        case 8:         // NORTH
+            bno055->offsetAngle = bno055->offsetAngleForward;
+            if(angleDifference > 0){ // MOVE TO THE LEFT
+                pid->frontLeftOutput -= pid->Output;
+                pid->backLeftOutput -= pid->Output;
+                pid->frontRightOutput += pid->Output;
+                pid->backRightOutput += pid->Output;     
+            }
+            else if(angleDifference < 0){ // MOVE TO THE RIGHT
+                pid->frontLeftOutput += pid->Output;
+                pid->backLeftOutput += pid->Output;
+                pid->frontRightOutput -= pid->Output;
+                pid->backRightOutput -= pid->Output;   
+            }     
+            motors->setMotor(1, 0, 1, 0, 1, 0, 1, 0);
+            break;
+        case 9:         // NORTHEAST
+            bno055->offsetAngle = bno055->offsetAngleForward;
+            if(angleDifference > 0){ // MOVE TO THE LEFT
+                pid->frontLeftOutput -= pid->Output;
+                pid->backLeftOutput -= 0;
+                pid->frontRightOutput += 0;
+                pid->backRightOutput += pid->Output;     
+            }
+            else if(angleDifference < 0){ // MOVE TO THE RIGHT
+                pid->frontLeftOutput += pid->Output;
+                pid->backLeftOutput += 0;
+                pid->frontRightOutput -= 0;
+                pid->backRightOutput -= pid->Output;   
+            }    
+            motors->setMotor(1, 0, 0, 0, 0, 0, 1, 0);
+            break;
+        case 4:         // WEST
+            bno055->offsetAngle = bno055->offsetAngleForward;
+            if(angleDifference > 0){ // MOVE TO THE LEFT
+                pid->frontLeftOutput += pid->Output;
+                pid->backLeftOutput -= pid->Output;
+                pid->frontRightOutput += pid->Output;
+                pid->backRightOutput -= pid->Output;     
+            }
+            else if(angleDifference < 0){ // MOVE TO THE RIGHT
+                pid->frontLeftOutput -= pid->Output;
+                pid->backLeftOutput += pid->Output;
+                pid->frontRightOutput -= pid->Output;
+                pid->backRightOutput += pid->Output;   
+            }    
+            motors->setMotor(0, 1, 1, 0, 1, 0, 0, 1);
+            break;
+        case 6:         // EAST
+            bno055->offsetAngle = -bno055->offsetAngleForward;
+            if(angleDifference > 0){ // MOVE TO THE LEFT
+                pid->frontLeftOutput -= pid->Output;
+                pid->backLeftOutput += pid->Output;
+                pid->frontRightOutput -= pid->Output;
+                pid->backRightOutput += pid->Output;     
+            }
+            else if(angleDifference < 0){ // MOVE TO THE RIGHT
+                pid->frontLeftOutput += pid->Output;
+                pid->backLeftOutput -= pid->Output;
+                pid->frontRightOutput += pid->Output;
+                pid->backRightOutput -= pid->Output;   
+            }    
+            motors->setMotor(1, 0, 0, 1, 0, 1, 1, 0);
+            break;
+        case 1:         // SOUTHWEST
+            bno055->offsetAngle = -bno055->offsetAngleForward;
+            if(angleDifference > 0){ // MOVE TO THE LEFT
+                pid->frontLeftOutput += pid->Output;
+                pid->backLeftOutput -= 0;
+                pid->frontRightOutput += 0;
+                pid->backRightOutput -= pid->Output;     
+            }
+            else if(angleDifference < 0){ // MOVE TO THE RIGHT
+                pid->frontLeftOutput -= pid->Output;
+                pid->backLeftOutput += 0;
+                pid->frontRightOutput -= 0;
+                pid->backRightOutput += pid->Output;   
+            }    
+            motors->setMotor(0, 1, 0, 0, 0, 0, 0, 1);
+            break;
+        case 2:             // SOUTH
+            bno055->offsetAngle = -bno055->offsetAngleForward;   
+            if(angleDifference > 0){ // MOVE TO THE LEFT
+                pid->frontLeftOutput += pid->Output;
+                pid->backLeftOutput += pid->Output;
+                pid->frontRightOutput -= pid->Output;
+                pid->backRightOutput -= pid->Output;     
+            }
+            else if(angleDifference < 0){ // MOVE TO THE RIGHT
+                pid->frontLeftOutput -= pid->Output;
+                pid->backLeftOutput -= pid->Output;
+                pid->frontRightOutput += pid->Output;
+                pid->backRightOutput += pid->Output;   
+            }    
+            motors->setMotor(0, 1, 0, 1, 0, 1, 0, 1);
+            break;
+        case 3:         // SOUTHEAST
+            bno055->offsetAngle = -bno055->offsetAngleForward;
+            if(angleDifference > 0){ // MOVE TO THE LEFT
+                pid->frontLeftOutput -= 0;
+                pid->backLeftOutput -= pid->Output;
+                pid->frontRightOutput += pid->Output;
+                pid->backRightOutput += 0;     
+            }
+            else if(angleDifference < 0){ // MOVE TO THE RIGHT
+                pid->frontLeftOutput += 0;
+                pid->backLeftOutput += pid->Output;
+                pid->frontRightOutput -= pid->Output;
+                pid->backRightOutput -= 0;   
+            }    
+            motors->setMotor(0, 0, 0, 1, 0, 1, 0, 0);
+            break;
     }
-    else if(angleDifference < 0){ // MOVE TO THE RIGHT
-        pid->frontLeftOutput += pid->Output;
-        pid->backLeftOutput += pid->Output;
-        pid->frontRightOutput -= pid->Output;
-        pid->backRightOutput -= pid->Output;   
-    }   
-    //  Serial.print(rawInput);
-    //  Serial.print("\t");      
-    //  Serial.print(Setpoint);
-    //  Serial.print("\t");      
-    //  Serial.print(angleDifference);
-    //  Serial.print("\t");
-    //  Serial.print(frontLeftOutput);
-    //  Serial.print("\t"); 
-    //  Serial.print(frontRightOutput);
-    //  Serial.print("\t\t\t");
-    //  Serial.println(Output);    
-    pid->regulateOutputsFrontPID(); 
-    motors->setMotor(1, 0, 1, 0, 1, 0, 1, 0);
+    pid->regulateOutputsMovePID(); 
     motors->setVelocity(pid->frontLeftOutput, pid->backLeftOutput, pid->frontRightOutput, pid->backRightOutput);
 }
 
 // TODO:
 //forward with P correction for a specific time
-void _Movements::forwardP_nTime(int time, bool goSlow) {
+void _Movements::movePID_nTime(int time, bool goSlow, int direction) {
     double startTime = millis();
-    while(millis() < startTime+time)
-        forwardP(goSlow);
+    while(millis() < startTime+time)       // NORTHWEST
+        movePID(goSlow, direction);
     motors->brake();
 }
 
 // TODO:
 //Go forward the cm given in the parameter
-void _Movements::forwardP_nCM(int cm, bool goSlow){
+void _Movements::movePID_nCM(int cm, bool goSlow, int direction){
     encoder->encoderState = 1;
     //Counts of encoder to get to the objective
     int untilSteps = (encoder->encoder30Cm / 30) * cm;
@@ -85,204 +188,26 @@ void _Movements::forwardP_nCM(int cm, bool goSlow){
     encoder->steps = 0;
     //Move with p correction until the encoder read the cm
     while (encoder->steps < untilSteps)
-        forwardP(goSlow);
+        movePID(goSlow, direction);
     motors->brake();
 }
+
 // TODO:
 //Go forward until finding a wall at a certain distance
-void _Movements::forwardP_nWallCM(int cmDistance, bool checkColor){
-    encoder->encoderState = 1;
-    //Get Sharp Distance
+void _Movements::movePID_nWallCM(int cmDistance, int direction){
     sharp->filtrateDistancesSharp(); 
-    int actualDistance = sharp->sharpFront.kalmanDistance;
+    int actualDistance = (direction==8)? sharp->sharpFront.kalmanDistance: sharp->sharpBack.kalmanDistance;
     bool ready = actualDistance == cmDistance ? true : false;
     bool goSlow = abs(actualDistance - cmDistance) >= 15 ? false : true;
     int countCorrect = 0;
-    int actualColor;
     //While not at ceratin distance from wall
     while (!ready){                 
-        ////////////////////////////MODIFIED////////////////////////////////
-        (checkColor)? actualColor=colorSensor->currentColor(): actualColor=10;
-        if (actualDistance > cmDistance + 2){     //To far from wall  
-        if(actualColor == -1){                                                   //NOT DETECTING COLOR
-            forwardP(true);
-    //        Serial.println("NOT COLOR");
-        }
-        else{
-            if(actualColor == 3){                                                 //DETECTING COLOR BLACK
-            motors->brake();
-            forwardP_nTime(goSlow, 1300); 
-    //          Serial.println("\t\tCOLOR BLACK");
-            }
-            else if(actualColor == 1){
-            motors->brake();
-            forwardP_nTime(goSlow, 1300); 
-    //          Serial.println("\t\tCOLOR BLUE");
-            }          
-            forwardP(goSlow);
-        }
-        ////////////////////////////////////////////////////////////////////
-        countCorrect = 0;
+        if (actualDistance > cmDistance + 2){
+            (direction==8)? movePID(goSlow, 8): movePID(goSlow, 2);
+            countCorrect = 0;
         }
         else if (actualDistance < cmDistance - 2){ //To close from wall
-        backwardP(goSlow);
-        countCorrect = 0;
-        }
-        else{                                      //Already at the distance with an error of +- 2 cm.
-        motors->brake();
-        if (++countCorrect == 5) ready = true;
-        }
-        sharp->filtrateDistancesSharp(); 
-        actualDistance = sharp->sharpFront.kalmanDistance;
-        goSlow = abs(actualDistance - cmDistance) >= 15 ? false : true;
-    }
-    motors->brake();
-}
-
-// TODO:
-// Go forward following: a setpoint, the distance to the wall, the distance between both sharps
-void _Movements::forwardP_alignWall(double wallDistanceSetpoint, bool goSlow, bool leftWall){
-    double frontDistance, backDistance, sharpsDifference;
-    double wallDistanceReal, wallDistanceDifference;
-    bno055->readBNO(pid->Setpoint);    
-    sharp->filtrateDistancesSharp();  
-    colorSensor->readColor();
-    if (goSlow) {
-        pid->frontLeftOutput = motors->velSlowFL;
-        pid->backLeftOutput = motors->velSlowBL;
-        pid->frontRightOutput = motors->velSlowFR;
-        pid->backRightOutput = motors->velSlowBR;
-    } else {
-        pid->frontLeftOutput = motors->velGenFL;
-        pid->backLeftOutput = motors->velGenBL;
-        pid->frontRightOutput = motors->velGenFR;
-        pid->backRightOutput = motors->velGenBR;
-    }  
-    if(leftWall){                               // Choose which sharps to read depending on the wall of (leftWall)
-        frontDistance = sharp->sharpFL.kalmanDistance;
-        backDistance = sharp->sharpBL.kalmanDistance; 
-    } else{
-        frontDistance = sharp->sharpFR.kalmanDistance;
-        backDistance = sharp->sharpBR.kalmanDistance; 
-    }
-    wallDistanceReal = (frontDistance + backDistance)/2;        // Average of distance to the wall                                                  EXAMPLES USING LEFT WALL
-    wallDistanceDifference = wallDistanceReal - wallDistanceSetpoint;     // Difference between what you want and where you are.     (if > 0)->TOCLOSE[moveRight]   (if < 0)->TOFAR[moveLeft]
-    sharpsDifference = frontDistance - backDistance;    // Difference between the distance of both sharps.                           (if > 0)->[turnLeft]           (if < 0)->[turnRight}
-    int angleDifference = pid->getAngleDifference(bno055->rawInput);  
-    if(leftWall){
-        pid->frontLeftOutput = pid->computeOutputWall(pid->frontLeftOutput, -angleDifference, -sharpsDifference, -wallDistanceDifference);   // Calculate special output (using only P);
-        pid->backLeftOutput = pid->computeOutputWall(pid->backLeftOutput, -angleDifference, -sharpsDifference, -wallDistanceDifference);   // Calculate special output (using only P);
-        pid->frontRightOutput = pid->computeOutputWall(pid->frontRightOutput, angleDifference, sharpsDifference, wallDistanceDifference);   // Calculate special output (using only P);
-        pid->backRightOutput = pid->computeOutputWall(pid->backRightOutput, angleDifference, sharpsDifference, wallDistanceDifference);   // Calculate special output (using only P);
-    } else{    
-        pid->frontLeftOutput = pid->computeOutputWall(pid->frontLeftOutput, angleDifference, sharpsDifference, wallDistanceDifference);   // Calculate special output (using only P);
-        pid->backLeftOutput = pid->computeOutputWall(pid->backLeftOutput, angleDifference, sharpsDifference, wallDistanceDifference);   // Calculate special output (using only P);
-        pid->frontRightOutput = pid->computeOutputWall(pid->frontRightOutput, -angleDifference, -sharpsDifference, -wallDistanceDifference);   // Calculate special output (using only P);
-        pid->backRightOutput = pid->computeOutputWall(pid->backRightOutput, -angleDifference, -sharpsDifference, -wallDistanceDifference);   // Calculate special output (using only P);    
-    }
-    pid->regulateOutputsFrontPID(); 
-    //  Serial.print(frontLeftOutput);
-    //  Serial.print("\t");
-    //  Serial.print(backLeftOutput);
-    //  Serial.print("\t");
-    //  Serial.print(frontRightOutput);
-    //  Serial.print("\t");    
-    //  Serial.println(backRightOutput);   
-    motors->setMotor(1, 0, 1, 0, 1, 0, 1, 0); 
-    motors->setVelocity(pid->frontLeftOutput, pid->backLeftOutput, pid->frontRightOutput, pid->backRightOutput);
-}
-
-// TODO:
-//Backwards with P correction
-void _Movements::backwardP(bool goSlow){
-    bno055->readBNO(pid->Setpoint);    
-    sharp->filtrateDistancesSharp(); 
-    colorSensor->readColor();
-    if (goSlow) {
-        pid->backLeftOutput = motors->velSlowBL;
-        pid->frontLeftOutput = motors->velSlowFL;
-        pid->frontRightOutput = motors->velSlowFR;
-        pid->backRightOutput = motors->velSlowBR;
-    } else {
-        pid->frontLeftOutput = motors->velGenFL;
-        pid->backLeftOutput = motors->velGenBL;
-        pid->frontRightOutput = motors->velGenFR;
-        pid->backRightOutput = motors->velGenBR;
-    }
-    int angleDifference = pid->getAngleDifference(bno055->rawInput);
-    pid->computeOutput(bno055->rawInput, bno055->lastInput);
-    if(angleDifference > 0){ // MOVE TO THE LEFT
-        pid->frontLeftOutput += pid->Output;
-        pid->backLeftOutput += pid->Output;
-        pid->frontRightOutput -= pid->Output;
-        pid->backRightOutput -= pid->Output;     
-    }
-    else if(angleDifference < 0){ // MOVE TO THE RIGHT
-        pid->frontLeftOutput -= pid->Output;
-        pid->backLeftOutput -= pid->Output;
-        pid->frontRightOutput += pid->Output;
-        pid->backRightOutput += pid->Output;   
-    }  
-    pid->regulateOutputsFrontPID(); 
-    motors->setMotor(0, 1, 0, 1, 0, 1, 0, 1);
-    motors->setVelocity(pid->frontLeftOutput, pid->backLeftOutput, pid->frontRightOutput, pid->backRightOutput);
-}
-
-// TODO:
-//Backwards with P correction for a specific time
-void _Movements::backwardP_nTime(int time, bool goSlow) {
-    double startTime = millis();
-    while(millis() < startTime+time)
-        backwardP(goSlow);
-    motors->brake();
-}
-
-//Go backward the cm given in the parameter, Nestor style
-// TODO:
-void _Movements::backwardP_nCM(int cm, bool goSlow){
-    encoder->encoderState = 1;
-    //Counts of encoder to get to the objective
-    int untilSteps = (encoder->encoder30Cm / 30) * cm;
-    //Restart encoder counts
-    encoder->steps = 0;
-    //Move with p correction until the encoder read the cm
-    while (encoder->steps < untilSteps)
-        backwardP(goSlow);
-    motors->brake();
-}
-
-// TODO:
-//Go forward until finding a wall at a certain distance
-void _Movements::backwardP_nWallCM(int cmDistance, bool checkColor){
-    encoder->encoderState = 1;
-    //Get Sharp Distance
-    sharp->filtrateDistancesSharp(); 
-    int actualDistance = sharp->sharpBack.kalmanDistance; //BackSharp
-    bool ready = actualDistance == cmDistance ? true : false;
-    bool goSlow = abs(actualDistance - cmDistance) >= 15 ? false : true;
-    int countCorrect = 0;
-    int actualColor;
-    //While not at ceratin distance from wall
-    while (!ready){        
-        ////////////////////////////MODIFIED////////////////////////////////   
-        (checkColor)? actualColor=colorSensor->currentColor(): actualColor=10;
-        if (actualDistance > cmDistance + 2){     //To far from wall
-        if(actualColor == -1)                                                   //NOT DETECTING COLOR
-            backwardP(true);
-        else{
-            if(actualColor == 3){                                                 //DETECTING COLOR BLACK
-                backwardP_nTime(goSlow, 100); 
-            }
-            else if(actualColor == 1){                                            //DETECTING COLOR BLUE
-                backwardP_nTime(goSlow, 100); 
-            }
-            backwardP(goSlow);
-        }
-    /////////////////////////////////////////      
-        countCorrect = 0;    
-        }
-        else if (actualDistance < cmDistance - 2){ //To close from wall
-            forwardP(goSlow);
+            (direction==8)? movePID(goSlow, 2): movePID(goSlow, 8);
             countCorrect = 0;
         }
         else{                                      //Already at the distance with an error of +- 2 cm.
@@ -290,33 +215,86 @@ void _Movements::backwardP_nWallCM(int cmDistance, bool checkColor){
             if (++countCorrect == 5) ready = true;
         }
         sharp->filtrateDistancesSharp(); 
-        actualDistance = sharp->sharpBack.kalmanDistance;
+        actualDistance = (direction==8)? sharp->sharpFront.kalmanDistance: sharp->sharpBack.kalmanDistance;
         goSlow = abs(actualDistance - cmDistance) >= 15 ? false : true;
     }
     motors->brake();
 }
 
 // TODO:
-void _Movements::spinP(int newAngle){
+// Go forward following: a setpoint, the distance to the wall, the distance between both sharps
+void _Movements::movePID_alignWall(double wallDistanceSetpoint, bool goSlow, bool leftWall, int direction){
+    // double frontDistance, backDistance, sharpsDifference;
+    // double wallDistanceReal, wallDistanceDifference;
+    // bno055->readBNO(pid->Setpoint);    
+    // sharp->filtrateDistancesSharp();  
+    // colorSensor->readColor();
+    // if (goSlow) {
+    //     pid->frontLeftOutput = motors->velSlowFL;
+    //     pid->backLeftOutput = motors->velSlowBL;
+    //     pid->frontRightOutput = motors->velSlowFR;
+    //     pid->backRightOutput = motors->velSlowBR;
+    // } else {
+    //     pid->frontLeftOutput = motors->velGenFL;
+    //     pid->backLeftOutput = motors->velGenBL;
+    //     pid->frontRightOutput = motors->velGenFR;
+    //     pid->backRightOutput = motors->velGenBR;
+    // }  
+    // if(leftWall){                               // Choose which sharps to read depending on the wall of (leftWall)
+    //     frontDistance = sharp->sharpFL.kalmanDistance;
+    //     backDistance = sharp->sharpBL.kalmanDistance; 
+    // } else{
+    //     frontDistance = sharp->sharpFR.kalmanDistance;
+    //     backDistance = sharp->sharpBR.kalmanDistance; 
+    // }
+    // wallDistanceReal = (frontDistance + backDistance)/2;        // Average of distance to the wall                                                  EXAMPLES USING LEFT WALL
+    // wallDistanceDifference = wallDistanceReal - wallDistanceSetpoint;     // Difference between what you want and where you are.     (if > 0)->TOCLOSE[moveRight]   (if < 0)->TOFAR[moveLeft]
+    // sharpsDifference = frontDistance - backDistance;    // Difference between the distance of both sharps.                           (if > 0)->[turnLeft]           (if < 0)->[turnRight}
+    // int angleDifference = pid->getAngleDifference(bno055->rawInput);  
+    // if(leftWall){
+    //     pid->frontLeftOutput = pid->computeOutputWall(pid->frontLeftOutput, -angleDifference, -sharpsDifference, -wallDistanceDifference);   // Calculate special output (using only P);
+    //     pid->backLeftOutput = pid->computeOutputWall(pid->backLeftOutput, -angleDifference, -sharpsDifference, -wallDistanceDifference);   // Calculate special output (using only P);
+    //     pid->frontRightOutput = pid->computeOutputWall(pid->frontRightOutput, angleDifference, sharpsDifference, wallDistanceDifference);   // Calculate special output (using only P);
+    //     pid->backRightOutput = pid->computeOutputWall(pid->backRightOutput, angleDifference, sharpsDifference, wallDistanceDifference);   // Calculate special output (using only P);
+    // } else{    
+    //     pid->frontLeftOutput = pid->computeOutputWall(pid->frontLeftOutput, angleDifference, sharpsDifference, wallDistanceDifference);   // Calculate special output (using only P);
+    //     pid->backLeftOutput = pid->computeOutputWall(pid->backLeftOutput, angleDifference, sharpsDifference, wallDistanceDifference);   // Calculate special output (using only P);
+    //     pid->frontRightOutput = pid->computeOutputWall(pid->frontRightOutput, -angleDifference, -sharpsDifference, -wallDistanceDifference);   // Calculate special output (using only P);
+    //     pid->backRightOutput = pid->computeOutputWall(pid->backRightOutput, -angleDifference, -sharpsDifference, -wallDistanceDifference);   // Calculate special output (using only P);    
+    // }
+    // pid->regulateOutputsFrontPID(); 
+    // //  Serial.print(frontLeftOutput);
+    // //  Serial.print("\t");
+    // //  Serial.print(backLeftOutput);
+    // //  Serial.print("\t");
+    // //  Serial.print(frontRightOutput);
+    // //  Serial.print("\t");    
+    // //  Serial.println(backRightOutput);   
+    // motors->setMotor(1, 0, 1, 0, 1, 0, 1, 0); 
+    // motors->setVelocity(pid->frontLeftOutput, pid->backLeftOutput, pid->frontRightOutput, pid->backRightOutput);
+}
+
+// TODO:
+void _Movements::spinPID(int newAngle){
     if(abs(newAngle) == 180){
         if(newAngle == 180){
-            spinP(90);
-            spinP(90);
+            spinPID(90);
+            spinPID(90);
         }
         else if(newAngle == -180){
-            spinP(-90);
-            spinP(-90);
+            spinPID(-90);
+            spinPID(-90);
         }    
         return ;
     }
     else if(abs(newAngle) == 360){
         if(newAngle == 360){
-            spinP(180);
-            spinP(180);
+            spinPID(180);
+            spinPID(180);
         }
         else if(newAngle == -360){
-            spinP(-180);
-            spinP(-180);
+            spinPID(-180);
+            spinPID(-180);
         }    
         return ;
     }
@@ -329,7 +307,7 @@ void _Movements::spinP(int newAngle){
         bno055->readBNO(pid->Setpoint);
         int angleDifference = pid->getAngleDifference(bno055->rawInput);
         if (abs(angleDifference) > 1) {
-        turnP();
+        turnPID();
     //      Serial.print(rawInput);
     //      Serial.print("\t");      
     //      Serial.print(Setpoint);
@@ -353,7 +331,7 @@ void _Movements::spinP(int newAngle){
 }
 
 // TODO:
-void _Movements::turnP() {
+void _Movements::turnPID() {
     bno055->readBNO(pid->Setpoint);
     sharp->filtrateDistancesSharp(); 
     pid->frontLeftOutput = motors->velTurnFL;
@@ -378,4 +356,42 @@ void _Movements::turnP() {
     }         
     pid->regulateOutputsTurnPID();
     motors->setVelocity(pid->frontLeftOutput, pid->backLeftOutput, pid->frontRightOutput, pid->backRightOutput);          
+}
+
+void _Movements::alignMechanism(bool goSlow, double targetDistance){
+    // bno055->offsetAngle = bno055->offsetAngleForward;
+    // bno055->readBNO(pid->Setpoint);
+    // sharp->filtrateDistancesSharp();
+    // colorSensor->readColor(); 
+    // if (goSlow) {
+    //     pid->frontLeftOutput = motors->velSlowFL-12;
+    //     pid->backLeftOutput = motors->velSlowBL-12;
+    //     pid->frontRightOutput = motors->velSlowFR-12;
+    //     pid->backRightOutput = motors->velSlowBR-12;
+    // } else {  
+    //     pid->frontLeftOutput = motors->velGenFL;
+    //     pid->backLeftOutput = motors->velGenBL;
+    //     pid->frontRightOutput = motors->velGenFR;
+    //     pid->backRightOutput = motors->velGenBR;
+    // }
+    // int angleDifference = pid->getAngleDifference(bno055->rawInput);
+    // double wallDistance = (sharp->sharpFR.kalmanDistance+sharp->sharpFL.kalmanDistance)/2.0;
+    // double sharpsOffset = sharp->sharpFR.kalmanDistance - sharp->sharpFL.kalmanDistance;
+    // pid->computeOutputAlignMechanism(angleDifference, sharpsOffset);
+    
+    // if(angleDifference > 0){ // MOVE TO THE LEFT
+    //     pid->frontLeftOutput -= pid->OutputAlignMechanism;
+    //     pid->backLeftOutput -= pid->OutputAlignMechanism;
+    //     pid->frontRightOutput += pid->OutputAlignMechanism;
+    //     pid->backRightOutput += pid->OutputAlignMechanism;     
+    // }
+    // else if(angleDifference < 0){ // MOVE TO THE RIGHT
+    //     pid->frontLeftOutput += pid->OutputAlignMechanism;
+    //     pid->backLeftOutput += pid->OutputAlignMechanism;
+    //     pid->frontRightOutput -= pid->OutputAlignMechanism;
+    //     pid->backRightOutput -= pid->OutputAlignMechanism;   
+    // }     
+    // pid->regulateOutputsMovePID(); 
+    // motors->setMotor(1, 0, 1, 0, 1, 0, 1, 0);
+    // motors->setVelocity(pid->frontLeftOutput, pid->backLeftOutput, pid->frontRightOutput, pid->backRightOutput);
 }

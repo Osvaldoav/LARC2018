@@ -1,5 +1,4 @@
 #include <_ColorSensor.h>
-#include <StackArray.h>
 
 /////////////////// PINs DECLARATION /////////////////////
 const byte sensorOut = 43;

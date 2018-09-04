@@ -20,14 +20,14 @@ void _Motors::setupMotors(){
     velSlowBL = 82; 
     velSlowFR = 82;
     velSlowBR = 82;
-    velGenFL = 115;
-    velGenBL = 115;
-    velGenFR = 115;
-    velGenBR = 115;
-    velTurnFL = 79;//55
-    velTurnBL = 79;
-    velTurnFR = 79;
-    velTurnBR = 79;
+    velGenFL = 120;//115
+    velGenBL = 120;
+    velGenFR = 120;
+    velGenBR = 120;
+    velTurnFL = 110;//79
+    velTurnBL = 110;
+    velTurnFR = 110;
+    velTurnBR = 110;
 
     pinMode(pinMotorFR_F,OUTPUT);
     pinMode(pinMotorFR_B,OUTPUT);

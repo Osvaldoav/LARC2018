@@ -1,6 +1,6 @@
 #ifndef _LibraryPID_h
 #define _LibraryPID_h
-#include "Arduino.h"
+#include <_ArduinoLIBRARY.h>
 #include <math.h>
 
 class _LibraryPID{
@@ -11,8 +11,8 @@ class _LibraryPID{
         int getAngleDifference(double);
         int getAngleDerivate(double, double);
         void computeOutput(double, double &);
-        double computeOutputWall(double, double, double, double);
-        void regulateOutputsFrontPID();
+        void computeOutputAlignMechanism(double);
+        void regulateOutputsMovePID();
         void regulateOutputsTurnPID();
         void Initialize(double, double &);
         void SetTunings(double, double, double);
@@ -28,6 +28,7 @@ class _LibraryPID{
         double backLeftOutput;
         double backRightOutput; 
         double Output;
+        double OutputAlignMechanism;
         /////////////CONSTANTS
         /////// PID CONSTANTS ///////
         double alignKp;

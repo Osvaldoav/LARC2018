@@ -1,8 +1,4 @@
 #include <_BNO055.h>
-#include <Wire.h>
-#include <Adafruit_Sensor.h>
-#include <Adafruit_BNO055.h>
-#include <utility/imumaths.h>
 
 /////////////////////////////////// BNO Local Variables /////////////////////////////////////
 #define BNO055_SAMPLERATE_DELAY_MS (50)     // was 100
@@ -25,7 +21,6 @@ void _BNO055::setupBNO055(){
     offsetAngleForward=1.179;
     offsetAngleTurn=1.9899;
     offsetAngle=offsetAngleForward;//0.0011
-
     delay(400);
     if(!bno.begin(bno.OPERATION_MODE_IMUPLUS)){
       Serial.print("BNO055 not detected");         // Debug
@@ -118,11 +113,9 @@ void _BNO055::calibrarBNO(double &Setpoint){
 
 // TODO:
 void _BNO055::readBNO(double &Setpoint){
-  if(millis()%200 == 0) Setpoint-=offsetAngle;
+  if(millis()%300 == 0) Setpoint+=offsetAngle;
   delay(20);
   bno.getEvent(&event);
   lastInput = rawInput;
   rawInput=round(bno.getVector(Adafruit_BNO055::VECTOR_EULER).x());
-  Serial.print(rawInput);
-  Serial.print(" ");
 }

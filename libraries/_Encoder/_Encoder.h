@@ -1,6 +1,6 @@
 #ifndef _Encoder_h
 #define _Encoder_h
-#include "Arduino.h"
+#include <_ArduinoLIBRARY.h>
 
 class _Encoder{
     public:

@@ -69,3 +69,15 @@
 //   Serial.print("\t\tZ: ");
 //   Serial.println(event.orientation.z, 5);
 // }
+
+    //  Serial.print(rawInput);
+    //  Serial.print("\t");      
+    //  Serial.print(Setpoint);
+    //  Serial.print("\t");      
+    //  Serial.print(angleDifference);
+    //  Serial.print("\t");
+    //  Serial.print(frontLeftOutput);
+    //  Serial.print("\t"); 
+    //  Serial.print(frontRightOutput);
+    //  Serial.print("\t\t\t");
+    //  Serial.println(Output);   

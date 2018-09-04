@@ -1,6 +1,10 @@
 #ifndef _BNO055_h
 #define _BNO055_h
-#include "Arduino.h"
+#include <_ArduinoLIBRARY.h>
+#include <Wire.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_BNO055.h>
+#include <utility/imumaths.h>
 #include <math.h>
 
 class _BNO055{

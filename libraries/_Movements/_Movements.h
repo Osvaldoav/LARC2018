@@ -7,22 +7,20 @@
 #include <_Motors.h>
 #include <_Sharp.h>
 #include <_LCD.h>
+#include <_TimeFlight.h>
 
 class _Movements{
     public:
 // TODO: METHODS
         void setupMovements();
-        void forwardP(bool);
-        void forwardP_nTime(int, bool);
-        void forwardP_nCM(int, bool);
-        void forwardP_nWallCM(int, bool);
-        void forwardP_alignWall(double, bool, bool);
-        void backwardP(bool);
-        void backwardP_nTime(int, bool);
-        void backwardP_nCM(int, bool);
-        void backwardP_nWallCM(int, bool);
-        void spinP(int);
-        void turnP();
+        void movePID(bool, int);
+        void movePID_nTime(int, bool, int);
+        void movePID_nCM(int, bool, int);
+        void movePID_nWallCM(int, int);
+        void movePID_alignWall(double, bool, bool, int);
+        void spinPID(int);
+        void turnPID();
+        void alignMechanism(bool, double);
 // TODO: ATTRIBUTES
         _BNO055 *bno055;
         _ColorSensor *colorSensor;
@@ -31,6 +29,7 @@ class _Movements{
         _Motors *motors;
         _Sharp *sharp;
         _LCD *lcd;
+        _TimeFlight *timeFlight;
 };
 
 #endif
