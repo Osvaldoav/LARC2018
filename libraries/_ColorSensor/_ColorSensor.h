@@ -1,6 +1,7 @@
 #ifndef _ColorSensor_h
 #define _ColorSensor_h
-#include "Arduino.h"
+#include <_ArduinoLIBRARY.h>
+#include <StackArray.h>
 #include <math.h>
 #include <String.h>
 

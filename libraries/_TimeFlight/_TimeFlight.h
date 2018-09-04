@@ -1,12 +1,13 @@
-#ifndef _Sharp_h
-#define _Sharp_h
+#ifndef _TimeFlight_h
+#define _TimeFlight_h
 #include <_ArduinoLIBRARY.h>
+#include <Wire.h>
+#include <VL53L0X.h>
 #include <Estadisticas.h>
 #include <QuickSort.h>
-
-struct SharpKalman{
-    SharpKalman(){
-        varSensor = 4e-6; //Variance of sensor. The LESS, the MORE it looks like the raw input. (1e-6)
+struct TimeFlightKalman{
+    TimeFlightKalman(){
+        varSensor = 1e-6; //Variance of sensor. The LESS, the MORE it looks like the raw input. (1e-6)
         varProcess = 1e-7; 
         P = 1.0;
         Pc = 0.0;
@@ -31,22 +32,19 @@ struct SharpKalman{
     bool side;
 };
 
-class _Sharp{ 
+class _TimeFlight{
     public:
 // TODO: METHODS
-        double getRawDistance(byte); 
-        void calculateRawDistancesSharp();
+        void setupTimeFlight();
+        double getRawDistance(bool); 
+        void calculateRawDistancesTimeFlight();
         // void calculateMedianDistancesSharp();
-        void sharpKalmanFilter(SharpKalman &);
-        void filtrateDistancesSharp();
-        void sharp_RawKalman(SharpKalman &);
+        void timeFlightKalmanFilter(TimeFlightKalman &);
+        void filtrateDistancesTimeFlight();
+        void timeFlight_RawKalman(TimeFlightKalman &);
 // TODO: ATTRIBUTES
-        SharpKalman sharpFR;
-        SharpKalman sharpFL;
-        SharpKalman sharpBR;
-        SharpKalman sharpBL;
-        SharpKalman sharpBack;
-        SharpKalman sharpFront;
+        TimeFlightKalman timeFlightLeft;
+        TimeFlightKalman timeFlightRight;
 };
 
 #endif

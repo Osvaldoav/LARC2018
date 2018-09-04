@@ -1,6 +1,6 @@
 #ifndef _Motors_h
 #define _Motors_h
-#include "Arduino.h"
+#include <_ArduinoLIBRARY.h>
 #include <math.h>
 
 class _Motors{

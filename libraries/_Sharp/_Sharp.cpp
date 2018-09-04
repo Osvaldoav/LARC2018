@@ -1,6 +1,4 @@
 #include <_Sharp.h>
-#include <Estadisticas.h>
-#include <QuickSort.h>
 
 /////////////////////// PINs DECLARATION ////////////////////////
 const byte pinSharpFR = A4;

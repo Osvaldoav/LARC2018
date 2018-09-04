@@ -1,10 +1,11 @@
 //////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////LARC 2018 ///////////////////////////////////////////
+///////////////////////////////////////// LARC 2018 //////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////
-const byte pinEncoder = 40;
 #include <_Movements.h>     
+#include <Wire.h>
 _Movements *movements = new _Movements;
 
+const byte pinEncoder = 40;
 const byte ledRed = 37;
 const byte ledGreen = 36;
 const byte ledBlue = 35;
@@ -12,6 +13,7 @@ const byte ledBlue = 35;
 /////////////////////////////////////////////SETUP////////////////////////////////////////////////
 void setup() {
     Serial.begin(9600);
+    Wire.begin();
     movements->setupMovements();
     movements->pid->setupLibraryPID();
     movements->motors->setupMotors();
@@ -27,8 +29,31 @@ void setup() {
 }
 
 void loop(){
-  Serial.print("oli k ase");
-   movements->forwardP(false);
+  movements->movePID_nWallCM(7, 8);
+  movements->spinPID(-90);
+  movements->movePID_nWallCM(5, 8);
+  movements->spinPID(-90);
+  movements->movePID_nWallCM(5, 8);
+  movements->spinPID(-90);
+  movements->movePID_nWallCM(5, 8);
+  
+  movements->movePID_nWallCM(5, 2);
+  movements->spinPID(90);
+  movements->movePID_nWallCM(5, 2);
+  movements->spinPID(90);
+  movements->movePID_nWallCM(5, 2);
+  movements->spinPID(90);
+  movements->movePID_nWallCM(5, 2);
+  movements->spinPID(90);  
+  
+
+//  movements->sharp->filtrateDistancesSharp();
+//  Serial.print(movements->sharp->sharpFR.kalmanDistance);
+//  Serial.print(" ");
+//  Serial.println(movements->sharp->sharpBL.kalmanDistance);
+
+//   movements->movePID(false, 2);
+//   movements->sharp->sharp_RawKalman(movements->sharp->sharpBL);
 
 //  backwardP_alignWall(6, false, true);
   // PRE_LARC_TEST1();

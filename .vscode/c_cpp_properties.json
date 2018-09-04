@@ -71,7 +71,10 @@
                 "C:/Users/Anton/Documents/GitHub/LARC2018/libraries/QuickSort",
                 "C:/Users/Anton/Documents/GitHub/LARC2018/libraries/Arduino/cores/esp8266",
                 "C:/Users/Anton/Documents/GitHub/LARC2018/libraries/Arduino/bootloaders/eboot",
-                "C:/Users/Anton/Documents/GitHub/LARC2018/libraries/Arduino/tools/sdk/include"
+                "C:/Users/Anton/Documents/GitHub/LARC2018/libraries/Arduino/tools/sdk/include",
+                "C:/Users/Anton/Documents/GitHub/LARC2018/libraries/_ArduinoLIBRARY",
+                "C:/Users/Anton/Documents/GitHub/LARC2018/libraries/_TimeFlight",
+                "C:/Users/Anton/Documents/GitHub/LARC2018/libraries/vl53l0x-arduino-master"
             ],
             "defines": [
                 "_DEBUG",
