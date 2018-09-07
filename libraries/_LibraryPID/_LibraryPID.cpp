@@ -14,7 +14,7 @@ double alignKp=0, alignKi=0, alignKd=0;
 double turnKp=17.6, turnKi=0, turnKd=0.9;//2.4d // 18.3
 double forwardKp=19, forwardKi=0, forwardKd=0;//4.8d
 double kp=forwardKp, ki=forwardKi, kd=forwardKd;
-double wallAngleKp=10, wallDistanceKp=12, wallSharpsKp=5; 
+double wallAngleKp=0, wallSharpsKp=140; //2.3, 140
 /////// LOCAL VARIABLES ////////////
 double ITerm=0;
 unsigned long lastTime;
@@ -83,10 +83,8 @@ void _LibraryPID::computeOutput(double rawInput, double &lastInput){
 		}
 }
 // TODO:
-void _LibraryPID::computeOutputAlignMechanism(double sharpsOffset){   
-		if (sharpsOffset > 45) sharpsOffset = 45;
-		else if (sharpsOffset < -45) sharpsOffset = -45;  
-		OutputAlignMechanism = wallSharpsKp*sharpsOffset;    
+void _LibraryPID::computeOutputAlignMechanism(double distanceOffset, double angleOffset){   
+	OutputAlignMechanism = wallSharpsKp*distanceOffset + wallAngleKp*angleOffset;    
 }
 // TODO:
 void _LibraryPID::regulateOutputsMovePID(){
@@ -114,6 +112,19 @@ void _LibraryPID::regulateOutputsTurnPID(){
 		else if (frontLeftOutput < 0)           frontLeftOutput = 0;
 
 		if (backLeftOutput > maxTurnVel)       backLeftOutput = maxTurnVel;
+		else if (backLeftOutput < 0)            backLeftOutput = 0;
+}
+void _LibraryPID::regulateOutputsSpecific(int velocity){
+		if (frontRightOutput > velocity)     frontRightOutput = velocity;
+		else if (frontRightOutput < 0)          frontRightOutput = 0;
+
+		if (backRightOutput > velocity)      backRightOutput = velocity;
+		else if (backRightOutput < 0)           backRightOutput = 0;
+
+		if (frontLeftOutput > velocity)      frontLeftOutput = velocity;
+		else if (frontLeftOutput < 0)           frontLeftOutput = 0;
+
+		if (backLeftOutput > velocity)       backLeftOutput = velocity;
 		else if (backLeftOutput < 0)            backLeftOutput = 0;
 }
 // TODO:

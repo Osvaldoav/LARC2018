@@ -22,6 +22,7 @@ void _BNO055::setupBNO055(){
     offsetAngleTurn=1.9899;
     offsetAngle=offsetAngleForward;//0.0011
     delay(400);
+    // USING I2C ADDRESS 0X28
     if(!bno.begin(bno.OPERATION_MODE_IMUPLUS)){
       Serial.print("BNO055 not detected");         // Debug
       while(1);

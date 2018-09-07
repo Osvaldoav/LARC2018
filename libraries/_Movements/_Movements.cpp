@@ -11,17 +11,15 @@ void _Movements::setupMovements(){
     timeFlight = new _TimeFlight;
 }
 
+// TODO:
 /* DIRECTIONS
     ||  7   ||  8   ||  9   ||          || NorthWest || North || NorthEast ||
     ||  4   ||      ||  6   ||    =>    ||    West   ||       ||    East   ||
     ||  1   ||  2   ||  3   ||          || SouthWest || South || SouthEast ||
 */
-// TODO:
-//forward with P correction
-void _Movements::movePID(bool goSlow, int direction){
-    bno055->readBNO(pid->Setpoint);
-    sharp->filtrateDistancesSharp();
-    colorSensor->readColor(); 
+void _Movements::setWheelsOutputsByMovement(bool goSlow, int direction){
+    int angleDifference = pid->getAngleDifference(bno055->rawInput);
+    pid->computeOutput(bno055->rawInput, bno055->lastInput);      
     if (goSlow) {
         pid->frontLeftOutput = motors->velSlowFL;
         pid->backLeftOutput = motors->velSlowBL;
@@ -32,9 +30,7 @@ void _Movements::movePID(bool goSlow, int direction){
         pid->backLeftOutput = motors->velGenBL;
         pid->frontRightOutput = motors->velGenFR;
         pid->backRightOutput = motors->velGenBR;
-    }
-    int angleDifference = pid->getAngleDifference(bno055->rawInput);
-    pid->computeOutput(bno055->rawInput, bno055->lastInput);  
+    }      
     switch(direction){
         case 7:         // NORTHWEST
             bno055->offsetAngle = bno055->offsetAngleForward;
@@ -101,7 +97,7 @@ void _Movements::movePID(bool goSlow, int direction){
             motors->setMotor(0, 1, 1, 0, 1, 0, 0, 1);
             break;
         case 6:         // EAST
-            bno055->offsetAngle = -bno055->offsetAngleForward;
+            bno055->offsetAngle = bno055->offsetAngleForward;
             if(angleDifference > 0){ // MOVE TO THE LEFT
                 pid->frontLeftOutput -= pid->Output;
                 pid->backLeftOutput += pid->Output;
@@ -164,7 +160,15 @@ void _Movements::movePID(bool goSlow, int direction){
             }    
             motors->setMotor(0, 0, 0, 1, 0, 1, 0, 0);
             break;
-    }
+    }    
+}
+// TODO:
+//forward with P correction
+void _Movements::movePID(bool goSlow, int direction){
+    bno055->readBNO(pid->Setpoint);
+    sharp->filtrateDistancesSharp();
+    colorSensor->readColor();   
+    setWheelsOutputsByMovement(goSlow, direction);    
     pid->regulateOutputsMovePID(); 
     motors->setVelocity(pid->frontLeftOutput, pid->backLeftOutput, pid->frontRightOutput, pid->backRightOutput);
 }
@@ -193,10 +197,123 @@ void _Movements::movePID_nCM(int cm, bool goSlow, int direction){
 }
 
 // TODO:
+void _Movements::alignMechanism(int direction){
+    int x = 0;
+    double startTime = millis();
+    int extraSlowVel = 75;     
+    pid->frontLeftOutput = extraSlowVel;
+    pid->backLeftOutput = extraSlowVel;
+    pid->frontRightOutput = extraSlowVel;
+    pid->backRightOutput = extraSlowVel;    
+    do {      
+        bno055->offsetAngle = bno055->offsetAngleForward;
+        bno055->readBNO(pid->Setpoint);
+        int angleDifference = pid->getAngleDifference(bno055->rawInput);               
+        // Calculate Time of Flight output
+        timeFlight->filtrateDistancesTimeFlight();
+        double right = timeFlight->timeFlightRight.kalmanDistance;
+        double left = timeFlight->timeFlightLeft.kalmanDistance;
+        Serial.print(left);
+        Serial.print(" ");
+        Serial.print(right);
+        Serial.print(" ");
+        Serial.println(abs(right-left));
+        // Serial.print(" ");
+        // Serial.println(abs(right-left)*100);   
+        pid->computeOutputAlignMechanism(abs(right-left), abs(angleDifference));
+        // if(pid->OutputAlignMechanism < 10){
+        //     motors->brake();
+        //     delay(50);      
+        //     if (++x == 25) break;
+        // }
+        if(left>right){
+            pid->frontLeftOutput += pid->OutputAlignMechanism;
+            pid->backLeftOutput += pid->OutputAlignMechanism;
+            pid->frontRightOutput -= pid->OutputAlignMechanism;
+            pid->backRightOutput -= pid->OutputAlignMechanism;              
+            x=0;
+        }
+        else if(right>left){
+            pid->frontLeftOutput -= pid->OutputAlignMechanism;
+            pid->backLeftOutput -= pid->OutputAlignMechanism;
+            pid->frontRightOutput += pid->OutputAlignMechanism;
+            pid->backRightOutput += pid->OutputAlignMechanism;  
+            x=0;        
+        }        
+        // Set velocities
+        motors->setMotor(1, 0, 1, 0, 1, 0, 1, 0);
+        pid->regulateOutputsSpecific(103); 
+        motors->setVelocity(pid->frontLeftOutput, pid->backLeftOutput, pid->frontRightOutput, pid->backRightOutput); 
+        // Serial.print(pid->frontLeftOutput);
+        // Serial.print(" ");
+        // Serial.println(pid->OutputAlignMechanism);            
+    } while(millis() < startTime+500);
+}
+// void _Movements::alignMechanism(int direction){
+//     int x = 0;
+//     double startTime = millis();
+//     double right, left;
+//     int extraSlowVel = 75;     
+//     motors->velSlowFL = extraSlowVel;
+//     motors->velSlowBL = extraSlowVel; 
+//     motors->velSlowFR = extraSlowVel;
+//     motors->velSlowBR = extraSlowVel;  
+//     do {      
+//         movePID(true, 8);              
+//         // Calculate Time of Flight output
+//         timeFlight->filtrateDistancesTimeFlight();
+//         right = timeFlight->timeFlightRight.kalmanDistance;
+//         left = timeFlight->timeFlightLeft.kalmanDistance;
+//         // Serial.print(left);
+//         // Serial.print(" ");
+//         // Serial.print(right);
+//         // Serial.print(" ");
+//         // Serial.print(abs(right-left));
+//         // Serial.print(" ");
+//         // Serial.println(abs(right-left)*100);   
+//         pid->computeOutputAlignMechanism(abs(right-left), 0);
+//         if(pid->Output<5 && pid->OutputAlignMechanism>=5){
+//             if(left>right){
+//                 pid->frontLeftOutput += pid->OutputAlignMechanism;
+//                 pid->backLeftOutput += pid->OutputAlignMechanism;
+//                 pid->frontRightOutput -= pid->OutputAlignMechanism;
+//                 pid->backRightOutput -= pid->OutputAlignMechanism;              
+//                 x=0;
+//             }
+//             else if(right>left){
+//                 pid->frontLeftOutput -= pid->OutputAlignMechanism;
+//                 pid->backLeftOutput -= pid->OutputAlignMechanism;
+//                 pid->frontRightOutput += pid->OutputAlignMechanism;
+//                 pid->backRightOutput += pid->OutputAlignMechanism;  
+//                 x=0;        
+//             }      
+//         }  
+//         // Set velocities
+//         motors->setMotor(1, 0, 1, 0, 1, 0, 1, 0);
+//         pid->regulateOutputsSpecific(120); 
+//         motors->setVelocity(pid->frontLeftOutput, pid->backLeftOutput, pid->frontRightOutput, pid->backRightOutput); 
+//         // Serial.print(pid->frontLeftOutput);
+//         // Serial.print(" ");
+//         // Serial.println(pid->OutputAlignMechanism);            
+//     } while(abs(right-left)/2 > 5);
+//     motors->velSlowFL = 82;
+//     motors->velSlowBL = 82; 
+//     motors->velSlowFR = 82;
+//     motors->velSlowBR = 82;    
+// }
+
+// TODO:
 //Go forward until finding a wall at a certain distance
 void _Movements::movePID_nWallCM(int cmDistance, int direction){
-    sharp->filtrateDistancesSharp(); 
-    int actualDistance = (direction==8)? sharp->sharpFront.kalmanDistance: sharp->sharpBack.kalmanDistance;
+    int actualDistance;
+    if(direction==2){
+        sharp->filtrateDistancesSharp(); 
+        actualDistance = sharp->sharpBack.kalmanDistance;
+    }
+    else{
+        timeFlight->filtrateDistancesTimeFlight();
+        actualDistance = (timeFlight->timeFlightRight.kalmanDistance+timeFlight->timeFlightLeft.kalmanDistance)/2;
+    }
     bool ready = actualDistance == cmDistance ? true : false;
     bool goSlow = abs(actualDistance - cmDistance) >= 15 ? false : true;
     int countCorrect = 0;
@@ -214,11 +331,18 @@ void _Movements::movePID_nWallCM(int cmDistance, int direction){
             motors->brake();
             if (++countCorrect == 5) ready = true;
         }
-        sharp->filtrateDistancesSharp(); 
-        actualDistance = (direction==8)? sharp->sharpFront.kalmanDistance: sharp->sharpBack.kalmanDistance;
+        if(direction==2){
+            sharp->filtrateDistancesSharp(); 
+            actualDistance = sharp->sharpBack.kalmanDistance;
+        }
+        else{
+            timeFlight->filtrateDistancesTimeFlight();
+            actualDistance = (timeFlight->timeFlightRight.kalmanDistance+timeFlight->timeFlightLeft.kalmanDistance)/2;
+        }
         goSlow = abs(actualDistance - cmDistance) >= 15 ? false : true;
     }
     motors->brake();
+    alignMechanism(direction);
 }
 
 // TODO:
@@ -307,18 +431,7 @@ void _Movements::spinPID(int newAngle){
         bno055->readBNO(pid->Setpoint);
         int angleDifference = pid->getAngleDifference(bno055->rawInput);
         if (abs(angleDifference) > 1) {
-        turnPID();
-    //      Serial.print(rawInput);
-    //      Serial.print("\t");      
-    //      Serial.print(Setpoint);
-    //      Serial.print("\t");      
-    //      Serial.print(angleDifference);
-    //      Serial.print("\t");
-    //      Serial.print(frontLeftOutput);
-    //      Serial.print("\t");
-    //      Serial.print(frontRightOutput);
-    //      Serial.print("\t");
-    //      Serial.println(Output);    
+        turnPID();    
         x = 0;
         } else {
         motors->brake();
@@ -356,42 +469,4 @@ void _Movements::turnPID() {
     }         
     pid->regulateOutputsTurnPID();
     motors->setVelocity(pid->frontLeftOutput, pid->backLeftOutput, pid->frontRightOutput, pid->backRightOutput);          
-}
-
-void _Movements::alignMechanism(bool goSlow, double targetDistance){
-    // bno055->offsetAngle = bno055->offsetAngleForward;
-    // bno055->readBNO(pid->Setpoint);
-    // sharp->filtrateDistancesSharp();
-    // colorSensor->readColor(); 
-    // if (goSlow) {
-    //     pid->frontLeftOutput = motors->velSlowFL-12;
-    //     pid->backLeftOutput = motors->velSlowBL-12;
-    //     pid->frontRightOutput = motors->velSlowFR-12;
-    //     pid->backRightOutput = motors->velSlowBR-12;
-    // } else {  
-    //     pid->frontLeftOutput = motors->velGenFL;
-    //     pid->backLeftOutput = motors->velGenBL;
-    //     pid->frontRightOutput = motors->velGenFR;
-    //     pid->backRightOutput = motors->velGenBR;
-    // }
-    // int angleDifference = pid->getAngleDifference(bno055->rawInput);
-    // double wallDistance = (sharp->sharpFR.kalmanDistance+sharp->sharpFL.kalmanDistance)/2.0;
-    // double sharpsOffset = sharp->sharpFR.kalmanDistance - sharp->sharpFL.kalmanDistance;
-    // pid->computeOutputAlignMechanism(angleDifference, sharpsOffset);
-    
-    // if(angleDifference > 0){ // MOVE TO THE LEFT
-    //     pid->frontLeftOutput -= pid->OutputAlignMechanism;
-    //     pid->backLeftOutput -= pid->OutputAlignMechanism;
-    //     pid->frontRightOutput += pid->OutputAlignMechanism;
-    //     pid->backRightOutput += pid->OutputAlignMechanism;     
-    // }
-    // else if(angleDifference < 0){ // MOVE TO THE RIGHT
-    //     pid->frontLeftOutput += pid->OutputAlignMechanism;
-    //     pid->backLeftOutput += pid->OutputAlignMechanism;
-    //     pid->frontRightOutput -= pid->OutputAlignMechanism;
-    //     pid->backRightOutput -= pid->OutputAlignMechanism;   
-    // }     
-    // pid->regulateOutputsMovePID(); 
-    // motors->setMotor(1, 0, 1, 0, 1, 0, 1, 0);
-    // motors->setVelocity(pid->frontLeftOutput, pid->backLeftOutput, pid->frontRightOutput, pid->backRightOutput);
 }
