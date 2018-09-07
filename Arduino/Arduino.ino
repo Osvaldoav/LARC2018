@@ -30,7 +30,7 @@ void setup() {
 }
 
 void loop(){
-//  movements->alignMechanism(8);
+  movements->alignMechanism(8);
 //  movements->motors->brake();
 //  delay(2000);
 //  delay(1000);
@@ -63,12 +63,12 @@ void loop(){
 //  Serial.print(" ");
 //  Serial.println(movements->timeFlight->getRawDistance(false));
 
-  movements->timeFlight->filtrateDistancesTimeFlight();
-  Serial.print(movements->timeFlight->timeFlightLeft.kalmanDistance);
-  Serial.print(" ");
-  Serial.print(movements->timeFlight->timeFlightRight.kalmanDistance);
-  Serial.print(" ");
-  Serial.println((movements->timeFlight->timeFlightLeft.kalmanDistance - movements->timeFlight->timeFlightRight.kalmanDistance));  
+//  movements->timeFlight->filtrateDistancesTimeFlight();
+//  Serial.print(movements->timeFlight->timeFlightLeft.kalmanDistance);
+//  Serial.print(" ");
+//  Serial.print(movements->timeFlight->timeFlightRight.kalmanDistance);
+//  Serial.print(" ");
+//  Serial.println((movements->timeFlight->timeFlightLeft.kalmanDistance - movements->timeFlight->timeFlightRight.kalmanDistance)*10);  
 //
 //  Serial.print("\t\t");
 //
@@ -77,7 +77,7 @@ void loop(){
 //  Serial.print(" ");
 //  Serial.print(movements->sharp->sharpFR.kalmanDistance);
 //  Serial.print(" ");
-//  Serial.println((movements->sharp->sharpBL.kalmanDistance - movements->sharp->sharpFR.kalmanDistance)*10); 
+//  Serial.println((movements->sharp->sharpBL.kalmanDistance - movements->sharp->sharpFR.kalmanDistance)); 
 
 //  movements->timeFlight->timeFlight_RawKalman(movements->timeFlight->timeFlightLeft);
 

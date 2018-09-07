@@ -14,7 +14,7 @@ double alignKp=0, alignKi=0, alignKd=0;
 double turnKp=17.6, turnKi=0, turnKd=0.9;//2.4d // 18.3
 double forwardKp=19, forwardKi=0, forwardKd=0;//4.8d
 double kp=forwardKp, ki=forwardKi, kd=forwardKd;
-double wallAngleKp=0, wallSharpsKp=140; //2.3, 140
+double wallSharpsKp=0.5; //2.3, 140
 /////// LOCAL VARIABLES ////////////
 double ITerm=0;
 unsigned long lastTime;
@@ -83,8 +83,8 @@ void _LibraryPID::computeOutput(double rawInput, double &lastInput){
 		}
 }
 // TODO:
-void _LibraryPID::computeOutputAlignMechanism(double distanceOffset, double angleOffset){   
-	OutputAlignMechanism = wallSharpsKp*distanceOffset + wallAngleKp*angleOffset;    
+void _LibraryPID::computeOutputAlignMechanism(double distanceOffset){   
+	OutputAlignMechanism = wallSharpsKp*distanceOffset;    
 }
 // TODO:
 void _LibraryPID::regulateOutputsMovePID(){

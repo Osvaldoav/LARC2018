@@ -213,36 +213,43 @@ void _Movements::alignMechanism(int direction){
         timeFlight->filtrateDistancesTimeFlight();
         double right = timeFlight->timeFlightRight.kalmanDistance;
         double left = timeFlight->timeFlightLeft.kalmanDistance;
-        Serial.print(left);
-        Serial.print(" ");
-        Serial.print(right);
-        Serial.print(" ");
-        Serial.println(abs(right-left));
+        // Serial.print(left);
         // Serial.print(" ");
-        // Serial.println(abs(right-left)*100);   
-        pid->computeOutputAlignMechanism(abs(right-left), abs(angleDifference));
-        // if(pid->OutputAlignMechanism < 10){
-        //     motors->brake();
-        //     delay(50);      
-        //     if (++x == 25) break;
-        // }
-        if(left>right){
-            pid->frontLeftOutput += pid->OutputAlignMechanism;
-            pid->backLeftOutput += pid->OutputAlignMechanism;
-            pid->frontRightOutput -= pid->OutputAlignMechanism;
-            pid->backRightOutput -= pid->OutputAlignMechanism;              
-            x=0;
-        }
-        else if(right>left){
-            pid->frontLeftOutput -= pid->OutputAlignMechanism;
-            pid->backLeftOutput -= pid->OutputAlignMechanism;
-            pid->frontRightOutput += pid->OutputAlignMechanism;
-            pid->backRightOutput += pid->OutputAlignMechanism;  
-            x=0;        
-        }        
+        // Serial.print(right);
+        // Serial.print(" ");
+        // Serial.println(abs(right-left));
+        Serial.print(pid->Output);        
+        Serial.print(" ");
+        Serial.println(pid->OutputAlignMechanism);   
+        pid->computeOutput(bno055->rawInput, bno055->lastInput); 
+        pid->computeOutputAlignMechanism(abs(right-left));
+        if(pid->OutputAlignMechanism+pid->Output > 10){
+            if((left>right && pid->OutputAlignMechanism) || ((left==0&&right==0) && (angleDifference > 0))){
+                pid->frontLeftOutput += (pid->OutputAlignMechanism+pid->Output/5);
+                pid->backLeftOutput += (pid->OutputAlignMechanism+pid->Output/5);
+                pid->frontRightOutput -= (pid->OutputAlignMechanism+pid->Output/5);
+                pid->backRightOutput -= (pid->OutputAlignMechanism+pid->Output/5);              
+                x=0;
+            }
+            else if((right>left && pid->OutputAlignMechanism) || ((left==0&&right==0) && angleDifference < 0)){
+                pid->frontLeftOutput -= (pid->OutputAlignMechanism+pid->Output/5);
+                pid->backLeftOutput -= (pid->OutputAlignMechanism+pid->Output/5);
+                pid->frontRightOutput += (pid->OutputAlignMechanism+pid->Output/5);
+                pid->backRightOutput += (pid->OutputAlignMechanism+pid->Output/5);  
+                x=0;        
+            }  
+        }    
+        else{
+            pid->frontLeftOutput = extraSlowVel;
+            pid->backLeftOutput = extraSlowVel;
+            pid->frontRightOutput = extraSlowVel;
+            pid->backRightOutput = extraSlowVel;    
+            delay(50);      
+            if (++x == 25) break;
+        }          
         // Set velocities
         motors->setMotor(1, 0, 1, 0, 1, 0, 1, 0);
-        pid->regulateOutputsSpecific(103); 
+        pid->regulateOutputsMovePID();
         motors->setVelocity(pid->frontLeftOutput, pid->backLeftOutput, pid->frontRightOutput, pid->backRightOutput); 
         // Serial.print(pid->frontLeftOutput);
         // Serial.print(" ");
@@ -273,14 +280,14 @@ void _Movements::alignMechanism(int direction){
 //         // Serial.println(abs(right-left)*100);   
 //         pid->computeOutputAlignMechanism(abs(right-left), 0);
 //         if(pid->Output<5 && pid->OutputAlignMechanism>=5){
-//             if(left>right){
+//             if(right>left){
 //                 pid->frontLeftOutput += pid->OutputAlignMechanism;
 //                 pid->backLeftOutput += pid->OutputAlignMechanism;
 //                 pid->frontRightOutput -= pid->OutputAlignMechanism;
 //                 pid->backRightOutput -= pid->OutputAlignMechanism;              
 //                 x=0;
 //             }
-//             else if(right>left){
+//             else if(left>right){
 //                 pid->frontLeftOutput -= pid->OutputAlignMechanism;
 //                 pid->backLeftOutput -= pid->OutputAlignMechanism;
 //                 pid->frontRightOutput += pid->OutputAlignMechanism;
