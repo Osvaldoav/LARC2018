@@ -1,17 +1,10 @@
 #include <_TimeFlight.h>
-
-/////////////////////// PINs DECLARATION ////////////////////////
-#define LOX1_ADDRESS 0x30
-#define LOX2_ADDRESS 0x31
 #define GPIOLeft_SHUT 33
 #define GPIORight_SHUT 32
 
-// objects for the vl53l0x
-Adafruit_VL53L0X timeFlightLeftSensor = Adafruit_VL53L0X();
-Adafruit_VL53L0X timeFlightRightSensor = Adafruit_VL53L0X();
-// this holds the measurement
-VL53L0X_RangingMeasurementData_t measure1;
-VL53L0X_RangingMeasurementData_t measure2;
+/////////////////////// PINs DECLARATION ////////////////////////
+VL53L0X timeFlightRightSensor;
+VL53L0X timeFlightLeftSensor;
 ////////////////////////////// LOCAL VARAIBLES ///////////////////////////////
 const double cantReads = 7;
 double lastDistance;
@@ -29,41 +22,30 @@ void _TimeFlight::setupTimeFlight(){
     digitalWrite(GPIORight_SHUT, HIGH);
     delay(10);    
     // activating LOX1 and reseting LOX2
-    digitalWrite(GPIOLeft_SHUT, HIGH);
-    digitalWrite(GPIORight_SHUT, LOW);  
-    if(!timeFlightLeftSensor.begin(LOX1_ADDRESS)) {
-        Serial.println(F("Failed to boot first VL53L0X"));
-        while(1);
-    }
-    delay(10);
-    // activating LOX2
-    digitalWrite(GPIORight_SHUT, HIGH);
-    delay(10);
+    digitalWrite(GPIOLeft_SHUT, LOW);
+    digitalWrite(GPIORight_SHUT, HIGH);    
 
-    if(!timeFlightRightSensor.begin(LOX2_ADDRESS)) {
-      Serial.println(F("Failed to boot second VL53L0X"));
-      while(1);
-    }
-    delay(10);
+    timeFlightRightSensor.init();
+    timeFlightRightSensor.setAddress((uint8_t)30);
+    timeFlightRightSensor.setMeasurementTimingBudget(20000);
+    timeFlightRightSensor.startContinuous();
+
+    // activating LOX1 and reseting LOX2
+    digitalWrite(GPIOLeft_SHUT, HIGH);   
+
+    timeFlightLeftSensor.init();
+    timeFlightLeftSensor.setAddress((uint8_t)31);
+    timeFlightLeftSensor.setMeasurementTimingBudget(20000);
+    timeFlightLeftSensor.startContinuous();
 }
 
 // TODO:
 double _TimeFlight::getRawDistance(bool leftTimeFlight){
-    timeFlightLeftSensor.rangingTest(&measure1, false); // pass in 'true' to get debug data printout!
-    timeFlightRightSensor.rangingTest(&measure2, false); // pass in 'true' to get debug data printout!    
     double distance;
-    if(leftTimeFlight){
-        if(measure1.RangeStatus != 4)
-            distance = measure1.RangeMilliMeter/10.0;
-        else
-            distance = lastDistance;
-    }
-    else{
-        if(measure2.RangeStatus != 4)
-            distance = measure2.RangeMilliMeter/10.0;
-        else
-            distance = lastDistance;
-    }
+    if(leftTimeFlight)
+        distance = timeFlightLeftSensor.readRangeContinuousMillimeters()/10.0;
+    else 
+        distance = timeFlightRightSensor.readRangeContinuousMillimeters()/10.0;
     if(distance > 25)
         distance = 25;
     // if(abs(lastDistance - distance) > 8)

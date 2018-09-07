@@ -68,7 +68,7 @@ void loop(){
   Serial.print(" ");
   Serial.print(movements->timeFlight->timeFlightRight.kalmanDistance);
   Serial.print(" ");
-  Serial.println((movements->timeFlight->timeFlightLeft.kalmanDistance - movements->timeFlight->timeFlightRight.kalmanDistance)*100);  
+  Serial.println((movements->timeFlight->timeFlightLeft.kalmanDistance - movements->timeFlight->timeFlightRight.kalmanDistance));  
 //
 //  Serial.print("\t\t");
 //
