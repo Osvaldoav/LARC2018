@@ -2,12 +2,12 @@
 #define _TimeFlight_h
 #include <_ArduinoLIBRARY.h>
 #include <Wire.h>
-#include <VL53L0X.h>
+#include <Adafruit_VL53L0X.h>
 #include <Estadisticas.h>
 #include <QuickSort.h>
 struct TimeFlightKalman{
     TimeFlightKalman(){
-        varSensor = 1e-6; //Variance of sensor. The LESS, the MORE it looks like the raw input. (1e-6)
+        varSensor = 15e-6; //Variance of sensor. The LESS, the MORE it looks like the raw input. (40e-6)
         varProcess = 1e-7; 
         P = 1.0;
         Pc = 0.0;

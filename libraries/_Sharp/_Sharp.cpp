@@ -31,7 +31,7 @@ void _Sharp::calculateRawDistancesSharp(){
     sharpBL.rawDistance = getRawDistance(pinSharpBL);
     sharpBack.rawDistance = getRawDistance(pinSharpBack);
     sharpFront.rawDistance = getRawDistance(pinSharpFront);  
-    delay(26);
+    delay(20);
 }
 
 // TODO:

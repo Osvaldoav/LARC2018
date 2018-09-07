@@ -13,6 +13,7 @@ class _Movements{
     public:
 // TODO: METHODS
         void setupMovements();
+        void setWheelsOutputsByMovement(bool, int);
         void movePID(bool, int);
         void movePID_nTime(int, bool, int);
         void movePID_nCM(int, bool, int);
@@ -20,7 +21,7 @@ class _Movements{
         void movePID_alignWall(double, bool, bool, int);
         void spinPID(int);
         void turnPID();
-        void alignMechanism(bool, double);
+        void alignMechanism(int);
 // TODO: ATTRIBUTES
         _BNO055 *bno055;
         _ColorSensor *colorSensor;

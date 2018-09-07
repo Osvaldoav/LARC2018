@@ -19,6 +19,7 @@ void setup() {
     movements->motors->setupMotors();
     movements->colorSensor->setupColorSensor();
     movements->bno055->setupBNO055();
+    movements->timeFlight->setupTimeFlight();
     pinMode(pinEncoder, INPUT_PULLUP);
     attachInterrupt(digitalPinToInterrupt(pinEncoder), encoderStep, CHANGE);
 
@@ -29,28 +30,58 @@ void setup() {
 }
 
 void loop(){
-  movements->movePID_nWallCM(7, 8);
-  movements->spinPID(-90);
-  movements->movePID_nWallCM(5, 8);
-  movements->spinPID(-90);
-  movements->movePID_nWallCM(5, 8);
-  movements->spinPID(-90);
-  movements->movePID_nWallCM(5, 8);
-  
-  movements->movePID_nWallCM(5, 2);
-  movements->spinPID(90);
-  movements->movePID_nWallCM(5, 2);
-  movements->spinPID(90);
-  movements->movePID_nWallCM(5, 2);
-  movements->spinPID(90);
-  movements->movePID_nWallCM(5, 2);
-  movements->spinPID(90);  
-  
+//  movements->alignMechanism(8);
+//  movements->motors->brake();
+//  delay(2000);
+//  delay(1000);
+//  int del = 1000;
+//  movements->movePID_nWallCM(8, 8);
+//  delay(del);
+//  movements->spinPID(-90);
+//  movements->movePID_nWallCM(5, 8);
+//  delay(del);
+//  movements->spinPID(-90);
+//  movements->movePID_nWallCM(5, 8);
+//  delay(del);
+//  movements->spinPID(-90);
+//  movements->movePID_nWallCM(5, 8);
+//  delay(del);
+//  
+//  movements->movePID_nWallCM(5, 2);
+//  delay(del);
+//  movements->spinPID(90);
+//  movements->movePID_nWallCM(5, 2);
+//  delay(del);
+//  movements->spinPID(90);
+//  movements->movePID_nWallCM(5, 2);
+//  delay(del);
+//  movements->spinPID(90);
+//  movements->movePID_nWallCM(5, 2);
+//  delay(del);
+//
+//  Serial.print(movements->timeFlight->getRawDistance(true));
+//  Serial.print(" ");
+//  Serial.println(movements->timeFlight->getRawDistance(false));
 
+  movements->timeFlight->filtrateDistancesTimeFlight();
+  Serial.print(movements->timeFlight->timeFlightLeft.kalmanDistance);
+  Serial.print(" ");
+  Serial.print(movements->timeFlight->timeFlightRight.kalmanDistance);
+  Serial.print(" ");
+  Serial.println((movements->timeFlight->timeFlightLeft.kalmanDistance - movements->timeFlight->timeFlightRight.kalmanDistance)*100);  
+//
+//  Serial.print("\t\t");
+//
 //  movements->sharp->filtrateDistancesSharp();
+//  Serial.print(movements->sharp->sharpBL.kalmanDistance);
+//  Serial.print(" ");
 //  Serial.print(movements->sharp->sharpFR.kalmanDistance);
 //  Serial.print(" ");
-//  Serial.println(movements->sharp->sharpBL.kalmanDistance);
+//  Serial.println((movements->sharp->sharpBL.kalmanDistance - movements->sharp->sharpFR.kalmanDistance)*10); 
+
+//  movements->timeFlight->timeFlight_RawKalman(movements->timeFlight->timeFlightLeft);
+
+//  movements->alignMechanism(8);
 
 //   movements->movePID(false, 2);
 //   movements->sharp->sharp_RawKalman(movements->sharp->sharpBL);
