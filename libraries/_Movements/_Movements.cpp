@@ -204,28 +204,26 @@ void _Movements::alignMechanism(int direction){
     pid->frontRightOutput = extraSlowVel;
     pid->backRightOutput = extraSlowVel; 
     ///////////    
-    bno055->readBNO(pid->Setpoint);
-    int angleDifference = pid->getAngleDifference(bno055->rawInput);               
+    bno055->readBNO(pid->Setpoint);            
     timeFlight->filtrateDistancesTimeFlight();
     double right = timeFlight->timeFlightRight.kalmanDistance;
     double left = timeFlight->timeFlightLeft.kalmanDistance;
     // Compute Outputs
-    pid->computeOutput(bno055->rawInput, bno055->lastInput); 
     pid->computeOutputAlignMechanism(abs(right-left));
-    if(pid->OutputAlignMechanism+pid->Output > 5){
-        if((left>right) || (angleDifference < 0)){
+    if(pid->OutputAlignMechanism > 5){
+        if(left>right){
             Serial.println("FIRST CASE");
-            pid->frontLeftOutput += (pid->OutputAlignMechanism+pid->Output/2);
-            pid->backLeftOutput += (pid->OutputAlignMechanism+pid->Output/2);
-            pid->frontRightOutput -= (pid->OutputAlignMechanism+pid->Output/2);
-            pid->backRightOutput -= (pid->OutputAlignMechanism+pid->Output/2);              
+            pid->frontLeftOutput += (pid->OutputAlignMechanism);
+            pid->backLeftOutput += (pid->OutputAlignMechanism);
+            pid->frontRightOutput -= (pid->OutputAlignMechanism);
+            pid->backRightOutput -= (pid->OutputAlignMechanism);              
         }
-        else if((right>left) || (angleDifference > 0)){
+        else if(right>left){
             Serial.println("\t\tSECOND CASE");
-            pid->frontLeftOutput -= (pid->OutputAlignMechanism+pid->Output/2);
-            pid->backLeftOutput -= (pid->OutputAlignMechanism+pid->Output/2);
-            pid->frontRightOutput += (pid->OutputAlignMechanism+pid->Output/2);
-            pid->backRightOutput += (pid->OutputAlignMechanism+pid->Output/2);       
+            pid->frontLeftOutput -= (pid->OutputAlignMechanism);
+            pid->backLeftOutput -= (pid->OutputAlignMechanism);
+            pid->frontRightOutput += (pid->OutputAlignMechanism);
+            pid->backRightOutput += (pid->OutputAlignMechanism);       
         }  
     }    
     else{
@@ -251,7 +249,10 @@ void _Movements::movePID_nWallCM(int cmDistance, int direction){
     //While not at ceratin distance from wall
     while (!ready){                 
         if (actualDistance > cmDistance + 2){
-            alignMechanism(direction);
+            if(actualDistance - cmDistance > 18)
+                movePID(true, 8);
+            else
+                alignMechanism(direction);
             countCorrect = 0;
         }
         else if (actualDistance < cmDistance - 2){ //To close from wall

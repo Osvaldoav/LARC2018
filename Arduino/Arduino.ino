@@ -35,11 +35,12 @@ void setup() {
 }
 
 void loop(){
-//  movements->movePID_nWallCM(5, 8);
-  movements->alignMechanism(8);
-//  Serial.print("///////////////////////////////////////////////////////////////////////");
-//  movements->motors->brake();
-//  delay(6000);
+  movements->movePID_nWallCM(5, 8);
+//  movements->alignMechanism(8);
+//  Serial.println(movements->pid->OutputAlignMechanism);
+  Serial.print("///////////////////////////////////////////////////////////////////////");
+  movements->motors->brake();
+  delay(6000);
 
 //  movements->motors->brake();
 //  delay(2000);
