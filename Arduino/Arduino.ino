@@ -27,10 +27,20 @@ void setup() {
     pinMode(ledGreen,OUTPUT);
     pinMode(ledRed,OUTPUT);
     pinMode(ledBlue,OUTPUT);    
+
+    //CALIBRATION 
+//    digitalWrite(ledGreen, HIGH);       
+//    movements->timeFlight->calibTimeFlights(12);    
+//    digitalWrite(ledGreen, LOW);
 }
 
 void loop(){
+//  movements->movePID_nWallCM(5, 8);
   movements->alignMechanism(8);
+//  Serial.print("///////////////////////////////////////////////////////////////////////");
+//  movements->motors->brake();
+//  delay(6000);
+
 //  movements->motors->brake();
 //  delay(2000);
 //  delay(1000);
@@ -77,13 +87,13 @@ void loop(){
 //  Serial.print(" ");
 //  Serial.print(movements->sharp->sharpFR.kalmanDistance);
 //  Serial.print(" ");
-//  Serial.println((movements->sharp->sharpBL.kalmanDistance - movements->sharp->sharpFR.kalmanDistance)); 
+//  Serial.println((movements->sharp->sharpBL.kalmanDistance - movements->sharp->sharpFR.kalmanDistance)*10); 
 
 //  movements->timeFlight->timeFlight_RawKalman(movements->timeFlight->timeFlightLeft);
 
 //  movements->alignMechanism(8);
 
-//   movements->movePID(false, 2);
+//   movements->movePID(false, 8);
 //   movements->sharp->sharp_RawKalman(movements->sharp->sharpBL);
 
 //  backwardP_alignWall(6, false, true);
