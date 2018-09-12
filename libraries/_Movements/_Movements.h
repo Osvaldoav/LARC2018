@@ -8,6 +8,7 @@
 #include <_Sharp.h>
 #include <_LCD.h>
 #include <_TimeFlight.h>
+#include <_TCRT5000.h>
 
 class _Movements{
     public:
@@ -21,7 +22,7 @@ class _Movements{
         void movePID_alignWall(double, bool, bool, int);
         void spinPID(int);
         void turnPID();
-        void alignMechanism(int);
+        void alignMechanism();
 // TODO: ATTRIBUTES
         _BNO055 *bno055;
         _ColorSensor *colorSensor;
@@ -31,6 +32,7 @@ class _Movements{
         _Sharp *sharp;
         _LCD *lcd;
         _TimeFlight *timeFlight;
+        _TCRT5000 *tcrt5000;
 };
 
 #endif

@@ -11,6 +11,7 @@ double lastDistance;
 double leftCompensation=0.01, rightCompensation=3.42;
 
 void _TimeFlight::calibTimeFlights(double target){
+    leftCompensation=0,rightCompensation=0;
     double left=0, right=0, difference;
     int n=500;
     for(int i=0; i<n; i++){

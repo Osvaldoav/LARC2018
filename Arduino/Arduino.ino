@@ -6,9 +6,6 @@
 _Movements *movements = new _Movements;
 
 const byte pinEncoder = 40;
-const byte ledRed = 37;
-const byte ledGreen = 36;
-const byte ledBlue = 35;
 
 /////////////////////////////////////////////SETUP////////////////////////////////////////////////
 void setup() {
@@ -20,27 +17,32 @@ void setup() {
     movements->colorSensor->setupColorSensor();
     movements->bno055->setupBNO055();
     movements->timeFlight->setupTimeFlight();
+    movements->lcd->setupLCD();
+    movements->tcrt5000->setupTCRT5000();
     pinMode(pinEncoder, INPUT_PULLUP);
-    attachInterrupt(digitalPinToInterrupt(pinEncoder), encoderStep, CHANGE);
-
-    //LEDS
-    pinMode(ledGreen,OUTPUT);
-    pinMode(ledRed,OUTPUT);
-    pinMode(ledBlue,OUTPUT);    
+    attachInterrupt(digitalPinToInterrupt(pinEncoder), encoderStep, CHANGE);   
 
     //CALIBRATION 
-//    digitalWrite(ledGreen, HIGH);       
-//    movements->timeFlight->calibTimeFlights(12);    
-//    digitalWrite(ledGreen, LOW);
+//      movements->lcd->onLed('g');    
+//      movements->timeFlight->calibTimeFlights(12);    
+//      movements->lcd->offLed('g'); 
+//      delay(5000);   
 }
 
 void loop(){
-  movements->movePID_nWallCM(5, 8);
-//  movements->alignMechanism(8);
-//  Serial.println(movements->pid->OutputAlignMechanism);
-  Serial.print("///////////////////////////////////////////////////////////////////////");
-  movements->motors->brake();
-  delay(6000);
+//  movements->movePID_nWallCM(8, 8);
+//  movements->alignMechanism();
+//  Serial.print("///////////////////////////////////////////////////////////////////////");
+//  movements->motors->brake();
+//  movements->lcd->onLed('b');       
+//  delay(6000);
+//  movements->lcd->offLed('b');
+
+  movements->tcrt5000->readTCRT5000();
+  Serial.print(movements->tcrt5000->tcrtUpDistance);
+  Serial.print(" ");
+  Serial.println(movements->tcrt5000->tcrtDownDistance);
+
 
 //  movements->motors->brake();
 //  delay(2000);

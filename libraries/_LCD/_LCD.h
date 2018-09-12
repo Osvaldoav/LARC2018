@@ -6,6 +6,9 @@
 class _LCD{
     public:
 // TODO: METHODS
+    void onLed(char);
+    void offLed(char);
+    void setupLCD();
 // TODO: ATTRIBUTES
 };
 

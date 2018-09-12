@@ -9,6 +9,7 @@ void _Movements::setupMovements(){
     sharp = new _Sharp;
     lcd = new _LCD;
     timeFlight = new _TimeFlight;
+    tcrt5000 = new _TCRT5000;
 }
 
 // TODO:
@@ -166,7 +167,8 @@ void _Movements::setWheelsOutputsByMovement(bool goSlow, int direction){
 //forward with P correction
 void _Movements::movePID(bool goSlow, int direction){
     bno055->readBNO(pid->Setpoint);
-    // sharp->filtrateDistancesSharp();
+    sharp->filtrateDistancesSharp();
+    timeFlight->filtrateDistancesTimeFlight();
     // colorSensor->readColor();   
     setWheelsOutputsByMovement(goSlow, direction);    
     pid->regulateOutputsMovePID(); 
@@ -197,63 +199,90 @@ void _Movements::movePID_nCM(int cm, bool goSlow, int direction){
 }
 
 // TODO:
-void _Movements::alignMechanism(int direction){
-    int extraSlowVel = 75;     
-    pid->frontLeftOutput = extraSlowVel;
-    pid->backLeftOutput = extraSlowVel;
-    pid->frontRightOutput = extraSlowVel;
-    pid->backRightOutput = extraSlowVel; 
-    ///////////    
-    bno055->readBNO(pid->Setpoint);            
-    timeFlight->filtrateDistancesTimeFlight();
-    double right = timeFlight->timeFlightRight.kalmanDistance;
-    double left = timeFlight->timeFlightLeft.kalmanDistance;
-    // Compute Outputs
-    pid->computeOutputAlignMechanism(abs(right-left));
-    if(pid->OutputAlignMechanism > 5){
-        if(left>right){
-            Serial.println("FIRST CASE");
-            pid->frontLeftOutput += (pid->OutputAlignMechanism);
-            pid->backLeftOutput += (pid->OutputAlignMechanism);
-            pid->frontRightOutput -= (pid->OutputAlignMechanism);
-            pid->backRightOutput -= (pid->OutputAlignMechanism);              
-        }
-        else if(right>left){
-            Serial.println("\t\tSECOND CASE");
-            pid->frontLeftOutput -= (pid->OutputAlignMechanism);
-            pid->backLeftOutput -= (pid->OutputAlignMechanism);
-            pid->frontRightOutput += (pid->OutputAlignMechanism);
-            pid->backRightOutput += (pid->OutputAlignMechanism);       
-        }  
-    }    
-    else{
-        Serial.println("\t\t\t\tGOING WELL");
-        pid->frontLeftOutput = extraSlowVel;
-        pid->backLeftOutput = extraSlowVel;
-        pid->frontRightOutput = extraSlowVel;
-        pid->backRightOutput = extraSlowVel;      
-    }          
-    motors->setMotor(1, 0, 1, 0, 1, 0, 1, 0);
-    pid->regulateVelocitiesSpecific(255, 0);
-    motors->setVelocity(pid->frontLeftOutput, pid->backLeftOutput, pid->frontRightOutput, pid->backRightOutput);   
+void _Movements::alignMechanism(){
+    int countCorrect = 0;
+    double startTime = millis();
+    pid->SetTunings(pid->turnKp, pid->turnKi, pid->turnKd);    
+    bno055->offsetAngle = bno055->offsetAngleTurn;     
+    motors->velTurnFL   = motors->velTurnFL-20;
+    motors->velTurnBL   = motors->velTurnBL-20;
+    motors->velTurnFR   = motors->velTurnFR-20;
+    motors->velTurnBR   = motors->velTurnBR-20;    
+    do{               
+        timeFlight->filtrateDistancesTimeFlight();
+        double right = timeFlight->timeFlightRight.kalmanDistance;
+        double left = timeFlight->timeFlightLeft.kalmanDistance;
+        Serial.print(right);
+        Serial.print(" ");
+        Serial.print(left);
+        Serial.print(" ");
+        Serial.print(abs(right-left));
+        Serial.print(" ");
+        Serial.println(pid->Setpoint); 
+        pid->computeOutputAlignMechanism(abs(right-left));
+        if(abs(right-left) > 0.12){            
+            if(left>right){
+                // Serial.println("FIRST CASE");
+                pid->calculateNewSetpoint(pid->OutputAlignMechanism);
+                turnPID();              
+            }
+            else if(right>left){
+                // Serial.println("\t\tSECOND CASE");
+                pid->calculateNewSetpoint(-pid->OutputAlignMechanism);
+                turnPID();     
+            }  
+            else{
+                motors->brake();
+                delay(300);                  
+            }            
+        }    
+        else{
+            // Serial.println("\t\t\t\tGOING WELL");
+            motors->brake();
+            delay(300);            
+            if(++countCorrect == 6)     break;     
+        }           
+    } while(millis() < startTime+1600);
+    pid->SetTunings(pid->forwardKp, pid->forwardKi, pid->forwardKd);
+    bno055->offsetAngle = bno055->offsetAngleForward;
+    motors->velTurnFL = 110;//79
+    motors->velTurnBL = 110;
+    motors->velTurnFR = 110;
+    motors->velTurnBR = 110;    
 }
 
 // TODO:
 //Go forward until finding a wall at a certain distance
 void _Movements::movePID_nWallCM(int cmDistance, int direction){
+    int extraSlowVel = 75;     
+    motors->velSlowFL = extraSlowVel;
+    motors->velSlowBL = extraSlowVel; 
+    motors->velSlowFR = extraSlowVel;
+    motors->velSlowBR = extraSlowVel;   
     int actualDistance;
     timeFlight->filtrateDistancesTimeFlight();
     actualDistance = (timeFlight->timeFlightRight.kalmanDistance+timeFlight->timeFlightLeft.kalmanDistance)/2;
     bool ready = actualDistance == cmDistance ? true : false;
+    bool isAligned=false;
     int countCorrect = 0;
     //While not at ceratin distance from wall
     while (!ready){                 
         if (actualDistance > cmDistance + 2){
-            if(actualDistance - cmDistance > 18)
-                movePID(true, 8);
+            if((actualDistance-cmDistance < 9) && !isAligned){
+                Serial.println("ALIGNING");
+                lcd->onLed('r');
+                motors->brake();
+                motors->setMotor(0,0,0,0,0,0,0,0);
+                delay(100);
+                alignMechanism();
+                alignMechanism();
+                isAligned=true;
+                lcd->offLed('r');
+
+            }         
             else
-                alignMechanism(direction);
-            countCorrect = 0;
+                movePID(true, 8);    
+            countCorrect = 0;                            
         }
         else if (actualDistance < cmDistance - 2){ //To close from wall
             movePID(true, 2);
@@ -268,7 +297,10 @@ void _Movements::movePID_nWallCM(int cmDistance, int direction){
         actualDistance = (timeFlight->timeFlightRight.kalmanDistance+timeFlight->timeFlightLeft.kalmanDistance)/2;
     }
     motors->brake();
-    alignMechanism(direction);
+    motors->velSlowFL = 82;
+    motors->velSlowBL = 82; 
+    motors->velSlowFR = 82;
+    motors->velSlowBR = 82;    
 }
 
 // TODO:
