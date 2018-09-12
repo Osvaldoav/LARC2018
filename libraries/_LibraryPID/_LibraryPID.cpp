@@ -14,7 +14,7 @@ double alignKp=0, alignKi=0, alignKd=0;
 double turnKp=17.6, turnKi=0, turnKd=0.9;//2.4d // 18.3
 double forwardKp=10.2, forwardKi=0, forwardKd=6.3;//4.8d
 double kp=forwardKp, ki=forwardKi, kd=forwardKd;
-double wallSharpsKp=0.49; //2.3, 140
+double wallSharpsKp=11; //2.3, 140
 /////// LOCAL VARIABLES ////////////
 double ITerm=0;
 unsigned long lastTime;
@@ -87,7 +87,7 @@ void _LibraryPID::computeOutputAlignMechanism(double distanceOffset){
 	OutputAlignMechanism = wallSharpsKp*distanceOffset;    
 }
 // TODO:
-void _LibraryPID::regulateOutputsMovePID(){
+void _LibraryPID::regulateOutputsFordPID(){
 		if (frontRightOutput > maxForwardVel)     frontRightOutput = maxForwardVel;
 		else if (frontRightOutput < 0)          frontRightOutput = 0;
 
@@ -114,7 +114,7 @@ void _LibraryPID::regulateOutputsTurnPID(){
 		if (backLeftOutput > maxTurnVel)       backLeftOutput = maxTurnVel;
 		else if (backLeftOutput < 0)            backLeftOutput = 0;
 }
-void _LibraryPID::regulateVelocitiesSpecific(int velocityMax, int velocityMin){
+void _LibraryPID::regulateOutputsSpecific(double velocityMax, double velocityMin){
 		if (frontRightOutput > velocityMax)     frontRightOutput = velocityMax;
 		else if (frontRightOutput < velocityMin)          frontRightOutput = velocityMin;
 

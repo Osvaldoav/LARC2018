@@ -14,15 +14,20 @@ class _Movements{
     public:
 // TODO: METHODS
         void setupMovements();
-        void setWheelsOutputsByMovement(bool, int);
-        void movePID(bool, int);
-        void movePID_nTime(int, bool, int);
-        void movePID_nCM(int, bool, int);
-        void movePID_nWallCM(int, int);
+        void updateSensors(bool, bool, bool, bool, bool);
+        void setBaseVelocitiesByDirection(bool, char);
+        void setBaseSpecificVelocities(double, double, double, double);
+        void calculateAngleOutputsByDirection(bool, char);
+        void verifyAndUploadOutputsByDirection(char);
+        void verifySpecificAndUploadOutputs(double, double);
+        void movePID(bool, char);
+        void movePID_nTime(int, bool, char);
+        void movePID_nCM(int, bool, char);
+        void alignMechanism();        
+        void movePID_nWallCM(int, char);
         void movePID_alignWall(double, bool, bool, int);
-        void spinPID(int);
-        void turnPID();
-        void alignMechanism();
+        void spinPID(bool, int);
+        void turnPID(bool);
 // TODO: ATTRIBUTES
         _BNO055 *bno055;
         _ColorSensor *colorSensor;

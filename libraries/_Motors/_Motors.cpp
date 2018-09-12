@@ -16,18 +16,22 @@ const byte pinPWM_BL = 4;
 ////////////////////// LOCAL VARIABLES /////////////////
 
 void _Motors::setupMotors(){
-    velSlowFL = 82;
-    velSlowBL = 82; 
-    velSlowFR = 82;
-    velSlowBR = 82;
-    velGenFL = 120;//115
-    velGenBL = 120;
-    velGenFR = 120;
-    velGenBR = 120;
+    velFordFL = 120;//115
+    velFordBL = 120;
+    velFordFR = 120;
+    velFordBR = 120; 
+    velSlowFordFL = 82;
+    velSlowFordBL = 82; 
+    velSlowFordFR = 82;
+    velSlowFordBR = 82;        
     velTurnFL = 110;//79
     velTurnBL = 110;
     velTurnFR = 110;
     velTurnBR = 110;
+    velSlowTurnFL = velTurnFL-20;
+    velSlowTurnBL = velTurnBL-20;
+    velSlowTurnFR = velTurnFR-20;
+    velSlowTurnBR = velTurnBR-20;       
 
     pinMode(pinMotorFR_F,OUTPUT);
     pinMode(pinMotorFR_B,OUTPUT);
@@ -92,6 +96,7 @@ void _Motors::setVelocity(int leftFront, int leftBack, int rightFront, int right
 //Stop motors
 void _Motors::brake(){
     setVelocity(0, 0);
+    setMotor(0,0,0,0,0,0,0,0);
 }
 // TODO:
 void _Motors::turnRight(int vel){
