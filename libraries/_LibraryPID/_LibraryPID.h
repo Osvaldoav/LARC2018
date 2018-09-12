@@ -12,9 +12,9 @@ class _LibraryPID{
         int getAngleDerivate(double, double);
         void computeOutput(double, double &);
         void computeOutputAlignMechanism(double);
-        void regulateOutputsMovePID();
+        void regulateOutputsFordPID();
         void regulateOutputsTurnPID();
-        void regulateVelocitiesSpecific(int, int);
+        void regulateOutputsSpecific(double, double);
         void Initialize(double, double &);
         void SetTunings(double, double, double);
         void SetSampleTime(int);

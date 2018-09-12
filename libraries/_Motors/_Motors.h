@@ -20,18 +20,24 @@ class _Motors{
         void turnLeft(int);
         void turnLeft(int, int, int, int); 
 // TODO: ATTRIBUTES
-        double velSlowFL;
-        double velSlowBL; 
-        double velSlowFR;
-        double velSlowBR;
-        double velGenFL;
-        double velGenBL;
-        double velGenFR;
-        double velGenBR;
+        double velFordFL;
+        double velFordBL;
+        double velFordFR;
+        double velFordBR;
+        double velSlowFordFL;
+        double velSlowFordBL; 
+        double velSlowFordFR;
+        double velSlowFordBR;        
         double velTurnFL;
         double velTurnBL;
         double velTurnFR;
         double velTurnBR;
+        double velSlowTurnFL;
+        double velSlowTurnBL;
+        double velSlowTurnFR;
+        double velSlowTurnBR;
 };
+        
+        
  
 #endif
