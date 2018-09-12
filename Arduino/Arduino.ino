@@ -6,9 +6,6 @@
 _Movements *movements = new _Movements;
 
 const byte pinEncoder = 40;
-const byte ledRed = 37;
-const byte ledGreen = 36;
-const byte ledBlue = 35;
 
 /////////////////////////////////////////////SETUP////////////////////////////////////////////////
 void setup() {
@@ -20,17 +17,33 @@ void setup() {
     movements->colorSensor->setupColorSensor();
     movements->bno055->setupBNO055();
     movements->timeFlight->setupTimeFlight();
+    movements->lcd->setupLCD();
+    movements->tcrt5000->setupTCRT5000();
     pinMode(pinEncoder, INPUT_PULLUP);
-    attachInterrupt(digitalPinToInterrupt(pinEncoder), encoderStep, CHANGE);
+    attachInterrupt(digitalPinToInterrupt(pinEncoder), encoderStep, CHANGE);   
 
-    //LEDS
-    pinMode(ledGreen,OUTPUT);
-    pinMode(ledRed,OUTPUT);
-    pinMode(ledBlue,OUTPUT);    
+    //CALIBRATION 
+//      movements->lcd->onLed('g');    
+//      movements->timeFlight->calibTimeFlights(12);    
+//      movements->lcd->offLed('g'); 
+//      delay(5000);   
 }
 
 void loop(){
-  movements->alignMechanism(8);
+//  movements->movePID_nWallCM(8, 8);
+//  movements->alignMechanism();
+//  Serial.print("///////////////////////////////////////////////////////////////////////");
+//  movements->motors->brake();
+//  movements->lcd->onLed('b');       
+//  delay(6000);
+//  movements->lcd->offLed('b');
+
+  movements->tcrt5000->readTCRT5000();
+  Serial.print(movements->tcrt5000->tcrtUpDistance);
+  Serial.print(" ");
+  Serial.println(movements->tcrt5000->tcrtDownDistance);
+
+
 //  movements->motors->brake();
 //  delay(2000);
 //  delay(1000);
@@ -77,13 +90,13 @@ void loop(){
 //  Serial.print(" ");
 //  Serial.print(movements->sharp->sharpFR.kalmanDistance);
 //  Serial.print(" ");
-//  Serial.println((movements->sharp->sharpBL.kalmanDistance - movements->sharp->sharpFR.kalmanDistance)); 
+//  Serial.println((movements->sharp->sharpBL.kalmanDistance - movements->sharp->sharpFR.kalmanDistance)*10); 
 
 //  movements->timeFlight->timeFlight_RawKalman(movements->timeFlight->timeFlightLeft);
 
 //  movements->alignMechanism(8);
 
-//   movements->movePID(false, 2);
+//   movements->movePID(false, 8);
 //   movements->sharp->sharp_RawKalman(movements->sharp->sharpBL);
 
 //  backwardP_alignWall(6, false, true);

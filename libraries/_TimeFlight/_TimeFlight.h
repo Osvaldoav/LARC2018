@@ -7,7 +7,7 @@
 #include <QuickSort.h>
 struct TimeFlightKalman{
     TimeFlightKalman(){
-        varSensor = 1e-6; //Variance of sensor. The LESS, the MORE it looks like the raw input. (1e-6)
+        varSensor = 6e-6; //Variance of sensor. The LESS, the MORE it looks like the raw input. (1e-6)
         varProcess = 1e-7; 
         P = 1.0;
         Pc = 0.0;
@@ -35,6 +35,7 @@ struct TimeFlightKalman{
 class _TimeFlight{
     public:
 // TODO: METHODS
+        void calibTimeFlights(double);
         void setupTimeFlight();
         double getRawDistance(bool); 
         void calculateRawDistancesTimeFlight();

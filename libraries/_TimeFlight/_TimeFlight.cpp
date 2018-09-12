@@ -7,7 +7,36 @@ VL53L0X timeFlightRightSensor;
 VL53L0X timeFlightLeftSensor;
 ////////////////////////////// LOCAL VARAIBLES ///////////////////////////////
 const double cantReads = 7;
-double lastDistance;
+double lastDistance; 
+double leftCompensation=0.01, rightCompensation=3.42;
+
+void _TimeFlight::calibTimeFlights(double target){
+    leftCompensation=0,rightCompensation=0;
+    double left=0, right=0, difference;
+    int n=500;
+    for(int i=0; i<n; i++){
+        // Serial.println("START");
+        left += getRawDistance(true);
+        right += getRawDistance(false);
+    }
+    left/=n;
+    right/=n;
+    if(left>target)
+        leftCompensation = -abs(left-target);
+    else
+        leftCompensation = abs(target-left);
+    if(right>target)
+        rightCompensation = -abs(right-target);
+    else
+        rightCompensation = abs(target-right);        
+    Serial.print(leftCompensation);
+    Serial.print(" ");
+    Serial.print(rightCompensation);
+    Serial.print("\t\t");
+    Serial.print(left+leftCompensation);
+    Serial.print(" ");
+    Serial.println(right+rightCompensation);    
+}
 
 // TODO:
 void _TimeFlight::setupTimeFlight(){
@@ -43,9 +72,9 @@ void _TimeFlight::setupTimeFlight(){
 double _TimeFlight::getRawDistance(bool leftTimeFlight){
     double distance;
     if(leftTimeFlight)
-        distance = timeFlightLeftSensor.readRangeContinuousMillimeters()/10.0;
+        distance = timeFlightLeftSensor.readRangeContinuousMillimeters()/10.0 + leftCompensation;
     else 
-        distance = timeFlightRightSensor.readRangeContinuousMillimeters()/10.0;
+        distance = timeFlightRightSensor.readRangeContinuousMillimeters()/10.0 + rightCompensation;
     if(distance > 25)
         distance = 25;
     // if(abs(lastDistance - distance) > 8)

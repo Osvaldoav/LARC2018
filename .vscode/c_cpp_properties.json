@@ -74,7 +74,8 @@
                 "C:/Users/Anton/Documents/GitHub/LARC2018/libraries/Arduino/tools/sdk/include",
                 "C:/Users/Anton/Documents/GitHub/LARC2018/libraries/_ArduinoLIBRARY",
                 "C:/Users/Anton/Documents/GitHub/LARC2018/libraries/_TimeFlight",
-                "C:/Users/Anton/Documents/GitHub/LARC2018/libraries/vl53l0x-arduino-master"
+                "C:/Users/Anton/Documents/GitHub/LARC2018/libraries/vl53l0x-arduino-master",
+                "C:/Users/Anton/Documents/GitHub/LARC2018/libraries/_TCRT5000"
             ],
             "defines": [
                 "_DEBUG",

@@ -12,9 +12,9 @@ bool inAuto=true;
 /////// PID CONSTANTS ///////
 double alignKp=0, alignKi=0, alignKd=0;
 double turnKp=17.6, turnKi=0, turnKd=0.9;//2.4d // 18.3
-double forwardKp=19, forwardKi=0, forwardKd=0;//4.8d
+double forwardKp=10.2, forwardKi=0, forwardKd=6.3;//4.8d
 double kp=forwardKp, ki=forwardKi, kd=forwardKd;
-double wallSharpsKp=0.5; //2.3, 140
+double wallSharpsKp=0.49; //2.3, 140
 /////// LOCAL VARIABLES ////////////
 double ITerm=0;
 unsigned long lastTime;
@@ -114,18 +114,18 @@ void _LibraryPID::regulateOutputsTurnPID(){
 		if (backLeftOutput > maxTurnVel)       backLeftOutput = maxTurnVel;
 		else if (backLeftOutput < 0)            backLeftOutput = 0;
 }
-void _LibraryPID::regulateOutputsSpecific(int velocity){
-		if (frontRightOutput > velocity)     frontRightOutput = velocity;
-		else if (frontRightOutput < 0)          frontRightOutput = 0;
+void _LibraryPID::regulateVelocitiesSpecific(int velocityMax, int velocityMin){
+		if (frontRightOutput > velocityMax)     frontRightOutput = velocityMax;
+		else if (frontRightOutput < velocityMin)          frontRightOutput = velocityMin;
 
-		if (backRightOutput > velocity)      backRightOutput = velocity;
-		else if (backRightOutput < 0)           backRightOutput = 0;
+		if (backRightOutput > velocityMax)      backRightOutput = velocityMax;
+		else if (backRightOutput < velocityMin)           backRightOutput = velocityMin;
 
-		if (frontLeftOutput > velocity)      frontLeftOutput = velocity;
-		else if (frontLeftOutput < 0)           frontLeftOutput = 0;
+		if (frontLeftOutput > velocityMax)      frontLeftOutput = velocityMax;
+		else if (frontLeftOutput < velocityMin)           frontLeftOutput = velocityMin;
 
-		if (backLeftOutput > velocity)       backLeftOutput = velocity;
-		else if (backLeftOutput < 0)            backLeftOutput = 0;
+		if (backLeftOutput > velocityMax)       backLeftOutput = velocityMax;
+		else if (backLeftOutput < velocityMin)            backLeftOutput = velocityMin;
 }
 // TODO:
 // All variables are already initialized, this functions are only used during process

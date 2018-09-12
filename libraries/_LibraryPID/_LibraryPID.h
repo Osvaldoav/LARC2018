@@ -14,7 +14,7 @@ class _LibraryPID{
         void computeOutputAlignMechanism(double);
         void regulateOutputsMovePID();
         void regulateOutputsTurnPID();
-        void regulateOutputsSpecific(int);
+        void regulateVelocitiesSpecific(int, int);
         void Initialize(double, double &);
         void SetTunings(double, double, double);
         void SetSampleTime(int);
