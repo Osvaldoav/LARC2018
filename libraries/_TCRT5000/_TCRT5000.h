@@ -1,17 +1,47 @@
 #ifndef _TCRT5000_h
 #define _TCRT5000_h
 #include <_ArduinoLIBRARY.h>
-#define tcrtUp A7
-#define tcrtDown A6
+
+struct TCRT5000Kalman{
+    TCRT5000Kalman(){
+        varSensor = 1e-6; //Variance of sensor. The LESS, the MORE it looks like the raw input. (1e-6)
+        varProcess = 1e-7; 
+        P = 1.0;
+        Pc = 0.0;
+        G = 0.0;
+        Xp = 0.0;
+        Zp = 0.0;
+        kalmanDistance = 0.0;
+        rawDistance = 0.0;
+        medianDistance = 0.0;
+        side = false;
+    }
+    float varSensor; //Variance of sensor. The LESS, the MORE it looks like the raw input
+    float varProcess; // The greater the variance, faster the sensor response
+    float P;
+    float Pc;
+    float G;
+    float Xp;
+    float Zp;
+    float kalmanDistance;
+    float rawDistance;
+    float medianDistance;
+    bool side;
+};
 
 class _TCRT5000{
     public:
 // TODO: METHODS
         void setupTCRT5000();
         void readTCRT5000();
+        double getRawDistance(byte); 
+        void calculateRawDistancesTCRT5000();
+        void tcrt5000KalmanFilter(TCRT5000Kalman &);
+        void filtrateDistancesTCRT5000();
+        void tcrt5000_RawKalman(TCRT5000Kalman &);        
 // TODO: ATTRIBUTES
-    double tcrtUpDistance;
-    double tcrtDownDistance;
+    TCRT5000Kalman tcrtRight;
+    TCRT5000Kalman tcrtLeft;
 };
 
 #endif

@@ -38,10 +38,12 @@ void loop(){
 //  delay(6000);
 //  movements->lcd->offLed('b');
 
-  movements->tcrt5000->readTCRT5000();
-  Serial.print(movements->tcrt5000->tcrtUpDistance);
-  Serial.print(" ");
-  Serial.println(movements->tcrt5000->tcrtDownDistance);
+//  movements->tcrt5000->filtrateDistancesTCRT5000();
+//  Serial.print(movements->tcrt5000->tcrtRight.kalmanDistance);
+//  Serial.print(" ");
+//  Serial.println(movements->tcrt5000->tcrtLeft.kalmanDistance);
+
+  movements->tcrt5000->tcrt5000_RawKalman(movements->tcrt5000->tcrtRight);
 
 
 //  movements->motors->brake();
