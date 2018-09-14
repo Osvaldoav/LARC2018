@@ -34,31 +34,31 @@ void testMovements(){
 }
 void squareUntilWall(){
     int del = 1000;
-    movements->movePID_nWallCM(8, '8');
+    movements->movePID_alignToPickContainer(8, '8');
     delay(del);
     movements->spinPID(false, -90);
-    movements->movePID_nWallCM(5, '8');
+    movements->movePID_alignToPickContainer(5, '8');
     delay(del);
     movements->spinPID(false, -90);
-    movements->movePID_nWallCM(5, '8');
+    movements->movePID_alignToPickContainer(5, '8');
     delay(del);
     movements->spinPID(false, -90);
-    movements->movePID_nWallCM(5, '8');
+    movements->movePID_alignToPickContainer(5, '8');
     delay(del);
     
-    movements->movePID_nWallCM(5, '2');
+    movements->movePID_alignToPickContainer(5, '2');
     delay(del);
     movements->spinPID(false, 90);
-    movements->movePID_nWallCM(5, '2');
+    movements->movePID_alignToPickContainer(5, '2');
     delay(del);
     movements->spinPID(false, 90);
-    movements->movePID_nWallCM(5, '2');
+    movements->movePID_alignToPickContainer(5, '2');
     delay(del);
     movements->spinPID(false, 90);
-    movements->movePID_nWallCM(5, '2');
+    movements->movePID_alignToPickContainer(5, '2');
     delay(del);
 }
-void aligningTest(){
+void aligningTofTest(){
 //    movements->movePID_alignToPickContainer(8, '8');
     movements->align_tof();
 //    Serial.print("///////////////////////////////////////////////////////////////////////");
@@ -89,18 +89,23 @@ void tof_vs_sharp(){
 }
 
 void readTCRT5000(){
-    // movements->updateSensors(0,0,0,0,1);
-    // Serial.print(movements->tcrt5000->tcrtRight.kalmanDistance);
-    // Serial.print(" ");
-    // Serial.println(movements->tcrt5000->tcrtLeft.kalmanDistance);
+     movements->updateSensors(0,0,0,0,1);
+     Serial.print(movements->tcrt5000->tcrtRight.kalmanDistance);
+     Serial.print(" ");
+     Serial.println(movements->tcrt5000->tcrtLeft.kalmanDistance);
 
-    movements->tcrt5000->tcrt5000_RawKalman(movements->tcrt5000->tcrtRight);  
+//    movements->tcrt5000->tcrt5000_RawKalman(movements->tcrt5000->tcrtRight);  
+}
+
+void aligningTcrtTest(){
+      movements->movePID_alignBetweenVerticalBlackLine(true, '8');
 }
 
 void loop(){
-  aligningTest();
+//  aligningTofTest();
 //  squareUntilWall();
 //  tof_vs_sharp();
 //  testMovements();
-//readTCRT5000();
+//  readTCRT5000();
+  aligningTcrtTest();
 }

@@ -1,6 +1,6 @@
 #include <_TCRT5000.h>
-const byte  tcrtRightSensor = A7;
-const byte tcrtLeftSensor = A6;
+const byte  tcrtRightSensor = A6;
+const byte tcrtLeftSensor = A7;
 
 // TODO:
 void _TCRT5000::setupTCRT5000(){

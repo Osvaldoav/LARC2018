@@ -10,11 +10,8 @@ int SampleTime=50;
 double outMin=0,outMax=255;
 bool inAuto=true;
 /////// PID CONSTANTS ///////
-double alignKp=0, alignKi=0, alignKd=0;
-double turnKp=17.6, turnKi=0, turnKd=0.9;//2.4d // 18.3
-double forwardKp=10.2, forwardKi=0, forwardKd=6.3;//4.8d
-double kp=forwardKp, ki=forwardKi, kd=forwardKd;
-double wallSharpsKp=11; //2.3, 140
+double kp, ki, kd;
+double tof_Kp=11, tcrtVerticalBlackLine_kp=0.0009; //2.3, 140
 /////// LOCAL VARIABLES ////////////
 double ITerm=0;
 unsigned long lastTime;
@@ -25,7 +22,7 @@ void _LibraryPID::setupLibraryPID(){
 		/////// PID CONSTANTS ///////
 		alignKp=0, alignKi=0, alignKd=0;
 		turnKp=17.6, turnKi=0, turnKd=0.9;//2.4d // 18.3
-		forwardKp=19, forwardKi=0, forwardKd=0;//4.8d
+		forwardKp=10.2, forwardKi=0, forwardKd=6.3;//4.8d
 		/////// VELOCITIES CONTANTS ////////
 		maxTurnVel=140;      
         minTurnVel=0;
@@ -34,16 +31,17 @@ void _LibraryPID::setupLibraryPID(){
 
 		Setpoint=0;
 		frontLeftOutput=0, frontRightOutput=0, backLeftOutput=0, backRightOutput=0, Output=0;
+		OutputAlignMechanism=0, OutputVerticalBlackLine=0;
 }
 
 // TODO:
-void _LibraryPID::calculateNewSetpoint(int angle) {
-		int newSetpoint = Setpoint;
+void _LibraryPID::calculateNewSetpoint(double angle) {
+		double newSetpoint = Setpoint;
 		newSetpoint += angle;
 		if (newSetpoint < 0)
 			newSetpoint = 360 + newSetpoint; //newSetpoint is (-)
 		if (newSetpoint > 360)
-			newSetpoint = newSetpoint%360;
+			newSetpoint = fmod(newSetpoint, 360);
 		Setpoint = newSetpoint;
 }
 // TODO:
@@ -65,7 +63,7 @@ int _LibraryPID::getAngleDerivate(double rawInput, double lastInput){
   	return rawInput - lastInput;
 }
 // TODO:
-void _LibraryPID::computeOutput(double rawInput, double &lastInput){
+void _LibraryPID::computeOutput_bno(double rawInput, double &lastInput){
 		if(!inAuto)return; 					//To not get PID confused when forcing output
 		unsigned long now = millis();
 		int timeChange = (now-lastTime); 	//Time since last (sampleTime)
@@ -86,8 +84,50 @@ void _LibraryPID::computeOutput(double rawInput, double &lastInput){
 		}
 }
 // TODO:
-void _LibraryPID::computeOutputAlignMechanism(double distanceOffset){   
-	OutputAlignMechanism = wallSharpsKp*distanceOffset;    
+void _LibraryPID::computeOutput_tof(double distanceOffset){   
+	OutputAlignMechanism = tof_Kp*distanceOffset;    
+}
+// FIXME:
+/* TCRT positions
+        ||  7  ||     ||  9  ||          || FL ||    || FR ||
+        ||     ||     ||     ||    =>    ||    ||    ||    ||
+        ||  1  ||     ||  3  ||          || BL ||    || BR ||
+*/
+// TODO:
+char _LibraryPID::computeOutput_tcrtVerticalLine(double whiteFL, double whiteBL, double whiteFR, double whiteBR){
+	double max=0;
+	char tcrt;
+	// Serial.print(whiteFL);	Serial.print(" ");
+	// Serial.print(whiteBL);	Serial.print(" ");
+	// Serial.print(whiteFR);	Serial.print(" ");
+	// Serial.print(whiteBR);	Serial.print("        ");
+// 	Linealize TCRT values
+	whiteFL=(1000-whiteFL-100); whiteBL=(1000-whiteBL-100); 
+	whiteFR=(1000-whiteFR-100); whiteBR=(1000-whiteBR-100); 
+	if(whiteFL<0) whiteFL=0;  	if(whiteBL<0) whiteBL=0;
+	if(whiteFR<0) whiteFR=0; 	if(whiteBR<0) whiteBR=0;
+	// Serial.print(whiteFL);	Serial.print(" ");
+	// Serial.print(whiteBL);	Serial.print(" ");
+	// Serial.print(whiteFR);	Serial.print(" ");
+	// Serial.print(whiteBR);	Serial.print("        ");	
+//	Look for max white value
+	double outputFL = tcrtVerticalBlackLine_kp*whiteFL;
+	if(outputFL > max){ max=outputFL; tcrt='7'; }
+	double outputBL = tcrtVerticalBlackLine_kp*whiteBL;
+	if(outputBL > max){ max=outputBL; tcrt='1'; }
+	double outputFR = tcrtVerticalBlackLine_kp*whiteFR;
+	if(outputFR > max){ max=outputFR; tcrt='9'; }
+	double outputBR = tcrtVerticalBlackLine_kp*whiteBR;
+	if(outputBR > max){ max=outputBR; tcrt='3'; }
+//	Return variables
+	// Serial.print(outputFL);	Serial.print(" ");
+	// Serial.print(outputBL);	Serial.print(" ");
+	// Serial.print(outputFR);	Serial.print(" ");
+	// Serial.print(outputBR); Serial.print("        ");
+	OutputVerticalBlackLine = max;
+	// Serial.print(OutputVerticalBlackLine); Serial.print(" ");
+	// Serial.println(tcrt);
+	return tcrt;
 }
 // TODO:
 void _LibraryPID::regulateOutputsPID(double velocityMax, double velocityMin){

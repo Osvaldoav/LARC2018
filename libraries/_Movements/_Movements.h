@@ -17,7 +17,7 @@ class _Movements{
         // Modular functions
         void updateSensors(bool, bool, bool, bool, bool);
         void movePID(bool, char);
-        void spinPID(bool, int);
+        void spinPID(bool, double);
         void turnPID(bool);        
         // Get Angle Outputs
         void setBaseVelocitiesByDirection(bool, char);
@@ -32,7 +32,7 @@ class _Movements{
         void align_tof();        
         void movePID_alignToPickContainer(int, char);
         // Align using TCRT5000 PID
-        void movePID_alignBetweenVerticalBlackLine();
+        void movePID_alignBetweenVerticalBlackLine(bool, char);
 // TODO: ATTRIBUTES
         _BNO055 *bno055;
         _ColorSensor *colorSensor;

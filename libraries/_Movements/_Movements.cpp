@@ -71,7 +71,7 @@ void _Movements::calculateAngleOutputsByDirection(bool goSlow, char direction){
         case '7':         // NORTHWEST
             bno055->offsetAngle = bno055->offsetAngleForward;
             pid->SetTunings(pid->forwardKp, pid->forwardKi, pid->forwardKd);
-            pid->computeOutput(bno055->rawInput, bno055->lastInput);
+            pid->computeOutput_bno(bno055->rawInput, bno055->lastInput);
             if(angleDifference > 0){ // MOVE TO THE LEFT                
                 pid->frontLeftOutput -= 0;
                 pid->backLeftOutput -= pid->Output;
@@ -89,7 +89,7 @@ void _Movements::calculateAngleOutputsByDirection(bool goSlow, char direction){
         case '8':         // NORTH
             bno055->offsetAngle = -bno055->offsetAngleForward;
             pid->SetTunings(pid->forwardKp, pid->forwardKi, pid->forwardKd);
-            pid->computeOutput(bno055->rawInput, bno055->lastInput);
+            pid->computeOutput_bno(bno055->rawInput, bno055->lastInput);
             if(angleDifference > 0){ // MOVE TO THE LEFT
                 pid->frontLeftOutput -= pid->Output;
                 pid->backLeftOutput -= pid->Output;
@@ -107,7 +107,7 @@ void _Movements::calculateAngleOutputsByDirection(bool goSlow, char direction){
         case '9':         // NORTHEAST
             bno055->offsetAngle = bno055->offsetAngleForward;
             pid->SetTunings(pid->forwardKp, pid->forwardKi, pid->forwardKd);
-            pid->computeOutput(bno055->rawInput, bno055->lastInput);
+            pid->computeOutput_bno(bno055->rawInput, bno055->lastInput);
             if(angleDifference > 0){ // MOVE TO THE LEFT
                 pid->frontLeftOutput -= pid->Output;
                 pid->backLeftOutput -= 0;
@@ -125,7 +125,7 @@ void _Movements::calculateAngleOutputsByDirection(bool goSlow, char direction){
         case '4':         // WEST
             bno055->offsetAngle = bno055->offsetAngleForward;
             pid->SetTunings(pid->forwardKp, pid->forwardKi, pid->forwardKd);
-            pid->computeOutput(bno055->rawInput, bno055->lastInput);
+            pid->computeOutput_bno(bno055->rawInput, bno055->lastInput);
             if(angleDifference > 0){ // MOVE TO THE LEFT
                 pid->frontLeftOutput += pid->Output;
                 pid->backLeftOutput -= pid->Output;
@@ -143,7 +143,7 @@ void _Movements::calculateAngleOutputsByDirection(bool goSlow, char direction){
         case '6':         // EAST
             bno055->offsetAngle = bno055->offsetAngleForward;
             pid->SetTunings(pid->forwardKp, pid->forwardKi, pid->forwardKd);
-            pid->computeOutput(bno055->rawInput, bno055->lastInput);
+            pid->computeOutput_bno(bno055->rawInput, bno055->lastInput);
             if(angleDifference > 0){ // MOVE TO THE LEFT
                 pid->frontLeftOutput -= pid->Output;
                 pid->backLeftOutput += pid->Output;
@@ -161,7 +161,7 @@ void _Movements::calculateAngleOutputsByDirection(bool goSlow, char direction){
         case '1':         // SOUTHWEST
             bno055->offsetAngle = -bno055->offsetAngleForward;
             pid->SetTunings(pid->forwardKp, pid->forwardKi, pid->forwardKd);
-            pid->computeOutput(bno055->rawInput, bno055->lastInput);
+            pid->computeOutput_bno(bno055->rawInput, bno055->lastInput);
             if(angleDifference > 0){ // MOVE TO THE LEFT
                 pid->frontLeftOutput += pid->Output;
                 pid->backLeftOutput -= 0;
@@ -179,7 +179,7 @@ void _Movements::calculateAngleOutputsByDirection(bool goSlow, char direction){
         case '2':             // SOUTH
             bno055->offsetAngle = -bno055->offsetAngleForward;   
             pid->SetTunings(pid->forwardKp, pid->forwardKi, pid->forwardKd);
-            pid->computeOutput(bno055->rawInput, bno055->lastInput);
+            pid->computeOutput_bno(bno055->rawInput, bno055->lastInput);
             if(angleDifference > 0){ // MOVE TO THE LEFT
                 pid->frontLeftOutput += pid->Output;
                 pid->backLeftOutput += pid->Output;
@@ -197,7 +197,7 @@ void _Movements::calculateAngleOutputsByDirection(bool goSlow, char direction){
         case '3':         // SOUTHEAST
             bno055->offsetAngle = -bno055->offsetAngleForward;
             pid->SetTunings(pid->forwardKp, pid->forwardKi, pid->forwardKd);
-            pid->computeOutput(bno055->rawInput, bno055->lastInput);
+            pid->computeOutput_bno(bno055->rawInput, bno055->lastInput);
             if(angleDifference > 0){ // MOVE TO THE LEFT
                 pid->frontLeftOutput -= 0;
                 pid->backLeftOutput -= pid->Output;
@@ -215,7 +215,7 @@ void _Movements::calculateAngleOutputsByDirection(bool goSlow, char direction){
         case 'T':         // TURN
             bno055->offsetAngle = bno055->offsetAngleTurn;          
             pid->SetTunings(pid->turnKp, pid->turnKi, pid->turnKd);
-            pid->computeOutput(bno055->rawInput, bno055->lastInput);
+            pid->computeOutput_bno(bno055->rawInput, bno055->lastInput);
             if(angleDifference > 1){ // MOVE TO THE LEFT
                 pid->frontLeftOutput += pid->Output;
                 pid->backLeftOutput += pid->Output;
@@ -250,14 +250,14 @@ void _Movements::verifySpecificAndUploadOutputs(double velMin, double velMax){
 //forward with P correction
 void _Movements::movePID(bool goSlow, char direction){
 //  Update Sensors
-    updateSensors(1,0,1,1,0);
+    updateSensors(1,0,0,0,0);
 //  Update Outputs
     setBaseVelocitiesByDirection(goSlow, direction);
     calculateAngleOutputsByDirection(goSlow, direction);
     verifyAndUploadOutputsByDirection(direction);   
 }
 // TODO:
-void _Movements::spinPID(bool goSlow, int newAngle){
+void _Movements::spinPID(bool goSlow, double newAngle){
     if(abs(newAngle) == 180){
         if(newAngle == 180){
             spinPID(goSlow, 90);
@@ -299,7 +299,7 @@ void _Movements::spinPID(bool goSlow, int newAngle){
 // TODO:
 void _Movements::turnPID(bool goSlow) {
 //  Update Sensors    
-    updateSensors(0,0,0,1,0);    
+    updateSensors(0,0,0,0,0);    
 //  Update Outputs
     setBaseVelocitiesByDirection(goSlow, 'T');
     calculateAngleOutputsByDirection(goSlow, 'T'); 
@@ -337,8 +337,8 @@ void _Movements::align_tof(){
     do{               
         updateSensors(0,0,0,1,0);
         double right = timeFlight->timeFlightRight.kalmanDistance;
-        double left = timeFlight->timeFlightLeft.kalmanDistance;
-        pid->computeOutputAlignMechanism(abs(right-left));
+        double left = timeFlight->  timeFlightLeft.kalmanDistance;
+        pid->computeOutput_tof(abs(right-left));
         Serial.print(right);
         Serial.print(" ");
         Serial.print(left);
@@ -406,8 +406,8 @@ void _Movements::movePID_alignToPickContainer(int cmDistance, char direction){
                 lcd->onLed('r');
                 motors->brake();
                 delay(100);
-                alignMechanism();
-                alignMechanism();
+                align_tof();
+                align_tof();
                 isAligned=true;
                 lcd->offLed('r');
             }         
@@ -429,9 +429,30 @@ void _Movements::movePID_alignToPickContainer(int cmDistance, char direction){
     }
     motors->brake();
 //  SlowFord velocities back to normal
-    motors->velSlowFordFL = lastSlowVelFL;
+    motors->velSlowFordFL = lastSlowVelFL; 
     motors->velSlowFordBL = lastSlowVelBL; 
     motors->velSlowFordFR = lastSlowVelFR;
     motors->velSlowFordBR = lastSlowVelBR;    
 }
-void movePID_alignBetweenVerticalBlackLine();
+// TODO:
+void _Movements::movePID_alignBetweenVerticalBlackLine(bool goSlow, char direction){
+//  Update Sensors
+    updateSensors(0,0,0,0,1);
+//  Calculate Output
+    char tcrtPosition = pid->computeOutput_tcrtVerticalLine(
+        tcrt5000->tcrtLeft.kalmanDistance,
+        tcrt5000->tcrtRight.kalmanDistance,
+        tcrt5000->tcrtRight.kalmanDistance,
+        tcrt5000->tcrtLeft.kalmanDistance
+    );
+    Serial.print(pid->OutputVerticalBlackLine);
+    Serial.print(" ");
+    if(pid->OutputVerticalBlackLine > 0.5){
+        if(tcrtPosition=='7' || tcrtPosition=='3')
+            pid->calculateNewSetpoint(pid->OutputVerticalBlackLine);
+        else if (tcrtPosition=='9' || tcrtPosition=='1')
+            pid->calculateNewSetpoint(-pid->OutputVerticalBlackLine);
+    }
+    Serial.println(pid->Setpoint);
+    movePID(goSlow, direction);
+}
