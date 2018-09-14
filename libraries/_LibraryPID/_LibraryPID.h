@@ -12,9 +12,7 @@ class _LibraryPID{
         int getAngleDerivate(double, double);
         void computeOutput(double, double &);
         void computeOutputAlignMechanism(double);
-        void regulateOutputsFordPID();
-        void regulateOutputsTurnPID();
-        void regulateOutputsSpecific(double, double);
+        void regulateOutputsPID(double, double);
         void Initialize(double, double &);
         void SetTunings(double, double, double);
         void SetSampleTime(int);
@@ -22,7 +20,7 @@ class _LibraryPID{
         void SetMode(int, double, double &);
         void SetControllerDirection(int);
         void setupLibraryPID();
-// TODO: ATTRIBUTES
+// TODO: ATTRIBUTES 
         double Setpoint;
         double frontLeftOutput;
         double frontRightOutput;
@@ -30,7 +28,6 @@ class _LibraryPID{
         double backRightOutput; 
         double Output;
         double OutputAlignMechanism;
-        /////////////CONSTANTS
         /////// PID CONSTANTS ///////
         double alignKp;
         double alignKi;
@@ -41,6 +38,11 @@ class _LibraryPID{
         double forwardKp;
         double forwardKi;
         double forwardKd;
+        /////// Velocities ///////
+        double maxTurnVel;      
+        double minTurnVel;
+        double maxForwardVel;
+        double minForwardVel;          
 };
 
 #endif

@@ -8,7 +8,7 @@ VL53L0X timeFlightLeftSensor;
 ////////////////////////////// LOCAL VARAIBLES ///////////////////////////////
 const double cantReads = 7;
 double lastDistance; 
-double leftCompensation=0.01, rightCompensation=3.42;
+double leftCompensation=-3.85, rightCompensation=-0.25;
 
 void _TimeFlight::calibTimeFlights(double target){
     leftCompensation=0,rightCompensation=0;
@@ -77,8 +77,8 @@ double _TimeFlight::getRawDistance(bool leftTimeFlight){
         distance = timeFlightRightSensor.readRangeContinuousMillimeters()/10.0 + rightCompensation;
     if(distance > 25)
         distance = 25;
-    // if(abs(lastDistance - distance) > 8)
-        // distance = lastDistance;
+    if(distance < 0)   
+        distance *= -1; 
     lastDistance = distance;
     return distance;
 }

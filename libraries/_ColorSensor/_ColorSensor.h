@@ -29,7 +29,7 @@ struct ColorKalman{
 };
 
 class _ColorSensor{
-    public:
+    public: 
 // TODO: METHODS
         void setupColorSensor();
         void regulateColorSignal(float &);

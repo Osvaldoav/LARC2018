@@ -18,8 +18,6 @@ double wallSharpsKp=11; //2.3, 140
 /////// LOCAL VARIABLES ////////////
 double ITerm=0;
 unsigned long lastTime;
-double maxTurnVel=140;
-double maxForwardVel=255;
 
 
 // TODO:
@@ -28,6 +26,11 @@ void _LibraryPID::setupLibraryPID(){
 		alignKp=0, alignKi=0, alignKd=0;
 		turnKp=17.6, turnKi=0, turnKd=0.9;//2.4d // 18.3
 		forwardKp=19, forwardKi=0, forwardKd=0;//4.8d
+		/////// VELOCITIES CONTANTS ////////
+		maxTurnVel=140;      
+        minTurnVel=0;
+        maxForwardVel=255;
+        minForwardVel=0; 
 
 		Setpoint=0;
 		frontLeftOutput=0, frontRightOutput=0, backLeftOutput=0, backRightOutput=0, Output=0;
@@ -87,34 +90,7 @@ void _LibraryPID::computeOutputAlignMechanism(double distanceOffset){
 	OutputAlignMechanism = wallSharpsKp*distanceOffset;    
 }
 // TODO:
-void _LibraryPID::regulateOutputsFordPID(){
-		if (frontRightOutput > maxForwardVel)     frontRightOutput = maxForwardVel;
-		else if (frontRightOutput < 0)          frontRightOutput = 0;
-
-		if (backRightOutput > maxForwardVel)      backRightOutput = maxForwardVel;
-		else if (backRightOutput < 0)           backRightOutput = 0;
-
-		if (frontLeftOutput > maxForwardVel)      frontLeftOutput = maxForwardVel;
-		else if (frontLeftOutput < 0)           frontLeftOutput = 0;
-
-		if (backLeftOutput > maxForwardVel)       backLeftOutput = maxForwardVel;
-		else if (backLeftOutput < 0)            backLeftOutput = 0;
-}
-// TODO:
-void _LibraryPID::regulateOutputsTurnPID(){
-		if (frontRightOutput > maxTurnVel)     frontRightOutput = maxTurnVel;
-		else if (frontRightOutput < 0)          frontRightOutput = 0;
-
-		if (backRightOutput > maxTurnVel)      backRightOutput = maxTurnVel;
-		else if (backRightOutput < 0)           backRightOutput = 0;
-
-		if (frontLeftOutput > maxTurnVel)      frontLeftOutput = maxTurnVel;
-		else if (frontLeftOutput < 0)           frontLeftOutput = 0;
-
-		if (backLeftOutput > maxTurnVel)       backLeftOutput = maxTurnVel;
-		else if (backLeftOutput < 0)            backLeftOutput = 0;
-}
-void _LibraryPID::regulateOutputsSpecific(double velocityMax, double velocityMin){
+void _LibraryPID::regulateOutputsPID(double velocityMax, double velocityMin){
 		if (frontRightOutput > velocityMax)     frontRightOutput = velocityMax;
 		else if (frontRightOutput < velocityMin)          frontRightOutput = velocityMin;
 
