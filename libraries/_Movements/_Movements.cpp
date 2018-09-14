@@ -236,14 +236,14 @@ void _Movements::calculateAngleOutputsByDirection(bool goSlow, char direction){
 // TODO:
 void _Movements::verifyAndUploadOutputsByDirection(char direction){
     if(direction == 'T')
-        pid->regulateOutputsTurnPID();
+        pid->regulateOutputsPID(pid->maxTurnVel, pid->minTurnVel);
     else
-        pid->regulateOutputsFordPID();
+        pid->regulateOutputsPID(pid->maxForwardVel, pid->minForwardVel);
     motors->setVelocity(pid->frontLeftOutput, pid->backLeftOutput, pid->frontRightOutput, pid->backRightOutput);
 }
 // TODO:
 void _Movements::verifySpecificAndUploadOutputs(double velMin, double velMax){
-    pid->regulateOutputsSpecific(velMax, velMin);
+    pid->regulateOutputsPID(velMax, velMin);
     motors->setVelocity(pid->frontLeftOutput, pid->backLeftOutput, pid->frontRightOutput, pid->backRightOutput);
 }
 // TODO:
@@ -256,7 +256,55 @@ void _Movements::movePID(bool goSlow, char direction){
     calculateAngleOutputsByDirection(goSlow, direction);
     verifyAndUploadOutputsByDirection(direction);   
 }
-
+// TODO:
+void _Movements::spinPID(bool goSlow, int newAngle){
+    if(abs(newAngle) == 180){
+        if(newAngle == 180){
+            spinPID(goSlow, 90);
+            spinPID(goSlow, 90);
+        }
+        else if(newAngle == -180){
+            spinPID(goSlow, -90);
+            spinPID(goSlow, -90);
+        }    
+        return ;
+    }
+    else if(abs(newAngle) == 360){
+        if(newAngle == 360){
+            spinPID(goSlow, 180);
+            spinPID(goSlow, 180);
+        }
+        else if(newAngle == -360){
+            spinPID(goSlow, -180);
+            spinPID(goSlow, -180);
+        }    
+        return ;
+    } 
+    pid->calculateNewSetpoint(newAngle);    
+    int x = 0;
+    double startTime = millis();    
+    do {
+        bno055->readBNO(pid->Setpoint);
+        int angleDifference = pid->getAngleDifference(bno055->rawInput);
+        if (abs(angleDifference) > 1) {
+            turnPID(goSlow);    
+            x = 0;
+        } else {
+            motors->brake();
+            delay(155);      
+            if (++x == 3) break;
+        }
+    } while(millis() < startTime+5000);    
+}
+// TODO:
+void _Movements::turnPID(bool goSlow) {
+//  Update Sensors    
+    updateSensors(0,0,0,1,0);    
+//  Update Outputs
+    setBaseVelocitiesByDirection(goSlow, 'T');
+    calculateAngleOutputsByDirection(goSlow, 'T'); 
+    verifyAndUploadOutputsByDirection('T');           
+}
 // TODO:
 //forward with P correction for a specific time
 void _Movements::movePID_nTime(int time, bool goSlow, char direction) {
@@ -265,7 +313,6 @@ void _Movements::movePID_nTime(int time, bool goSlow, char direction) {
         movePID(goSlow, direction);
     motors->brake();
 }
-
 // TODO:
 //Go forward the cm given in the parameter
 void _Movements::movePID_nCM(int cm, bool goSlow, char direction){
@@ -279,9 +326,8 @@ void _Movements::movePID_nCM(int cm, bool goSlow, char direction){
         movePID(goSlow, direction);
     motors->brake();
 }
-
 // TODO:
-void _Movements::alignMechanism(){
+void _Movements::align_tof(){
 //  Local Variables    
     int countCorrect = 0;
     double startTime = millis();
@@ -333,10 +379,9 @@ void _Movements::alignMechanism(){
     updateSensors(1,0,0,0,0);
     pid->Setpoint = bno055->rawInput;
 }
-
 // TODO:
 //Go forward until finding a wall at a certain distance
-void _Movements::movePID_nWallCM(int cmDistance, char direction){
+void _Movements::movePID_alignToPickContainer(int cmDistance, char direction){
 //  Update Sensors    
     updateSensors(0,0,0,1,0);
     timeFlight->filtrateDistancesTimeFlight();
@@ -389,60 +434,4 @@ void _Movements::movePID_nWallCM(int cmDistance, char direction){
     motors->velSlowFordFR = lastSlowVelFR;
     motors->velSlowFordBR = lastSlowVelBR;    
 }
-
-// TODO:
-// Go forward following: a setpoint, the distance to the wall, the distance between both sharps
-void _Movements::movePID_alignWall(double wallDistanceSetpoint, bool goSlow, bool leftWall, int direction){
-
-}
-
-// TODO:
-void _Movements::spinPID(bool goSlow, int newAngle){
-    if(abs(newAngle) == 180){
-        if(newAngle == 180){
-            spinPID(goSlow, 90);
-            spinPID(goSlow, 90);
-        }
-        else if(newAngle == -180){
-            spinPID(goSlow, -90);
-            spinPID(goSlow, -90);
-        }    
-        return ;
-    }
-    else if(abs(newAngle) == 360){
-        if(newAngle == 360){
-            spinPID(goSlow, 180);
-            spinPID(goSlow, 180);
-        }
-        else if(newAngle == -360){
-            spinPID(goSlow, -180);
-            spinPID(goSlow, -180);
-        }    
-        return ;
-    }
-    pid->calculateNewSetpoint(newAngle);    
-    int x = 0;
-    double startTime = millis();    
-    do {
-        bno055->readBNO(pid->Setpoint);
-        int angleDifference = pid->getAngleDifference(bno055->rawInput);
-        if (abs(angleDifference) > 1) {
-            turnPID(goSlow);    
-            x = 0;
-        } else {
-            motors->brake();
-            delay(155);      
-            if (++x == 3) break;
-        }
-    } while(millis() < startTime+5000);    
-}
-
-// TODO:
-void _Movements::turnPID(bool goSlow) {
-//  Update Sensors    
-    updateSensors(0,0,0,1,0);    
-//  Update Outputs
-    setBaseVelocitiesByDirection(goSlow, 'T');
-    calculateAngleOutputsByDirection(goSlow, 'T'); 
-    verifyAndUploadOutputsByDirection('T');           
-}
+void movePID_alignBetweenVerticalBlackLine();

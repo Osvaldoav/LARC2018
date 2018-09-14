@@ -4,7 +4,7 @@
 #include <_ColorSensor.h>
 #include <_Encoder.h>
 #include <_LibraryPID.h>
-#include <_Motors.h>
+#include <_Motors.h> 
 #include <_Sharp.h>
 #include <_LCD.h>
 #include <_TimeFlight.h>
@@ -14,20 +14,25 @@ class _Movements{
     public:
 // TODO: METHODS
         void setupMovements();
+        // Modular functions
         void updateSensors(bool, bool, bool, bool, bool);
+        void movePID(bool, char);
+        void spinPID(bool, int);
+        void turnPID(bool);        
+        // Get Angle Outputs
         void setBaseVelocitiesByDirection(bool, char);
         void setBaseSpecificVelocities(double, double, double, double);
         void calculateAngleOutputsByDirection(bool, char);
         void verifyAndUploadOutputsByDirection(char);
         void verifySpecificAndUploadOutputs(double, double);
-        void movePID(bool, char);
+        // Move n Time/CM
         void movePID_nTime(int, bool, char);
-        void movePID_nCM(int, bool, char);
-        void alignMechanism();        
-        void movePID_nWallCM(int, char);
-        void movePID_alignWall(double, bool, bool, int);
-        void spinPID(bool, int);
-        void turnPID(bool);
+        void movePID_nCM(int, bool, char);        
+        // Align using TOF PID
+        void align_tof();        
+        void movePID_alignToPickContainer(int, char);
+        // Align using TCRT5000 PID
+        void movePID_alignBetweenVerticalBlackLine();
 // TODO: ATTRIBUTES
         _BNO055 *bno055;
         _ColorSensor *colorSensor;

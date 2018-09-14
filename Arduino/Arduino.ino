@@ -59,8 +59,8 @@ void squareUntilWall(){
     delay(del);
 }
 void aligningTest(){
-//    movements->movePID_nWallCM(8, '8');
-    movements->alignMechanism();
+//    movements->movePID_alignToPickContainer(8, '8');
+    movements->align_tof();
 //    Serial.print("///////////////////////////////////////////////////////////////////////");
 //    movements->motors->brake();
 //    movements->lcd->onLed('b');       
@@ -84,7 +84,7 @@ void tof_vs_sharp(){
 //    Serial.print(" ");
 //    Serial.println((movements->sharp->sharpBL.kalmanDistance - movements->sharp->sharpFR.kalmanDistance)*10);   
   
-//     movements->timeFlight->timeFlight_RawKalman(movements->timeFlight->timeFlightLeft);
+     movements->timeFlight->timeFlight_RawKalman(movements->timeFlight->timeFlightLeft);
     // movements->sharp->sharp_RawKalman(movements->sharp->sharpBL);
 }
 
@@ -102,4 +102,5 @@ void loop(){
 //  squareUntilWall();
 //  tof_vs_sharp();
 //  testMovements();
+//readTCRT5000();
 }
