@@ -1,30 +1,47 @@
 #include <_Motors.h>
 
-//////////////// PINs DECLARATION ///////////////////
-const byte pinMotorFR_F = 52;
-const byte pinMotorFR_B = 53;
-const byte pinMotorFL_F = 46;
-const byte pinMotorFL_B = 47;
-const byte pinMotorBR_F = 50;
-const byte pinMotorBR_B = 51;
-const byte pinMotorBL_F = 49;
-const byte pinMotorBL_B = 48;
-const byte pinPWM_FR = 2; 
-const byte pinPWM_FL = 5;
-const byte pinPWM_BR = 3;
-const byte pinPWM_BL = 4;
+//////////////// PINs DECLARATION "BICHO" ///////////////////
+// const byte pinMotorFR_F = 52;
+// const byte pinMotorFR_B = 53;
+// const byte pinMotorFL_F = 46;
+// const byte pinMotorFL_B = 47;
+// const byte pinMotorBR_F = 50;
+// const byte pinMotorBR_B = 51;
+// const byte pinMotorBL_F = 49;
+// const byte pinMotorBL_B = 48;
+// const byte pinPWM_FR = 2; 
+// const byte pinPWM_FL = 5;
+// const byte pinPWM_BR = 3;
+// const byte pinPWM_BL = 4;
+//////////////// PINs DECLARATION "LARC" ///////////////////
+const byte pinPWMFR_F = 3;
+const byte pinPWMFR_B = 2;
+const byte pinPWMFL_F = 4;
+const byte pinPWMFL_B = 5;
+const byte pinPWMBR_F = 9;
+const byte pinPWMBR_B = 10;
+const byte pinPWMBL_F = 8;
+const byte pinPWMBL_B = 7;
 ////////////////////// LOCAL VARIABLES /////////////////
+bool boolFL_F;
+bool boolFL_B;
+bool boolBL_F;
+bool boolBL_B;
+bool boolFR_F;
+bool boolFR_B;
+bool boolBR_F;
+bool boolBR_B;
 
 void _Motors::setupMotors(){
-    velFordFL = 120;//115
-    velFordBL = 120;
-    velFordFR = 120;
-    velFordBR = 120; 
+    velFordFL = 170;
+    velFordBL = 150;
+    velFordFR = 150;
+    velFordBR = 150; 
     velSlowFordFL = 82;
     velSlowFordBL = 82; 
     velSlowFordFR = 82;
     velSlowFordBR = 82;        
-    velTurnFL = 110;//79
+    velTurnFL = 110;
     velTurnBL = 110;
     velTurnFR = 110;
     velTurnBR = 110;
@@ -33,18 +50,14 @@ void _Motors::setupMotors(){
     velSlowTurnFR = velTurnFR-20;
     velSlowTurnBR = velTurnBR-20;       
 
-    pinMode(pinMotorFR_F,OUTPUT);
-    pinMode(pinMotorFR_B,OUTPUT);
-    pinMode(pinMotorFL_F,OUTPUT);
-    pinMode(pinMotorFL_B,OUTPUT);  
-    pinMode(pinMotorBR_F,OUTPUT);
-    pinMode(pinMotorBR_B,OUTPUT);
-    pinMode(pinMotorBL_F,OUTPUT);
-    pinMode(pinMotorBL_B,OUTPUT);  
-    pinMode(pinPWM_FR,OUTPUT);
-    pinMode(pinPWM_FL,OUTPUT);
-    pinMode(pinPWM_BR,OUTPUT);
-    pinMode(pinPWM_BL,OUTPUT);
+    pinMode(pinPWMFR_F,OUTPUT);
+    pinMode(pinPWMFR_B,OUTPUT);
+    pinMode(pinPWMFL_F,OUTPUT);
+    pinMode(pinPWMFL_B,OUTPUT);  
+    pinMode(pinPWMBR_F,OUTPUT);
+    pinMode(pinPWMBR_B,OUTPUT);
+    pinMode(pinPWMBL_F,OUTPUT);
+    pinMode(pinPWMBL_B,OUTPUT);  
 }
 
 // TODO:
@@ -53,68 +66,43 @@ double _Motors::slowGo(double time){
 }
 
 // TODO:
-void _Motors::stop(bool isSpin){   
-}      
-
-// TODO:
-void _Motors::go() {
-}
-
-// TODO:
-void _Motors::back() {
-}
-
-// TODO:
-void _Motors::setMotor(bool leftFrontF, bool leftFrontB, bool leftBackF, bool leftBackB, bool rightFrontF, bool rightFrontB, bool rightBackF, bool rightBackB){
-    digitalWrite(pinMotorFR_F, rightFrontF);
-    digitalWrite(pinMotorFR_B, rightFrontB);
-    digitalWrite(pinMotorFL_F, leftFrontF);
-    digitalWrite(pinMotorFL_B, leftFrontB);
-    digitalWrite(pinMotorBR_F, rightBackF);
-    digitalWrite(pinMotorBR_B, rightBackB);
-    digitalWrite(pinMotorBL_F, leftBackF);
-    digitalWrite(pinMotorBL_B, leftBackB);
+void _Motors::setMotor(bool newFL_F, bool newFL_B, bool newBL_F, bool newBL_B, bool newFR_F, bool newFR_B, bool newBR_F, bool newBR_B){
+    boolFL_F = newFL_F;
+    boolFL_B = newFL_B;
+    boolBL_F = newBL_F;
+    boolBL_B = newBL_B;
+    boolFR_F = newFR_F;
+    boolFR_B = newFR_B;
+    boolBR_F = newBR_F;
+    boolBR_B = newBR_B;
 }
 
 // TODO:
 void _Motors::setVelocity(int left, int right){
-    analogWrite(pinPWM_FR, right);
-    analogWrite(pinPWM_BR, right);
-    analogWrite(pinPWM_FL, left);
-    analogWrite(pinPWM_BL, left);
+    analogWrite(pinPWMFL_F, left);
+    analogWrite(pinPWMFL_B, left);
+    analogWrite(pinPWMBL_F, left);
+    analogWrite(pinPWMBL_B, left);     
+    analogWrite(pinPWMFR_F, right);
+    analogWrite(pinPWMFR_B, right);     
+    analogWrite(pinPWMBR_F, right);
+    analogWrite(pinPWMBR_B, right);  
 }
 
 // TODO:
-void _Motors::setVelocity(int leftFront, int leftBack, int rightFront, int rightBack){
-    analogWrite(pinPWM_FR, rightFront);
-    analogWrite(pinPWM_BR, rightBack);
-    analogWrite(pinPWM_FL, leftFront);
-    analogWrite(pinPWM_BL, leftBack);
+void _Motors::setVelocity(int frontLeft, int backLeft, int frontRight, int backRight){
+    (boolFL_F)? analogWrite(pinPWMFL_F, frontLeft): analogWrite(pinPWMFL_F, 0); 
+    (boolFL_B)? analogWrite(pinPWMFL_B, frontLeft): analogWrite(pinPWMFL_B, 0); 
+    (boolBL_F)? analogWrite(pinPWMBL_F, backLeft): analogWrite(pinPWMBL_F, 0); 
+    (boolBL_B)? analogWrite(pinPWMBL_B, backLeft): analogWrite(pinPWMBL_B, 0);      
+    (boolFR_F)? analogWrite(pinPWMFR_F, frontRight): analogWrite(pinPWMFR_F, 0); 
+    (boolFR_B)? analogWrite(pinPWMFR_B, frontRight): analogWrite(pinPWMFR_B, 0);      
+    (boolBR_F)? analogWrite(pinPWMBR_F, backRight): analogWrite(pinPWMBR_F, 0); 
+    (boolBR_B)? analogWrite(pinPWMBR_B, backRight): analogWrite(pinPWMBR_B, 0);  
 }
 
 // TODO:
 //Stop motors
 void _Motors::brake(){
     setVelocity(0, 0);
-    setMotor(0,0,0,0,0,0,0,0);
-}
-// TODO:
-void _Motors::turnRight(int vel){
-    setMotor(0, 1, 1, 0, 0, 1, 1, 0);
-    setVelocity(vel, vel);
-}
-// TODO:
-void _Motors::turnRight(int leftFront, int leftBack, int rightFront, int rightBack){
-    setMotor(1, 0, 1, 0, 0, 1, 0, 1);
-    setVelocity(leftFront, leftBack, rightFront, rightBack);
-}
-// TODO:
-void _Motors::turnLeft(int vel){
-    setMotor(1, 0, 0, 1, 1, 0, 0, 1);
-    setVelocity(vel, vel);
-}
-// TODO:
-void _Motors::turnLeft(int leftFront, int leftBack, int rightFront, int rightBack){
-    setMotor(0, 1, 0, 1, 1, 0, 1, 0);
-    setVelocity(leftFront, leftBack, rightFront, rightBack);
 }

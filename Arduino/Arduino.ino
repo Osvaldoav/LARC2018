@@ -5,7 +5,7 @@
 #include <Wire.h>
 _Movements *movements = new _Movements;
 
-const byte pinEncoder = 40;
+const byte pinEncoder = 18;
 
 /////////////////////////////////////////////SETUP////////////////////////////////////////////////
 void setup() {
@@ -19,6 +19,7 @@ void setup() {
     movements->timeFlight->setupTimeFlight();
     movements->lcd->setupLCD();
     movements->tcrt5000->setupTCRT5000();
+    movements->encoder->setupEncoder();
     pinMode(pinEncoder, INPUT_PULLUP);
     attachInterrupt(digitalPinToInterrupt(pinEncoder), encoderStep, CHANGE);   
 
@@ -29,8 +30,16 @@ void setup() {
 //      delay(5000);   
 }
 
+
+void testSteps(){
+  Serial.println(movements->encoder->steps);
+}
 void testMovements(){
-  movements->movePID(false, '8');
+  movements->encoder->encoderState = 1;
+  movements->movePID(true,'8');
+//  movements->movePID_nSec(1.5, false, '1');
+//  delay(2000);
+//  movements->spinPID(false, -90);
 }
 void squareUntilWall(){
     int del = 1000;
@@ -105,7 +114,8 @@ void loop(){
 //  aligningTofTest();
 //  squareUntilWall();
 //  tof_vs_sharp();
-//  testMovements();
+  testMovements();
+  testSteps();
 //  readTCRT5000();
-  aligningTcrtTest();
+//  aligningTcrtTest();
 }

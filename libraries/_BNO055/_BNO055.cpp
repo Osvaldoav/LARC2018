@@ -18,8 +18,8 @@ byte calMOZM = 0;
 
 // TODO:
 void _BNO055::setupBNO055(){
-    offsetAngleForward=1.179;
-    offsetAngleTurn=1.9899;
+    offsetAngleForward=0.75;  //1.179
+    offsetAngleTurn=1.5;     //1.9899
     offsetAngle=offsetAngleForward;//0.0011
     delay(400);
     // USING I2C ADDRESS 0X28

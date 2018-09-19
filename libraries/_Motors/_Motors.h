@@ -8,17 +8,10 @@ class _Motors{
 //TODO: METHODS
         void setupMotors();
         double slowGo(double);
-        void stop(bool);
-        void go();
-        void back();
         void setMotor(bool, bool, bool, bool, bool, bool, bool, bool);
         void setVelocity(int, int);
         void setVelocity(int, int, int, int);
         void brake();
-        void turnRight(int);
-        void turnRight(int, int, int, int);
-        void turnLeft(int);
-        void turnLeft(int, int, int, int); 
 // TODO: ATTRIBUTES
         double velFordFL;
         double velFordBL;

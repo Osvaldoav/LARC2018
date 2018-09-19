@@ -26,7 +26,7 @@ class _Movements{
         void verifyAndUploadOutputsByDirection(char);
         void verifySpecificAndUploadOutputs(double, double);
         // Move n Time/CM
-        void movePID_nTime(int, bool, char);
+        void movePID_nSec(int, bool, char);
         void movePID_nCM(int, bool, char);        
         // Align using TOF PID
         void align_tof();        

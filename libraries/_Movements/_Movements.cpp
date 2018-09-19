@@ -307,9 +307,9 @@ void _Movements::turnPID(bool goSlow) {
 }
 // TODO:
 //forward with P correction for a specific time
-void _Movements::movePID_nTime(int time, bool goSlow, char direction) {
+void _Movements::movePID_nSec(int time, bool goSlow, char direction) {
     double startTime = millis();
-    while(millis() < startTime+time)       
+    while(millis() < startTime+(time*1000))       
         movePID(goSlow, direction);
     motors->brake();
 }
