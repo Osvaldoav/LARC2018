@@ -1,6 +1,7 @@
 #ifndef _BNO055_h
 #define _BNO055_h
 #include <_ArduinoLIBRARY.h>
+#include <_LCD.h>
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BNO055.h>
@@ -22,6 +23,7 @@ class _BNO055{
         double offsetAngleForward;
         double offsetAngleTurn;
         double offsetAngle;
+        _LCD *lcd;
 };
 
 #endif

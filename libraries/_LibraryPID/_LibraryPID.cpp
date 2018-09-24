@@ -11,7 +11,7 @@ double outMin=0,outMax=255;
 bool inAuto=true;
 /////// PID CONSTANTS ///////
 double kp, ki, kd;
-double tof_Kp=11, tcrtVerticalBlackLine_kp=0.0009; //2.3, 140
+double tof_Kp=2.3, tcrtVerticalBlackLine_kp=0.0009; //2.3, 140
 /////// LOCAL VARIABLES ////////////
 double ITerm=0;
 unsigned long lastTime;

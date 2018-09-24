@@ -1,5 +1,4 @@
 #include <_BNO055.h>
-
 /////////////////////////////////// BNO Local Variables /////////////////////////////////////
 #define BNO055_SAMPLERATE_DELAY_MS (50)     // was 100
 Adafruit_BNO055 bno = Adafruit_BNO055(55);
@@ -18,21 +17,23 @@ byte calMOZM = 0;
 
 // TODO:
 void _BNO055::setupBNO055(){
+    lcd = new _LCD;
     offsetAngleForward=1.179;   //1.179     //(+)=RIGHT, (-)=LEFT
     offsetAngleTurn=1.9899;   //1.9899
     offsetAngle=offsetAngleForward;//0.0011
     delay(400);
     // USING I2C ADDRESS 0X28
     if(!bno.begin(bno.OPERATION_MODE_IMUPLUS)){
-      Serial.print("BNO055 not detected");         // Debug
+      lcd->print("BNO055 FAILED");         // Debug
       while(1);
     }
-    Serial.println("9DOF (BNO055) started");       // Debug
+    lcd->print("BNO055 READY");       // Debug
   //  setCal();                                      // Set 9DOF Calibration Values
     bno.setExtCrystalUse(true);
   //  calibrarBNO(Setpoint);
   //  delay(30000);
     delay(2000);  
+    lcd->clear();
 }
 
 // TODO:

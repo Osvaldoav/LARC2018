@@ -12,12 +12,12 @@ void setup() {
     Serial.begin(9600);
     Wire.begin();
     movements->setupMovements();
+    movements->lcd->setupLCD();    
     movements->pid->setupLibraryPID();
     movements->motors->setupMotors();
     movements->colorSensor->setupColorSensor();
     movements->bno055->setupBNO055();
     movements->timeFlight->setupTimeFlight();
-    movements->lcd->setupLCD();
     movements->tcrt5000->setupTCRT5000();
     movements->encoder->setupEncoder();
     pinMode(pinEncoder, INPUT_PULLUP);
@@ -30,25 +30,24 @@ void setup() {
 //      delay(5000);   
 }
 
-
-void testSteps(){
-  Serial.println(movements->encoder->steps);
-}
-void testMovements(){
-//  movements->motors->setVelocity(200,200,200,218);
-//              movements->motors->setMotor(1, 0, 0, 1, 0, 1, 1, 0);
-//    movements->movePID(false,'7');
+void testMovements(){ 
+//    movements->encoder->encoderState = 1;
+//    movements->movePID(false, '6');
+//    Serial.println(movements->encoder->steps);   
 //    movements->movePID_nSec(1.5, false, '1');
 //    delay(2000);
-//    movements->spinPID(false, -90);
+    movements->spinPID(false, -90);
+//    movements->motors->brake();
+//    delay(2000);
 //    movements->movePID_nCM(179, false, '6');
 //    delay(3000);
 //    movements->movePID_nCM(179, false, '8');
 //    delay(3000);    
 }
 void aligningTofTest(){
-    movements->movePID_alignToPickContainer(2);
-//    movements->align_tof();
+//    movements->movePID_alignToPickContainer(2);
+//    while(1);
+    movements->align_tof();
 //    Serial.print("///////////////////////////////////////////////////////////////////////");
 //    movements->motors->brake();
 //    movements->lcd->onLed('b');       
@@ -97,17 +96,24 @@ void readTCRT5000(){
 }
 
 void aligningTcrtTest(){
-  movements->movePID_alignToShip(false, '4');
+  movements->larc_alignToShip(false, '4');
   delay(4000);
   while(1);
-//      movements->movePID_alignBetweenVerticalBlackLine(true, '8');
+//      movements->larc_alignBetweenVerticalBlackLine(true, '8');
+}
+
+void larc(){
+  movements->larc_moveUntilHorizontalBlackLine(false, '8', true);
+  movements->movePID_nCM(1, false, '8');
+  movements->larc_moveUntilHorizontalBlackLine(false, '6', false);
 }
 
 void loop(){
-  aligningTofTest();
+//  aligningTofTest();
 //  tof_vs_sharp();
 //  testMovements();
 //  testSteps();
 //  readTCRT5000();
 //  aligningTcrtTest();
+  larc();
 }

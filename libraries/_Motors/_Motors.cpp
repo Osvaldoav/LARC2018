@@ -33,22 +33,22 @@ bool boolBR_F;
 bool boolBR_B;
 
 void _Motors::setupMotors(){
-    velFordFL = 200;
-    velFordBL = 200;
-    velFordFR = 200;
-    velFordBR = 218; 
-    velSlowFordFL = velFordFL-25;
-    velSlowFordBL = velFordBL-25; 
-    velSlowFordFR = velFordFR-25;
-    velSlowFordBR = velFordBR-25;        
-    velTurnFL = 110;
-    velTurnBL = 110;
-    velTurnFR = 110;
-    velTurnBR = 110;
-    velSlowTurnFL = velTurnFL-20;
-    velSlowTurnBL = velTurnBL-20;
-    velSlowTurnFR = velTurnFR-20;
-    velSlowTurnBR = velTurnBR-20;       
+    velFordFL = 170+65;
+    velFordBL = 170;
+    velFordFR = 170;
+    velFordBR = 170; 
+    velSlowFordFL = 120+65;
+    velSlowFordBL = 120; 
+    velSlowFordFR = 120;
+    velSlowFordBR = 120;        
+    velTurnFL = 200;
+    velTurnBL = 200;
+    velTurnFR = 200;
+    velTurnBR = 218;
+    velSlowTurnFL = 70;
+    velSlowTurnBL = 70;
+    velSlowTurnFR = 70;
+    velSlowTurnBR = 88;       
 
     pinMode(pinPWMFR_F,OUTPUT);
     pinMode(pinPWMFR_B,OUTPUT);
@@ -104,5 +104,6 @@ void _Motors::setVelocity(int frontLeft, int backLeft, int frontRight, int backR
 // TODO:
 //Stop motors
 void _Motors::brake(){
+    setMotor(0,0,0,0,0,0,0,0);
     setVelocity(0, 0);
 }

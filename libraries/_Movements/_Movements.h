@@ -6,9 +6,9 @@
 #include <_LibraryPID.h>
 #include <_Motors.h> 
 #include <_Sharp.h>
-#include <_LCD.h>
 #include <_TimeFlight.h>
 #include <_TCRT5000.h>
+#include <_LCD.h>
 
 class _Movements{
     public:
@@ -26,15 +26,16 @@ class _Movements{
         void verifyAndUploadOutputsByDirection(char);
         void verifySpecificAndUploadOutputs(double, double);
         // Move n Time/CM
-        void movePID_nSec(int, bool, char);
-        void movePID_nCM(int, bool, char);        
+        void movePID_nSec(double, bool, char);
+        void movePID_nCM(double, bool, char);        
         // Align using TOF PID
         void align_tof();        
-        void movePID_alignToPickContainer(int);
+        void larc_alignToPickContainer(int);
         // Align using TCRT5000 PID
-        void movePID_alignBetweenVerticalBlackLine(bool, char);
+        void larc_alignBetweenVerticalBlackLine(bool, char);
         char oppositeDirection(char);
-        void movePID_alignToShip(bool, char);
+        void larc_alignToShip(bool, char);
+        void larc_moveUntilHorizontalBlackLine(bool, char, bool);
 // TODO: ATTRIBUTES
         _BNO055 *bno055;
         _ColorSensor *colorSensor;
@@ -42,9 +43,9 @@ class _Movements{
         _LibraryPID *pid;
         _Motors *motors;
         _Sharp *sharp;
-        _LCD *lcd;
         _TimeFlight *timeFlight;
         _TCRT5000 *tcrt5000;
+        _LCD *lcd;
 };
 
 #endif

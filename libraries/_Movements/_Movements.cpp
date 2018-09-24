@@ -4,7 +4,7 @@
 void _Movements::setupMovements(){
     bno055 = new _BNO055;
     colorSensor = new _ColorSensor;
-    encoder = new _Encoder;;
+    encoder = new _Encoder;
     pid = new _LibraryPID;
     motors = new _Motors;
     sharp = new _Sharp;
@@ -251,7 +251,7 @@ void _Movements::verifySpecificAndUploadOutputs(double velMin, double velMax){
 //forward with P correction
 void _Movements::movePID(bool goSlow, char direction){
 //  Update Sensors
-    updateSensors(1,0,0,0,0,0);
+    updateSensors(1,0,0,1,0,0);
 //  Update Outputs
     setBaseVelocitiesByDirection(goSlow, direction);
     calculateAngleOutputsByDirection(goSlow, direction);
@@ -308,7 +308,7 @@ void _Movements::turnPID(bool goSlow) {
 }
 // TODO:
 //forward with P correction for a specific time
-void _Movements::movePID_nSec(int time, bool goSlow, char direction) {
+void _Movements::movePID_nSec(double time, bool goSlow, char direction) {
     double startTime = millis();
     while(millis() < startTime+(time*1000))       
         movePID(goSlow, direction);
@@ -316,17 +316,17 @@ void _Movements::movePID_nSec(int time, bool goSlow, char direction) {
 }
 // TODO:
 //Go forward the cm given in the parameter
-void _Movements::movePID_nCM(int cm, bool goSlow, char direction){
+void _Movements::movePID_nCM(double cm, bool goSlow, char direction){
     encoder->encoderState = 1;  
 //  Counts of encoder to get to the objective
     int untilSteps = (encoder->encoder30Cm / 30) * cm;
 //  Restart encoder counts
     encoder->steps = 0;
 //  Move with p correction until the encoder read the cm
-    while (encoder->steps < untilSteps){
-        Serial.println(encoder->steps);          
+    while (encoder->steps < untilSteps){              
         movePID(goSlow, direction);
     }
+    lcd->print("Steps", "HOLA");  
     motors->brake();
 }
 // TODO:
@@ -336,26 +336,23 @@ void _Movements::align_tof(){
     double startTime = millis();
 //  Init baseVelocity as SlowTurnVel and offSetAngle
     bno055->offsetAngle = bno055->offsetAngleTurn; 
-    setBaseVelocitiesByDirection(true, 'T');      
+    Serial.println("START");
     do{               
         updateSensors(0,0,0,1,0,0);
         double right = timeFlight->timeFlightRight.kalmanDistance;
         double left = timeFlight->  timeFlightLeft.kalmanDistance;
         pid->computeOutput_tof(abs(right-left));
-        Serial.print(right);
-        Serial.print(" ");
-        Serial.print(left);
-        Serial.print(" ");
-        Serial.print(abs(right-left));
-        Serial.print(" ");        
-        Serial.println(pid->OutputAlignMechanism);         
-        if(abs(right-left) > 0.19){          
+        pid->frontLeftOutput    =  105;
+        pid->backLeftOutput     =  105;
+        pid->frontRightOutput   =  105;
+        pid->backRightOutput    =  105;               
+        if(abs(right-left) > 0.57){          //0.19
             if(right>left){
                 // Serial.println("FIRST CASE");
                 pid->frontLeftOutput += pid->OutputAlignMechanism;
                 pid->backLeftOutput += pid->OutputAlignMechanism;
                 pid->frontRightOutput += pid->OutputAlignMechanism;
-                pid->backRightOutput += pid->OutputAlignMechanism; 
+                pid->backRightOutput += pid->OutputAlignMechanism;  
                 motors->setMotor(0, 1, 0, 1, 1, 0, 1, 0);            
             }
             else if(left>right){
@@ -368,23 +365,34 @@ void _Movements::align_tof(){
             }  
             else{
                 motors->brake();
-                delay(350);                  
+                delay(200);       
+                if(++countCorrect == 6)     break;                              
             }  
             verifyAndUploadOutputsByDirection('T'); 
         }    
         else{
             // Serial.println("\t\t\t\tGOING WELL");
             motors->brake();
-            delay(300);            
+            delay(200);            
             if(++countCorrect == 6)     break;     
-        }           
-    } while(millis() < startTime+1600);
+        }      
+        Serial.print(right);
+        Serial.print(" ");
+        Serial.print(left);
+        Serial.print(" ");
+        Serial.print(abs(right-left));
+        Serial.print(" ");        
+        Serial.print(pid->OutputAlignMechanism);       
+        Serial.print(" ");        
+        Serial.println(pid->frontRightOutput);              
+    } while(millis() < startTime+2000);
+    motors->brake();
     updateSensors(1,0,0,0,0,0);
     pid->Setpoint = bno055->rawInput;
 }
 // TODO:
 //Go forward until finding a wall at a certain distance
-void _Movements::movePID_alignToPickContainer(int cmDistance){
+void _Movements::larc_alignToPickContainer(int cmDistance){
 //  Update Sensors    
     updateSensors(0,0,0,1,0,0);
     timeFlight->filtrateDistancesTimeFlight();
@@ -392,34 +400,22 @@ void _Movements::movePID_alignToPickContainer(int cmDistance){
     int actualDistance, countCorrect=0;    
     actualDistance = (timeFlight->timeFlightRight.kalmanDistance+timeFlight->timeFlightLeft.kalmanDistance)/2;
     bool ready = actualDistance == cmDistance ? true : false;
-    bool isAligned=false;
 //  Fake velSlowFord    
     int extraSlowVel = motors->velSlowFordFL-20;
     int lastSlowVelFL=motors->velSlowFordFL, lastSlowVelBL=motors->velSlowFordBL;
     int lastSlowVelFR=motors->velSlowFordFR, lastSlowVelBR=motors->velSlowFordBR;     
-    motors->velSlowFordFL = extraSlowVel;
-    motors->velSlowFordBL = extraSlowVel; 
-    motors->velSlowFordFR = extraSlowVel;
-    motors->velSlowFordBR = extraSlowVel;   
+    motors->velSlowFordFL = motors->velSlowFordFL;
+    motors->velSlowFordBL = motors->velSlowFordBL; 
+    motors->velSlowFordFR = motors->velSlowFordFR;
+    motors->velSlowFordBR = motors->velSlowFordBR;   
 //  While not at ceratin distance from wall
     while (!ready){                 
         if (actualDistance > cmDistance + 2){
-            if((actualDistance-cmDistance < 9) && !isAligned){
-                // Serial.println("ALIGNING");
-                lcd->onLed('r');
-                motors->brake();
-                delay(100);
-                align_tof();
-                align_tof();
-                isAligned=true;
-                lcd->offLed('r');
-            }         
-            else
-                movePID(true, '4');    
+            movePID(true, '4');    
             countCorrect = 0;                            
         }
         else if (actualDistance < cmDistance - 2){ //To close from wall
-            movePID(true, '4');
+            movePID(true, '6');
             countCorrect = 0;
         }
         else{                                      //Already at the distance with an error of +- 2 cm.
@@ -430,6 +426,12 @@ void _Movements::movePID_alignToPickContainer(int cmDistance){
         updateSensors(0,0,0,1,0,0);
         actualDistance = (timeFlight->timeFlightRight.kalmanDistance+timeFlight->timeFlightLeft.kalmanDistance)/2;
     }
+    lcd->onLed('r');
+    motors->brake();
+    delay(100);
+    align_tof();
+    align_tof();
+    lcd->offLed('r');    
     motors->brake();
 //  SlowFord velocities back to normal
     motors->velSlowFordFL = lastSlowVelFL; 
@@ -438,7 +440,7 @@ void _Movements::movePID_alignToPickContainer(int cmDistance){
     motors->velSlowFordBR = lastSlowVelBR;    
 }
 // TODO:
-void _Movements::movePID_alignBetweenVerticalBlackLine(bool goSlow, char direction){
+void _Movements::larc_alignBetweenVerticalBlackLine(bool goSlow, char direction){
 //  Update Sensors
     updateSensors(0,0,0,0,0,1);
 //  Calculate Output
@@ -481,49 +483,45 @@ char _Movements::oppositeDirection(char direction){
     }
 }
 // TODO:
-void _Movements::movePID_alignToShip(bool goSlow, char direction){
+void _Movements::larc_alignToShip(bool goSlow, char direction){
     while(tcrt5000->tcrtFrontLeft.kalmanDistance<280 || tcrt5000->tcrtFrontRight.kalmanDistance<280){
         updateSensors(0,0,0,0,1,0);
         if(tcrt5000->tcrtFrontLeft.kalmanDistance<280 && tcrt5000->tcrtFrontRight.kalmanDistance<280)
             movePID(true, direction);
         else if(tcrt5000->tcrtFrontLeft.kalmanDistance>=280 && tcrt5000->tcrtFrontRight.kalmanDistance<280){
-            movePID_nCM(0.6, false, oppositeDirection(direction));
+            movePID_nCM(0.4, false, oppositeDirection(direction));
             pid->calculateNewSetpoint(-0.5);
             for(int i=0; i<100; i++){
                 turnPID(false);  
             }   
-            movePID_nCM(1, false, oppositeDirection(direction));               
-            // while(tcrt5000->tcrtFrontRight.kalmanDistance<280){
-            //     updateSensors(0,0,0,0,1,0);
-            //     motors->setMotor(0, 1, 0, 1, 1, 0, 1, 0);                 
-            //     motors->setVelocity(pid->frontLeftOutput, pid->backLeftOutput, pid->frontRightOutput, pid->backRightOutput);                               
-            // }
         }
         else if(tcrt5000->tcrtFrontLeft.kalmanDistance<280 && tcrt5000->tcrtFrontRight.kalmanDistance>=280){
-            movePID_nCM(0.6, false, oppositeDirection(direction));
+            movePID_nCM(0.4, false, oppositeDirection(direction));
             pid->calculateNewSetpoint(0.5);
             for(int i=0; i<100; i++){
                 turnPID(false);  
             }      
-            movePID_nCM(1, false, oppositeDirection(direction));              
-            // while(tcrt5000->tcrtFrontLeft.kalmanDistance<280){
-            //     updateSensors(0,0,0,0,1,0);
-            //     motors->setMotor(1, 0, 1, 0, 0, 1, 0, 1);                 
-            //     motors->setVelocity(pid->frontLeftOutput, pid->backLeftOutput, pid->frontRightOutput, pid->backRightOutput);
-            // }
         }        
     }      
-    movePID_nCM(3, false, oppositeDirection(direction));     
+    movePID_nCM(2.6, false, oppositeDirection(direction));     
     motors->brake();   
     delay(300);
-    pid->Setpoint = bno055->rawInput;
-        // Serial.print("1\t\t");
-        // Serial.print(tcrt5000->tcrtFrontLeft.kalmanDistance);
-        // Serial.print(" ");
-        // Serial.print(tcrt5000->tcrtDownLeft.kalmanDistance);
-        // Serial.print(" ");     
-        // Serial.print(tcrt5000->tcrtDownRight.kalmanDistance);
-        // Serial.print(" ");
-        // Serial.print(tcrt5000->tcrtFrontRight.kalmanDistance);
-        // Serial.println("\t\t");      
+    pid->Setpoint = bno055->rawInput;    
+}
+// TODO:
+void _Movements::larc_moveUntilHorizontalBlackLine(bool goSlow, char direction, bool secondLine){
+    int nLine=0;
+    do{
+        updateSensors(0,0,0,0,1,0);
+        movePID(goSlow, direction);
+        if(tcrt5000->tcrtFrontRight.kalmanDistance > 400){
+            if(secondLine)
+                if(++nLine == 2)     break;  
+                else                 delay(200);
+            else
+                break;
+        }
+    } while(1);
+    motors->brake();
+    lcd->printAlertSec("DONE", 2);
 }
