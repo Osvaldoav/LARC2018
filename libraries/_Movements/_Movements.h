@@ -15,7 +15,7 @@ class _Movements{
 // TODO: METHODS
         void setupMovements();
         // Modular functions
-        void updateSensors(bool, bool, bool, bool, bool);
+        void updateSensors(bool, bool, bool, bool, bool, bool);
         void movePID(bool, char);
         void spinPID(bool, double);
         void turnPID(bool);        
@@ -30,9 +30,11 @@ class _Movements{
         void movePID_nCM(int, bool, char);        
         // Align using TOF PID
         void align_tof();        
-        void movePID_alignToPickContainer(int, char);
+        void movePID_alignToPickContainer(int);
         // Align using TCRT5000 PID
         void movePID_alignBetweenVerticalBlackLine(bool, char);
+        char oppositeDirection(char);
+        void movePID_alignToShip(bool, char);
 // TODO: ATTRIBUTES
         _BNO055 *bno055;
         _ColorSensor *colorSensor;

@@ -35,13 +35,19 @@ class _TCRT5000{
         void setupTCRT5000();
         void readTCRT5000();
         double getRawDistance(byte); 
-        void calculateRawDistancesTCRT5000();
+        void calculateRawDistancesTCRT5000(bool);
         void tcrt5000KalmanFilter(TCRT5000Kalman &);
-        void filtrateDistancesTCRT5000();
+        void filtrateDistancesTCRT5000(bool);
         void tcrt5000_RawKalman(TCRT5000Kalman &);        
 // TODO: ATTRIBUTES
-    TCRT5000Kalman tcrtRight;
-    TCRT5000Kalman tcrtLeft;
+    TCRT5000Kalman tcrtFrontLeft;
+    TCRT5000Kalman tcrtDownLeft;
+    TCRT5000Kalman tcrtFrontRight;       
+    TCRT5000Kalman tcrtDownRight;
+    TCRT5000Kalman tcrtMidFrontLeft;
+    TCRT5000Kalman tcrtMidDownLeft;        
+    TCRT5000Kalman tcrtMidFrontRight; 
+    TCRT5000Kalman tcrtMidDownRight;       
 };
 
 #endif
