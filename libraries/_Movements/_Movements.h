@@ -35,7 +35,7 @@ class _Movements{
         void larc_alignBetweenVerticalBlackLine(bool, char);
         char oppositeDirection(char);
         void larc_alignToShip(bool, char);
-        void larc_moveUntilHorizontalBlackLine(bool, char, bool);
+        void larc_moveUntilBlackLine(bool, char, bool, bool, bool);
 // TODO: ATTRIBUTES
         _BNO055 *bno055;
         _ColorSensor *colorSensor;

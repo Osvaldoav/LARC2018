@@ -13,6 +13,27 @@ void _Movements::setupMovements(){
     tcrt5000 = new _TCRT5000;
 }
 // TODO:
+char _Movements::oppositeDirection(char direction){
+    switch (direction){
+        case '7':         // NORTHWEST
+            return '3';
+        case '8':         // NORTH
+            return '2';
+        case '9':         // NORTHEAST
+            return '1';
+        case '4':         // WEST
+            return '6';
+        case '6':         // EAST
+            return '4';
+        case '1':         // SOUTHWEST
+            return '9';
+        case '2':             // SOUTH
+            return '8';
+        case '3':         // SOUTHEAST 
+            return '7';              
+    }
+}
+// TODO:
 // Decide what sensors to update (in alphabetical )
 void _Movements::updateSensors(bool readBNO, bool readColorSensor, bool readSharp, bool readTOF, bool readTCRTContainer, bool readTCRTVertical){
     if(readBNO)             bno055->readBNO(pid->Setpoint);
@@ -22,7 +43,6 @@ void _Movements::updateSensors(bool readBNO, bool readColorSensor, bool readShar
     if(readTCRTContainer)   tcrt5000->filtrateDistancesTCRT5000(true);  
     if(readTCRTVertical)    tcrt5000->filtrateDistancesTCRT5000(false);    
 }
-
 // FIXME:
 /* DIRECTIONS
         ||  7  ||  8  ||  9  ||          || NorthWest || North || NorthEast ||
@@ -326,7 +346,6 @@ void _Movements::movePID_nCM(double cm, bool goSlow, char direction){
     while (encoder->steps < untilSteps){              
         movePID(goSlow, direction);
     }
-    lcd->print("Steps", "HOLA");  
     motors->brake();
 }
 // TODO:
@@ -462,27 +481,6 @@ void _Movements::larc_alignBetweenVerticalBlackLine(bool goSlow, char direction)
     movePID(goSlow, direction);
 }
 // TODO:
-char _Movements::oppositeDirection(char direction){
-    switch (direction){
-        case '7':         // NORTHWEST
-            return '3';
-        case '8':         // NORTH
-            return '2';
-        case '9':         // NORTHEAST
-            return '1';
-        case '4':         // WEST
-            return '6';
-        case '6':         // EAST
-            return '4';
-        case '1':         // SOUTHWEST
-            return '9';
-        case '2':             // SOUTH
-            return '8';
-        case '3':         // SOUTHEAST 
-            return '7';              
-    }
-}
-// TODO:
 void _Movements::larc_alignToShip(bool goSlow, char direction){
     while(tcrt5000->tcrtFrontLeft.kalmanDistance<280 || tcrt5000->tcrtFrontRight.kalmanDistance<280){
         updateSensors(0,0,0,0,1,0);
@@ -508,20 +506,74 @@ void _Movements::larc_alignToShip(bool goSlow, char direction){
     delay(300);
     pid->Setpoint = bno055->rawInput;    
 }
+// FIXME: 
+/*
+    secondLine => TRUE only when it is needed to ignore the first horizontal black line detected
+    pointingNorth => TRUE when robot is pointing front to the trains
+    goVerticalLine => TRUE when vertical black line is the destination
+*/
 // TODO:
-void _Movements::larc_moveUntilHorizontalBlackLine(bool goSlow, char direction, bool secondLine){
+void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool pointingNorth, bool goVerticalLine, bool secondLine){
     int nLine=0;
     do{
-        updateSensors(0,0,0,0,1,0);
+        updateSensors(0,0,0,0,0,1);
         movePID(goSlow, direction);
-        if(tcrt5000->tcrtFrontRight.kalmanDistance > 400){
-            if(secondLine)
-                if(++nLine == 2)     break;  
-                else                 delay(200);
-            else
-                break;
-        }
+        if(direction=='8'){
+            if(tcrt5000->tcrtMidFrontRight.kalmanDistance>400 && tcrt5000->tcrtMidFrontLeft.kalmanDistance>400)
+                if(secondLine){
+                    if(++nLine<2)   delay(200);
+                    else            break;
+                } 
+                else                break;
+        }    
+        else if(direction=='2'){
+            if(tcrt5000->tcrtMidDownRight.kalmanDistance>400 && tcrt5000->tcrtMidDownLeft.kalmanDistance>400)
+                if(secondLine){
+                    if(++nLine<2)   delay(200);
+                    else            break;
+                } 
+                else                break;
+        }               
+        else if(direction=='4' || direction=='6'){
+            if(pointingNorth){
+                if(direction=='4'){
+                    if(tcrt5000->tcrtMidFrontLeft.kalmanDistance>400)
+                        break;
+                } 
+                else if(direction=='6'){
+                    if(tcrt5000->tcrtMidFrontRight.kalmanDistance>400)
+                        break;
+                }                        
+            }
+            else{
+                if(direction=='4'){
+                    if(tcrt5000->tcrtMidDownLeft.kalmanDistance>400)
+                        break;
+                } 
+                else if(direction=='6'){
+                    if(tcrt5000->tcrtMidDownRight.kalmanDistance>400)
+                        break;
+                }      
+            }
+        } 
     } while(1);
     motors->brake();
+    if(direction=='8')
+        movePID_nCM(1.8, false, '8');
+    else if(direction=='2')
+        movePID_nCM(1.8, false, '2'); 
+    else if(goVerticalLine){
+        if(direction=='6')
+            movePID_nCM(0.5, false, '6');
+        else if(direction=='4')
+            movePID_nCM(0.5, false, '4'); 
+    }     
+    else{
+        if(direction=='6')
+            movePID_nCM(1.8, false, '6');
+        else if(direction=='4')
+            movePID_nCM(1.8, false, '4');         
+    }               
+    motors->brake();           
     lcd->printAlertSec("DONE", 2);
 }

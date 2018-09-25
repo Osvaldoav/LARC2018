@@ -87,11 +87,11 @@ void readTCRT5000(){
      Serial.print("\t\t");     
      Serial.print(movements->tcrt5000->tcrtMidFrontLeft.kalmanDistance);
      Serial.print(" ");
-     Serial.print(movements->tcrt5000->tcrtMidDownLeft.kalmanDistance);
+     Serial.print(movements->tcrt5000->tcrtMidFrontRight.kalmanDistance);
      Serial.print(" ");     
-     Serial.print(movements->tcrt5000->tcrtMidDownRight.kalmanDistance);
+     Serial.print(movements->tcrt5000->tcrtMidDownLeft.kalmanDistance);
      Serial.print(" ");
-     Serial.println(movements->tcrt5000->tcrtMidFrontRight.kalmanDistance);               
+     Serial.println(movements->tcrt5000->tcrtMidDownRight.kalmanDistance);               
 //    movements->tcrt5000->tcrt5000_RawKalman(movements->tcrt5000->tcrtFrontRight);  
 }
 
@@ -103,9 +103,10 @@ void aligningTcrtTest(){
 }
 
 void larc(){
-  movements->larc_moveUntilHorizontalBlackLine(false, '8', true);
-  movements->movePID_nCM(1, false, '8');
-  movements->larc_moveUntilHorizontalBlackLine(false, '6', false);
+  movements->larc_moveUntilBlackLine(false, '8', true, false, true);
+  movements->larc_moveUntilBlackLine(false, '6', true, true, false);
+  movements->movePID_nCM(10, false, '8');
+  while(1);
 }
 
 void loop(){
