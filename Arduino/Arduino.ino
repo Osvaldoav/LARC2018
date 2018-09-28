@@ -11,7 +11,6 @@ const byte pinEncoder = 18;
 void setup() {
     Serial.begin(9600);
     Wire.begin();
-    movements->setupMovements();
     movements->lcd->setupLCD();    
     movements->pid->setupLibraryPID();
     movements->motors->setupMotors();
@@ -25,18 +24,20 @@ void setup() {
 
     //CALIBRATION 
 //      movements->lcd->onLed('g');    
-//      movements->timeFlight->calibTimeFlights(12);    
+//      movements->timeFlight->calibTimeFlights(4);    
 //      movements->lcd->offLed('g'); 
 //      delay(5000);   
 }
 
 void testMovements(){ 
 //    movements->encoder->encoderState = 1;
-//    movements->movePID(false, '6');
+    movements->movePID(false, '7');
+//    movements->spinPID(false, -90);
+//    delay(5000);
 //    Serial.println(movements->encoder->steps);   
 //    movements->movePID_nSec(1.5, false, '1');
 //    delay(2000);
-    movements->spinPID(false, -90);
+//    movements->spinPID(false, -90);
 //    movements->motors->brake();
 //    delay(2000);
 //    movements->movePID_nCM(179, false, '6');
@@ -96,7 +97,7 @@ void readTCRT5000(){
 }
 
 void aligningTcrtTest(){
-  movements->larc_alignToShip(false, '4');
+  movements->larc_moveAndAlignToShip();
   delay(4000);
   while(1);
 //      movements->larc_alignBetweenVerticalBlackLine(true, '8');
@@ -105,8 +106,15 @@ void aligningTcrtTest(){
 void larc(){
   movements->larc_moveUntilBlackLine(false, '8', true, false, true);
   movements->larc_moveUntilBlackLine(false, '6', true, true, false);
-  movements->movePID_nCM(10, false, '8');
-  while(1);
+  movements->movePID_nCM(29, false, '8');
+  delay(2000);
+  movements->larc_alignToPickContainer(0);
+  movements->larc_moveBetweenVerticalBlackLine(false, '2');
+  movements->movePID_nCM(21, false, '6');
+  movements->spinPID(false, -90);
+  movements->larc_moveAndAlignToShip();
+  movements->lcd->printAlertSec("CONTAINER DROPPED", 5);
+  while(1); 
 }
 
 void loop(){

@@ -11,7 +11,7 @@ double outMin=0,outMax=255;
 bool inAuto=true;
 /////// PID CONSTANTS ///////
 double kp, ki, kd;
-double tof_Kp=2.3, tcrtVerticalBlackLine_kp=0.0009; //2.3, 140
+double tof_Kp=9, tcrtVerticalBlackLine_kp=0.0009; //2.3, 140
 /////// LOCAL VARIABLES ////////////
 double ITerm=0;
 unsigned long lastTime;
@@ -24,7 +24,7 @@ void _LibraryPID::setupLibraryPID(){
 		turnKp=17.6, turnKi=0, turnKd=0.9;//2.4d // 18.3
 		forwardKp=12.2, forwardKi=0, forwardKd=4.3;//4.8d
 		/////// VELOCITIES CONTANTS ////////
-		maxTurnVel=140;      
+		maxTurnVel=255;      
         minTurnVel=0;
         maxForwardVel=255;
         minForwardVel=0; 

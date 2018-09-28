@@ -14,14 +14,14 @@
 // const byte pinPWM_BR = 3;
 // const byte pinPWM_BL = 4;
 //////////////// PINs DECLARATION "LARC" ///////////////////
-const byte pinPWMFR_F = 7;
-const byte pinPWMFR_B = 8;
-const byte pinPWMFL_F = 10;
-const byte pinPWMFL_B = 9;
-const byte pinPWMBR_F = 2;
-const byte pinPWMBR_B = 3;
-const byte pinPWMBL_F = 5;
-const byte pinPWMBL_B = 4;
+const byte pinPWMFR_F = 9;
+const byte pinPWMFR_B = 10;
+const byte pinPWMFL_F = 8;
+const byte pinPWMFL_B = 7;
+const byte pinPWMBR_F = 4;
+const byte pinPWMBR_B = 5;
+const byte pinPWMBL_F = 2;
+const byte pinPWMBL_B = 3;
 ////////////////////// LOCAL VARIABLES /////////////////
 bool boolFL_F;
 bool boolFL_B;
@@ -33,22 +33,22 @@ bool boolBR_F;
 bool boolBR_B;
 
 void _Motors::setupMotors(){
-    velFordFL = 170+65;
-    velFordBL = 170;
-    velFordFR = 170;
-    velFordBR = 170; 
-    velSlowFordFL = 120+65;
+    velFordFL = 200;
+    velFordBL = 200;
+    velFordFR = 200;
+    velFordBR = 200; 
+    velSlowFordFL = 120;
     velSlowFordBL = 120; 
     velSlowFordFR = 120;
     velSlowFordBR = 120;        
-    velTurnFL = 200;
-    velTurnBL = 200;
-    velTurnFR = 200;
-    velTurnBR = 218;
+    velTurnFL = 175;
+    velTurnBL = 175;
+    velTurnFR = 175;
+    velTurnBR = 175;
     velSlowTurnFL = 70;
     velSlowTurnBL = 70;
     velSlowTurnFR = 70;
-    velSlowTurnBR = 88;       
+    velSlowTurnBR = 70;       
 
     pinMode(pinPWMFR_F,OUTPUT);
     pinMode(pinPWMFR_B,OUTPUT);

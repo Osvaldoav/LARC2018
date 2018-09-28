@@ -13,7 +13,7 @@
 class _Movements{
     public:
 // TODO: METHODS
-        void setupMovements();
+        _Movements();
         // Modular functions
         void updateSensors(bool, bool, bool, bool, bool, bool);
         void movePID(bool, char);
@@ -32,9 +32,9 @@ class _Movements{
         void align_tof();        
         void larc_alignToPickContainer(int);
         // Align using TCRT5000 PID
-        void larc_alignBetweenVerticalBlackLine(bool, char);
+        void larc_moveBetweenVerticalBlackLine(bool, char);
         char oppositeDirection(char);
-        void larc_alignToShip(bool, char);
+        void larc_moveAndAlignToShip();
         void larc_moveUntilBlackLine(bool, char, bool, bool, bool);
 // TODO: ATTRIBUTES
         _BNO055 *bno055;
