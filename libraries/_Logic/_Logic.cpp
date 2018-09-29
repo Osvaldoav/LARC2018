@@ -64,21 +64,27 @@ void _Logic::stackToShip(){
     }
     
     if ((lastColor == 'B' && blue_boxes > 3) || (lastColor == 'G' && green_boxes > 3)){
-        if(((lastStack/2 + 1)%2 == 0) == (lastColor == 'B'))
+        bool b = ((lastStack/2 + 1)%2 == 1);
+        if(((lastStack/2 + 1)%2 == 1) == (lastColor == 'B')){
+            b = !b;
             girar(180); // gira 180 grados
-        avanzar() // avanza hasta que llegue a la altura de los barcos
+        }
+        avanzar(b) // avanza hasta que llegue a la altura de los barcos
     }else{
-        dir = ((lastStack/2 + 1)%2 == 0) != B ? 1 : 0;
-        girar(dir); // giros de 90, 1 -> izq, 0 -> der
+        dir = ((lastStack/2 + 1)%2 == 0) != B ? 90 : -90;
+        girar(dir); // giros de 90, + derecha, - izquierda
     }
-    alinearPozo();
+    if (B)
+        alinearPozo();
+    else
+        alinearTren();
 }
 
 void _Logic::shipToStack(char c){
     char color = c > 98 ? 'R' : c > 65 ? 'G' : 'B';
     stack = color == 'R' ? c - 51 : color == 'G' ? c - 18 : c - 3;
     bool dir;
-    int lines;
+    int lines, angle;
 
     mecanismo(stacks[stack]); // nivela el mecanismo al nivel adecuado
 
@@ -93,9 +99,9 @@ void _Logic::shipToStack(char c){
         horizontal(lines); // Avanza por la linea horizontal a la izquierda o derecha
     }else{
         moveAtrasHorizontal(); // izquierda hasta topar linea horizontal
-        dir = (stack/2 + 1)%2 != 0;
-        dir = lastColor == 'R' ? !dir : dir;
-        girar(dir); // True es vuelta de 90 hacia la derecha, False es 90 hacia izquierda
+        angle = (stack/2 + 1)%2 != 0 ? 90 : -90;
+        angle *= lastColor == 'R' ? -1 : 1;
+        girar(angle); // 90 es vuelta de 90 hacia la derecha, -90 es 90 hacia izquierda
         
         if(lastColor != 'R'){
             lines = (stack < 4 && lastColor == 'B') || (stack > 3 && lastColor == 'G') ? 2 : 1;
