@@ -1,5 +1,5 @@
-#ifndef _Movimiento_h
-#define _Movimiento_h
+#ifndef _Movements_h
+#define _Movements_h
 #include <_BNO055.h>
 #include <_ColorSensor.h>
 #include <_Encoder.h>
@@ -13,7 +13,6 @@
 class _Movements{
     public:
 // TODO: METHODS
-        _Movements();
         // Modular functions
         void updateSensors(bool, bool, bool, bool, bool, bool);
         void movePID(bool, char);
@@ -37,15 +36,15 @@ class _Movements{
         void larc_moveAndAlignToShip();
         void larc_moveUntilBlackLine(bool, char, bool, bool, bool);
 // TODO: ATTRIBUTES
-        _BNO055 *bno055;
-        _ColorSensor *colorSensor;
-        _Encoder *encoder;
-        _LibraryPID *pid;
-        _Motors *motors;
-        _Sharp *sharp;
-        _TimeFlight *timeFlight;
-        _TCRT5000 *tcrt5000;
-        _LCD *lcd;
+        _BNO055 *bno055 = new _BNO055;
+        _ColorSensor *colorSensor = new _ColorSensor;
+        _Encoder *encoder = new _Encoder;
+        _LibraryPID *pid = new _LibraryPID;
+        _Motors *motors = new _Motors;
+        _Sharp *sharp = new _Sharp;
+        _LCD *lcd = new _LCD;      
+        _TimeFlight *timeFlight = new _TimeFlight;
+        _TCRT5000 *tcrt5000 = new _TCRT5000;
 };
 
 #endif
