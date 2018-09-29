@@ -3,18 +3,6 @@
 double const BLACKLINE_TRIGGER = 380;
 
 // TODO:
-_Movements::_Movements(){
-    bno055 = new _BNO055;
-    colorSensor = new _ColorSensor;
-    encoder = new _Encoder;
-    pid = new _LibraryPID;
-    motors = new _Motors;
-    sharp = new _Sharp;
-    lcd = new _LCD;
-    timeFlight = new _TimeFlight;
-    tcrt5000 = new _TCRT5000;
-}
-// TODO:
 char _Movements::oppositeDirection(char direction){
     switch (direction){
         case '7':         // NORTHWEST
