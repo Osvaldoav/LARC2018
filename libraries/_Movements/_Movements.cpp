@@ -492,7 +492,7 @@ void _Movements::larc_moveAndAlignToShip(){
     goVerticalLine => TRUE when vertical black line is the destination
 */
 // TODO:
-void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool pointingNorth, bool goVerticalLine, bool secondLine){
+void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool frontTCRT, bool goVerticalLine, bool secondLine, bool tcrtSharps){
     int nLine=0;
     do{
         updateSensors(0,0,0,0,1,1);
@@ -514,7 +514,11 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool point
                 else                break;
         }               
         else if(direction=='4' || direction=='6'){
-            if(pointingNorth){
+            if(tcrtSharps){
+                if(tcrt5000->tcrtSharpsLeft.kalmanDistance>BLACKLINE_TRIGGER && tcrt5000->tcrtSharpsRight.kalmanDistance>BLACKLINE_TRIGGER)
+                    break;
+            }
+            if(frontTCRT){
                 if(direction=='4'){
                     if(tcrt5000->tcrtMidFrontLeft.kalmanDistance>BLACKLINE_TRIGGER+20)
                         break;
