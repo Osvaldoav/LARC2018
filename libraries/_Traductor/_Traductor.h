@@ -21,7 +21,7 @@ class _Traductor{
         static void mecanismo(u_int8_t s);
         static void moveAtras();
         static void moveToHorizontal(bool b);
-        static void horizontal(int lines); //pendiente
+        static void horizontal(int lines, bool tcrt);
         static void moveAtrasHorizontal();
         static void vertical(int lines);
 

@@ -44,11 +44,20 @@ void _Traductor::moveAtras(){
 
 void _Traductor:moveToHorizontal(bool b){
     char c = b ? '8' : '2';
-    movevements->larc_moveUntilBlackLine(false, c, true, false, false);
+    movevements->larc_moveUntilBlackLine(false, c, true, false, false, false);
 }
-void _Traductor::horizontal(int lines){
+void _Traductor::horizontal(int lines, bool tcrt){
     char c = lines < 0 ? '6' : '4';
-    movements->larc_moveUntilBlackLines(false, c, );
-    //pendiente
+    bool b = abs(lines) > 1;
+    movements->larc_moveUntilBlackLine(false, c, tcrt, true, b, false);
 }
 
+void _Traductor::moveAtrasHorizontal(){
+    movevements->larc_moveUntilBlackLine(false, '4', false, false, false, true);
+}
+
+void _Traductor::vertical(int lines){
+    int steps = lines > 1 ? 50 : 29;
+    char dir = lines < 0 ? '8' : '2';
+    movements->movePID_nCM(steps, false, dir);
+}

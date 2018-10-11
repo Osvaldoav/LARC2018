@@ -83,7 +83,7 @@ void _Logic::stackToShip(){
 void _Logic::shipToStack(char c){
     char color = c > 98 ? 'R' : c > 65 ? 'G' : 'B';
     stack = color == 'R' ? c - 51 : color == 'G' ? c - 18 : c - 3;
-    bool dir;
+    bool dir, tcrt;
     int lines, angle;
 
     mecanismo(stacks[stack]); // nivela el mecanismo al nivel adecuado
@@ -96,12 +96,13 @@ void _Logic::shipToStack(char c){
         moveToHorizontal(dir); // frente o reversa hasta topar linea horizontal. True es frente, False es atras
         lines = stack < 2 || stack > 5 ? -1 : 1;
         // 2 son dos lineas, 1 es una. negativo es derecha, positivo izquierda
-        horizontal(lines); // Avanza por la linea horizontal a la izquierda o derecha
+        horizontal(lines, dir); // Avanza por la linea horizontal a la izquierda o derecha
     }else{
         moveAtrasHorizontal(); // izquierda hasta topar linea horizontal
         angle = (stack/2 + 1)%2 != 0 ? 90 : -90;
         angle *= lastColor == 'R' ? -1 : 1;
         girar(angle); // 90 es vuelta de 90 hacia la derecha, -90 es 90 hacia izquierda
+        tcrt = angle < 0;
         
         if(lastColor != 'R'){
             lines = (stack < 4 && lastColor == 'B') || (stack > 3 && lastColor == 'G') ? 2 : 1;
@@ -111,7 +112,7 @@ void _Logic::shipToStack(char c){
             lines *= ((stack/2 + 1) % 2 == 1 && !firstRed) || ((stack/2 + 1) % 2 == 0 && firstRed) ? 1 : -1;
         }
         // 2 son dos lineas, 1 es una. negativo es derecha, positivo izquierda
-        horizontal(lines); // Avanza por la linea horizontal a la izquierda o derecha
+        horizontal(lines, tcrt); // Avanza por la linea horizontal a la izquierda o derecha
     }
 
     if(lastColor != 'R'){
@@ -121,6 +122,6 @@ void _Logic::shipToStack(char c){
         lines = (stack % 4) % 3 == 0 ? 2 : 1;
         lines *= stack % 4 > 1 ? 1 : -1;
     }
-    // 2 son dos stacks, 1 es uno. negativo es derecha, positivo izquierda
+    // 2 son dos stacks, 1 es uno. negativo es frente, positivo reversa
     vertical(lines); // Avanza por la linea vertical frente o reversa
 }
