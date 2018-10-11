@@ -19,6 +19,8 @@ const byte  tcrtFrontLeftSensor = A7;
 const byte  tcrtDownLeftSensor = A6;
 const byte  tcrtFrontRightSensor = A5;
 const byte  tcrtDownRightSensor = A4;
+const byte  tcrtSharpsRightSensor = 0;
+const byte  tcrtSharpsLeftSensor = 1;
 
 // TODO:
 void _TCRT5000::setupTCRT5000(){
@@ -35,6 +37,8 @@ void _TCRT5000::calculateRawDistancesTCRT5000(bool dropContainer){
         tcrtDownLeft.rawDistance = getRawDistance(tcrtDownLeftSensor); 
         tcrtFrontRight.rawDistance = getRawDistance(tcrtFrontRightSensor);
         tcrtDownRight.rawDistance = getRawDistance(tcrtDownRightSensor);    
+        tcrtFrontRight.rawDistance = getRawDistance(tcrtSharpsRightSensor);
+        tcrtDownRight.rawDistance = getRawDistance(tcrtSharpsLeftSensor);            
     }
     else{ 
         tcrtMidFrontLeft.rawDistance = getRawDistance(tcrtMidFrontLeftSensor);
@@ -60,6 +64,8 @@ void _TCRT5000::filtrateDistancesTCRT5000(bool dropContainer){
         tcrt5000KalmanFilter(tcrtDownLeft);
         tcrt5000KalmanFilter(tcrtFrontRight);
         tcrt5000KalmanFilter(tcrtDownRight); 
+        tcrt5000KalmanFilter(tcrtSharpsLeft);
+        tcrt5000KalmanFilter(tcrtSharpsRight);         
     } 
     else{
         tcrt5000KalmanFilter(tcrtMidFrontLeft);
