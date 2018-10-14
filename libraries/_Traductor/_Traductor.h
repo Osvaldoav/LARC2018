@@ -22,6 +22,7 @@ class _Traductor{
         void horizontal(int lines, bool tcrt);
         void moveAtrasHorizontal(); 
         void vertical(int lines);
+        void alinearStack();
 
         _Movements *movements;
 

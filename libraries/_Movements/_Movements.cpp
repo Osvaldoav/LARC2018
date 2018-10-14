@@ -283,18 +283,10 @@ void _Movements::movePID(bool goSlow, char direction){
 }
 // TODO:
 void _Movements::spinPID(bool goSlow, double newAngle){
-    if(abs(newAngle) == 180){
-        if(newAngle == 180){
-            spinPID(goSlow, 90);
-            spinPID(goSlow, 90);
-        }
-        else if(newAngle == -180){
-            spinPID(goSlow, -90);
-            spinPID(goSlow, -90);
-        }    
-        return ;
-    }
-    else if(abs(newAngle) == 360){
+    int maxTime=2000;
+    if(abs(newAngle) == 180)
+        maxTime=2500;
+    if(abs(newAngle) == 360){
         if(newAngle == 360){
             spinPID(goSlow, 180);
             spinPID(goSlow, 180);
@@ -319,7 +311,7 @@ void _Movements::spinPID(bool goSlow, double newAngle){
             delay(155);      
             if (++x == 3) break;
         }
-    } while(millis() < startTime+2000);    
+    } while(millis() < startTime+maxTime);    
 }
 // TODO:
 void _Movements::turnPID(bool goSlow) {
@@ -580,10 +572,10 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
     else if(direction=='2')
         movePID_nCM(1.8, false, '2'); 
     else if(goVerticalLine){
-        if(direction=='6')
-            movePID_nCM(0.5, false, '6');
-        else if(direction=='4')
-            movePID_nCM(0.5, false, '4'); 
+        // if(direction=='6')
+            // movePID_nCM(0.5, false, '6');
+        // else if(direction=='4')
+            // movePID_nCM(0.5, false, '4'); 
     }     
     else{
         if(direction=='6')
@@ -594,7 +586,7 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
     motors->brake();           
 }
 // TODO:
-void _Movements::larc_moveBetweenVerticalBlackLine(bool goSlow, char direction){
+void _Movements::larc_moveBetweenVerticalBlackLine(bool goSlow, char direction, bool shipToStack){
     while(1){
         updateSensors(0,0,0,0,1,0);
         // char tcrtPosition = pid->computeOutput_tcrtVerticalLine(
@@ -611,14 +603,26 @@ void _Movements::larc_moveBetweenVerticalBlackLine(bool goSlow, char direction){
         // }
         // movePID(goSlow, direction);
         movePID(goSlow, direction);
-        if(direction == '8'){
-            if(tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER)
-                break;
+        if(shipToStack){
+            if(direction == '8'){
+                if(tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER)
+                    break;
+            }
+            else if(direction == '2'){
+                if(tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER)
+                    break;
+            }   
         }
-        else if(direction == '2'){
-            if(tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER)
-                break;
-        }        
+        else{
+            if(direction == '8'){
+                if(tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER)
+                    break;
+            }
+            else if(direction == '2'){
+                if(tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER)
+                    break;
+            }
+        }     
     }
     motors->brake();
 }

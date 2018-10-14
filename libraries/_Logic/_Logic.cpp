@@ -131,4 +131,5 @@ void _Logic::shipToStack(char c){
     }
     // 2 son dos stacks, 1 es uno. negativo es frente, positivo reversa
     traductor->vertical(lines); // Avanza por la linea vertical frente o reversa
+    traductor->alinearStack();
 }
