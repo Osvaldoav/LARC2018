@@ -124,7 +124,7 @@ void colorSensor(){
 }
 
 void logicTest(){
-    logic->shipToStack('4');
+    logic->shipToStack('g');
     while(1);
 }
 
@@ -136,6 +136,10 @@ void loop(){
 //  readTCRT5000();
 //  aligningTcrtTest();
 //  larc();
-  logicTest();
+//  logicTest();
 //  colorSensor();
+  if(-1)
+    Serial.println("IF");
+  else
+  Serial.println("ELSE");
 }
