@@ -46,7 +46,7 @@ def convert( pair):
     return chr(ord(str(pair[0])) + (ord(pair[1]) - 65) * 3)
 
 def f():
-    return 4, 'R'
+    return 0, 'R'
 
 
 par = f()
