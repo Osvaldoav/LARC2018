@@ -17,7 +17,7 @@ struct TCRT5000Kalman{
         side = false;
     }
     float varSensor; //Variance of sensor. The LESS, the MORE it looks like the raw input
-    float varProcess; // The greater the variance, faster the sensor response
+    float varProcess; // The greater the variance, faster the  sensor response
     float P;
     float Pc;
     float G;
@@ -40,16 +40,14 @@ class _TCRT5000{
         void filtrateDistancesTCRT5000(bool);
         void tcrt5000_RawKalman(TCRT5000Kalman &);        
 // TODO: ATTRIBUTES
-    TCRT5000Kalman tcrtFrontLeft;
-    TCRT5000Kalman tcrtDownLeft;
-    TCRT5000Kalman tcrtFrontRight;       
-    TCRT5000Kalman tcrtDownRight;
+    TCRT5000Kalman tcrtMechaLeft;
+    TCRT5000Kalman tcrtMechaRight;       
     TCRT5000Kalman tcrtMidFrontLeft;
     TCRT5000Kalman tcrtMidDownLeft;        
     TCRT5000Kalman tcrtMidFrontRight; 
     TCRT5000Kalman tcrtMidDownRight;   
-    TCRT5000Kalman tcrtSharpsLeft;
-    TCRT5000Kalman tcrtSharpsRight;        
+    TCRT5000Kalman tcrtSharpLeft;
+    TCRT5000Kalman tcrtSharpRight;        
 };
 
 #endif

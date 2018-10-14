@@ -1,14 +1,14 @@
 #ifndef _Logic_h
 #define _Logic_h
-
+#include <_Traductor.h>
 #include <Arduino.h>
 
 class _Logic{
     private:
         int *stacks;
-        u_int8_t blue_boxes, green_boxes;
-        u_int8_t lastStack,lastColor;
-        u_int8_t firstRed;
+        uint8_t blue_boxes, green_boxes;
+        uint8_t lastStack,lastColor;
+        uint8_t firstRed;      
     
     public:
         _Logic();
@@ -16,10 +16,10 @@ class _Logic{
         char verifyColor(char c);
         char handleRed();
         char grabContainer(char c);
-
-
         void stackToShip();
         void shipToStack(char c);
+
+        _Traductor *traductor;  
         
 };
 

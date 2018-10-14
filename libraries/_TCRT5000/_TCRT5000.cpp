@@ -11,16 +11,14 @@
         ||  A4  ||     ||      ||          || BL ||    || BR ||        
         ||      ||     ||  A5  ||          || BL ||    || BR ||
 */
-const byte  tcrtMidFrontLeftSensor = A1;
+const byte  tcrtMidFrontLeftSensor = A8;
 const byte  tcrtMidDownLeftSensor = A3;
-const byte  tcrtMidFrontRightSensor = A0;
+const byte  tcrtMidFrontRightSensor = A9;
 const byte  tcrtMidDownRightSensor = A2;
-const byte  tcrtFrontLeftSensor = A7;
-const byte  tcrtDownLeftSensor = A6;
-const byte  tcrtFrontRightSensor = A5;
-const byte  tcrtDownRightSensor = A4;
-const byte  tcrtSharpsRightSensor = 0;
-const byte  tcrtSharpsLeftSensor = 1;
+const byte  tcrtMechaLeftSensor = A7;
+const byte  tcrtMechaRightSensor = A5;
+const byte  tcrtSharpRightSensor = A6;
+const byte  tcrtSharpLeftSensor = A4;
 
 // TODO:
 void _TCRT5000::setupTCRT5000(){
@@ -33,12 +31,10 @@ double _TCRT5000::getRawDistance(byte tcrt){
 // TODO:
 void _TCRT5000::calculateRawDistancesTCRT5000(bool dropContainer){
     if(dropContainer){
-        tcrtFrontLeft.rawDistance = getRawDistance(tcrtFrontLeftSensor);
-        tcrtDownLeft.rawDistance = getRawDistance(tcrtDownLeftSensor); 
-        tcrtFrontRight.rawDistance = getRawDistance(tcrtFrontRightSensor);
-        tcrtDownRight.rawDistance = getRawDistance(tcrtDownRightSensor);    
-        tcrtFrontRight.rawDistance = getRawDistance(tcrtSharpsRightSensor);
-        tcrtDownRight.rawDistance = getRawDistance(tcrtSharpsLeftSensor);            
+        tcrtMechaLeft.rawDistance = getRawDistance(tcrtMechaLeftSensor);
+        tcrtSharpRight.rawDistance = getRawDistance(tcrtMechaRightSensor); 
+        tcrtMechaRight.rawDistance = getRawDistance(tcrtSharpRightSensor);
+        tcrtSharpLeft.rawDistance = getRawDistance(tcrtSharpLeftSensor);            
     }
     else{ 
         tcrtMidFrontLeft.rawDistance = getRawDistance(tcrtMidFrontLeftSensor);
@@ -60,12 +56,10 @@ void _TCRT5000::tcrt5000KalmanFilter(TCRT5000Kalman &tcrt){
 void _TCRT5000::filtrateDistancesTCRT5000(bool dropContainer){
     calculateRawDistancesTCRT5000(dropContainer); 
     if(dropContainer){
-        tcrt5000KalmanFilter(tcrtFrontLeft);
-        tcrt5000KalmanFilter(tcrtDownLeft);
-        tcrt5000KalmanFilter(tcrtFrontRight);
-        tcrt5000KalmanFilter(tcrtDownRight); 
-        tcrt5000KalmanFilter(tcrtSharpsLeft);
-        tcrt5000KalmanFilter(tcrtSharpsRight);         
+        tcrt5000KalmanFilter(tcrtMechaLeft);
+        tcrt5000KalmanFilter(tcrtMechaRight);
+        tcrt5000KalmanFilter(tcrtSharpLeft);
+        tcrt5000KalmanFilter(tcrtSharpRight);         
     } 
     else{
         tcrt5000KalmanFilter(tcrtMidFrontLeft);
