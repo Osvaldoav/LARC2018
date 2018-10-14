@@ -16,8 +16,8 @@ const byte  tcrtMidDownLeftSensor = A3;
 const byte  tcrtMidFrontRightSensor = A9;
 const byte  tcrtMidDownRightSensor = A2;
 const byte  tcrtMechaLeftSensor = A7;
-const byte  tcrtMechaRightSensor = A5;
-const byte  tcrtSharpRightSensor = A6;
+const byte  tcrtMechaRightSensor = A6;
+const byte  tcrtSharpRightSensor = A5;
 const byte  tcrtSharpLeftSensor = A4;
 
 // TODO:

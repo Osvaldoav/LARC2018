@@ -45,10 +45,10 @@ void _Motors::setupMotors(){
     velTurnBL = 175;
     velTurnFR = 175;
     velTurnBR = 175;
-    velSlowTurnFL = 70;
-    velSlowTurnBL = 70;
-    velSlowTurnFR = 70;
-    velSlowTurnBR = 70;       
+    velSlowTurnFL = 50;
+    velSlowTurnBL = 50;
+    velSlowTurnFR = 50;
+    velSlowTurnBR = 50;       
 
     pinMode(pinPWMFR_F,OUTPUT);
     pinMode(pinPWMFR_B,OUTPUT);
