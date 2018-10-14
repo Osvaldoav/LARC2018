@@ -7,10 +7,10 @@ _Logic::_Logic(){
     for(int i = 0; i < 8; i++)
         stacks[i] = 3;
     
-    blue_boxes = 1;
-    green_boxes = 0;
+    blue_boxes = 0;
+    green_boxes = 1;
     lastStack[7] = 2;
-    lastColor = 'B';
+    lastColor = 'G';
 }
 
 char _Logic::handleRed(){
@@ -88,7 +88,7 @@ void _Logic::stackToShip(){
 
 void _Logic::shipToStack(char c){
     char color = c > 98 ? 'R' : c > 65 ? 'G' : 'B';
-    int stack = color == 'R' ? c - 51 : color == 'G' ? c - 18 : c - 3;
+    int stack = color == 'R' ? c - 99 : color == 'G' ? c - 66 : c - 51;
     bool dir, tcrt;
     int lines, angle;
 

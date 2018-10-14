@@ -1,16 +1,16 @@
-import serial
+# import serial
 import time
 
 class Serial:
-    def __init__(self, screen):
-        try:
-            self.arduino = serial.Serial("/dev/ttyACM0", 9600, timeout=0, writeTimeout=0)
-            time.sleep(3)
-            self.screen = screen
-        except serial.SerialException:
-            print 'Bad port, check labeling'
-            while True:
-                pass
+    # def __init__(self, screen):
+    #     try:
+    #         self.arduino = serial.Serial("/dev/ttyACM0", 9600, timeout=0, writeTimeout=0)
+    #         time.sleep(3)
+    #         self.screen = screen
+    #     except serial.SerialException:
+    #         print 'Bad port, check labeling'
+    #         while True:
+    #             pass
 
     def send(self, char):
         self.arduino.write(char)
@@ -41,6 +41,14 @@ class Serial:
             self.screen.mainloop()
 
 
+def convert(pair):
+    return chr(ord(str(pair[0])) + (ord(pair[1]) - 65) * 3)
 
+def f():
+    return 0, 'R'
 
+par = f()
 
+#(int('B') - 65 ) * 3     +  int(str(0))
+
+print ord(convert(par))
