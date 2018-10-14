@@ -319,7 +319,7 @@ void _Movements::spinPID(bool goSlow, double newAngle){
             delay(155);      
             if (++x == 3) break;
         }
-    } while(millis() < startTime+5000);    
+    } while(millis() < startTime+2000);    
 }
 // TODO:
 void _Movements::turnPID(bool goSlow) {
@@ -466,33 +466,35 @@ void _Movements::larc_alignToPickContainer(int cmDistance){
 void _Movements::larc_moveAndAlignToShip(){
     while(1){   //Move Until Ship
         updateSensors(0,0,0,0,1,0);
-        movePID(false, '4');
+        movePID(false, '6');
         if(tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER 
-            || tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER)
+            || tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER){
+            motors->brake();
             break;        
+        }
     }
-    movePID_nCM(2.6, false, '6'); 
+    movePID_nCM(2.6, false, '4'); 
     motors->brake();  
     while(tcrt5000->tcrtMechaLeft.kalmanDistance<BLACKLINE_TRIGGER || tcrt5000->tcrtMechaRight.kalmanDistance<BLACKLINE_TRIGGER){
         updateSensors(0,0,0,0,1,0);
         if(tcrt5000->tcrtMechaLeft.kalmanDistance<BLACKLINE_TRIGGER && tcrt5000->tcrtMechaRight.kalmanDistance<BLACKLINE_TRIGGER)
-            movePID(true, '4');
+            movePID(true, '6');
         else if(tcrt5000->tcrtMechaLeft.kalmanDistance>=BLACKLINE_TRIGGER && tcrt5000->tcrtMechaRight.kalmanDistance<BLACKLINE_TRIGGER){
-            movePID_nCM(0.4, false, '6');
+            movePID_nCM(1, false, '4');
             pid->calculateNewSetpoint(-0.5);
             for(int i=0; i<100; i++){
                 turnPID(false);  
             }   
         }
         else if(tcrt5000->tcrtMechaLeft.kalmanDistance<BLACKLINE_TRIGGER && tcrt5000->tcrtMechaRight.kalmanDistance>=BLACKLINE_TRIGGER){
-            movePID_nCM(0.4, false, '6');
+            movePID_nCM(1, false, '4');
             pid->calculateNewSetpoint(0.5);
             for(int i=0; i<100; i++){
                 turnPID(false);  
             }      
         }        
     }      
-    movePID_nCM(2.6, false, '6');     
+    movePID_nCM(2.6, false, '4');     
     motors->brake();   
     delay(300);
     pid->Setpoint = bno055->rawInput;    
@@ -512,7 +514,7 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
         if(direction=='8'){
             if(tcrt5000->tcrtMidFrontRight.kalmanDistance>BLACKLINE_TRIGGER || tcrt5000->tcrtMidFrontLeft.kalmanDistance>BLACKLINE_TRIGGER)
                 if(secondLine){
-                    if(++nLine<2)   delay(200);
+                    if(++nLine<2)   delay(400);
                     else            break;
                 } 
                 else                break;
@@ -520,7 +522,7 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
         else if(direction=='2'){
             if(tcrt5000->tcrtMidDownRight.kalmanDistance>BLACKLINE_TRIGGER || tcrt5000->tcrtMidDownLeft.kalmanDistance>BLACKLINE_TRIGGER)
                 if(secondLine){
-                    if(++nLine<2)   delay(200);
+                    if(++nLine<2)   delay(400);
                     else            break;
                 } 
                 else                break;
@@ -528,26 +530,46 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
         else if(direction=='4' || direction=='6'){
             if(tcrtSharps){
                 if(tcrt5000->tcrtSharpLeft.kalmanDistance>BLACKLINE_TRIGGER && tcrt5000->tcrtSharpRight.kalmanDistance>BLACKLINE_TRIGGER)
-                    break;
+                    if(secondLine){
+                        if(++nLine<2)   delay(400);
+                        else            break;
+                    } 
+                    else                break;
             }
             if(frontTCRT){
                 if(direction=='4'){
                     if(tcrt5000->tcrtMidFrontLeft.kalmanDistance>BLACKLINE_TRIGGER+20)
-                        break;
+                        if(secondLine){
+                            if(++nLine<2)   delay(500);
+                            else            break;
+                        } 
+                        else                break;
                 } 
                 else if(direction=='6'){
                     if(tcrt5000->tcrtMidFrontRight.kalmanDistance>BLACKLINE_TRIGGER+20)
-                        break;
+                        if(secondLine){
+                            if(++nLine<2)   delay(500);
+                            else            break;
+                        } 
+                        else                break;
                 }                        
             }
             else{
                 if(direction=='4'){
                     if(tcrt5000->tcrtMidDownLeft.kalmanDistance>BLACKLINE_TRIGGER+20)
-                        break;
+                        if(secondLine){
+                            if(++nLine<2)   delay(500);
+                            else            break;
+                        } 
+                        else                break;
                 } 
                 else if(direction=='6'){
                     if(tcrt5000->tcrtMidDownRight.kalmanDistance>BLACKLINE_TRIGGER+20)
-                        break;
+                        if(secondLine){
+                            if(++nLine<2)   delay(500);
+                            else            break;
+                        } 
+                        else                break;
                 }      
             }
         } 

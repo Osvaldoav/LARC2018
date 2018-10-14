@@ -7,6 +7,12 @@ _Logic::_Logic(){
     for(int i = 0; i < 8; i++)
         stacks[i] = 3;
     
+    blue_boxes = 1;
+    green_boxes = 0;
+    stacks[7] = 2;
+    lastStack = 7;
+    lastColor = 'B';
+
     blue_boxes = 0;
     green_boxes = 1;
     stacks[7] = 2;
@@ -94,13 +100,13 @@ void _Logic::shipToStack(char c){
 
     //traductor->mecanismo(stacks[stack]); // nivela el mecanismo al nivel adecuado
 
-    if((lastColor == 'B' && blue_boxes < 3) || (lastColor == 'G' && green_boxes < 3)){
+    if((lastColor == 'B' && blue_boxes > 3) || (lastColor == 'G' && green_boxes > 3)){
         traductor->moveAtras(); // Se mueve poquito hacia atras
         if((lastColor == 'B' && (stack/2 + 1) % 2 == 1) || (lastColor == 'G' && (stack/2 + 1) % 2 == 0))
             traductor->girar(180);
         dir = (stack/2 + 1) % 2 == 0;
         traductor->moveToHorizontal(dir); // frente o reversa hasta topar linea horizontal. True es frente, False es atras
-        lines = stack < 2 || stack > 5 ? -1 : 1;
+        lines = stack < 2 || stack > 5 ? -1 : 1; 
         // 2 son dos lineas, 1 es una. negativo es derecha, positivo izquierda
         traductor->horizontal(lines, dir); // Avanza por la linea horizontal a la izquierda o derecha
     }else{

@@ -22,7 +22,7 @@ void _Traductor::throughtHorizontal2(int dir){
 }
 
 void _Traductor::girar(int angle){
-    movements->spinPID(false, angle);
+    movements->spinPID(true, angle);
 }
 
 void _Traductor::avanzar(bool b){
@@ -31,7 +31,8 @@ void _Traductor::avanzar(bool b){
 }
 
 void _Traductor::alinearPozo(){
-    movements->larc_moveAndAlignToShip();
+    // movements->larc_moveAndAlignToShip();
+    movements->align_tof();
 }
 
 void _Traductor::alinearTren(){
@@ -51,7 +52,7 @@ void _Traductor::moveToHorizontal(bool b){
     movements->larc_moveUntilBlackLine(false, c, true, false, false, false);
 }
 void _Traductor::horizontal(int lines, bool tcrt){
-    char c = lines < 0 ? '6' : '4';
+    char c = lines < 0 ? '6' : '4'; 
     bool b = abs(lines) > 1;
     movements->larc_moveUntilBlackLine(false, c, tcrt, true, b, false);
 }
@@ -61,7 +62,7 @@ void _Traductor::moveAtrasHorizontal(){
 }
 
 void _Traductor::vertical(int lines){
-    int steps = lines > 1 ? 50 : 29;
+    int steps = lines > 1 ? 53 : 31;
     char dir = lines < 0 ? '8' : '2';
     movements->movePID_nCM(steps, false, dir);
 }

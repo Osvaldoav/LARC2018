@@ -19,7 +19,6 @@ void setup() {
     logic->traductor->movements->timeFlight->setupTimeFlight();
     logic->traductor->movements->tcrt5000->setupTCRT5000();
     logic->traductor->movements->encoder->setupEncoder();
-    logic->shipToStack('B');
     pinMode(pinEncoder, INPUT_PULLUP);
     attachInterrupt(digitalPinToInterrupt(pinEncoder), encoderStep, CHANGE);   
 
@@ -32,9 +31,9 @@ void setup() {
 
 void testMovements(){ 
 //    logic->traductor->movements->encoder->encoderState = 1;
-    logic->traductor->movements->movePID(false, '7');
-//    logic->traductor->movements->spinPID(false, -90);
-//    delay(5000);
+//    logic->traductor->movements->movePID(false, '7');
+    logic->traductor->movements->spinPID(true, -90);
+    delay(5000);
 //    Serial.println(logic->traductor->movements->encoder->steps);   
 //    logic->traductor->movements->movePID_nSec(1.5, false, '1');
 //    delay(2000);
@@ -86,7 +85,9 @@ void readTCRT5000(){
      Serial.print(logic->traductor->movements->tcrt5000->tcrtSharpLeft.kalmanDistance);
      Serial.print(" ");     
      Serial.print(logic->traductor->movements->tcrt5000->tcrtSharpRight.kalmanDistance);
+     
      Serial.print("\t\t");     
+     
      Serial.print(logic->traductor->movements->tcrt5000->tcrtMidFrontLeft.kalmanDistance);
      Serial.print(" ");
      Serial.print(logic->traductor->movements->tcrt5000->tcrtMidFrontRight.kalmanDistance);
@@ -109,17 +110,22 @@ void larc(){
   logic->traductor->movements->larc_moveUntilBlackLine(false, '6', true, true, false, false);
   logic->traductor->movements->movePID_nCM(29, false, '8');
   delay(2000);
-  logic->traductor->movements->align_tof();
+//  logic->traductor->movements->align_tof();
   logic->traductor->movements->larc_moveBetweenVerticalBlackLine(false, '2');
   logic->traductor->movements->movePID_nCM(21, false, '6');
-  logic->traductor->movements->spinPID(false, -90);
+  logic->traductor->movements->spinPID(true, 90);
   logic->traductor->movements->larc_moveAndAlignToShip();
-  logic->traductor->movements->lcd->printAlertSec("CONTAINER DROPPED", 5);
+//  logic->traductor->movements->lcd->printAlertSec("CONTAINER DROPPED", 5);
   while(1); 
 }
 
 void colorSensor(){
   logic->traductor->movements->colorSensor->readColor();
+}
+
+void logicTest(){
+    logic->shipToStack('4');
+    while(1);
 }
 
 void loop(){
@@ -129,6 +135,7 @@ void loop(){
 //  testSteps();
 //  readTCRT5000();
 //  aligningTcrtTest();
-  larc();
+//  larc();
+  logicTest();
 //  colorSensor();
 }
