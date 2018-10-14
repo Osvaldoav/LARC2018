@@ -14,14 +14,14 @@
 // const byte pinPWM_BR = 3;
 // const byte pinPWM_BL = 4;
 //////////////// PINs DECLARATION "LARC" ///////////////////
-const byte pinPWMFR_F = 9;
-const byte pinPWMFR_B = 10;
-const byte pinPWMFL_F = 8;
-const byte pinPWMFL_B = 7;
-const byte pinPWMBR_F = 4;
-const byte pinPWMBR_B = 5;
-const byte pinPWMBL_F = 2;
-const byte pinPWMBL_B = 3;
+const byte pinPWMFR_F = 8;
+const byte pinPWMFR_B = 9;
+const byte pinPWMFL_F = 7;
+const byte pinPWMFL_B = 6;
+const byte pinPWMBR_F = 5;
+const byte pinPWMBR_B = 4;
+const byte pinPWMBL_F = 3;
+const byte pinPWMBL_B = 12;
 ////////////////////// LOCAL VARIABLES /////////////////
 bool boolFL_F;
 bool boolFL_B;

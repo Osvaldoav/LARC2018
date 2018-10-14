@@ -1,6 +1,7 @@
 #include <_Logic.h>
 
 _Logic::_Logic(){
+    traductor = new _Traductor;
     firstRed = -1;
     stacks = new int[8];
     for(int i = 0; i < 8; i++)
@@ -12,7 +13,7 @@ char _Logic::handleRed(){
         firstRed = lastStack < 4 ? 0 : 1;
     else
         firstRed = firstRed == 0 ? 1 : 0;
-
+ 
     return firstRed == 0 ? 'R' : 'S';
 }
 
@@ -39,7 +40,7 @@ void _Logic::stackToShip(){
     bool A = lastStack < 2 || (lastStack > 3 && lastStack < 6);
     bool B = lastColor != 'R';
 
-    horizontalline(A == B); // Avanza de frente o de reversa hasta linea horizontal
+    traductor->horizontalLine(A == B); // Avanza de frente o de reversa hasta linea horizontal
     int dir;
 
     if(B){
@@ -53,66 +54,66 @@ void _Logic::stackToShip(){
             dir = -1;
 
         // 2 son dos lineas, 1 es una. negativo es derecha, positivo izquierda
-        throughtHorizontal(dir); // Avanza por la linea horizontal a la izquierda o derecha cuando 'B' o 'G'
+        traductor->throughtHorizontal(dir); // Avanza por la linea horizontal a la izquierda o derecha cuando 'B' o 'G'
     }else{
         dir = lastStack < 4 ? 1 : 2;
         dir += firstRed ? 2 : 0;
         dir *= ((lastStack/2 + 1)%2 == 0) != firstRed ? 1 : -1;
     
         // Checar foto whatsapp para ver 1,2,3,4
-        throughtHorizontal2(dir); // Avanza por la linea horizontal a la izquierda o derecha cuando 'R'
+        traductor->throughtHorizontal2(dir); // Avanza por la linea horizontal a la izquierda o derecha cuando 'R'
     }
     
     if ((lastColor == 'B' && blue_boxes > 3) || (lastColor == 'G' && green_boxes > 3)){
         bool b = ((lastStack/2 + 1)%2 == 1);
         if(((lastStack/2 + 1)%2 == 1) == (lastColor == 'B')){
             b = !b;
-            girar(180); // gira 180 grados
+            traductor->girar(180); // gira 180 grados
         }
-        avanzar(b) // avanza hasta que llegue a la altura de los barcos
+        traductor->avanzar(b); // avanza hasta que llegue a la altura de los barcos
     }else{
         dir = ((lastStack/2 + 1)%2 == 0) != B ? 90 : -90;
-        girar(dir); // giros de 90, + derecha, - izquierda
+        traductor->girar(dir); // giros de 90, + derecha, - izquierda
     }
     if (B)
-        alinearPozo();
+        traductor->alinearPozo();
     else
-        alinearTren();
+        traductor->alinearTren();
 }
 
 void _Logic::shipToStack(char c){
     char color = c > 98 ? 'R' : c > 65 ? 'G' : 'B';
-    stack = color == 'R' ? c - 51 : color == 'G' ? c - 18 : c - 3;
+    int stack = color == 'R' ? c - 51 : color == 'G' ? c - 18 : c - 3;
     bool dir, tcrt;
     int lines, angle;
 
-    mecanismo(stacks[stack]); // nivela el mecanismo al nivel adecuado
+    traductor->mecanismo(stacks[stack]); // nivela el mecanismo al nivel adecuado
 
     if((lastColor == 'B' && blue_boxes < 3) || (lastColor == 'G' && green_boxes < 3)){
-        moveAtras(); // Se mueve poquito hacia atras
+        traductor->moveAtras(); // Se mueve poquito hacia atras
         if((lastColor == 'B' && (stack/2 + 1) % 2 == 1) || (lastColor == 'G' && (stack/2 + 1) % 2 == 0))
-            girar(180);
+            traductor->girar(180);
         dir = (stack/2 + 1) % 2 == 0;
-        moveToHorizontal(dir); // frente o reversa hasta topar linea horizontal. True es frente, False es atras
+        traductor->moveToHorizontal(dir); // frente o reversa hasta topar linea horizontal. True es frente, False es atras
         lines = stack < 2 || stack > 5 ? -1 : 1;
         // 2 son dos lineas, 1 es una. negativo es derecha, positivo izquierda
-        horizontal(lines, dir); // Avanza por la linea horizontal a la izquierda o derecha
+        traductor->horizontal(lines, dir); // Avanza por la linea horizontal a la izquierda o derecha
     }else{
-        moveAtrasHorizontal(); // izquierda hasta topar linea horizontal
+        traductor->moveAtrasHorizontal(); // izquierda hasta topar linea horizontal
         angle = (stack/2 + 1)%2 != 0 ? 90 : -90;
         angle *= lastColor == 'R' ? -1 : 1;
-        girar(angle); // 90 es vuelta de 90 hacia la derecha, -90 es 90 hacia izquierda
+        traductor->girar(angle); // 90 es vuelta de 90 hacia la derecha, -90 es 90 hacia izquierda
         tcrt = angle < 0;
         
         if(lastColor != 'R'){
             lines = (stack < 4 && lastColor == 'B') || (stack > 3 && lastColor == 'G') ? 2 : 1;
-            lines *= ((stack/2 + 1) % 2 == 1 && lastColor == 'B') || ((stack/2 + 1) % 2 == 0 && lastColor = 'G') ? -1 : 1;
+            lines *= ((stack/2 + 1) % 2 == 1 && lastColor == 'B') || ((stack/2 + 1) % 2 == 0 && lastColor == 'G') ? -1 : 1;
         }else{
             lines = (stack < 4 && !firstRed) || (stack > 3 && firstRed) ? 1 : 2;
             lines *= ((stack/2 + 1) % 2 == 1 && !firstRed) || ((stack/2 + 1) % 2 == 0 && firstRed) ? 1 : -1;
         }
         // 2 son dos lineas, 1 es una. negativo es derecha, positivo izquierda
-        horizontal(lines, tcrt); // Avanza por la linea horizontal a la izquierda o derecha
+        traductor->horizontal(lines, tcrt); // Avanza por la linea horizontal a la izquierda o derecha
     }
 
     if(lastColor != 'R'){
@@ -123,5 +124,5 @@ void _Logic::shipToStack(char c){
         lines *= stack % 4 > 1 ? 1 : -1;
     }
     // 2 son dos stacks, 1 es uno. negativo es frente, positivo reversa
-    vertical(lines); // Avanza por la linea vertical frente o reversa
+    traductor->vertical(lines); // Avanza por la linea vertical frente o reversa
 }

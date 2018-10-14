@@ -1,4 +1,4 @@
 void encoderStep(){
-    if (movements->encoder->encoderState == 1)
-      movements->encoder->steps++;
+    if (logic->traductor->movements->encoder->encoderState == 1)
+      logic->traductor->movements->encoder->steps++;
 }

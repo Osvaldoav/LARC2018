@@ -12,6 +12,7 @@
 
 class _Movements{
     public:
+        _Movements();
 // TODO: METHODS
         // Modular functions
         void updateSensors(bool, bool, bool, bool, bool, bool);
@@ -34,17 +35,17 @@ class _Movements{
         void larc_moveBetweenVerticalBlackLine(bool, char);
         char oppositeDirection(char);
         void larc_moveAndAlignToShip();
-        void larc_moveUntilBlackLine(bool, char, bool, bool, bool);
+        void larc_moveUntilBlackLine(bool, char, bool, bool, bool, bool);
 // TODO: ATTRIBUTES
-        _BNO055 *bno055 = new _BNO055;
-        _ColorSensor *colorSensor = new _ColorSensor;
-        _Encoder *encoder = new _Encoder;
-        _LibraryPID *pid = new _LibraryPID;
-        _Motors *motors = new _Motors;
-        _Sharp *sharp = new _Sharp;
-        _LCD *lcd = new _LCD;      
-        _TimeFlight *timeFlight = new _TimeFlight;
-        _TCRT5000 *tcrt5000 = new _TCRT5000;
+        _BNO055 *bno055;
+        _ColorSensor *colorSensor;
+        _Encoder *encoder;
+        _LibraryPID *pid;
+        _Motors *motors;
+        _Sharp *sharp;
+        _LCD *lcd;
+        _TimeFlight *timeFlight;
+        _TCRT5000 *tcrt5000;
 };
 
 #endif

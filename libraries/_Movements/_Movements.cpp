@@ -2,6 +2,18 @@
 /////////////////////////// LOCAL VARIABLES ///////////////////////////
 double const BLACKLINE_TRIGGER = 380;
 
+_Movements::_Movements(){
+    bno055 = new _BNO055;
+    colorSensor = new _ColorSensor;
+    encoder = new _Encoder;
+    pid = new _LibraryPID;
+    motors = new _Motors;
+    sharp = new _Sharp;
+    lcd = new _LCD;      
+    timeFlight = new _TimeFlight;
+    tcrt5000 = new _TCRT5000;
+}
+
 // TODO:
 char _Movements::oppositeDirection(char direction){
     switch (direction){
@@ -455,24 +467,24 @@ void _Movements::larc_moveAndAlignToShip(){
     while(1){   //Move Until Ship
         updateSensors(0,0,0,0,1,0);
         movePID(false, '4');
-        if(tcrt5000->tcrtMidFrontLeft.kalmanDistance>BLACKLINE_TRIGGER 
-            || tcrt5000->tcrtDownRight.kalmanDistance>BLACKLINE_TRIGGER)
+        if(tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER 
+            || tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER)
             break;        
     }
     movePID_nCM(2.6, false, '6'); 
     motors->brake();  
-    while(tcrt5000->tcrtFrontLeft.kalmanDistance<BLACKLINE_TRIGGER || tcrt5000->tcrtFrontRight.kalmanDistance<BLACKLINE_TRIGGER){
+    while(tcrt5000->tcrtMechaLeft.kalmanDistance<BLACKLINE_TRIGGER || tcrt5000->tcrtMechaRight.kalmanDistance<BLACKLINE_TRIGGER){
         updateSensors(0,0,0,0,1,0);
-        if(tcrt5000->tcrtFrontLeft.kalmanDistance<BLACKLINE_TRIGGER && tcrt5000->tcrtFrontRight.kalmanDistance<BLACKLINE_TRIGGER)
+        if(tcrt5000->tcrtMechaLeft.kalmanDistance<BLACKLINE_TRIGGER && tcrt5000->tcrtMechaRight.kalmanDistance<BLACKLINE_TRIGGER)
             movePID(true, '4');
-        else if(tcrt5000->tcrtFrontLeft.kalmanDistance>=BLACKLINE_TRIGGER && tcrt5000->tcrtFrontRight.kalmanDistance<BLACKLINE_TRIGGER){
+        else if(tcrt5000->tcrtMechaLeft.kalmanDistance>=BLACKLINE_TRIGGER && tcrt5000->tcrtMechaRight.kalmanDistance<BLACKLINE_TRIGGER){
             movePID_nCM(0.4, false, '6');
             pid->calculateNewSetpoint(-0.5);
             for(int i=0; i<100; i++){
                 turnPID(false);  
             }   
         }
-        else if(tcrt5000->tcrtFrontLeft.kalmanDistance<BLACKLINE_TRIGGER && tcrt5000->tcrtFrontRight.kalmanDistance>=BLACKLINE_TRIGGER){
+        else if(tcrt5000->tcrtMechaLeft.kalmanDistance<BLACKLINE_TRIGGER && tcrt5000->tcrtMechaRight.kalmanDistance>=BLACKLINE_TRIGGER){
             movePID_nCM(0.4, false, '6');
             pid->calculateNewSetpoint(0.5);
             for(int i=0; i<100; i++){
@@ -515,7 +527,7 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
         }               
         else if(direction=='4' || direction=='6'){
             if(tcrtSharps){
-                if(tcrt5000->tcrtSharpsLeft.kalmanDistance>BLACKLINE_TRIGGER && tcrt5000->tcrtSharpsRight.kalmanDistance>BLACKLINE_TRIGGER)
+                if(tcrt5000->tcrtSharpLeft.kalmanDistance>BLACKLINE_TRIGGER && tcrt5000->tcrtSharpRight.kalmanDistance>BLACKLINE_TRIGGER)
                     break;
             }
             if(frontTCRT){
@@ -578,11 +590,11 @@ void _Movements::larc_moveBetweenVerticalBlackLine(bool goSlow, char direction){
         // movePID(goSlow, direction);
         movePID(goSlow, direction);
         if(direction == '8'){
-            if(tcrt5000->tcrtFrontLeft.kalmanDistance>BLACKLINE_TRIGGER)
+            if(tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER)
                 break;
         }
         else if(direction == '2'){
-            if(tcrt5000->tcrtFrontRight.kalmanDistance>BLACKLINE_TRIGGER)
+            if(tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER)
                 break;
         }        
     }

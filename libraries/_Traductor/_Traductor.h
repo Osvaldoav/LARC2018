@@ -1,29 +1,29 @@
-#ifndef _Logic_h
-#define _Logic_h
+#ifndef _Traductor_h
+#define _Traductor_h
 
 #include <Arduino.h>
 #include <_Movements.h>
 
 class _Traductor{
 
-    private:
-        _Movements *movements = new _Movements;
-
     public:
+        _Traductor();
 
-        static void horizontalLine(bool b);
-        static void throughtHorizontal(int dir);
-        static void throughtHorizontal2(int dir);
-        static void girar(int angle);
-        static void avanzar(bool b);
-        static void alineaPozo();
-        static void alinearTren();
-        static void mecanismo(u_int8_t s);
-        static void moveAtras();
-        static void moveToHorizontal(bool b);
-        static void horizontal(int lines, bool tcrt);
-        static void moveAtrasHorizontal();
-        static void vertical(int lines);
+        void horizontalLine(bool b);
+        void throughtHorizontal(int dir);
+        void throughtHorizontal2(int dir);
+        void girar(int angle);
+        void avanzar(bool b);
+        void alinearPozo();
+        void alinearTren();
+        void mecanismo(uint8_t s);
+        void moveAtras();
+        void moveToHorizontal(bool b);
+        void horizontal(int lines, bool tcrt);
+        void moveAtrasHorizontal(); 
+        void vertical(int lines);
+
+        _Movements *movements;
 
 };
 
