@@ -19,6 +19,7 @@ void setup() {
     logic->traductor->movements->timeFlight->setupTimeFlight();
     logic->traductor->movements->tcrt5000->setupTCRT5000();
     logic->traductor->movements->encoder->setupEncoder();
+    logic->shipToStack('B');
     pinMode(pinEncoder, INPUT_PULLUP);
     attachInterrupt(digitalPinToInterrupt(pinEncoder), encoderStep, CHANGE);   
 
