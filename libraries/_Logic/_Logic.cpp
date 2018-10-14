@@ -9,7 +9,7 @@ _Logic::_Logic(){
     
     blue_boxes = 0;
     green_boxes = 1;
-    lastStack[7] = 2;
+    stacks[7] = 2;
     lastColor = 'G';
 }
 
