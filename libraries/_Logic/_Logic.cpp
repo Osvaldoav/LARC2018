@@ -9,10 +9,9 @@ _Logic::_Logic(){
     
     firstRed = 1;
     blue_boxes = 0;
-    green_boxes = 0;
-    stacks[7] = 2;
-    lastStack = 7;
-    lastColor = 'R';
+    green_boxes = 4;
+    lastStack = 3;
+    lastColor = 'G';
 }
 
 char _Logic::handleRed(){
