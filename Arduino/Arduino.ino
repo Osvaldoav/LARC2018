@@ -124,7 +124,7 @@ void colorSensor(){
 }
 
 void logicTest(){
-    logic->shipToStack('g');
+    logic->shipToStack('G');
     while(1);
 }
 
@@ -135,7 +135,7 @@ void loop(){
 //  testSteps();
 //  readTCRT5000();
 //  aligningTcrtTest();
-  larc();
-//  logicTest();
+//  larc();
+  logicTest();
 //  colorSensor();
 }
