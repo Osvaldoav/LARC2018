@@ -106,17 +106,17 @@ void aligningTcrtTest(){
 }
 
 void larc(){
-  logic->traductor->movements->larc_moveUntilBlackLine(false, '8', true, false, true, false);
-  logic->traductor->movements->larc_moveUntilBlackLine(false, '6', true, true, false, false);
-  logic->traductor->movements->movePID_nCM(29, false, '8');
-  delay(2000);
-//  logic->traductor->movements->align_tof();
-  logic->traductor->movements->larc_moveBetweenVerticalBlackLine(false, '2');
-  logic->traductor->movements->movePID_nCM(21, false, '6');
-  logic->traductor->movements->spinPID(true, 90);
-  logic->traductor->movements->larc_moveAndAlignToShip();
+//  logic->traductor->movements->larc_moveUntilBlackLine(false, '8', true, false, true, false);
+//  logic->traductor->movements->larc_moveUntilBlackLine(false, '6', true, true, false, false);
+//  logic->traductor->movements->movePID_nCM(29, false, '8');
+//  delay(2000);
+  logic->traductor->movements->align_tof();
+//  logic->traductor->movements->larc_moveBetweenVerticalBlackLine(false, '2');
+//  logic->traductor->movements->movePID_nCM(21, false, '6');
+//  logic->traductor->movements->spinPID(true, 90);
+//  logic->traductor->movements->larc_moveAndAlignToShip();
 //  logic->traductor->movements->lcd->printAlertSec("CONTAINER DROPPED", 5);
-  while(1); 
+//  while(1); 
 }
 
 void colorSensor(){
@@ -135,11 +135,7 @@ void loop(){
 //  testSteps();
 //  readTCRT5000();
 //  aligningTcrtTest();
-//  larc();
+  larc();
 //  logicTest();
 //  colorSensor();
-  if(-1)
-    Serial.println("IF");
-  else
-  Serial.println("ELSE");
 }
