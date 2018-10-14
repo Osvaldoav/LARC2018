@@ -11,7 +11,7 @@ _Logic::_Logic(){
     blue_boxes = 0;
     green_boxes = 4;
     lastStack = 3;
-    lastColor = 'G';
+    lastColor = 'B';
 }
 
 char _Logic::handleRed(){
