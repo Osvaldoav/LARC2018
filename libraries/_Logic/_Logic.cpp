@@ -8,8 +8,8 @@ _Logic::_Logic(){
         stacks[i] = 3;
     
     firstRed = 1;
-    blue_boxes = 0;
-    green_boxes = 4;
+    blue_boxes = 4;
+    green_boxes = 0;
     lastStack = 3;
     lastColor = 'B';
 }
