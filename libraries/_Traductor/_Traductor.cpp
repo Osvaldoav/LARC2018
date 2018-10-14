@@ -10,13 +10,13 @@ void _Traductor::horizontalLine(bool b){
 }
 
 void _Traductor::throughtHorizontal(int dir){
-    double cm = abs(dir) < 2 ? 20 : 60;
+    double cm = abs(dir) < 2 ? 22 : 71;
     char c = dir < 0 ? '6' : '4';
     movements->movePID_nCM(cm, false, c);
 }
 
 void _Traductor::throughtHorizontal2(int dir){
-    double cm = dir < 2 ? 20 : dir < 3 ? 60 : dir < 4 ? 80 : 40;
+    double cm = abs(dir) < 2 ? 25 : abs(dir) < 3 ? 71 : abs(dir) < 4 ? 94 : 49;
     char c = dir < 0 ? '6' : '4';
     movements->movePID_nCM(cm, false, c);
 }
@@ -27,7 +27,7 @@ void _Traductor::girar(int angle){
 
 void _Traductor::avanzar(bool b){
     char c = b ? '8' : '2';
-    movements->movePID_nCM(38, false, c);
+    movements->movePID_nCM(34, false, c);
 }
 
 void _Traductor::alinearPozo(){
@@ -35,7 +35,9 @@ void _Traductor::alinearPozo(){
 }
 
 void _Traductor::alinearTren(){
-    movements->movePID_nCM(32.55, false, '6');
+    movements->movePID_nCM(5, false, '4');
+    movements->larc_moveUntilBlackLine(false, '6', false, false, false, true);
+    movements->movePID_nCM(13, false, '6');
 }
 
 void _Traductor::mecanismo(uint8_t s){

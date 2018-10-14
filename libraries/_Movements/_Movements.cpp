@@ -486,7 +486,7 @@ void _Movements::larc_moveAndAlignToShip(){
             }      
         }        
     }      
-    movePID_nCM(2.6, false, '4');     
+    movePID_nCM(2.6, true, '4');     
     motors->brake();   
     delay(300);
     pid->Setpoint = bno055->rawInput;    

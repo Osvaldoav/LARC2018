@@ -9,9 +9,9 @@ _Logic::_Logic(){
     
     firstRed = 1;
     blue_boxes = 0;
-    green_boxes = 4;
-    lastStack = 6;
-    lastColor = 'G';
+    green_boxes = 0;
+    lastStack = 0;
+    lastColor = 'R';
 }
 
 char _Logic::handleRed(){
@@ -63,9 +63,8 @@ void _Logic::stackToShip(){
         traductor->throughtHorizontal(dir); // Avanza por la linea horizontal a la izquierda o derecha cuando 'B' o 'G'
     }else{
         dir = lastStack < 4 ? 1 : 2;
-        dir += firstRed ? 2 : 0;
+        dir += firstRed == 1 ? 2 : 0;
         dir *= ((lastStack/2 + 1)%2 == 0) != firstRed ? 1 : -1;
-    
         // Checar foto whatsapp para ver 1,2,3,4
         traductor->throughtHorizontal2(dir); // Avanza por la linea horizontal a la izquierda o derecha cuando 'R'
     }
@@ -78,7 +77,7 @@ void _Logic::stackToShip(){
         }
         traductor->avanzar(b); // avanza hasta que llegue a la altura de los barcos
     }else{
-        dir = ((lastStack/2 + 1)%2 == 0) != B ? 90 : -90;
+        dir = ((lastStack/2 + 1)%2 == 0) != B ? -90 : 90;
         traductor->girar(dir); // giros de 90, + derecha, - izquierda
     }
     if (B)
@@ -131,5 +130,5 @@ void _Logic::shipToStack(char c){
     }
     // 2 son dos stacks, 1 es uno. negativo es frente, positivo reversa
     traductor->vertical(lines); // Avanza por la linea vertical frente o reversa
-    traductor->alinearStack();
+    // traductor->alinearStack();
 }
