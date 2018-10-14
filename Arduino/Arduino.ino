@@ -124,7 +124,7 @@ void colorSensor(){
 }
 
 void logicTest(){
-    logic->shipToStack('4');
+    logic->shipToStack('G');
     while(1);
 }
 

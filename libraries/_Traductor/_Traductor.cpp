@@ -62,7 +62,7 @@ void _Traductor::moveAtrasHorizontal(){
 }
 
 void _Traductor::vertical(int lines){
-    int steps = lines > 1 ? 53 : 31;
+    int steps = lines > 1 ? 58 : 31;
     char dir = lines < 0 ? '8' : '2';
     movements->movePID_nCM(steps, false, dir);
 }
