@@ -1,6 +1,6 @@
 #include <_Movements.h>
 /////////////////////////// LOCAL VARIABLES ///////////////////////////
-double const BLACKLINE_TRIGGER = 380;
+double const BLACKLINE_TRIGGER = 300;
 
 _Movements::_Movements(){
     bno055 = new _BNO055;
@@ -510,7 +510,7 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
         updateSensors(0,0,0,0,1,1);
         movePID(goSlow, direction);
         if(direction=='8'){
-            if(tcrt5000->tcrtMidFrontRight.kalmanDistance>BLACKLINE_TRIGGER && tcrt5000->tcrtMidFrontLeft.kalmanDistance>BLACKLINE_TRIGGER)
+            if(tcrt5000->tcrtMidFrontRight.kalmanDistance>BLACKLINE_TRIGGER || tcrt5000->tcrtMidFrontLeft.kalmanDistance>BLACKLINE_TRIGGER)
                 if(secondLine){
                     if(++nLine<2)   delay(200);
                     else            break;
@@ -518,7 +518,7 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
                 else                break;
         }    
         else if(direction=='2'){
-            if(tcrt5000->tcrtMidDownRight.kalmanDistance>BLACKLINE_TRIGGER && tcrt5000->tcrtMidDownLeft.kalmanDistance>BLACKLINE_TRIGGER)
+            if(tcrt5000->tcrtMidDownRight.kalmanDistance>BLACKLINE_TRIGGER || tcrt5000->tcrtMidDownLeft.kalmanDistance>BLACKLINE_TRIGGER)
                 if(secondLine){
                     if(++nLine<2)   delay(200);
                     else            break;
