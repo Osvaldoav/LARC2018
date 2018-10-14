@@ -529,7 +529,7 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
         }               
         else if(direction=='4' || direction=='6'){
             if(tcrtSharps){
-                if(tcrt5000->tcrtSharpLeft.kalmanDistance>BLACKLINE_TRIGGER && tcrt5000->tcrtSharpRight.kalmanDistance>BLACKLINE_TRIGGER)
+                if(tcrt5000->tcrtSharpLeft.kalmanDistance>BLACKLINE_TRIGGER || tcrt5000->tcrtSharpRight.kalmanDistance>BLACKLINE_TRIGGER)
                     if(secondLine){
                         if(++nLine<2)   delay(400);
                         else            break;

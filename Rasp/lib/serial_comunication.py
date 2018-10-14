@@ -46,7 +46,7 @@ def convert( pair):
     return chr(ord(str(pair[0])) + (ord(pair[1]) - 65) * 3)
 
 def f():
-    return 7, 'G'
+    return 4, 'R'
 
 
 par = f()
@@ -54,4 +54,4 @@ par = f()
 #(int('B') - 65 ) * 3     +  int(str(0))
 
 print ord(convert(par))
-# print convert(par)
+print convert(par)
