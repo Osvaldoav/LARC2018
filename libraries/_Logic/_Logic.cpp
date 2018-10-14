@@ -7,6 +7,7 @@ _Logic::_Logic(){
     for(int i = 0; i < 8; i++)
         stacks[i] = 3;
     
+    firstRed = 0;
     blue_boxes = 0;
     green_boxes = 0;
     stacks[7] = 2;
