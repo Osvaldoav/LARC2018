@@ -13,10 +13,10 @@ _Logic::_Logic(){
     lastStack = 7;
     lastColor = 'B';
 
-    blue_boxes = 0;
-    green_boxes = 1;
+    blue_boxes = 1;
+    green_boxes = 0;
     stacks[7] = 2;
-    lastColor = 'G';
+    lastColor = 'B';
 }
 
 char _Logic::handleRed(){
