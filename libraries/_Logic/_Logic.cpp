@@ -8,10 +8,10 @@ _Logic::_Logic(){
         stacks[i] = 3;
     
     firstRed = 1;
-    blue_boxes = 4;
-    green_boxes = 0;
-    lastStack = 3;
-    lastColor = 'B';
+    blue_boxes = 0;
+    green_boxes = 4;
+    lastStack = 6;
+    lastColor = 'G';
 }
 
 char _Logic::handleRed(){
@@ -131,4 +131,5 @@ void _Logic::shipToStack(char c){
     }
     // 2 son dos stacks, 1 es uno. negativo es frente, positivo reversa
     traductor->vertical(lines); // Avanza por la linea vertical frente o reversa
+    traductor->alinearStack();
 }

@@ -6,7 +6,7 @@ _Traductor::_Traductor(){
 
 void _Traductor::horizontalLine(bool b){
     char c = b ? '8' : '2';
-    movements->larc_moveBetweenVerticalBlackLine(false, c);
+    movements->larc_moveBetweenVerticalBlackLine(false, c, false);
 }
 
 void _Traductor::throughtHorizontal(int dir){
@@ -27,12 +27,11 @@ void _Traductor::girar(int angle){
 
 void _Traductor::avanzar(bool b){
     char c = b ? '8' : '2';
-    movements->movePID_nCM(45, false, c);
+    movements->movePID_nCM(38, false, c);
 }
 
 void _Traductor::alinearPozo(){
-    // movements->larc_moveAndAlignToShip();
-    movements->align_tof();
+    movements->larc_moveAndAlignToShip();
 }
 
 void _Traductor::alinearTren(){
@@ -65,4 +64,8 @@ void _Traductor::vertical(int lines){
     int steps = abs(lines) > 1 ? 54 : 30;
     char dir = lines < 0 ? '8' : '2';
     movements->movePID_nCM(steps, false, dir);
+}
+
+void alinearStack(){
+    movements->align_tof();
 }

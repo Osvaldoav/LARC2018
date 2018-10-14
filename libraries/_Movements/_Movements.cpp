@@ -586,7 +586,7 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
     motors->brake();           
 }
 // TODO:
-void _Movements::larc_moveBetweenVerticalBlackLine(bool goSlow, char direction){
+void _Movements::larc_moveBetweenVerticalBlackLine(bool goSlow, char direction, bool shipToStack){
     while(1){
         updateSensors(0,0,0,0,1,0);
         // char tcrtPosition = pid->computeOutput_tcrtVerticalLine(
@@ -603,14 +603,26 @@ void _Movements::larc_moveBetweenVerticalBlackLine(bool goSlow, char direction){
         // }
         // movePID(goSlow, direction);
         movePID(goSlow, direction);
-        if(direction == '8'){
-            if(tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER)
-                break;
+        if(shipToStack){
+            if(direction == '8'){
+                if(tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER)
+                    break;
+            }
+            else if(direction == '2'){
+                if(tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER)
+                    break;
+            }   
         }
-        else if(direction == '2'){
-            if(tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER)
-                break;
-        }        
+        else{
+            if(direction == '8'){
+                if(tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER)
+                    break;
+            }
+            else if(direction == '2'){
+                if(tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER)
+                    break;
+            }
+        }     
     }
     motors->brake();
 }
