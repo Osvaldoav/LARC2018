@@ -6,16 +6,10 @@ _Logic::_Logic(){
     stacks = new int[8];
     for(int i = 0; i < 8; i++)
         stacks[i] = 3;
-    
-    blue_boxes = 1;
-    green_boxes = 0;
-    stacks[7] = 2;
-    lastStack = 7;
-    lastColor = 'B';
 
     blue_boxes = 0;
     green_boxes = 1;
-    lastStack[7] = 2;
+    stacks[7] = 2;
     lastColor = 'G';
 }
 
