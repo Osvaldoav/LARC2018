@@ -108,7 +108,7 @@ void larc(){
   logic->traductor->movements->larc_moveUntilBlackLine(false, '6', true, true, false, false);
   logic->traductor->movements->movePID_nCM(29, false, '8');
   delay(2000);
-  logic->traductor->movements->larc_alignToPickContainer(0);
+  logic->traductor->movements->align_tof();
   logic->traductor->movements->larc_moveBetweenVerticalBlackLine(false, '2');
   logic->traductor->movements->movePID_nCM(21, false, '6');
   logic->traductor->movements->spinPID(false, -90);
@@ -117,14 +117,17 @@ void larc(){
   while(1); 
 }
 
+void colorSensor(){
+  logic->traductor->movements->colorSensor->readColor();
+}
+
 void loop(){
 //  aligningTofTest();
 //  tof_vs_sharp();
 //  testMovements();
 //  testSteps();
-  readTCRT5000();
+//  readTCRT5000();
 //  aligningTcrtTest();
-//  larc();
-
-//Serial.println(analogRead(A8));
+  larc();
+//  colorSensor();
 }

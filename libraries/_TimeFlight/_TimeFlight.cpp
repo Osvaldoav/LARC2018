@@ -1,6 +1,6 @@
 #include <_TimeFlight.h>
-#define GPIOLeft_SHUT 33
-#define GPIORight_SHUT 32
+#define GPIOLeft_SHUT 32
+#define GPIORight_SHUT 31
 
 /////////////////////// PINs DECLARATION ////////////////////////
 VL53L0X timeFlightRightSensor;
@@ -8,7 +8,7 @@ VL53L0X timeFlightLeftSensor;
 ////////////////////////////// LOCAL VARAIBLES ///////////////////////////////
 const double cantReads = 7;
 double lastDistance; 
-double leftCompensation=-1.26-1, rightCompensation=-3.81-1;
+double leftCompensation=-1.87, rightCompensation=-1.6;
 
 void _TimeFlight::calibTimeFlights(double target){
     leftCompensation=0,rightCompensation=0;
@@ -75,8 +75,8 @@ double _TimeFlight::getRawDistance(bool leftTimeFlight){
         distance = timeFlightLeftSensor.readRangeContinuousMillimeters()/10.0 + leftCompensation;
     else 
         distance = timeFlightRightSensor.readRangeContinuousMillimeters()/10.0 + rightCompensation;
-    if(distance > 25)
-        distance = 25;
+    if(distance > 10)
+        distance = 10;
     if(distance < 0)   
         distance *= -1; 
     lastDistance = distance;

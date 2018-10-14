@@ -1,11 +1,11 @@
 #include <_ColorSensor.h>
 
 /////////////////// PINs DECLARATION /////////////////////
-const byte sensorOut = 43;
-const byte S2 = 42;
-const byte S3 = 41;
-const byte S1 = 40;
-const byte S0 = 39;
+const byte sensorOut = 35;
+const byte S2 = 34;
+const byte S3 = 33;
+const byte S1 = 37;
+const byte S0 = 36;
 ////////////////////////// STRUCTS /////////////////////
 struct color{
   String nombre;
@@ -32,8 +32,8 @@ void _ColorSensor::setupColorSensor(){
     pinMode(S2, OUTPUT);
     pinMode(S3, OUTPUT);
     pinMode(sensorOut, INPUT);
-    digitalWrite(S0,HIGH);
-    digitalWrite(S1,LOW);   
+    digitalWrite(S0,LOW);
+    digitalWrite(S1,HIGH);   
     //  colorCalibration(1);
     //  hardCodedCalibration();
 }
@@ -58,24 +58,31 @@ void _ColorSensor::colorKalmanFilter(ColorKalman &color){
 
 // TODO:
 void _ColorSensor::readColor(){
+    digitalWrite(S2,LOW);  // RED (G)
+    digitalWrite(S3,LOW);  
     delay(10);
     redColor.rawColor = pulseIn(sensorOut, LOW, 25000000);    //Reads output frecuency, if greater than (25000000), returns 0
-    regulateColorSignal(redColor.rawColor);
+    // regulateColorSignal(redColor.rawColor);
     colorKalmanFilter(redColor);
+    Serial.print(redColor.kalmanColor);
+    Serial.print(" ");
     
     digitalWrite(S2,HIGH);  // GREEN (G)
     digitalWrite(S3,HIGH);
     delay(10);
     greenColor.rawColor = pulseIn(sensorOut, LOW, 25000000);    //Reads output frecuency, if greater than (25000000), returns 0
-    regulateColorSignal(greenColor.rawColor);
+    // regulateColorSignal(greenColor.rawColor);
     colorKalmanFilter(greenColor);
+    Serial.print(greenColor.kalmanColor);
+    Serial.print(" ");
   
     digitalWrite(S2,LOW);  // BLUE (B)
     digitalWrite(S3,HIGH);
     delay(10);
     blueColor.rawColor = pulseIn(sensorOut, LOW, 25000000);   //Reads output frecuency, if greater than (25000000), returns 0
-    regulateColorSignal(blueColor.rawColor);
+    // regulateColorSignal(blueColor.rawColor);
     colorKalmanFilter(blueColor);
+    Serial.println(blueColor.kalmanColor);
 }
 
 // TODO:
