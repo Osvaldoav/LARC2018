@@ -66,6 +66,6 @@ void _Traductor::vertical(int lines){
     movements->movePID_nCM(steps, false, dir);
 }
 
-void alinearStack(){
+void _Traductor::alinearStack(){
     movements->align_tof();
 }
