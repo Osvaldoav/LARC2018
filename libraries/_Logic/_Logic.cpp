@@ -46,6 +46,8 @@ void _Logic::stackToShip(){
     bool A = lastStack < 2 || (lastStack > 3 && lastStack < 6);
     bool B = lastColor != 'R';
 
+    // traductor->mecanismo(4, lastStack);             // eleva el stack para no chocar con los demas
+
     traductor->horizontalLine(A == B); // Avanza de frente o de reversa hasta linea horizontal
     int dir;
 
@@ -92,7 +94,7 @@ void _Logic::shipToStack(char c){
     bool dir, tcrt;
     int lines, angle;
 
-    //traductor->mecanismo(stacks[stack]); // nivela el mecanismo al nivel adecuado
+    // traductor->mecanismo(4, lastStack);             // eleva el stack para no chocar con los demas
 
     if((lastColor == 'B' && blue_boxes > 3) || (lastColor == 'G' && green_boxes > 3)){
         traductor->moveAtras(); // Se mueve poquito hacia atras
@@ -131,4 +133,7 @@ void _Logic::shipToStack(char c){
     // 2 son dos stacks, 1 es uno. negativo es frente, positivo reversa
     traductor->vertical(lines); // Avanza por la linea vertical frente o reversa
     // traductor->alinearStack();
+
+    // traductor->grabContainer();
+    // traductor->mecanismo(stacks[stack], lastStack); // nivela el mecanismo al nivel adecuado
 }

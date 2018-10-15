@@ -9,6 +9,7 @@
 #include <_TimeFlight.h>
 #include <_TCRT5000.h>
 #include <_LCD.h>
+#include <_Servo.h>
 
 class _Movements{
     public:
@@ -36,6 +37,7 @@ class _Movements{
         char oppositeDirection(char);
         void larc_moveAndAlignToShip();
         void larc_moveUntilBlackLine(bool, char, bool, bool, bool, bool);
+        void moveMechanism(int, int);
 // TODO: ATTRIBUTES
         _BNO055 *bno055;
         _ColorSensor *colorSensor;
@@ -46,6 +48,7 @@ class _Movements{
         _LCD *lcd;
         _TimeFlight *timeFlight;
         _TCRT5000 *tcrt5000;
+        _Servo *servo;
 };
 
 #endif

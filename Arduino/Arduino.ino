@@ -6,6 +6,7 @@
 _Logic *logic = new _Logic;
 
 const byte pinEncoder = 18;
+const byte pinEncoderMechanism = 2;
 
 /////////////////////////////////////////////SETUP////////////////////////////////////////////////
 void setup() {
@@ -19,8 +20,12 @@ void setup() {
     logic->traductor->movements->timeFlight->setupTimeFlight();
     logic->traductor->movements->tcrt5000->setupTCRT5000();
     logic->traductor->movements->encoder->setupEncoder();
+    logic->traductor->movements->servo->setupServo();
     pinMode(pinEncoder, INPUT_PULLUP);
+    pinMode(pinEncoderMechanism, INPUT_PULLUP);
+
     attachInterrupt(digitalPinToInterrupt(pinEncoder), encoderStep, CHANGE);   
+    attachInterrupt(digitalPinToInterrupt(pinEncoderMechanism), encoderStepMechanism, CHANGE);   
 
     //CALIBRATION 
 //      logic->traductor->movements->lcd->onLed('g');    

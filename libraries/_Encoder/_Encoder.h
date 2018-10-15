@@ -10,6 +10,8 @@ class _Encoder{
         volatile unsigned long steps;
         volatile byte encoderState;
         long encoder30Cm;
+        volatile unsigned long stepsMechanism;
+        volatile byte encoderStateMechanism;       
 };
 
 #endif

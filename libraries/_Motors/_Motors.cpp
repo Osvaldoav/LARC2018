@@ -22,6 +22,9 @@ const byte pinPWMBR_F = 5;
 const byte pinPWMBR_B = 4;
 const byte pinPWMBL_F = 3;
 const byte pinPWMBL_B = 12;
+
+const byte pinMechanismUp = 0;
+const byte pinMechanismDown = 0; 
 ////////////////////// LOCAL VARIABLES /////////////////
 bool boolFL_F;
 bool boolFL_B;
@@ -106,4 +109,14 @@ void _Motors::setVelocity(int frontLeft, int backLeft, int frontRight, int backR
 void _Motors::brake(){
     setMotor(0,0,0,0,0,0,0,0);
     setVelocity(0, 0);
+}
+
+// TODO:
+void moveMechanism(bool up){
+    (up)? analogWrite(pinMechanismUp,255): analogWrite(pinMechanismDown,255);
+}
+// TODO:
+void stopMechanism(){
+    analogWrite(pinMechanismDown,0);
+    analogWrite(pinMechanismUp,0);
 }

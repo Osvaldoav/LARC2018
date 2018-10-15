@@ -40,8 +40,18 @@ void _Traductor::alinearTren(){
     movements->movePID_nCM(13, false, '6');
 }
 
-void _Traductor::mecanismo(uint8_t s){
-    
+void _Traductor::mecanismo(uint8_t newStack, uint8_t currentStack){
+    movements->moveMechanism(newStack, currentStack);
+}
+
+void _Traductor::grabContainer(){
+    movements->servo->pickContainer();
+    delay(1000);
+}
+
+void _Traductor::dropContainer(){
+    movements->servo->dropContainer();
+    delay(1000);
 }
 
 void _Traductor::moveAtras(){

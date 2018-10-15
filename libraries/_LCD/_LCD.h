@@ -11,8 +11,8 @@ class _LCD{
     void printInt(String, int);
     void printAlertSec(String, int);
     void clear();
-    void onLed(char);
-    void offLed(char);
+    void onLed();
+    void offLed();
     void setupLCD();
 // TODO: ATTRIBUTES
 };
