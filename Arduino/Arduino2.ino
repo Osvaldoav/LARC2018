@@ -49,27 +49,29 @@ void setup() {
    delay(1500);
    _Serial::send('1');
    c_serial = _Serial::read();
-   logic->firstPick(c_serial); // Se mueve al stack 6 o 7
-   _Serial::send(logic->grabContainer(c_serial));
    blink(6);
    delay(1500);
+   _Serial::send('1');
+//    logic->firstPick(c_serial); // Se mueve al stack 6 o 7
+//    _Serial::send(logic->grabContainer(c_serial));
+
     
 }
 
 void loop(){
- logic->stackToShip();
+//  logic->stackToShip();
  c_serial = _Serial.read();
   blink(3);
   delay(1500);
- if(c_serial == 'S'){
-   logic->gotoSecond(); // pendiente
-   _Serial::send('1');
-   c_serial = _Serial::read();
-   logic->moveSecond(c_serial); // pendiente
-   _Serial::send(logic->grabContainer(c_serial));
- }else{
-   logic->shipToStack();
-   _Serial::send(logic->grabContainer(c_serial));
- }
-
+//  if(c_serial == 'S'){
+//    logic->gotoSecond(); // pendiente
+//    _Serial::send('1');
+//    c_serial = _Serial::read();
+//    logic->moveSecond(c_serial); // pendiente
+//    _Serial::send(logic->grabContainer(c_serial));
+//  }else{
+//    logic->shipToStack();
+//    _Serial::send(logic->grabContainer(c_serial));
+//  }
+    _Serial::send('1');
 }

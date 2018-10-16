@@ -27,6 +27,7 @@ serial.read()   #
 #screen.popContainer(first[0]) #
 # serial.send(serial.convert(first))#
 serial.send('3')
+print "First Stack sent"
 # brain.setPriority()
 
 first_time = True
@@ -57,6 +58,7 @@ def main():
 	# 	screen.popContainer(res[0])
 	# 	serial.send(serial.convert(res))
 	serial.send('3')
+	print "loop sent"
 
 	screen.run(5,main)
 
