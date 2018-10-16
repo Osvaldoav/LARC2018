@@ -60,7 +60,7 @@ void setup() {
 
 void loop(){
 //  logic->stackToShip();
- c_serial = _Serial.read();
+ c_serial = _Serial::read();
   blink(3);
   delay(1500);
 //  if(c_serial == 'S'){
