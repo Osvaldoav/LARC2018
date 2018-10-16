@@ -36,17 +36,12 @@ class _Sharp{
 // TODO: METHODS
         double getRawDistance(byte); 
         void calculateRawDistancesSharp();
-        // void calculateMedianDistancesSharp();
         void sharpKalmanFilter(SharpKalman &);
         void filtrateDistancesSharp();
         void sharp_RawKalman(SharpKalman &);
 // TODO: ATTRIBUTES
-        SharpKalman sharpFR;
-        SharpKalman sharpFL;
-        SharpKalman sharpBR;
-        SharpKalman sharpBL;
-        SharpKalman sharpBack;
-        SharpKalman sharpFront;
+        SharpKalman sharpRight;
+        SharpKalman sharpLeft;
 };
 
 #endif

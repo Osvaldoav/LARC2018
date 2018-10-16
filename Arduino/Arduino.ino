@@ -6,6 +6,7 @@
 _Logic *logic = new _Logic;
 
 const byte pinEncoder = 18;
+const byte pinEncoderMechanism = 2;
 
 /////////////////////////////////////////////SETUP////////////////////////////////////////////////
 void setup() {
@@ -19,8 +20,12 @@ void setup() {
     logic->traductor->movements->timeFlight->setupTimeFlight();
     logic->traductor->movements->tcrt5000->setupTCRT5000();
     logic->traductor->movements->encoder->setupEncoder();
+    logic->traductor->movements->servo->setupServo();
     pinMode(pinEncoder, INPUT_PULLUP);
+    pinMode(pinEncoderMechanism, INPUT_PULLUP);
+
     attachInterrupt(digitalPinToInterrupt(pinEncoder), encoderStep, CHANGE);   
+    attachInterrupt(digitalPinToInterrupt(pinEncoderMechanism), encoderStepMechanism, CHANGE);   
 
     //CALIBRATION 
 //      logic->traductor->movements->lcd->onLed('g');    
@@ -31,9 +36,9 @@ void setup() {
 
 void testMovements(){ 
 //    logic->traductor->movements->encoder->encoderState = 1;
-//    logic->traductor->movements->movePID(false, '7');
-    logic->traductor->movements->spinPID(true, -90);
-    delay(5000);
+    logic->traductor->movements->movePID(false, '6');
+//    logic->traductor->movements->spinPID(true, -90);
+//    delay(5000);
 //    Serial.println(logic->traductor->movements->encoder->steps);   
 //    logic->traductor->movements->movePID_nSec(1.5, false, '1');
 //    delay(2000);
@@ -131,11 +136,11 @@ void logicTest(){
 void loop(){
 //  aligningTofTest();
 //  tof_vs_sharp();
-//  testMovements();
+//  testMovements(); 
 //  testSteps();
 //  readTCRT5000();
 //  aligningTcrtTest();
 //  larc();
-  logicTest();
+  logicTest();  
 //  colorSensor();
 }

@@ -12,6 +12,8 @@ class _Motors{
         void setVelocity(int, int);
         void setVelocity(int, int, int, int);
         void brake();
+        void moveMechanism(bool);
+        void stopMechanism();
 // TODO: ATTRIBUTES
         double velFordFL;
         double velFordBL;

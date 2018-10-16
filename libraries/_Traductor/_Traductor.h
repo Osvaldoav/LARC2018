@@ -16,7 +16,9 @@ class _Traductor{
         void avanzar(bool b);
         void alinearPozo();
         void alinearTren();
-        void mecanismo(uint8_t s);
+        void mecanismo(uint8_t newStack, uint8_t currentStack);
+        void grabContainer();
+        void dropContainer();
         void moveAtras();
         void moveToHorizontal(bool b);
         void horizontal(int lines, bool tcrt);

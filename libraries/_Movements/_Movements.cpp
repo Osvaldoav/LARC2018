@@ -1,4 +1,7 @@
 #include <_Movements.h>
+///////////////////////////////// PINs ////////////////////////////////
+const byte limitSwitch = 30;
+
 /////////////////////////// LOCAL VARIABLES ///////////////////////////
 double const BLACKLINE_TRIGGER = 300;
 
@@ -12,6 +15,9 @@ _Movements::_Movements(){
     lcd = new _LCD;      
     timeFlight = new _TimeFlight;
     tcrt5000 = new _TCRT5000;
+    servo = new _Servo;
+    // FIXME:
+    // Start mechanism at top
 }
 
 // TODO:
@@ -441,12 +447,10 @@ void _Movements::larc_alignToPickContainer(int cmDistance){
         updateSensors(0,0,0,1,0,0);
         actualDistance = (timeFlight->timeFlightRight.kalmanDistance+timeFlight->timeFlightLeft.kalmanDistance)/2;
     }
-    lcd->onLed('r');
     motors->brake();
     delay(100);
     align_tof();
-    align_tof();
-    lcd->offLed('r');    
+    align_tof();  
     motors->brake();
 //  SlowFord velocities back to normal
     motors->velSlowFordFL = lastSlowVelFL; 
@@ -486,7 +490,7 @@ void _Movements::larc_moveAndAlignToShip(){
             }      
         }        
     }      
-    movePID_nCM(2.6, false, '4');     
+    movePID_nCM(2.6, true, '4');     
     motors->brake();   
     delay(300);
     pid->Setpoint = bno055->rawInput;    
@@ -625,4 +629,25 @@ void _Movements::larc_moveBetweenVerticalBlackLine(bool goSlow, char direction, 
         }     
     }
     motors->brake();
+}
+
+void _Movements::moveMechanism(int newStack, int currentStack){
+    encoder->encoderState = 1;  
+//  Counts of encoder to get to the objective
+    int untilSteps;
+    // Estando en el segundo nivel puede bajar 3000 steps mas maximo
+    if (newStack == 1 || currentStack == 1)
+        untilSteps = 6900 * abs(currentStack - newStack) - 4000;
+    else 
+        untilSteps = 6900 * abs(currentStack - newStack);
+//  Restart encoder counts
+    encoder->steps = 0;
+//  Move with p correction until the encoder read the cm
+    while (encoder->steps < untilSteps){
+        if (currentStack > newStack)            
+            motors->moveMechanism(true);
+        else
+            motors->moveMechanism(false);
+    }
+    motors->stopMechanism();
 }
