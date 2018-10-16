@@ -20,6 +20,7 @@ class _Logic{
         void stackToShip();
         void shipToStack(char c);
         void firstPick(char c); // Elige 6 o 7 despues de la primera foto
+        void gotoSecond();
 
         _Traductor *traductor;  
         
