@@ -19,6 +19,7 @@ class _Logic{
         char grabContainer(char c);
         void stackToShip();
         void shipToStack(char c);
+        void firstPick(char c); // Elige 6 o 7 despues de la primera foto
 
         _Traductor *traductor;  
         
