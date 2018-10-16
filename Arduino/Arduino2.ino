@@ -39,24 +39,29 @@ void setup() {
    //Starts the communication
    c_serial = _Serial::read();
    blink(2);
+   delay(1500);
    _Serial::write('1');
 
    //move forward
    //move to right
    //move forward
    //stop
-   _Serial::write('1');
    blink(4);
+   delay(1500);
+   _Serial::write('1');
    c_serial = _Serial::read();
    logic->moveFirst(c_serial); // Se mueve al stack 6 o 7
    _Serial::write(logic.grabContainer(c_serial));
    blink(6);
+   delay(1500);
     
 }
 
 void loop(){
  logic->stackToShip();
  c_serial = _Serial.read();
+  blink(3);
+  delay(1500);
  if(c_serial == 'S'){
    logic->gotoSecond(); // pendiente
    _Serial::write('1');
@@ -67,5 +72,5 @@ void loop(){
    logic->shipToStack();
    _Serial::write(logic.grabContainer(c_serial));
  }
- blink(3);
+
 }
