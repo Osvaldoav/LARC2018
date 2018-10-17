@@ -7,11 +7,11 @@ _Logic::_Logic(){
     for(int i = 0; i < 8; i++)
         stacks[i] = 3;
     
-    firstRed = 1;
-    blue_boxes = 0;
+    firstRed = 0;
+    blue_boxes = 1;
     green_boxes = 0;
-    lastStack = 0;
-    lastColor = 'R';
+    lastStack = 3; // Stack where you (come from)/(go)
+    lastColor = 'B'; // Ship where you (come from)/(go)
 }
 
 char _Logic::handleRed(){
@@ -86,6 +86,9 @@ void _Logic::stackToShip(){
         traductor->alinearPozo();
     else
         traductor->alinearTren();
+    // traductor->mecanismo(stacks[stack], lastStack); // nivela el mecanismo al nivel adecuado
+    // traductor->mecanismo(4, 1); // nivela el mecanismo al nivel adecuado       
+    // traductor->dropContainer();
 }
 
 void _Logic::shipToStack(char c){
@@ -132,8 +135,10 @@ void _Logic::shipToStack(char c){
     }
     // 2 son dos stacks, 1 es uno. negativo es frente, positivo reversa
     traductor->vertical(lines); // Avanza por la linea vertical frente o reversa
-    // traductor->alinearStack();
+    traductor->alinearStack();
+    
 
-    // traductor->grabContainer();
+    traductor->grabContainer();
     // traductor->mecanismo(stacks[stack], lastStack); // nivela el mecanismo al nivel adecuado
+    // traductor->mecanismo(4, 5); // nivela el mecanismo al nivel adecuado
 }

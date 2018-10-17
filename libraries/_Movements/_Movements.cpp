@@ -3,7 +3,7 @@
 const byte limitSwitch = 30;
 
 /////////////////////////// LOCAL VARIABLES ///////////////////////////
-double const BLACKLINE_TRIGGER = 300;
+double const BLACKLINE_TRIGGER = 260;//300
 
 _Movements::_Movements(){
     bno055 = new _BNO055;
@@ -490,7 +490,7 @@ void _Movements::larc_moveAndAlignToShip(){
             }      
         }        
     }      
-    movePID_nCM(2.6, true, '4');     
+    // movePID_nCM(0.5, true, '4');     
     motors->brake();   
     delay(300);
     pid->Setpoint = bno055->rawInput;    
@@ -631,20 +631,21 @@ void _Movements::larc_moveBetweenVerticalBlackLine(bool goSlow, char direction, 
     motors->brake();
 }
 
-void _Movements::moveMechanism(int newStack, int currentStack){
-    encoder->encoderState = 1;  
+void _Movements::moveMechanism(int lastStackLevel, int newStackLevel){
+    encoder->encoderStateMechanism = 1;  
 //  Counts of encoder to get to the objective
     int untilSteps;
     // Estando en el segundo nivel puede bajar 3000 steps mas maximo
-    if (newStack == 1 || currentStack == 1)
-        untilSteps = 6900 * abs(currentStack - newStack) - 4000;
+    if (lastStackLevel == 1 || newStackLevel == 1)
+        untilSteps = 6900 * abs(newStackLevel - lastStackLevel) - 4000;
     else 
-        untilSteps = 6900 * abs(currentStack - newStack);
+        untilSteps = 6900 * abs(newStackLevel - lastStackLevel);
 //  Restart encoder counts
-    encoder->steps = 0;
+    encoder->stepsMechanism = 0;
 //  Move with p correction until the encoder read the cm
-    while (encoder->steps < untilSteps){
-        if (currentStack > newStack)            
+    while (encoder->stepsMechanism < untilSteps){
+        Serial.println(encoder->stepsMechanism);
+        if (newStackLevel > lastStackLevel)            
             motors->moveMechanism(true);
         else
             motors->moveMechanism(false);
