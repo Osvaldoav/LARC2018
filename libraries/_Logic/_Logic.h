@@ -7,7 +7,7 @@ class _Logic{
     private:
         int *stacks;
         uint8_t blue_boxes, green_boxes;
-        uint8_t lastStack;
+        uint8_t lastStack, currentLevel, lastLevel;
         uint8_t firstRed;      
         char lastColor;
     
