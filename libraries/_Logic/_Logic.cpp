@@ -49,6 +49,10 @@ void _Logic::stackToShip(){
     bool B = lastColor != 'R';
     int dir;
 
+    lastLevel = lastStack/2*2;
+    if((lastColor != 'R' && lastLevel%4 != 0)||(lastColor == 'R' && lastLevel%4 == 0))
+        lastLevel++;
+    lastLevel = stacks[lastLevel];
     traductor->mecanismo(currentLevel, lastLevel);   // eleva el stack para no chocar con los demas
     traductor->horizontalLine(A == B); // Avanza de frente o de reversa hasta linea horizontal
 
