@@ -23,8 +23,8 @@ const byte pinPWMBR_B = 4;
 const byte pinPWMBL_F = 3;
 const byte pinPWMBL_B = 12;
 
-const byte pinMechanismUp = 10;
-const byte pinMechanismDown = 11; 
+const byte pinMechanismUp = 11;
+const byte pinMechanismDown = 10; 
 ////////////////////// LOCAL VARIABLES /////////////////
 bool boolFL_F;
 bool boolFL_B;

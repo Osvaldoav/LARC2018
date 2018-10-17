@@ -49,6 +49,7 @@ class _Movements{
         _TimeFlight *timeFlight;
         _TCRT5000 *tcrt5000;
         _Servo *servo;
+        double BLACKLINE_TRIGGER;//300
 };
 
 #endif

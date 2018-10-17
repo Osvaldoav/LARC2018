@@ -64,8 +64,17 @@ void _Traductor::moveToHorizontal(bool b){
 }
 void _Traductor::horizontal(int lines, bool tcrt){
     char c = lines < 0 ? '6' : '4'; 
-    bool b = abs(lines) > 1;
+    bool b = abs(lines) > 1;               
     movements->larc_moveUntilBlackLine(false, c, tcrt, true, b, false);
+    do{
+        movements->updateSensors(0,0,0,0,1,0);
+        movements->movePID(false, c);
+        if(tcrt && movements->tcrt5000->tcrtSharpLeft.kalmanDistance>movements->BLACKLINE_TRIGGER)
+            break;  
+        else if(!tcrt && movements->tcrt5000->tcrtSharpRight.kalmanDistance>movements->BLACKLINE_TRIGGER)
+            break;              
+    } while(1);    
+    movements->motors->brake(); 
 }
 
 void _Traductor::moveAtrasHorizontal(){

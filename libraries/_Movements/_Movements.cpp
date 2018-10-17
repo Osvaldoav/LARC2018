@@ -3,7 +3,6 @@
 const byte limitSwitch = 30;
 
 /////////////////////////// LOCAL VARIABLES ///////////////////////////
-double const BLACKLINE_TRIGGER = 260;//300
 
 _Movements::_Movements(){
     bno055 = new _BNO055;
@@ -16,6 +15,7 @@ _Movements::_Movements(){
     timeFlight = new _TimeFlight;
     tcrt5000 = new _TCRT5000;
     servo = new _Servo;
+    BLACKLINE_TRIGGER = 260;//300
     // FIXME:
     // Start mechanism at top
 }

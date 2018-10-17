@@ -146,12 +146,12 @@ void mechanism(){
 //    logic->traductor->movements->servo->dropContainer();
 //    Serial.println("ADIOS");    
 //    delay(1000);
-//    logic->traductor->movements->motors->moveMechanism(false);
+    logic->traductor->movements->motors->moveMechanism(true);
 //    delay(2000);
 //    logic->traductor->movements->motors->stopMechanism();
 //    delay(2000);
 //    logic->traductor->mecanismo(1,4);
-    while(1);
+//    while(1);
 }
 
 void loop(){
@@ -162,7 +162,7 @@ void loop(){
 //  readTCRT5000();
 //  aligningTcrtTest();
 //  larc();
-  logicTest();  
+//  logicTest();  
 //  colorSensor();
-//  mechanism();
+  mechanism();
 }
