@@ -33,7 +33,7 @@ char _Logic::verifyColor(char c){
     stacks[lastStack]--;
     if(color == 'G')
         green_boxes++;
-    if(color == 'B')
+    else if(color == 'B')
         blue_boxes++;
     return color == 'R' ? handleRed() : color;
 }
