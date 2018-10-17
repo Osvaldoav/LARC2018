@@ -10,7 +10,7 @@ void _Traductor::horizontalLine(bool b){
 }
 
 void _Traductor::throughtHorizontal(int dir){
-    double cm = abs(dir) < 2 ? 22 : 71;
+    double cm = abs(dir) < 2 ? 22 : 66;
     char c = dir < 0 ? '6' : '4';
     movements->movePID_nCM(cm, false, c);
 }
@@ -73,11 +73,12 @@ void _Traductor::moveAtrasHorizontal(){
 }
 
 void _Traductor::vertical(int lines){
-    int steps = abs(lines) > 1 ? 54 : 30;
+    int steps = abs(lines) > 1 ? 54 : 28;
     char dir = lines < 0 ? '8' : '2';
     movements->movePID_nCM(steps, false, dir);
 }
 
 void _Traductor::alinearStack(){
-    movements->align_tof();
+    movements->movePID_nCM(3, false, '6');
+    // movements->align_tof();
 }
