@@ -634,10 +634,10 @@ void _Movements::larc_moveBetweenVerticalBlackLine(bool goSlow, char direction, 
 void _Movements::moveMechanism(int lastStackLevel, int newStackLevel){
     encoder->encoderStateMechanism = 1;  
 //  Counts of encoder to get to the objective
-    int untilSteps;
+    long untilSteps;
     // Estando en el segundo nivel puede bajar 3000 steps mas maximo
     if (lastStackLevel == 1 || newStackLevel == 1)
-        untilSteps = 6900 * abs(newStackLevel - lastStackLevel) - 4000;
+        untilSteps = 6900 * abs(newStackLevel - lastStackLevel) - 3900; //6900 en fantasma
     else 
         untilSteps = 6900 * abs(newStackLevel - lastStackLevel);
 //  Restart encoder counts

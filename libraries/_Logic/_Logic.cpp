@@ -8,11 +8,11 @@ _Logic::_Logic(){
         stacks[i] = 4;
     
     firstRed = 0;
-    blue_boxes = 1;
+    blue_boxes = 0;
     green_boxes = 0;
     lastStack = 0;
     lastLevel = currentLevel = 4;
-    lastColor = 'R';
+    lastColor = 'B';
     stacks[7] = 3;
 }
 
@@ -27,7 +27,7 @@ char _Logic::handleRed(){
 
 char _Logic::verifyColor(char c){
     char color = c > 98 ? 'R' : c > 65 ? 'G' : 'B';
-    lastStack = color == 'R' ? c - 51 : color == 'G' ? c - 18 : c - 3;
+    lastStack = color == 'R' ? c - 99 : color == 'G' ? c - 66 : c - 51;
     // verify and modify 'color' with sensor TCS3200
     lastColor = color;
     stacks[lastStack]--;
@@ -52,7 +52,7 @@ void _Logic::stackToShip(){
     traductor->mecanismo(currentLevel, lastLevel);   // eleva el stack para no chocar con los demas
     traductor->horizontalLine(A == B); // Avanza de frente o de reversa hasta linea horizontal
 
-    currentLevel = lastColor == 'R' ? 2 : lastColor == 'G' ? green_boxes%5 + 1 : blue_boxes%5 + 1;
+    currentLevel = lastColor == 'R' ? 2 : lastColor == 'G' ? green_boxes%5 : blue_boxes%5;
     traductor->mecanismo(lastLevel, currentLevel);   // eleva el stack para no chocar con los demas
 
     if(B){
@@ -92,7 +92,7 @@ void _Logic::stackToShip(){
         traductor->alinearTren();
     // traductor->mecanismo(stacks[stack], lastStack); // nivela el mecanismo al nivel adecuado
     // traductor->mecanismo(4, 1); // nivela el mecanismo al nivel adecuado       
-    // traductor->dropContainer();
+    traductor->dropContainer();
 }
 
 void _Logic::shipToStack(char c){
@@ -102,10 +102,11 @@ void _Logic::shipToStack(char c){
     int lines, angle;
     
     lastLevel = stack/2*2;
-    if((color != 'R' && maxLevel%4 != 0)||(color == 'R' && maxLevel%4 == 0))
+    if((color != 'R' && lastLevel%4 != 0)||(color == 'R' && lastLevel%4 == 0))
         lastLevel++;
-    traductor->mecanismo(currentLevel, stacks[lastLevel]);  // eleva el stack para no chocar con los demas
-    currentLevel = stacks[stack]--;
+    lastLevel = stacks[lastLevel];
+    traductor->mecanismo(currentLevel, lastLevel);  // eleva el stack para no chocar con los demas
+    currentLevel = stacks[stack];
 
     if((lastColor == 'B' && blue_boxes > 3) || (lastColor == 'G' && green_boxes > 3)){
         traductor->moveAtras(); // Se mueve poquito hacia atras

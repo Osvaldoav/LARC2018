@@ -126,17 +126,23 @@ void larc(){
 void colorSensor(){
   logic->traductor->movements->colorSensor->readColor();
 }
-void logicTest(){     
+void logicTest(){    
+    logic->shipToStack('5');                            
+    logic->stackToShip();
+    logic->shipToStack('5');
+    logic->stackToShip();
     logic->shipToStack('6');
     logic->stackToShip();
-    logic->traductor->mecanismo(4, 1); // nivela el mecanismo al nivel adecuado       
-    logic->traductor->dropContainer();    
-    logic->traductor->mecanismo(1,3);
-    logic->shipToStack('6');
-    logic->stackToShip();  
-    logic->traductor->mecanismo(3, 2); // nivela el mecanismo al nivel adecuado       
-    logic->traductor->dropContainer();  
-    logic->traductor->mecanismo(2, 4); // nivela el mecanismo al nivel adecuado      
+    logic->shipToStack('5');
+    logic->stackToShip();
+//    logic->traductor->mecanismo(4, 1); // nivela el mecanismo al nivel adecuado       
+//    logic->traductor->dropContainer();    
+//    logic->traductor->mecanismo(1,3);
+//    logic->shipToStack('6');
+//    logic->stackToShip();  
+//    logic->traductor->mecanismo(3, 2); // nivela el mecanismo al nivel adecuado       
+//    logic->traductor->dropContainer();  
+//    logic->traductor->mecanismo(2, 4); // nivela el mecanismo al nivel adecuado      
     while(1);
 }
 void mechanism(){
@@ -146,7 +152,9 @@ void mechanism(){
 //    logic->traductor->movements->servo->dropContainer();
 //    Serial.println("ADIOS");    
 //    delay(1000);
-    logic->traductor->movements->motors->moveMechanism(true);
+//    logic->traductor->movements->encoder->encoderStateMechanism=1;
+//    Serial.println(logic->traductor->movements->encoder->stepsMechanism);
+    logic->traductor->movements->motors->moveMechanism(false);
 //    delay(2000);
 //    logic->traductor->movements->motors->stopMechanism();
 //    delay(2000);
@@ -162,7 +170,7 @@ void loop(){
 //  readTCRT5000();
 //  aligningTcrtTest();
 //  larc();
-//  logicTest();  
+  logicTest();  
 //  colorSensor();
-  mechanism();
+//  mechanism();
 }
