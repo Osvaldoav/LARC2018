@@ -11,8 +11,9 @@ _Logic::_Logic(){
     blue_boxes = 1;
     green_boxes = 0;
     lastStack = 0;
-    currentLevel = 4;
+    lastLevel = currentLevel = 4;
     lastColor = 'R';
+    stacks[7] = 3;
 }
 
 char _Logic::handleRed(){
@@ -38,19 +39,21 @@ char _Logic::verifyColor(char c){
 }
 
 char _Logic::grabContainer(char c){
-    // move forward
-    // grab container
-    return verifyColor(c);
+    traductor->alinearStack();
+    traductor->grabContainer();
+    verifyColor(c);
 }
 
 void _Logic::stackToShip(){
     bool A = lastStack < 2 || (lastStack > 3 && lastStack < 6);
     bool B = lastColor != 'R';
-
-    // traductor->mecanismo(4, lastStack);             // eleva el stack para no chocar con los demas
-
-    traductor->horizontalLine(A == B); // Avanza de frente o de reversa hasta linea horizontal
     int dir;
+
+    traductor->mecanismo(currentLevel, lastLevel);   // eleva el stack para no chocar con los demas
+    traductor->horizontalLine(A == B); // Avanza de frente o de reversa hasta linea horizontal
+
+    currentLevel = lastColor == 'R' ? 2 : lastColor == 'G' ? green_boxes%5 + 1 : blue_boxes%5 + 1;
+    traductor->mecanismo(lastLevel, currentLevel);   // eleva el stack para no chocar con los demas
 
     if(B){
         if ((lastColor == 'B' && blue_boxes < 4) || (lastColor == 'G' && green_boxes < 4)){
@@ -97,8 +100,12 @@ void _Logic::shipToStack(char c){
     int stack = color == 'R' ? c - 99 : color == 'G' ? c - 66 : c - 51;
     bool dir, tcrt;
     int lines, angle;
-
-    traductor->mecanismo(stacks[stack], currentLevel);             // eleva el stack para no chocar con los demas
+    
+    lastLevel = stack/2*2;
+    if((color != 'R' && maxLevel%4 != 0)||(color == 'R' && maxLevel%4 == 0))
+        lastLevel++;
+    traductor->mecanismo(currentLevel, stacks[lastLevel]);  // eleva el stack para no chocar con los demas
+    currentLevel = stacks[stack]--;
 
     if((lastColor == 'B' && blue_boxes > 3) || (lastColor == 'G' && green_boxes > 3)){
         traductor->moveAtras(); // Se mueve poquito hacia atras
@@ -136,10 +143,8 @@ void _Logic::shipToStack(char c){
     }
     // 2 son dos stacks, 1 es uno. negativo es frente, positivo reversa
     traductor->vertical(lines); // Avanza por la linea vertical frente o reversa
-    traductor->alinearStack();
-    
-
-    traductor->grabContainer();
+    traductor->mecanismo(lastLevel, currentLevel);
+    grabContainer(c);
     // traductor->mecanismo(stacks[stack], lastStack); // nivela el mecanismo al nivel adecuado
     // traductor->mecanismo(4, 5); // nivela el mecanismo al nivel adecuado
 }
