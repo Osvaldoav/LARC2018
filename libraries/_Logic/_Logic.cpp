@@ -5,12 +5,13 @@ _Logic::_Logic(){
     firstRed = -1;
     stacks = new int[8];
     for(int i = 0; i < 8; i++)
-        stacks[i] = 3;
+        stacks[i] = 4;
     
     firstRed = 1;
     blue_boxes = 0;
     green_boxes = 0;
     lastStack = 0;
+    currentLevel = 4;
     lastColor = 'R';
 }
 
@@ -94,7 +95,7 @@ void _Logic::shipToStack(char c){
     bool dir, tcrt;
     int lines, angle;
 
-    // traductor->mecanismo(4, lastStack);             // eleva el stack para no chocar con los demas
+    traductor->mecanismo(stacks[stack], currentLevel);             // eleva el stack para no chocar con los demas
 
     if((lastColor == 'B' && blue_boxes > 3) || (lastColor == 'G' && green_boxes > 3)){
         traductor->moveAtras(); // Se mueve poquito hacia atras
