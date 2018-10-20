@@ -36,7 +36,7 @@ void setup() {
 
 void testMovements(){ 
 //    logic->traductor->movements->encoder->encoderState = 1;
-//    logic->traductor->movements->movePID(false, '6');
+    logic->traductor->movements->movePID(false, '6');
 //    logic->traductor->movements->spinPID(true, -90);
 //    delay(5000);
 //    Serial.println(logic->traductor->movements->encoder->steps);   
@@ -49,8 +49,8 @@ void testMovements(){
 //    delay(3000);
 //    logic->traductor->movements->movePID_nCM(179, false, '8');
 //    delay(3000);    
-    logic->traductor->movements->getCloseToStack();
-    while(1); 
+//    logic->traductor->movements->getCloseToStack();
+//    while(1); 
 
 }
 void aligningTofTest(){
@@ -113,36 +113,23 @@ void aligningTcrtTest(){
 //      logic->traductor->movements->larc_alignBetweenVerticalBlackLine(true, '8');
 }
 
-void larc(){
-//  logic->traductor->movements->larc_moveUntilBlackLine(false, '8', true, false, true, false);
-//  logic->traductor->movements->larc_moveUntilBlackLine(false, '6', true, true, false, false);
-//  logic->traductor->movements->movePID_nCM(29, false, '8');
-//  delay(2000);
-  logic->traductor->movements->align_tof();
-//  logic->traductor->movements->larc_moveBetweenVerticalBlackLine(false, '2');
-//  logic->traductor->movements->movePID_nCM(21, false, '6');
-//  logic->traductor->movements->spinPID(true, 90);
-//  logic->traductor->movements->larc_moveAndAlignToShip();
-//  logic->traductor->movements->lcd->printAlertSec("CONTAINER DROPPED", 5);
-//  while(1); 
-}
 void colorSensor(){
   logic->traductor->movements->colorSensor->readColor();
 }
 void logicTest(){  
-//    logic->traductor->mecanismo(3, 4);  
-    logic->shipToStack('5');                            
-    logic->stackToShip();
-    logic->shipToStack('5');
-    logic->stackToShip();
-    logic->shipToStack('6');
-    logic->stackToShip();
-    logic->shipToStack('5');
-    logic->stackToShip();
-    logic->shipToStack('6');
-    logic->stackToShip();
-    logic->traductor->moveAtrasHorizontal();
-    logic->traductor->mecanismo(5,4);
+    logic->traductor->gotoFirst();
+//    logic->shipToStack('5');                            
+//    logic->stackToShip();
+//    logic->shipToStack('5');
+//    logic->stackToShip();
+//    logic->shipToStack('6');
+//    logic->stackToShip();
+//    logic->shipToStack('5');
+//    logic->stackToShip();
+//    logic->shipToStack('6');
+//    logic->stackToShip();
+//    logic->traductor->moveAtrasHorizontal();
+//    logic->traductor->mecanismo(5,4);
 //    logic->traductor->mecanismo(4, 1); // nivela el mecanismo al nivel adecuado       
 //    logic->traductor->dropContainer();    
 //    logic->traductor->mecanismo(1,3);

@@ -44,7 +44,7 @@ char _Logic::grabContainer(char c){
     verifyColor(c);
 }
 
-void gotoFirst(){
+void _Logic::gotoFirst(){
     traductor->gotoFirst();
 }
 
