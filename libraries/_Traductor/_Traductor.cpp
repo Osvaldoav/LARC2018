@@ -108,7 +108,7 @@ void _Traductor::alinearStack(){
 }
 
 void _Traductor::gotoFirst(){
-    movements->larc_moveUntilBlackLine(false, 8, true, false, false, false);
+    movements->larc_moveUntilBlackLine(false, 8, true, false, true, false);
     movements->larc_moveUntilBlackLine(false, 6, true, true, false, false);
     movements->movePID_nCM(25, false, '8');
 }
