@@ -50,7 +50,7 @@ void testMovements(){
 //    logic->traductor->movements->movePID_nCM(179, false, '8');
 //    delay(3000);    
     logic->traductor->movements->getCloseToStack();
-    while(1);
+    while(1); 
 
 }
 void aligningTofTest(){
@@ -174,12 +174,12 @@ void mechanism(){
 void loop(){
 //  aligningTofTest();
 //  tof_vs_sharp();
-  testMovements(); 
+//  testMovements(); 
 //  testSteps();
 //  readTCRT5000();
 //  aligningTcrtTest();
 //  larc();
-//  logicTest();   
+  logicTest();   
 //  colorSensor();
 //  mechanism();
 }

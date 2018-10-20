@@ -102,7 +102,7 @@ void _Traductor::vertical(int lines){
 }
 
 void _Traductor::alinearStack(){ 
-    // movements->movePID_nCM(3, false, '6');
-    movements->getCloseToStack();
+    movements->movePID_nCM(2.7, true, '6');
+    // movements->getCloseToStack();
     // movements->align_tof();
 }
