@@ -424,7 +424,7 @@ void _Movements::getCloseToStack(){
         updateSensors(0,0,0,1,0,0);
 //  While not at ceratin distance from wall
     do{                 
-        if (timeFlight->timeFlightRight.kalmanDistance<1 && timeFlight->timeFlightLeft.kalmanDistance<1)
+        if (timeFlight->timeFlightRight.kalmanDistance<0.6 || timeFlight->timeFlightLeft.kalmanDistance<0.6)
             break;    
         movePID(true, '6');                        
         updateSensors(0,0,0,1,0,0);
