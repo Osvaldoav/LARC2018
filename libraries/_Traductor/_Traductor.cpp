@@ -92,3 +92,9 @@ void _Traductor::alinearStack(){
     movements->movePID_nCM(3, false, '6');
     // movements->align_tof();
 }
+
+void _Traductor::gotoFirst(){
+    movements->larc_moveUntilBlackLine(false, 8, true, false, false, false);
+    movements->larc_moveUntilBlackLine(false, 6, true, true, false, false);
+    movements->movePID_nCM(25, false, '8');
+}
