@@ -2,6 +2,7 @@
 #define _Logic_h
 #include <_Traductor.h>
 #include <Arduino.h>
+#include <_Serial.h>
 
 class _Logic{
     private:
@@ -9,7 +10,7 @@ class _Logic{
         uint8_t blue_boxes, green_boxes;
         uint8_t lastStack, currentLevel, lastLevel;
         uint8_t firstRed;      
-        char lastColor;
+        char lastColor, c_serial;
     
     public:
         _Logic();
@@ -18,10 +19,11 @@ class _Logic{
         char handleRed();
         char grabContainer(char c);
         void stackToShip();
-        void shipToStack(char c);
+        void shipToStack();
         void firstPick(char c); // Elige 6 o 7 despues de la primera foto
         void gotoFirst();
         void gotoSecond();
+        void initCommunication();
 
         _Traductor *traductor;  
         

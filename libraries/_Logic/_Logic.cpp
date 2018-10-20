@@ -16,6 +16,15 @@ _Logic::_Logic(){
     stacks[7] = 3;
 }
 
+void _Logic::initCommunication(){
+    c_serial = _Serial::read();
+    _Serial::send('1');
+    gotoFirst();
+    _Serial::send('1');
+    c_serial = _Serial::read();
+    pickFirst(c_serial);
+}
+
 char _Logic::handleRed(){
     if(firstRed > -1)
         firstRed = lastStack < 4 ? 0 : 1;
@@ -41,11 +50,18 @@ char _Logic::verifyColor(char c){
 char _Logic::grabContainer(char c){
     traductor->alinearStack();
     traductor->grabContainer();
-    verifyColor(c);
+    _Serial::send(verifyColor(c));
 }
 
 void _Logic::gotoFirst(){
     traductor->gotoFirst();
+}
+
+void _Logic::firstPick(char c){
+    char color = c > 98 ? 'R' : c > 65 ? 'G' : 'B';
+    int stack = color == 'R' ? c - 99 : color == 'G' ? c - 66 : c - 51;
+    traductor->firstPick(stack);
+    grabContainer(c);
 }
 
 void _Logic::stackToShip(){
@@ -105,7 +121,8 @@ void _Logic::stackToShip(){
     traductor->dropContainer();
 }
 
-void _Logic::shipToStack(char c){
+void _Logic::shipToStack(){
+    char c = _Serial::read();
     char color = c > 98 ? 'R' : c > 65 ? 'G' : 'B';
     int stack = color == 'R' ? c - 99 : color == 'G' ? c - 66 : c - 51;
     bool dir, tcrt;

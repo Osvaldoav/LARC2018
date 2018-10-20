@@ -112,3 +112,9 @@ void _Traductor::gotoFirst(){
     movements->larc_moveUntilBlackLine(false, '6', true, true, false, false);
     movements->movePID_nCM(27.8, false, '8');
 }
+
+void _Traductor::pickFirst(int stack){
+    char c = stack < 7 ? '8' : '2';
+    int steps = stack < 7 ? 7 : 5;
+    movements->movePID_nCM(steps, false, c);
+}
