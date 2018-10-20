@@ -52,15 +52,15 @@ void _Logic::stackToShip(){
     lastLevel = lastStack/2*2;
     if((lastColor != 'R' && lastLevel%4 != 0)||(lastColor == 'R' && lastLevel%4 == 0))
         lastLevel++;
-    lastLevel = stacks[lastLevel];
+    lastLevel = stacks[lastLevel]+1;
     traductor->mecanismo(currentLevel, lastLevel);   // eleva el stack para no chocar con los demas
     traductor->horizontalLine(A == B); // Avanza de frente o de reversa hasta linea horizontal
 
-    currentLevel = lastColor == 'R' ? 2 : lastColor == 'G' ? green_boxes%5 : blue_boxes%5;
+    currentLevel = lastColor == 'R' ? 2 : lastColor == 'G' ? green_boxes%6 : blue_boxes%6;
     traductor->mecanismo(lastLevel, currentLevel);   // eleva el stack para no chocar con los demas
 
     if(B){
-        if ((lastColor == 'B' && blue_boxes < 4) || (lastColor == 'G' && green_boxes < 4)){
+        if ((lastColor == 'B' && blue_boxes < 6) || (lastColor == 'G' && green_boxes < 6)){
             dir = lastStack < 4 ? 2 : 1;
             dir *= lastStack > 5 - ((dir - 1)* 4) ? -1 : 1;
             dir = lastColor == 'G' ? abs(abs(dir) - 3) * -(dir/abs(dir)) : dir;
@@ -79,7 +79,7 @@ void _Logic::stackToShip(){
         traductor->throughtHorizontal2(dir); // Avanza por la linea horizontal a la izquierda o derecha cuando 'R'
     }
     
-    if ((lastColor == 'B' && blue_boxes > 3) || (lastColor == 'G' && green_boxes > 3)){
+    if ((lastColor == 'B' && blue_boxes > 5) || (lastColor == 'G' && green_boxes > 5)){
         bool b = ((lastStack/2 + 1)%2 == 1);
         if(((lastStack/2 + 1)%2 == 1) == (lastColor == 'B')){
             b = !b;
@@ -109,20 +109,22 @@ void _Logic::shipToStack(char c){
     if((color != 'R' && lastLevel%4 != 0)||(color == 'R' && lastLevel%4 == 0))
         lastLevel++;
     lastLevel = stacks[lastLevel];
-    traductor->mecanismo(currentLevel, lastLevel);  // eleva el stack para no chocar con los demas
-    currentLevel = stacks[stack];
 
-    if((lastColor == 'B' && blue_boxes > 3) || (lastColor == 'G' && green_boxes > 3)){
+    if((lastColor == 'B' && blue_boxes > 5) || (lastColor == 'G' && green_boxes > 5)){
         traductor->moveAtras(); // Se mueve poquito hacia atras
         if((lastColor == 'B' && (stack/2 + 1) % 2 == 1) || (lastColor == 'G' && (stack/2 + 1) % 2 == 0))
             traductor->girar(180);
         dir = (stack/2 + 1) % 2 == 0;
         traductor->moveToHorizontal(dir); // frente o reversa hasta topar linea horizontal. True es frente, False es atras
-        lines = stack < 2 || stack > 5 ? -1 : 1; 
+        lines = stack < 2 || stack > 5 ? -1 : 1;
+        traductor->mecanismo(currentLevel, lastLevel);  // eleva el stack para no chocar con los demas
+        currentLevel = stacks[stack]; 
         // 2 son dos lineas, 1 es una. negativo es derecha, positivo izquierda
         traductor->horizontal(lines, dir); // Avanza por la linea horizontal a la izquierda o derecha
     }else{
         traductor->moveAtrasHorizontal(); // izquierda hasta topar linea horizontal
+        traductor->mecanismo(currentLevel, lastLevel);  // eleva el stack para no chocar con los demas
+        currentLevel = stacks[stack];
         angle = (stack/2 + 1)%2 != 0 ? 90 : -90;
         angle *= lastColor == 'R' ? -1 : 1;
         traductor->girar(angle); // 90 es vuelta de 90 hacia la derecha, -90 es 90 hacia izquierda

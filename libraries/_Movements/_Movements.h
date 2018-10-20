@@ -38,6 +38,7 @@ class _Movements{
         void larc_moveAndAlignToShip();
         void larc_moveUntilBlackLine(bool, char, bool, bool, bool, bool);
         void moveMechanism(int, int);
+        void initMechanism();
 // TODO: ATTRIBUTES
         _BNO055 *bno055;
         _ColorSensor *colorSensor;

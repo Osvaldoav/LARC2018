@@ -36,7 +36,7 @@ bool boolBR_F;
 bool boolBR_B;
 
 void _Motors::setupMotors(){
-    velFordFL = 200;
+    velFordFL = 200;//200
     velFordBL = 200;
     velFordFR = 200;
     velFordBR = 200; 

@@ -126,7 +126,8 @@ void larc(){
 void colorSensor(){
   logic->traductor->movements->colorSensor->readColor();
 }
-void logicTest(){    
+void logicTest(){  
+//    logic->traductor->mecanismo(3, 4);  
     logic->shipToStack('5');                            
     logic->stackToShip();
     logic->shipToStack('5');
@@ -134,6 +135,8 @@ void logicTest(){
     logic->shipToStack('6');
     logic->stackToShip();
     logic->shipToStack('5');
+    logic->stackToShip();
+    logic->shipToStack('6');
     logic->stackToShip();
 //    logic->traductor->mecanismo(4, 1); // nivela el mecanismo al nivel adecuado       
 //    logic->traductor->dropContainer();    
@@ -154,23 +157,24 @@ void mechanism(){
 //    delay(1000);
 //    logic->traductor->movements->encoder->encoderStateMechanism=1;
 //    Serial.println(logic->traductor->movements->encoder->stepsMechanism);
-    logic->traductor->movements->motors->moveMechanism(false);
+//    logic->traductor->movements->motors->moveMechanism(true);
+//    logic->traductor->movements->initMechanism();
 //    delay(2000);
 //    logic->traductor->movements->motors->stopMechanism();
 //    delay(2000);
-//    logic->traductor->mecanismo(1,4);
-//    while(1);
+    logic->traductor->mecanismo(2,4);
+    while(1);
 }
 
 void loop(){
 //  aligningTofTest();
 //  tof_vs_sharp();
-//  testMovements(); 
+  testMovements(); 
 //  testSteps();
 //  readTCRT5000();
 //  aligningTcrtTest();
 //  larc();
-  logicTest();  
+//  logicTest();  
 //  colorSensor();
 //  mechanism();
 }

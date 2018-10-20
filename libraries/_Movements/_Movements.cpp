@@ -5,6 +5,7 @@ const byte limitSwitch = 30;
 /////////////////////////// LOCAL VARIABLES ///////////////////////////
 
 _Movements::_Movements(){
+    pinMode(limitSwitch, INPUT);
     bno055 = new _BNO055;
     colorSensor = new _ColorSensor;
     encoder = new _Encoder;
@@ -18,6 +19,10 @@ _Movements::_Movements(){
     BLACKLINE_TRIGGER = 260;//300
     // FIXME:
     // Start mechanism at top
+} 
+
+void _Movements::initMechanism(){
+    Serial.println(digitalRead(limitSwitch));
 }
 
 // TODO:
@@ -469,7 +474,6 @@ void _Movements::larc_moveAndAlignToShip(){
             break;        
         }
     }
-    movePID_nCM(2.6, false, '4'); 
     motors->brake();  
     while(tcrt5000->tcrtMechaLeft.kalmanDistance<BLACKLINE_TRIGGER || tcrt5000->tcrtMechaRight.kalmanDistance<BLACKLINE_TRIGGER){
         updateSensors(0,0,0,0,1,0);
