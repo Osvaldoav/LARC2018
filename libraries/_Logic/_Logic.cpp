@@ -44,6 +44,10 @@ char _Logic::grabContainer(char c){
     verifyColor(c);
 }
 
+void gotoFirst(){
+    traductor->gotoFirst();
+}
+
 void _Logic::stackToShip(){
     bool A = lastStack < 2 || (lastStack > 3 && lastStack < 6);
     bool B = lastColor != 'R';

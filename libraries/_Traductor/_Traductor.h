@@ -27,6 +27,8 @@ class _Traductor{
         void vertical(int lines);
         void alinearStack();
 
+        void gotoFirst();
+
         _Movements *movements;
 
 };

@@ -76,4 +76,12 @@
 ////    _Serial::send(logic->grabContainer(c_serial));
 ////  }
 //    _Serial::send('1');
-//}
+//    c_serial = _Serial::read();
+//    logic->moveSecond(c_serial); // pendiente
+//    _Serial::send(logic->grabContainer(c_serial));
+//  }else{
+//    logic->shipToStack();
+//    _Serial::send(logic->grabContainer(c_serial));
+//  }
+//     _Serial::send('1');
+// }
