@@ -49,9 +49,9 @@ class Algorithm:
 
 	# Sets as priority a stack where a 'R' is found
 	def setPriority(self):
-		updateOrder()
+		self.updateOrder()
 		for s in self.order:
-			for b in matrix[s]:
+			for b in self.matrix[s]:
 				if b == 'R':
 					self.priority = s
 					return
@@ -63,7 +63,7 @@ class Algorithm:
 		if self.priority != -1:
 			return self.priority, 'R'
 		
-		updateOrder()
+		self.updateOrder()
 
 		# Sets the color we are trying to find
 		color = self.last_color
@@ -72,14 +72,14 @@ class Algorithm:
 
 		# Looks for the first specific colored container in the corresponding order
 		for s in self.order:
-			if len(matrix[s]) > 0:
-				if matrix[s][0] == color:
+			if len(self.matrix[s]) > 0:
+				if self.matrix[s][0] == color:
 					return s, color
 
 		# If there isn't any picks the first container in the corresponding order, non-color specified 
 		for s in self.order:
-			if len(matrix[s]) > 0:
-				return s, matrix[s][0]
+			if len(self.matrix[s]) > 0:
+				return s, self.matrix[s][0]
 
 		# Returns -1 if there are not more containers to pick
 		return -1, 'B'
