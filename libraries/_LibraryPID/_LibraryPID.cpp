@@ -22,7 +22,7 @@ void _LibraryPID::setupLibraryPID(){
 		/////// PID CONSTANTS ///////
 		alignKp=0, alignKi=0, alignKd=0;
 		turnKp=8.6, turnKi=0, turnKd=0.9;//2.4d // 18.3
-		forwardKp=12.2, forwardKi=0, forwardKd=4.3;//4.8d
+		forwardKp=3, forwardKi=0, forwardKd=4.3;//4.8d
 		/////// VELOCITIES CONTANTS ////////
 		maxTurnVel=255;      
         minTurnVel=0;

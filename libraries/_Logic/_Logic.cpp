@@ -61,7 +61,7 @@ void _Logic::stackToShip(){
     traductor->horizontalLine(A == B); // Avanza de frente o de reversa hasta linea horizontal
 
     currentLevel = lastColor == 'R' ? 2 : lastColor == 'G' ? green_boxes%6 : blue_boxes%6;
-    traductor->mecanismo(lastLevel, currentLevel);   // eleva el stack para no chocar con los demas
+    traductor->mecanismo(lastLevel, currentLevel);   // eleva el stack para dejarlo en el barco
 
     if(B){
         if ((lastColor == 'B' && blue_boxes < 6) || (lastColor == 'G' && green_boxes < 6)){
@@ -92,6 +92,8 @@ void _Logic::stackToShip(){
         traductor->avanzar(b); // avanza hasta que llegue a la altura de los barcos
     }else{
         dir = ((lastStack/2 + 1)%2 == 0) != B ? -90 : 90;
+        bool tcrt = dir == 90? true: false;
+        traductor->backUntilBlackLineSharps(tcrt);
         traductor->girar(dir); // giros de 90, + derecha, - izquierda
     }
     if (B)

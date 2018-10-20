@@ -36,7 +36,7 @@ void setup() {
 
 void testMovements(){ 
 //    logic->traductor->movements->encoder->encoderState = 1;
-    logic->traductor->movements->movePID(false, '6');
+//    logic->traductor->movements->movePID(false, '6');
 //    logic->traductor->movements->spinPID(true, -90);
 //    delay(5000);
 //    Serial.println(logic->traductor->movements->encoder->steps);   
@@ -49,6 +49,9 @@ void testMovements(){
 //    delay(3000);
 //    logic->traductor->movements->movePID_nCM(179, false, '8');
 //    delay(3000);    
+    logic->traductor->movements->getCloseToStack();
+    while(1);
+
 }
 void aligningTofTest(){
 //    logic->traductor->movements->movePID_alignToPickContainer(2);
@@ -68,14 +71,14 @@ void tof_vs_sharp(){
     Serial.print(" ");
     Serial.println((logic->traductor->movements->timeFlight->timeFlightLeft.kalmanDistance - logic->traductor->movements->timeFlight->timeFlightRight.kalmanDistance)*10);  
 //
-//    Serial.print("\t\t");
-//
-//    logic->traductor->movements->updateSensors(0,0,1,0,0,0);
-//    Serial.print(logic->traductor->movements->sharp->sharpBL.kalmanDistance);
-//    Serial.print(" ");
-//    Serial.print(logic->traductor->movements->sharp->sharpFR.kalmanDistance);
-//    Serial.print(" ");
-//    Serial.println((logic->traductor->movements->sharp->sharpBL.kalmanDistance - logic->traductor->movements->sharp->sharpFR.kalmanDistance)*10);   
+    Serial.print("\t\t");
+
+    logic->traductor->movements->updateSensors(0,0,1,0,0,0);
+    Serial.print(logic->traductor->movements->sharp->sharpLeft.kalmanDistance);
+    Serial.print(" ");
+    Serial.print(logic->traductor->movements->sharp->sharpRight.kalmanDistance);
+    Serial.print(" ");
+    Serial.println((logic->traductor->movements->sharp->sharpLeft.kalmanDistance - logic->traductor->movements->sharp->sharpRight.kalmanDistance)*10);   
   
 //     logic->traductor->movements->timeFlight->timeFlight_RawKalman(movements->timeFlight->timeFlightLeft);
     // logic->traductor->movements->sharp->sharp_RawKalman(movements->sharp->sharpBL);
@@ -138,6 +141,8 @@ void logicTest(){
     logic->stackToShip();
     logic->shipToStack('6');
     logic->stackToShip();
+    logic->traductor->moveAtrasHorizontal();
+    logic->traductor->mecanismo(5,4);
 //    logic->traductor->mecanismo(4, 1); // nivela el mecanismo al nivel adecuado       
 //    logic->traductor->dropContainer();    
 //    logic->traductor->mecanismo(1,3);
@@ -162,7 +167,7 @@ void mechanism(){
 //    delay(2000);
 //    logic->traductor->movements->motors->stopMechanism();
 //    delay(2000);
-    logic->traductor->mecanismo(2,4);
+    logic->traductor->mecanismo(3,4);
     while(1);
 }
 
@@ -174,7 +179,7 @@ void loop(){
 //  readTCRT5000();
 //  aligningTcrtTest();
 //  larc();
-//  logicTest();  
+//  logicTest();   
 //  colorSensor();
 //  mechanism();
 }
