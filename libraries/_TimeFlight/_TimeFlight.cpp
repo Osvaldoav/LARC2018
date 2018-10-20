@@ -8,7 +8,7 @@ VL53L0X timeFlightLeftSensor;
 ////////////////////////////// LOCAL VARAIBLES ///////////////////////////////
 const double cantReads = 7;
 double lastDistance; 
-double leftCompensation=-1.87, rightCompensation=-1.6;
+double leftCompensation=-1.87, rightCompensation=-1.6;//-1.87, -1.6
 
 void _TimeFlight::calibTimeFlights(double target){
     leftCompensation=0,rightCompensation=0;

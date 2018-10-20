@@ -22,6 +22,7 @@ class _Traductor{
         void moveAtras();
         void moveToHorizontal(bool b);
         void horizontal(int lines, bool tcrt);
+        void backUntilBlackLineSharps(bool tcrt);
         void moveAtrasHorizontal(); 
         void vertical(int lines);
         void alinearStack();

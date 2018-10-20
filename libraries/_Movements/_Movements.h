@@ -31,7 +31,7 @@ class _Movements{
         void movePID_nCM(double, bool, char);        
         // Align using TOF PID
         void align_tof();        
-        void larc_alignToPickContainer(int);
+        void getCloseToStack();
         // Align using TCRT5000 PID
         void larc_moveBetweenVerticalBlackLine(bool, char, bool);
         char oppositeDirection(char);
@@ -51,6 +51,7 @@ class _Movements{
         _TCRT5000 *tcrt5000;
         _Servo *servo;
         double BLACKLINE_TRIGGER;//300
+        double BLACKLINE_TRIGGER_SHIP;
 };
 
 #endif

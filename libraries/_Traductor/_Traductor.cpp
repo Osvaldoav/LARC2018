@@ -10,7 +10,7 @@ void _Traductor::horizontalLine(bool b){
 }
 
 void _Traductor::throughtHorizontal(int dir){
-    double cm = abs(dir) < 2 ? 22 : 66;
+    double cm = abs(dir) < 2 ? 22 : 68;
     char c = dir < 0 ? '6' : '4';
     movements->movePID_nCM(cm, false, c);
 }
@@ -64,22 +64,35 @@ void _Traductor::moveToHorizontal(bool b){
 }
 void _Traductor::horizontal(int lines, bool tcrt){
     char c = lines < 0 ? '6' : '4'; 
-    bool b = abs(lines) > 1;            
-    char vertical = tcrt? '8': '2';   
+    bool b = abs(lines) > 1;              
     movements->larc_moveUntilBlackLine(false, c, tcrt, true, b, false);
+    char vertical = tcrt? '8': '2'; 
     do{
-        movements->updateSensors(0,0,0,0,1,0);
         movements->movePID(false, vertical);
+        movements->updateSensors(0,0,0,0,1,1);        
         if(tcrt && movements->tcrt5000->tcrtSharpLeft.kalmanDistance>movements->BLACKLINE_TRIGGER)
             break;  
         else if(!tcrt && movements->tcrt5000->tcrtSharpRight.kalmanDistance>movements->BLACKLINE_TRIGGER)
             break;              
     } while(1);    
-    movements->motors->brake(); 
+    movements->motors->brake();
+}
+
+void _Traductor::backUntilBlackLineSharps(bool tcrt){
+    char vertical = tcrt? '8': '2'; 
+    do{
+        movements->movePID(false, vertical);
+        movements->updateSensors(0,0,0,0,1,1);        
+        if(tcrt && (movements->tcrt5000->tcrtMidFrontRight.kalmanDistance>movements->BLACKLINE_TRIGGER || movements->tcrt5000->tcrtMidFrontLeft.kalmanDistance>movements->BLACKLINE_TRIGGER))
+            break;  
+        else if(!tcrt && (movements->tcrt5000->tcrtMidDownRight.kalmanDistance>movements->BLACKLINE_TRIGGER || movements->tcrt5000->tcrtMidDownLeft.kalmanDistance>movements->BLACKLINE_TRIGGER))        
+            break;              
+    } while(1);    
+    movements->motors->brake();
 }
 
 void _Traductor::moveAtrasHorizontal(){
-    movements->larc_moveUntilBlackLine(false, '4', false, false, false, true);
+    movements->larc_moveUntilBlackLine(false, '4', false, true, false, true);
 }
 
 void _Traductor::vertical(int lines){
@@ -88,7 +101,8 @@ void _Traductor::vertical(int lines){
     movements->movePID_nCM(steps, false, dir);
 }
 
-void _Traductor::alinearStack(){
-    movements->movePID_nCM(3, false, '6');
+void _Traductor::alinearStack(){ 
+    // movements->movePID_nCM(3, false, '6');
+    movements->getCloseToStack();
     // movements->align_tof();
 }

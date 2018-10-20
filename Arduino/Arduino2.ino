@@ -3,7 +3,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////    
 //#include <_Serial.h>
 //#include <_Logic.h>
-//#include <Wire.h>
+////#include <Wire.h>
 //_Logic *logic = new _Logic;
 //
 //const byte pinEncoder = 40;
@@ -24,16 +24,18 @@
 //
 ///////////////////////////////////////////////SETUP////////////////////////////////////////////////
 //void setup() {
-//   pinMode(13, HIGH);
+//   pinMode(13, OUTPUT);
 //   Serial.begin(9600);
-//   Wire.begin();
-//   logic->traductor->movements->pid->setupLibraryPID();
-//   logic->traductor->movements->motors->setupMotors();
-//   logic->traductor->movements->colorSensor->setupColorSensor();
-//   logic->traductor->movements->bno055->setupBNO055();
-//   logic->traductor->movements->timeFlight->setupTimeFlight();
-//   pinMode(pinEncoder, INPUT_PULLUP);
-//   attachInterrupt(digitalPinToInterrupt(pinEncoder), encoderStep, CHANGE);
+////   Wire.begin();
+////   logic->traductor->movements->pid->setupLibraryPID();
+////   logic->traductor->movements->motors->setupMotors();
+////   logic->traductor->movements->colorSensor->setupColorSensor();
+////   logic->traductor->movements->bno055->setupBNO055();
+////   logic->traductor->movements->timeFlight->setupTimeFlight();
+////   pinMode(pinEncoder, INPUT_PULLUP);
+////   attachInterrupt(digitalPinToInterrupt(pinEncoder), encoderStep, CHANGE);
+//
+//   blink(6);
 //
 //   //Starts the communication
 //   c_serial = _Serial::read();

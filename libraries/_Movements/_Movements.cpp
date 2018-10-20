@@ -16,7 +16,8 @@ _Movements::_Movements(){
     timeFlight = new _TimeFlight;
     tcrt5000 = new _TCRT5000;
     servo = new _Servo;
-    BLACKLINE_TRIGGER = 260;//300
+    BLACKLINE_TRIGGER = 400;//300
+    BLACKLINE_TRIGGER_SHIP = 250;//300
     // FIXME:
     // Start mechanism at top
 } 
@@ -286,7 +287,7 @@ void _Movements::verifySpecificAndUploadOutputs(double velMin, double velMax){
 //forward with P correction
 void _Movements::movePID(bool goSlow, char direction){
 //  Update Sensors
-    updateSensors(1,0,0,1,0,0);
+    updateSensors(1,0,0,0,1,1);
 //  Update Outputs
     setBaseVelocitiesByDirection(goSlow, direction);
     calculateAngleOutputsByDirection(goSlow, direction);
@@ -418,75 +419,43 @@ void _Movements::align_tof(){
 }
 // TODO:
 //Go forward until finding a wall at a certain distance
-void _Movements::larc_alignToPickContainer(int cmDistance){
-//  Update Sensors    
-    updateSensors(0,0,0,1,0,0);
-    timeFlight->filtrateDistancesTimeFlight();
-//  Local Variables    
-    int actualDistance, countCorrect=0;    
-    actualDistance = (timeFlight->timeFlightRight.kalmanDistance+timeFlight->timeFlightLeft.kalmanDistance)/2;
-    bool ready = actualDistance == cmDistance ? true : false;
-//  Fake velSlowFord    
-    int extraSlowVel = motors->velSlowFordFL-20;
-    int lastSlowVelFL=motors->velSlowFordFL, lastSlowVelBL=motors->velSlowFordBL;
-    int lastSlowVelFR=motors->velSlowFordFR, lastSlowVelBR=motors->velSlowFordBR;     
-    motors->velSlowFordFL = motors->velSlowFordFL;
-    motors->velSlowFordBL = motors->velSlowFordBL; 
-    motors->velSlowFordFR = motors->velSlowFordFR;
-    motors->velSlowFordBR = motors->velSlowFordBR;   
-//  While not at ceratin distance from wall
-    while (!ready){                 
-        if (actualDistance > cmDistance + 2){
-            movePID(true, '4');    
-            countCorrect = 0;                            
-        }
-        else if (actualDistance < cmDistance - 2){ //To close from wall
-            movePID(true, '6');
-            countCorrect = 0;
-        }
-        else{                                      //Already at the distance with an error of +- 2 cm.
-            motors->brake();
-            delay(100);
-            if (++countCorrect == 8) ready = true;
-        }
+void _Movements::getCloseToStack(){
+    for(int i=0; i<10; i++)
         updateSensors(0,0,0,1,0,0);
-        actualDistance = (timeFlight->timeFlightRight.kalmanDistance+timeFlight->timeFlightLeft.kalmanDistance)/2;
-    }
+//  While not at ceratin distance from wall
+    do{                 
+        if (timeFlight->timeFlightRight.kalmanDistance<1 && timeFlight->timeFlightLeft.kalmanDistance<1)
+            break;    
+        movePID(true, '6');                        
+        updateSensors(0,0,0,1,0,0);
+    } while(1);
     motors->brake();
-    delay(100);
-    align_tof();
-    align_tof();  
-    motors->brake();
-//  SlowFord velocities back to normal
-    motors->velSlowFordFL = lastSlowVelFL; 
-    motors->velSlowFordBL = lastSlowVelBL; 
-    motors->velSlowFordFR = lastSlowVelFR;
-    motors->velSlowFordBR = lastSlowVelBR;    
+    delay(100);  
 }
 // TODO:
 void _Movements::larc_moveAndAlignToShip(){
     while(1){   //Move Until Ship
         updateSensors(0,0,0,0,1,0);
-        movePID(false, '6');
-        if(tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER 
-            || tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER){
+        movePID(true, '6');
+        if(tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER_SHIP 
+            || tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER_SHIP){
             motors->brake();
             break;        
         }
     }
     motors->brake();  
-    while(tcrt5000->tcrtMechaLeft.kalmanDistance<BLACKLINE_TRIGGER || tcrt5000->tcrtMechaRight.kalmanDistance<BLACKLINE_TRIGGER){
+    while(tcrt5000->tcrtMechaLeft.kalmanDistance<BLACKLINE_TRIGGER_SHIP || tcrt5000->tcrtMechaRight.kalmanDistance<BLACKLINE_TRIGGER_SHIP){
         updateSensors(0,0,0,0,1,0);
-        if(tcrt5000->tcrtMechaLeft.kalmanDistance<BLACKLINE_TRIGGER && tcrt5000->tcrtMechaRight.kalmanDistance<BLACKLINE_TRIGGER)
+        if(tcrt5000->tcrtMechaLeft.kalmanDistance<BLACKLINE_TRIGGER_SHIP && tcrt5000->tcrtMechaRight.kalmanDistance<BLACKLINE_TRIGGER_SHIP)
             movePID(true, '6');
-        else if(tcrt5000->tcrtMechaLeft.kalmanDistance>=BLACKLINE_TRIGGER && tcrt5000->tcrtMechaRight.kalmanDistance<BLACKLINE_TRIGGER){
+        else if(tcrt5000->tcrtMechaLeft.kalmanDistance>=BLACKLINE_TRIGGER_SHIP && tcrt5000->tcrtMechaRight.kalmanDistance<BLACKLINE_TRIGGER_SHIP){
             movePID_nCM(1, false, '4');
             pid->calculateNewSetpoint(-0.5);
             for(int i=0; i<100; i++){
                 turnPID(false);  
             }   
         }
-        else if(tcrt5000->tcrtMechaLeft.kalmanDistance<BLACKLINE_TRIGGER && tcrt5000->tcrtMechaRight.kalmanDistance>=BLACKLINE_TRIGGER){
+        else if(tcrt5000->tcrtMechaLeft.kalmanDistance<BLACKLINE_TRIGGER_SHIP && tcrt5000->tcrtMechaRight.kalmanDistance>=BLACKLINE_TRIGGER_SHIP){
             movePID_nCM(1, false, '4');
             pid->calculateNewSetpoint(0.5);
             for(int i=0; i<100; i++){
@@ -497,6 +466,7 @@ void _Movements::larc_moveAndAlignToShip(){
     // movePID_nCM(0.5, true, '4');     
     motors->brake();   
     delay(300);
+    updateSensors(1,0,0,0,0,0);    
     pid->Setpoint = bno055->rawInput;    
 }
 // FIXME: 
@@ -580,10 +550,10 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
     else if(direction=='2')
         movePID_nCM(1.8, false, '2'); 
     else if(goVerticalLine){
-        // if(direction=='6')
-            // movePID_nCM(0.5, false, '6');
-        // else if(direction=='4')
-            // movePID_nCM(0.5, false, '4'); 
+        if(direction=='6')
+            movePID_nCM(0.5, false, '6');
+        else if(direction=='4')
+            movePID_nCM(0.5, false, '4'); 
     }     
     else{
         if(direction=='6')
