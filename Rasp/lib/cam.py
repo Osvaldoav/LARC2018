@@ -11,7 +11,6 @@ class Cam:
 	# Takes a picture, saves it into the images folder and updates self.image
 	def shoot(self):
 		for i in range(5):
-			print "in for"
 			ret, self.image = self.cam.read()
 
 		cv2.imwrite("./images/Image %s.png"%(self.port), self.image)

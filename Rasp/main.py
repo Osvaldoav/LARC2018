@@ -31,7 +31,7 @@ print "First Stack sent"
 first_time = True
 
 def main():
-	# global first_time
+	global first_time
 	# c = serial.read()
 
 	# if c == 'R' or c == 'S':
