@@ -15,6 +15,7 @@ screen.drawText()
 brain = Algorithm(screen.getContainers())
 
 serial = Serial(screen)
+print "starting"
 serial.start()   #
 serial.read()   #
 cam1.shoot()    #
@@ -23,6 +24,7 @@ screen.drawContainers(cam1.getImage(), 3)
 screen.drawContainers(cam2.getImage(), 2)
 first = brain.firstPick()  #
 screen.popContainer(first[0]) #
+screen.printMatrix()
 serial.send(serial.convert(first))#
 print "First Stack sent"
 brain.setPriority()

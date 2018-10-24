@@ -71,7 +71,7 @@ class Screen:
 	def mainloop(self):
 		self.root.mainloop()
 
-	def printMatrix():
+	def printMatrix(self):
 		for b in range(3):
 			for s in self.containers:
 				print s[0],
