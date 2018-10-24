@@ -297,11 +297,11 @@ void _Movements::movePID(bool goSlow, char direction){
     calculateAngleOutputsByDirection(goSlow, direction);
     verifyAndUploadOutputsByDirection(direction);   
     if(encoder->stepsMechanism >= untilStepsMechanism){
-        untilStepsMechanism=0;
         motors->stopMechanism();
+        untilStepsMechanism=0;
         encoder->encoderStateMechanism = 0; 
     }          
-}
+} 
 // TODO:
 void _Movements::spinPID(bool goSlow, double newAngle){
     int maxTime=2000;
@@ -629,7 +629,7 @@ void _Movements::moveMechanism(int lastStackLevel, int newStackLevel){
 //  Restart encoder counts
     encoder->stepsMechanism = 0;
 //  Move with p correction until the encoder read the cm
-    while (encoder->stepsMechanism < untilSteps)
+    while (encoder->stepsMechanism < untilStepsMechanism)
         (newStackLevel > lastStackLevel) ? motors->moveMechanism(true): motors->moveMechanism(false);
     motors->stopMechanism();
     untilStepsMechanism=0;
