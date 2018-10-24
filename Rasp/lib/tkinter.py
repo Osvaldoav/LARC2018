@@ -34,7 +34,7 @@ class Screen:
 		for c, s in enumerate(_stacks):
 			for b in range(3):
 				color = "red" if s[b] == 'R' else "green" if s[b] == 'G' else "blue"
-				self.canvas.create_rectangle(x0, y0, x1, y1, fill=color)
+				# self.canvas.create_rectangle(x0, y0, x1, y1, fill=color)
 				self.containers[section*2 + c][b] = s[b]
 				y0 += rect_h + 4
 				y1 = y0 + rect_h
@@ -70,3 +70,9 @@ class Screen:
 	# Calls Tk.mainloop
 	def mainloop(self):
 		self.root.mainloop()
+
+	def printMatrix():
+		for b in range(3):
+			for s in self.containers:
+				print s[0],
+			print '\n'

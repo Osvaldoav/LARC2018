@@ -19,8 +19,8 @@ serial.start()   #
 serial.read()   #
 cam1.shoot()    #
 cam2.shoot()    #
-# screen.drawContainers(cam1.getImage(), 3)
-# screen.drawContainers(cam2.getImage(), 2)
+screen.drawContainers(cam1.getImage(), 3)
+screen.drawContainers(cam2.getImage(), 2)
 first = brain.firstPick()  #
 screen.popContainer(first[0]) #
 serial.send(serial.convert(first))#
@@ -44,8 +44,8 @@ while True:
 		serial.read()
 		cam1.shoot()
 		cam2.shoot()
-		# screen.drawContainers(cam1.getImage(), 1)
-		# screen.drawContainers(cam2.getImage(), 0)
+		screen.drawContainers(cam1.getImage(), 1)
+		screen.drawContainers(cam2.getImage(), 0)
 		second = brain.secondPick()
 		screen.popContainer(second[0])
 		serial.send(serial.convert(second))
@@ -55,6 +55,8 @@ while True:
 		res = brain.solve()
 		screen.popContainer(res[0])
 		serial.send(serial.convert(res))
+
+	screen.printMatrix()
 	print "loop sent"
 
 # def main():
