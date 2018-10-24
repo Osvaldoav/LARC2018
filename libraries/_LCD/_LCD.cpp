@@ -8,10 +8,10 @@ const byte ledPlaca = 22;
 // TODO:
 void _LCD::setupLCD(){
     pinMode(ledPlaca, OUTPUT);
-	Serial.println("LCD initializing...");
+	// Serial.println("LCD initializing...");
 	lcd.begin();
 	lcd.backlight();	
-    Serial.println("LCD initialized");
+    // Serial.println("LCD initialized");
 	// lcd.backlight();    
 }
 // TODO:

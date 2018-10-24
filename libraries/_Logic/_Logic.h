@@ -14,7 +14,7 @@ class _Logic{
     
     public:
         _Logic();
-
+ 
         char verifyColor(char c);
         char handleRed();
         char grabContainer(char c);
@@ -24,7 +24,6 @@ class _Logic{
         void gotoFirst();
         void gotoSecond();
         void initCommunication();
-        void updateMechanismMovement();
 
         _Traductor *traductor;  
         

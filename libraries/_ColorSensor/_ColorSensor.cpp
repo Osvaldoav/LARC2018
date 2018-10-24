@@ -64,8 +64,8 @@ void _ColorSensor::readColor(){
     redColor.rawColor = pulseIn(sensorOut, LOW, 25000000);    //Reads output frecuency, if greater than (25000000), returns 0
     // regulateColorSignal(redColor.rawColor);
     colorKalmanFilter(redColor);
-    Serial.print(redColor.kalmanColor);
-    Serial.print(" ");
+    // Serial.print(redColor.kalmanColor);
+    // Serial.print(" ");
     
     digitalWrite(S2,HIGH);  // GREEN (G)
     digitalWrite(S3,HIGH);
@@ -73,8 +73,8 @@ void _ColorSensor::readColor(){
     greenColor.rawColor = pulseIn(sensorOut, LOW, 25000000);    //Reads output frecuency, if greater than (25000000), returns 0
     // regulateColorSignal(greenColor.rawColor);
     colorKalmanFilter(greenColor);
-    Serial.print(greenColor.kalmanColor);
-    Serial.print(" ");
+    // Serial.print(greenColor.kalmanColor);
+    // Serial.print(" ");
   
     digitalWrite(S2,LOW);  // BLUE (B)
     digitalWrite(S3,HIGH);
@@ -82,7 +82,7 @@ void _ColorSensor::readColor(){
     blueColor.rawColor = pulseIn(sensorOut, LOW, 25000000);   //Reads output frecuency, if greater than (25000000), returns 0
     // regulateColorSignal(blueColor.rawColor);
     colorKalmanFilter(blueColor);
-    Serial.println(blueColor.kalmanColor);
+    // Serial.println(blueColor.kalmanColor);
 }
 
 // TODO:
@@ -122,11 +122,11 @@ void _ColorSensor::colorCalibration(int challenge){
     }
     while(!colorOptions.isEmpty()){
       int i = colorOptions.peek();
-      Serial.println("La calibracion del color " + color_names[i] + " iniciara en 5 segundos.");        
+      // Serial.println("La calibracion del color " + color_names[i] + " iniciara en 5 segundos.");        
       // digitalWrite(ledRed, HIGH);
       delay(3000);
       // digitalWrite(ledRed, LOW);
-      Serial.println("La calibracion del color " + color_names[i] + " ha comenzado.");
+      // Serial.println("La calibracion del color " + color_names[i] + " ha comenzado.");
       // digitalWrite(ledGreen, HIGH);
       delay(800);
       double avr_red = 0, avr_green = 0, avr_blue = 0;
@@ -136,8 +136,8 @@ void _ColorSensor::colorCalibration(int challenge){
         avr_red += redColor.kalmanColor; avr_green += greenColor.kalmanColor; avr_blue += blueColor.kalmanColor;
       }
       color_position_arr[i].red = avr_red / 1000.0; color_position_arr[i].green = avr_green / 1000.0; color_position_arr[i].blue = avr_blue / 1000.0;
-      Serial.println("Color = " + color_position_arr[i].nombre + " red = " + color_position_arr[i].red + " green = " + color_position_arr[i].green + " blue = " + color_position_arr[i].blue);
-      Serial.println(color_position_arr[i].nombre + " ha sido calibrado");
+      // Serial.println("Color = " + color_position_arr[i].nombre + " red = " + color_position_arr[i].red + " green = " + color_position_arr[i].green + " blue = " + color_position_arr[i].blue);
+      // Serial.println(color_position_arr[i].nombre + " ha sido calibrado");
       // digitalWrite(ledGreen, LOW);
       colorOptions.pop();
     }

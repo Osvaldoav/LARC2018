@@ -10,8 +10,8 @@ class _Traductor{
         _Traductor();
 
         void horizontalLine(bool b);
-        void throughtHorizontal(int, int, int);
-        void throughtHorizontal2(int, int, int);
+        void throughtHorizontal(int);
+        void throughtHorizontal2(int);
         void girar(int angle);
         void avanzar(bool b);
         void alinearPozo();
@@ -21,12 +21,13 @@ class _Traductor{
         void dropContainer();
         void moveAtras();
         void moveToHorizontal(bool b);
-        void horizontal(int lines, bool tcrt, int, int);
+        void horizontal(int lines, bool tcrt);
         void backUntilBlackLineSharps(bool tcrt);
         void moveAtrasHorizontal(); 
         void vertical(int lines);
         void alinearStack();
         void updateMechanismMovement(int, int);
+        void waitForMechanism();
 
         void pickFirst(int stack);
         void gotoFirst();

@@ -24,10 +24,10 @@ void _BNO055::setupBNO055(){
     delay(400);
     // USING I2C ADDRESS 0X28
     if(!bno.begin(bno.OPERATION_MODE_IMUPLUS)){
-      lcd->print("BNO055 FAILED");         // Debug
+      // lcd->print("BNO055 FAILED");         // Debug
       while(1);
     }
-    lcd->print("BNO055 READY");       // Debug
+    // lcd->print("BNO055 READY");       // Debug
   //  setCal();                                      // Set 9DOF Calibration Values
     bno.setExtCrystalUse(true);
   //  calibrarBNO(Setpoint);
@@ -86,10 +86,10 @@ bool _BNO055::getCalStat(){
   byte calMag = (0x03 & cal) >> 0;                // Mag Status (0-3 value)
   
   //Serial.println(cal, BIN);                     // debug
-  Serial.print("System calibration status "); Serial.println(calSys);
-  Serial.print("Gyro   calibration status "); Serial.println(calGyro);
-  Serial.print("Accel  calibration status "); Serial.println(calAccel);
-  Serial.print("Mag    calibration status "); Serial.println(calMag);
+  // Serial.print("System calibration status "); Serial.println(calSys);
+  // Serial.print("Gyro   calibration status "); Serial.println(calGyro);
+  // Serial.print("Accel  calibration status "); Serial.println(calAccel);
+  // Serial.print("Mag    calibration status "); Serial.println(calMag);
   
   delay(1000);
   if(calMag==3 && calGyro==3)

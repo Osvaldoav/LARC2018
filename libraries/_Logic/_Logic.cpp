@@ -77,6 +77,7 @@ void _Logic::stackToShip(){
     traductor->horizontalLine(A == B); // Avanza de frente o de reversa hasta linea horizontal
 
     currentLevel = lastColor == 'R' ? 2 : lastColor == 'G' ? green_boxes%6 : blue_boxes%6;
+    traductor->updateMechanismMovement(lastLevel, currentLevel);
 
     if(B){
         if ((lastColor == 'B' && blue_boxes < 6) || (lastColor == 'G' && green_boxes < 6)){
@@ -89,13 +90,13 @@ void _Logic::stackToShip(){
             dir = -1;
 
         // 2 son dos lineas, 1 es una. negativo es derecha, positivo izquierda
-        traductor->throughtHorizontal(dir, lastLevel, currentLevel); // Avanza por la linea horizontal a la izquierda o derecha cuando 'B' o 'G'
+        traductor->throughtHorizontal(dir); // Avanza por la linea horizontal a la izquierda o derecha cuando 'B' o 'G'
     }else{
         dir = lastStack < 4 ? 1 : 2;
         dir += firstRed == 1 ? 2 : 0;
         dir *= ((lastStack/2 + 1)%2 == 0) != firstRed ? 1 : -1;
         // Checar foto whatsapp para ver 1,2,3,4
-        traductor->throughtHorizontal2(dir, lastLevel, currentLevel); // Avanza por la linea horizontal a la izquierda o derecha cuando 'R'
+        traductor->throughtHorizontal2(dir); // Avanza por la linea horizontal a la izquierda o derecha cuando 'R'
     }
     
     if ((lastColor == 'B' && blue_boxes > 5) || (lastColor == 'G' && green_boxes > 5)){
@@ -111,12 +112,11 @@ void _Logic::stackToShip(){
         traductor->backUntilBlackLineSharps(tcrt);
         traductor->girar(dir); // giros de 90, + derecha, - izquierda
     }
+    traductor->waitForMechanism();    
     if (B)
         traductor->alinearPozo();
     else
         traductor->alinearTren();
-    // traductor->mecanismo(stacks[stack], lastStack); // nivela el mecanismo al nivel adecuado
-    // traductor->mecanismo(4, 1); // nivela el mecanismo al nivel adecuado       
     traductor->dropContainer();
 }
 
@@ -134,17 +134,18 @@ void _Logic::shipToStack(){
 
     if((lastColor == 'B' && blue_boxes > 5) || (lastColor == 'G' && green_boxes > 5)){
         traductor->moveAtras(); // Se mueve poquito hacia atras
+        traductor->updateMechanismMovement(currentLevel, lastLevel); // eleva el stack para no chocar con los demas
         if((lastColor == 'B' && (stack/2 + 1) % 2 == 1) || (lastColor == 'G' && (stack/2 + 1) % 2 == 0))
             traductor->girar(180);
         dir = (stack/2 + 1) % 2 == 0;
         traductor->moveToHorizontal(dir); // frente o reversa hasta topar linea horizontal. True es frente, False es atras
         lines = stack < 2 || stack > 5 ? -1 : 1;
         // 2 son dos lineas, 1 es una. negativo es derecha, positivo izquierda        
-        traductor->horizontal(lines, dir, currentLevel, lastLevel); // Avanza por la linea horizontal a la izquierda o derecha        
+        traductor->horizontal(lines, dir); // Avanza por la linea horizontal a la izquierda o derecha        
         currentLevel = stacks[stack]; 
     }else{
         traductor->moveAtrasHorizontal(); // izquierda hasta topar linea horizontal
-        traductor->mecanismo(currentLevel, lastLevel);  // eleva el stack para no chocar con los demas
+        traductor->updateMechanismMovement(currentLevel, lastLevel);  // eleva el stack para no chocar con los demas
         currentLevel = stacks[stack];
         angle = (stack/2 + 1)%2 != 0 ? 90 : -90;
         angle *= lastColor == 'R' ? -1 : 1;
@@ -170,13 +171,8 @@ void _Logic::shipToStack(){
         lines *= stack % 4 > 1 ? 1 : -1;
     }
     // 2 son dos stacks, 1 es uno. negativo es frente, positivo reversa
+    traductor->waitForMechanism();  
     traductor->vertical(lines); // Avanza por la linea vertical frente o reversa
     traductor->mecanismo(lastLevel, currentLevel);
     grabContainer(c);
-    // traductor->mecanismo(stacks[stack], lastStack); // nivela el mecanismo al nivel adecuado
-    // traductor->mecanismo(4, 5); // nivela el mecanismo al nivel adecuado
-}
-
-void _Logic::updateMechanismMovement(int actualLevel, int newLevel){
-    traductor->updateMechanismMovement(actualLevel, newLevel);
 }

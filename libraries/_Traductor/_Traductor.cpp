@@ -9,16 +9,16 @@ void _Traductor::horizontalLine(bool b){
     movements->larc_moveBetweenVerticalBlackLine(false, c, false);
 }
 
-void _Traductor::throughtHorizontal(int dir, int actualLevel, int newLevel){
+void _Traductor::throughtHorizontal(int dir){
     double cm = abs(dir) < 2 ? 22 : 68;
     char c = dir < 0 ? '6' : '4';
-    movements->asyncMovement(cm, dir, actualLevel, newLevel);
+    movements->movePID_nCM(cm, false, c);
 }
 
-void _Traductor::throughtHorizontal2(int dir, int actualLevel, int newLevel){
+void _Traductor::throughtHorizontal2(int dir){
     double cm = abs(dir) < 2 ? 25 : abs(dir) < 3 ? 71 : abs(dir) < 4 ? 94 : 49;
     char c = dir < 0 ? '6' : '4';
-    movements->asyncMovement(cm, dir, actualLevel, newLevel);
+    movements->movePID_nCM(cm, false, c);
 }
 
 void _Traductor::girar(int angle){
@@ -110,7 +110,7 @@ void _Traductor::alinearStack(){
 void _Traductor::gotoFirst(){
     movements->larc_moveUntilBlackLine(false, '8', true, false, true, false);
     movements->larc_moveUntilBlackLine(false, '6', true, true, false, false);
-    movements->movePID_nCM(27.8, false, '8');
+    movements->movePID_nCM(27, false, '8');
 }
 
 void _Traductor::pickFirst(int stack){
@@ -127,10 +127,21 @@ void _Traductor::updateMechanismMovement(int actualLevel, int newLevel){
     else 
         movements->untilStepsMechanism = 6900 * abs(newLevel - actualLevel);
     // reset steps count
-    encoder->stepsMechanism = 0;    
+    movements->encoder->stepsMechanism = 0;    
     // start moving
-    if (newStackLevel > lastStackLevel)            
-        motors->moveMechanism(true);
+    if (newLevel > actualLevel)            
+        movements->motors->moveMechanism(true);
     else
-        motors->moveMechanism(false);    
+        movements->motors->moveMechanism(false);    
+}
+
+void _Traductor::waitForMechanism(){
+    movements->motors->brake();
+    while(!movements->encoder->encoderStateMechanism){
+        if(movements->encoder->stepsMechanism >= movements->untilStepsMechanism){
+            movements->untilStepsMechanism=0;
+            movements->motors->stopMechanism();
+            movements->encoder->encoderStateMechanism = 0; 
+        } 
+    } 
 }

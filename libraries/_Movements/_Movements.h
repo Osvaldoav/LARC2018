@@ -41,7 +41,7 @@ class _Movements{
         void asyncMovement(int, char, int, int);
         void initMechanism();
 // TODO: ATTRIBUTES
-        _BNO055 *bno055;
+        _BNO055 *bno055; 
         _ColorSensor *colorSensor;
         _Encoder *encoder;
         _LibraryPID *pid;
