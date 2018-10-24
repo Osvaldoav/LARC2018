@@ -17,7 +17,7 @@ brain = Algorithm(screen.getContainers())
 print "starting..."
 serial = Serial(screen)
 serial.start()   #
-
+print "waiting for response"
 serial.read()   #
 cam1.shoot()    #
 cam2.shoot()    #
