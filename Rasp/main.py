@@ -25,6 +25,7 @@ screen.drawContainers(cam2.getImage(), 2)
 first = brain.firstPick()  #
 screen.popContainer(first[0]) #
 screen.printMatrix()
+print "que pedo"
 brain.printMatrix()
 serial.send(serial.convert(first))#
 print "First Stack sent"
@@ -60,6 +61,7 @@ while True:
 		serial.send(serial.convert(res))
 
 	screen.printMatrix()
+	print "que pedo"
 	brain.printMatrix()
 	print "loop sent"
 
