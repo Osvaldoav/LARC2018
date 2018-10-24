@@ -75,7 +75,7 @@ class Screen:
 
 	def printMatrix(self):
 		for b in range(3):
-			for c, s in enumerate(_stacks):
+			for c, s in enumerate(self.containers):
 				if 3 - self.stack[c] > b:
 					print " ",
 				else:
