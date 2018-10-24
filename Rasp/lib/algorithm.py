@@ -13,6 +13,7 @@ class Algorithm:
 		self.greens = 0
 		self.reds = 0
 		self.priority = -1
+		self.order = BLUE_ORDER
 
 	# Return stack 6 or 7 as first pick
 	def firstPick(self):
