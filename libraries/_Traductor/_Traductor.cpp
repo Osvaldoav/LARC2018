@@ -114,13 +114,13 @@ void _Traductor::gotoFirst(){
     delay(2000);
     digitalWrite(22, LOW);
     delay(2000);
-    movements->movePID_nCM(27, false, '8');
+    movements->movePID_nCM(28.5, false, '8');
 }
 
 void _Traductor::pickFirst(int stack){
     char c = stack < 7 ? '8' : '2';
-    int steps = stack < 7 ? 7 : 5;
-    movements->movePID_nCM(steps, false, c);
+    int steps = stack < 7 ? 7 : 3;
+    movements->movePID_nCM(steps, false, '8');
 }
 
 void _Traductor::updateMechanismMovement(int actualLevel, int newLevel){
@@ -141,7 +141,7 @@ void _Traductor::updateMechanismMovement(int actualLevel, int newLevel){
 
 void _Traductor::waitForMechanism(){
     movements->motors->brake();
-    while(!movements->encoder->encoderStateMechanism){
+    while(movements->encoder->encoderStateMechanism == 1){
         if(movements->encoder->stepsMechanism >= movements->untilStepsMechanism){
             movements->untilStepsMechanism=0;
             movements->motors->stopMechanism();

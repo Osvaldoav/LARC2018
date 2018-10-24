@@ -19,7 +19,7 @@ void setup() {
     logic->traductor->movements->colorSensor->setupColorSensor();
     logic->traductor->movements->bno055->setupBNO055();
     logic->traductor->movements->timeFlight->setupTimeFlight();
-    // logic->traductor->movements->tcrt5000->setupTCRT5000();
+    logic->traductor->movements->tcrt5000->setupTCRT5000();
     logic->traductor->movements->encoder->setupEncoder();
     logic->traductor->movements->servo->setupServo();
     pinMode(pinEncoder, INPUT_PULLUP);
@@ -160,12 +160,12 @@ void mechanism(){
 //    delay(1000);
 //    logic->traductor->movements->encoder->encoderStateMechanism=1;
 //    Serial.println(logic->traductor->movements->encoder->stepsMechanism);
-    logic->traductor->movements->motors->moveMechanism(true);
+    logic->traductor->movements->motors->moveMechanism(false);
 //    logic->traductor->movements->initMechanism();
 //    delay(2000);
 //    logic->traductor->movements->motors->stopMechanism();
 //    delay(2000);
-//    logic->traductor->mecanismo(2,4);
+//    logic->traductor->mecanismo(1,4);
 //    while(1);
 }
 
