@@ -20,10 +20,6 @@ void _Logic::initCommunication(){
     c_serial = _Serial::read();
     _Serial::send('1');
     gotoFirst();
-    digitalWrite(22, HIGH);
-    delay(2000);
-    digitalWrite(22, LOW);
-    delay(2000);
     _Serial::send('1');
     c_serial = _Serial::read();
     pickFirst(c_serial);
