@@ -13,6 +13,7 @@ class Screen:
 		self.root = Tk()
 		self.canvas = Canvas(self.root, width=320, height=240)
 		self.canvas.pack()
+		self.stack = [3 for i in range(8)]
 
 	# Draws title and indexes in the screen
 	def drawText(self):
@@ -50,6 +51,7 @@ class Screen:
 		y1 = y0 + rect_h + 1
 
 		self.containers[stack].pop(0)
+		self.stack[stack] -= 1
 
 		# self.canvas.create_rectangle(x0, y0, x1, y1, fill="white", outline="")
 
@@ -73,6 +75,9 @@ class Screen:
 
 	def printMatrix(self):
 		for b in range(3):
-			for s in self.containers:
-				print s[0],
+			for c, s in enumerate(_stacks):
+				if 3 - self.stack[c] > b:
+					print " ",
+				else
+					print s[b-(3-self.stack[c])],
 			print '\n'
