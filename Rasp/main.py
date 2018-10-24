@@ -26,6 +26,8 @@ first = brain.firstPick()  #
 screen.printMatrix()
 brain.printMatrix()
 screen.popContainer(first[0]) #
+screen.printMatrix()
+brain.printMatrix()
 serial.send(serial.convert(first))#
 print "First Stack sent"
 brain.setPriority()
