@@ -22,6 +22,7 @@ serial.read()   #
 print "waiting for response"
 cam1.shoot()    #
 cam2.shoot()    #
+print "photos shooted"
 cam1.show()
 cam2.show()
 screen.drawContainers(cam1.getImage(), 3)
