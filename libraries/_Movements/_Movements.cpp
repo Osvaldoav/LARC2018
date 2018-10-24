@@ -18,12 +18,16 @@ _Movements::_Movements(){
     servo = new _Servo;
     BLACKLINE_TRIGGER = 400;//300
     BLACKLINE_TRIGGER_SHIP = 250;//300
+    untilStepsMechanism = 0;
     // FIXME:
     // Start mechanism at top
 } 
 
 void _Movements::initMechanism(){
-    Serial.println(digitalRead(limitSwitch));
+    while(digitalRead(limitSwitch)){    //limitSwitch is pressed when == 0
+        motors->moveMechanism(true);        
+    }
+    motors->stopMechanism();
 }
 
 // TODO:
@@ -292,6 +296,11 @@ void _Movements::movePID(bool goSlow, char direction){
     setBaseVelocitiesByDirection(goSlow, direction);
     calculateAngleOutputsByDirection(goSlow, direction);
     verifyAndUploadOutputsByDirection(direction);   
+    if(encoder->stepsMechanism >= untilStepsMechanism){
+        untilStepsMechanism=0;
+        motors->stopMechanism();
+        encoder->encoderStateMechanism = 0; 
+    }          
 }
 // TODO:
 void _Movements::spinPID(bool goSlow, double newAngle){
@@ -332,7 +341,12 @@ void _Movements::turnPID(bool goSlow) {
 //  Update Outputs
     setBaseVelocitiesByDirection(goSlow, 'T');
     calculateAngleOutputsByDirection(goSlow, 'T'); 
-    verifyAndUploadOutputsByDirection('T');           
+    verifyAndUploadOutputsByDirection('T'); 
+    if(encoder->stepsMechanism >= untilStepsMechanism){
+        untilStepsMechanism=0;
+        motors->stopMechanism();
+        encoder->encoderStateMechanism = 0; 
+    }              
 }
 // TODO:
 //forward with P correction for a specific time
@@ -352,9 +366,10 @@ void _Movements::movePID_nCM(double cm, bool goSlow, char direction){
     encoder->steps = 0;
 //  Move with p correction until the encoder read the cm
     while (encoder->steps < untilSteps){              
-        movePID(goSlow, direction);
+        movePID(goSlow, direction);        
     }
     motors->brake();
+    encoder->encoderState = 0; 
 }
 // TODO:
 void _Movements::align_tof(){
@@ -607,22 +622,16 @@ void _Movements::larc_moveBetweenVerticalBlackLine(bool goSlow, char direction, 
 
 void _Movements::moveMechanism(int lastStackLevel, int newStackLevel){
     encoder->encoderStateMechanism = 1;  
-//  Counts of encoder to get to the objective
-    long untilSteps;
     // Estando en el segundo nivel puede bajar 3000 steps mas maximo
-    if (lastStackLevel == 1 || newStackLevel == 1)
-        untilSteps = 6900 * abs(newStackLevel - lastStackLevel) - 3900; //6900 en fantasma
-    else 
-        untilSteps = 6900 * abs(newStackLevel - lastStackLevel);
+    (lastStackLevel == 1 || newStackLevel == 1) ?
+        untilStepsMechanism = 6900 * abs(newStackLevel - lastStackLevel) - 3900:
+        untilStepsMechanism = 6900 * abs(newStackLevel - lastStackLevel);
 //  Restart encoder counts
     encoder->stepsMechanism = 0;
 //  Move with p correction until the encoder read the cm
-    while (encoder->stepsMechanism < untilSteps){
-        Serial.println(encoder->stepsMechanism);
-        if (newStackLevel > lastStackLevel)            
-            motors->moveMechanism(true);
-        else
-            motors->moveMechanism(false);
-    }
+    while (encoder->stepsMechanism < untilSteps)
+        (newStackLevel > lastStackLevel) ? motors->moveMechanism(true): motors->moveMechanism(false);
     motors->stopMechanism();
+    untilStepsMechanism=0;
+    encoder->encoderStateMechanism = 0;  
 }

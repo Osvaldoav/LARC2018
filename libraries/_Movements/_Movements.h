@@ -38,6 +38,7 @@ class _Movements{
         void larc_moveAndAlignToShip();
         void larc_moveUntilBlackLine(bool, char, bool, bool, bool, bool);
         void moveMechanism(int, int);
+        void asyncMovement(int, char, int, int);
         void initMechanism();
 // TODO: ATTRIBUTES
         _BNO055 *bno055;
@@ -52,6 +53,7 @@ class _Movements{
         _Servo *servo;
         double BLACKLINE_TRIGGER;//300
         double BLACKLINE_TRIGGER_SHIP;
+        long untilStepsMechanism;
 };
 
 #endif

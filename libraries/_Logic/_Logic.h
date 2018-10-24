@@ -24,6 +24,7 @@ class _Logic{
         void gotoFirst();
         void gotoSecond();
         void initCommunication();
+        void updateMechanismMovement();
 
         _Traductor *traductor;  
         
