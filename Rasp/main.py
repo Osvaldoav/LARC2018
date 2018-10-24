@@ -24,9 +24,8 @@ screen.drawContainers(cam2.getImage(), 2)
 first = brain.firstPick()  #
 screen.popContainer(first[0]) #
 # serial.send(serial.convert(first))#
-# serial.send('3')
 print "First Stack sent"
-# brain.setPriority()
+brain.setPriority()
 
 first_time = True
 
@@ -34,11 +33,10 @@ def main():
 	global first_time
 	# c = serial.read()
 
-	# if c == 'R' or c == 'S':
-	# 	brain.setPriority()
-	# 	c = 'R1' if c == 'R' else 'R2'
-
 	c = 'G'
+	if c == 'R' or c == 'S':
+		brain.setPriority()
+		c = 'R1' if c == 'R' else 'R2'
 
 	brain.set_last_color(c)
 
@@ -51,14 +49,13 @@ def main():
 		screen.drawContainers(cam2.getImage(), 0)
 		second = brain.secondPick()
 		screen.popContainer(second[0])
-		serial.send(serial.convert(second))
+		# serial.send(serial.convert(second))
 		brain.setPriority()
 		first_time = False
 	else:
 		res = brain.solve()
 		screen.popContainer(res[0])
 		# serial.send(serial.convert(res))
-	# serial.send('3')
 	print "loop sent"
 
 	screen.run(5,main)
