@@ -44,7 +44,7 @@ class Algorithm:
 			self.order = GREEN_ORDER
 		elif self.set_last_color == 'R1':
 			self.order = R1_ORDER
-		else
+		else:
 			self.order = R2_ORDER
 
 	# Sets as priority a stack where a 'R' is found

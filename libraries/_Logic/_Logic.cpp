@@ -18,7 +18,11 @@ _Logic::_Logic(){
 
 void _Logic::initCommunication(){
     c_serial = _Serial::read();
-    // _Serial::send('1');
+    _Serial::send('1');
+    digitalWrite(22, HIGH);
+    delay(2000);
+    digitalWrite(22, LOW);
+    delay(2000);
     gotoFirst();
     _Serial::send('1');
     c_serial = _Serial::read();
@@ -59,8 +63,8 @@ void _Logic::gotoFirst(){
 
 void _Logic::pickFirst(char c){
     char color = c > 98 ? 'R' : c > 65 ? 'G' : 'B';
-    int stack = color == 'R' ? c - 99 : color == 'G' ? c - 66 : c - 51;
-    traductor->pickFirst(stack);
+    lastStack = color == 'R' ? c - 99 : color == 'G' ? c - 66 : c - 51;
+    traductor->pickFirst(lastStack);
     grabContainer(c);
 }
 

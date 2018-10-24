@@ -19,7 +19,7 @@ void setup() {
     logic->traductor->movements->colorSensor->setupColorSensor();
     logic->traductor->movements->bno055->setupBNO055();
     logic->traductor->movements->timeFlight->setupTimeFlight();
-    logic->traductor->movements->tcrt5000->setupTCRT5000();
+    // logic->traductor->movements->tcrt5000->setupTCRT5000();
     logic->traductor->movements->encoder->setupEncoder();
     logic->traductor->movements->servo->setupServo();
     pinMode(pinEncoder, INPUT_PULLUP);
@@ -180,8 +180,8 @@ void loop(){
 //  logicTest();  
 //  colorSensor();
 //  mechanism();
-  logic->shipToStack();
   logic->stackToShip();
+  logic->shipToStack();
 //    logic->traductor->movements->initMechanism();
 //    while(1);
 }

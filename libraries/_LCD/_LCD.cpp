@@ -11,7 +11,7 @@ void _LCD::setupLCD(){
 	// Serial.println("LCD initializing...");
 	lcd.begin();
 	lcd.backlight();	
-    // Serial.println("LCD initialized");
+    //Serial.println("LCD initialized");
 	// lcd.backlight();    
 }
 // TODO:

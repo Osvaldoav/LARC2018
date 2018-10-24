@@ -4,7 +4,7 @@ import time
 class Serial:
     def __init__(self, screen):
         try:
-            self.arduino = serial.Serial("/dev/ttyUSB1", 9600, timeout=0, writeTimeout=0)
+            self.arduino = serial.Serial("/dev/ttyUSB0", 9600, timeout=0, writeTimeout=0)
             time.sleep(3)
             self.screen = screen
         except serial.SerialException:
@@ -40,18 +40,16 @@ class Serial:
             self.screen.errorMessage("Serial communication has failed")
             self.screen.mainloop()
 
+# def convert( pair):
+#     return chr(ord(str(pair[0])) + (ord(pair[1]) - 65) * 3)
+
+# def f():
+#     return 1, 'B'
 
 
-def convert( pair):
-    return chr(ord(str(pair[0])) + (ord(pair[1]) - 65) * 3)
+# par = f()
 
-def f():
-    return 1, 'B'
+# #(int('B') - 65 ) * 3     +  int(str(0))
 
-
-par = f()
-
-#(int('B') - 65 ) * 3     +  int(str(0))
-
-print ord(convert(par))
-print convert(par)
+# print ord(convert(par))
+# print convert(par)
