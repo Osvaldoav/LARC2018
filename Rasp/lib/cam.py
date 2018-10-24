@@ -14,7 +14,6 @@ class Cam:
 			print "in for"
 			ret, self.image = self.cam.read()
 
-		print "dentro de la clase cam"
 		cv2.imwrite("./images/Image %s.png"%(self.port), self.image)
 
 	# Shows the image taken with a waitKey()
