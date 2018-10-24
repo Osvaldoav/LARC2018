@@ -6,10 +6,10 @@ from cam import Cam
 from tkinter import Screen
 from algorithm import Algorithm
 
+print "xd"
+
 cam1 = Cam(0)
 cam2 = Cam(1)
-
-print "xd"
 
 screen = Screen()
 screen.drawText()
