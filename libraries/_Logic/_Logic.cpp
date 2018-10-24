@@ -18,8 +18,8 @@ _Logic::_Logic(){
 
 void _Logic::initCommunication(){
     c_serial = _Serial::read();
-    gotoFirst();
     _Serial::send('1');
+    gotoFirst();
     digitalWrite(22, HIGH);
     delay(2000);
     digitalWrite(22, LOW);
