@@ -19,8 +19,6 @@ serial.start()   #
 serial.read()   #
 cam1.shoot()    #
 cam2.shoot()    #
-cam1.show()
-cam2.show()
 screen.drawContainers(cam1.getImage(), 3)
 screen.drawContainers(cam2.getImage(), 2)
 first = brain.firstPick()  #
