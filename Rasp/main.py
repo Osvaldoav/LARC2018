@@ -39,10 +39,16 @@ first_time = True
 
 def main():
 	c = serial.read()
-	cam1.shoot()    #
-	cam2.shoot()    #
-	cam1.show()
-	cam2.show()
+
+	okka = True
+
+	if okka:
+		okka = False
+	else:
+		cam1.shoot()    #
+		cam2.shoot()    #
+		cam1.show()
+		cam2.show()
 
 	if c == 'R' or c == 'S':
 		brain.setPriority()
