@@ -57,10 +57,10 @@ void _Logic::gotoFirst(){
     traductor->gotoFirst();
 }
 
-void _Logic::firstPick(char c){
+void _Logic::pickFirst(char c){
     char color = c > 98 ? 'R' : c > 65 ? 'G' : 'B';
     int stack = color == 'R' ? c - 99 : color == 'G' ? c - 66 : c - 51;
-    traductor->firstPick(stack);
+    traductor->pickFirst(stack);
     grabContainer(c);
 }
 

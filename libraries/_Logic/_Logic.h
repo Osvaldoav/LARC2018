@@ -20,7 +20,7 @@ class _Logic{
         char grabContainer(char c);
         void stackToShip();
         void shipToStack();
-        void firstPick(char c); // Elige 6 o 7 despues de la primera foto
+        void pickFirst(char c); // Elige 6 o 7 despues de la primera foto
         void gotoFirst();
         void gotoSecond();
         void initCommunication();

@@ -3,24 +3,23 @@
 /////////////////////////////////////////////////////////////////////////////////////////////
 #include <_Logic.h>
 #include <Wire.h>
-#include <_Serial.h>
 _Logic *logic = new _Logic;
 
 const byte pinEncoder = 18;
 const byte pinEncoderMechanism = 2;
-char c_serial;
+
 
 /////////////////////////////////////////////SETUP////////////////////////////////////////////////
 void setup() {
     Serial.begin(9600);
-    Wire.begin();
+    Wire.begin(); 
     logic->traductor->movements->lcd->setupLCD();    
     logic->traductor->movements->pid->setupLibraryPID(); 
     logic->traductor->movements->motors->setupMotors();
     logic->traductor->movements->colorSensor->setupColorSensor();
     logic->traductor->movements->bno055->setupBNO055();
     logic->traductor->movements->timeFlight->setupTimeFlight();
-//    logic->traductor->movements->tcrt5000->setupTCRT5000();
+    logic->traductor->movements->tcrt5000->setupTCRT5000();
     logic->traductor->movements->encoder->setupEncoder();
     logic->traductor->movements->servo->setupServo();
     pinMode(pinEncoder, INPUT_PULLUP);
@@ -132,15 +131,15 @@ void colorSensor(){
 }
 void logicTest(){  
 //    logic->traductor->mecanismo(3, 4);  
-    logic->shipToStack('5');                            
+    logic->shipToStack();                            
     logic->stackToShip();
-    logic->shipToStack('5');
+    logic->shipToStack();
     logic->stackToShip();
-    logic->shipToStack('6');
+    logic->shipToStack();
     logic->stackToShip();
-    logic->shipToStack('5');
+    logic->shipToStack();
     logic->stackToShip();
-    logic->shipToStack('6');
+    logic->shipToStack();
     logic->stackToShip();
 //    logic->traductor->mecanismo(4, 1); // nivela el mecanismo al nivel adecuado       
 //    logic->traductor->dropContainer();    
@@ -174,8 +173,6 @@ void loop(){
 //  aligningTofTest();
 //  tof_vs_sharp();
 //  testMovements(); 
-  logic->shipToStack();
-  logic->stackToShip();
 //  testSteps();
 //  readTCRT5000();
 //  aligningTcrtTest();
@@ -183,4 +180,7 @@ void loop(){
 //  logicTest();  
 //  colorSensor();
 //  mechanism();
+  logic->shipToStack();
+  logic->stackToShip();
+//    logic->traductor->movements->initMechanism();
 }

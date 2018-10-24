@@ -4,7 +4,7 @@ uint8_t updateTimeMs = 50;
 long lastUpdate = 0;
 
 ///////////////////// Local Variables ////////////////////////
-const byte ledPlaca = 30;
+const byte ledPlaca = 22;
 // TODO:
 void _LCD::setupLCD(){
     pinMode(ledPlaca, OUTPUT);
