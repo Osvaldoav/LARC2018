@@ -39,9 +39,9 @@ first_time = True
 
 def main():
 	c = serial.read()
+	global first_time
 
 	okka = True
-
 	if okka:
 		okka = False
 	else:
