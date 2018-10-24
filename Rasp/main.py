@@ -9,6 +9,8 @@ from algorithm import Algorithm
 cam1 = Cam(0)
 cam2 = Cam(1)
 
+print "xd"
+
 screen = Screen()
 screen.drawText()
 
