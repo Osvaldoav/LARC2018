@@ -17,12 +17,16 @@ class Algorithm:
 	# Return stack 6 or 7 as first pick
 	def firstPick(self):
 		if self.matrix[7][0] == 'B':
+			self.last_color = 'B'
 			return 7, 'B'
 		elif self.matrix[6][0] == 'B':
+			self.last_color = 'B'
 			return 6, 'B'
 		elif self.matrix[7][0] == 'G':
+			self.last_color = 'G'
 			return 7, 'G'
 		else:
+			self.last_color = 'R'
 			return 7, 'R'
 
 	# Return stack 2 or 3 as second pick
@@ -40,9 +44,9 @@ class Algorithm:
 	def updateOrder(self):
 		if self.last_color == 'B':
 			self.order = BLUE_ORDER
-		elif self.set_last_color == 'G':
+		elif self.last_color == 'G':
 			self.order = GREEN_ORDER
-		elif self.set_last_color == 'R1':
+		elif self.last_color == 'R1':
 			self.order = R1_ORDER
 		else:
 			self.order = R2_ORDER
@@ -87,9 +91,9 @@ class Algorithm:
 		return -1, 'B'
 
 
-	# Sets the last_color picked
-	def set_last_color(self, color):
-		self.last_color = color
+	# # Sets the last_color picked
+	# def set_last_color(self, color):
+	# 	self.last_color = color
 
 	# Prints the matrix
 	def printMatrix(self):

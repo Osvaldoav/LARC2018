@@ -23,10 +23,9 @@ cam2.shoot()    #
 screen.drawContainers(cam1.getImage(), 3)
 screen.drawContainers(cam2.getImage(), 2)
 first = brain.firstPick()  #
-screen.popContainer(first[0]) #
 screen.printMatrix()
-print "que pedo"
 brain.printMatrix()
+screen.popContainer(first[0]) #
 serial.send(serial.convert(first))#
 print "First Stack sent"
 brain.setPriority()
@@ -44,6 +43,7 @@ while True:
 	brain.set_last_color(c)
 
 	if(first_time and c == 'G'):
+		print "SIMIOOOOOS"
 		serial.send('S')
 		serial.read()
 		cam1.shoot()
@@ -61,7 +61,6 @@ while True:
 		serial.send(serial.convert(res))
 
 	screen.printMatrix()
-	print "que pedo"
 	brain.printMatrix()
 	print "loop sent"
 
