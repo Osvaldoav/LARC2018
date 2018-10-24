@@ -72,6 +72,8 @@ class Algorithm:
 
 		# Looks for the first specific colored container in the corresponding order
 		for s in self.order:
+			print "len = ",
+			print len(self.matrix[s]) 
 			if len(self.matrix[s]) > 0:
 				if self.matrix[s][0] == color:
 					return s, color
