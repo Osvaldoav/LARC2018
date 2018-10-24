@@ -23,7 +23,7 @@ class Serial:
     def first_read(self):
         start_time = time.time()
         while(self.arduino.inWaiting() <= 0):
-            if time.time() - start_time > 5:
+            if time.time() - start_time > 20:
                 print "Time limit!"
                 return '*'
             pass
