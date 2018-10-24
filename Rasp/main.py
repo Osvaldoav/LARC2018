@@ -33,7 +33,6 @@ def main():
 	global first_time
 	c = serial.read()
 
-	c = 'G'
 	if c == 'R' or c == 'S':
 		brain.setPriority()
 		c = 'R1' if c == 'R' else 'R2'
