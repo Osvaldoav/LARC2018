@@ -22,8 +22,8 @@ cam2.shoot()    #
 screen.drawContainers(cam1.getImage(), 3)
 screen.drawContainers(cam2.getImage(), 2)
 # first = brain.firstPick()  #
-screen.popContainer(first[0]) #
-serial.send(serial.convert(first))#
+# screen.popContainer(first[0]) #
+# serial.send(serial.convert(first))#
 # serial.send('3')
 print "First Stack sent"
 # brain.setPriority()
