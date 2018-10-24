@@ -19,7 +19,7 @@ class Cam:
 	# Shows the image taken with a waitKey()
 	def show(self):
 		cv2.imshow("Image %s"%(self.port), self.image)
-		cv2.waitKey(0)
+		# cv2.waitKey(0)
 
 	# Returns the image
 	def getImage(self):
