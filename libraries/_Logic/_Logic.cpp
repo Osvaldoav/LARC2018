@@ -18,12 +18,12 @@ _Logic::_Logic(){
 
 void _Logic::initCommunication(){
     c_serial = _Serial::read();
+    gotoFirst();
     _Serial::send('1');
     digitalWrite(22, HIGH);
     delay(2000);
     digitalWrite(22, LOW);
     delay(2000);
-    gotoFirst();
     _Serial::send('1');
     c_serial = _Serial::read();
     pickFirst(c_serial);
