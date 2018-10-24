@@ -180,7 +180,7 @@ void loop(){
 //  logicTest();  
 //  colorSensor();
 //  mechanism();
-  logic->shipToStack();
   logic->stackToShip();
+  logic->shipToStack();
 //    logic->traductor->movements->initMechanism();
 }
