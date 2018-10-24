@@ -9,16 +9,16 @@ void _Traductor::horizontalLine(bool b){
     movements->larc_moveBetweenVerticalBlackLine(false, c, false);
 }
 
-void _Traductor::throughtHorizontal(int dir){
+void _Traductor::throughtHorizontal(int dir, int actualLevel, int newLevel){
     double cm = abs(dir) < 2 ? 22 : 68;
     char c = dir < 0 ? '6' : '4';
-    movements->movePID_nCM(cm, false, c);
+    movements->asyncMovement(cm, dir, actualLevel, newLevel);
 }
 
-void _Traductor::throughtHorizontal2(int dir){
+void _Traductor::throughtHorizontal2(int dir, int actualLevel, int newLevel){
     double cm = abs(dir) < 2 ? 25 : abs(dir) < 3 ? 71 : abs(dir) < 4 ? 94 : 49;
     char c = dir < 0 ? '6' : '4';
-    movements->movePID_nCM(cm, false, c);
+    movements->asyncMovement(cm, dir, actualLevel, newLevel);
 }
 
 void _Traductor::girar(int angle){
@@ -117,4 +117,20 @@ void _Traductor::pickFirst(int stack){
     char c = stack < 7 ? '8' : '2';
     int steps = stack < 7 ? 7 : 5;
     movements->movePID_nCM(steps, false, c);
+}
+
+void _Traductor::updateMechanismMovement(int actualLevel, int newLevel){
+    // set new untilStepsMechanism value
+    movements->encoder->encoderStateMechanism = 1;
+    if (actualLevel == 1 || newLevel == 1)
+        movements->untilStepsMechanism = 6900 * abs(newLevel - actualLevel) - 3900; //6900 en fantasma
+    else 
+        movements->untilStepsMechanism = 6900 * abs(newLevel - actualLevel);
+    // reset steps count
+    encoder->stepsMechanism = 0;    
+    // start moving
+    if (newStackLevel > lastStackLevel)            
+        motors->moveMechanism(true);
+    else
+        motors->moveMechanism(false);    
 }

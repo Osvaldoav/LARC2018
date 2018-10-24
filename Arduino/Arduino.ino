@@ -160,13 +160,13 @@ void mechanism(){
 //    delay(1000);
 //    logic->traductor->movements->encoder->encoderStateMechanism=1;
 //    Serial.println(logic->traductor->movements->encoder->stepsMechanism);
-//    logic->traductor->movements->motors->moveMechanism(true);
+    logic->traductor->movements->motors->moveMechanism(false);
 //    logic->traductor->movements->initMechanism();
 //    delay(2000);
 //    logic->traductor->movements->motors->stopMechanism();
 //    delay(2000);
-    logic->traductor->mecanismo(2,4);
-    while(1);
+//    logic->traductor->mecanismo(2,4);
+//    while(1);
 }
 
 void loop(){
@@ -183,4 +183,5 @@ void loop(){
   logic->shipToStack();
   logic->stackToShip();
 //    logic->traductor->movements->initMechanism();
+//    while(1);
 }

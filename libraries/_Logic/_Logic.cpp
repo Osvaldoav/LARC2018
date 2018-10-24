@@ -77,7 +77,6 @@ void _Logic::stackToShip(){
     traductor->horizontalLine(A == B); // Avanza de frente o de reversa hasta linea horizontal
 
     currentLevel = lastColor == 'R' ? 2 : lastColor == 'G' ? green_boxes%6 : blue_boxes%6;
-    traductor->mecanismo(lastLevel, currentLevel);   // eleva el stack para dejarlo en el barco
 
     if(B){
         if ((lastColor == 'B' && blue_boxes < 6) || (lastColor == 'G' && green_boxes < 6)){
@@ -90,13 +89,13 @@ void _Logic::stackToShip(){
             dir = -1;
 
         // 2 son dos lineas, 1 es una. negativo es derecha, positivo izquierda
-        traductor->throughtHorizontal(dir); // Avanza por la linea horizontal a la izquierda o derecha cuando 'B' o 'G'
+        traductor->throughtHorizontal(dir, lastLevel, currentLevel); // Avanza por la linea horizontal a la izquierda o derecha cuando 'B' o 'G'
     }else{
         dir = lastStack < 4 ? 1 : 2;
         dir += firstRed == 1 ? 2 : 0;
         dir *= ((lastStack/2 + 1)%2 == 0) != firstRed ? 1 : -1;
         // Checar foto whatsapp para ver 1,2,3,4
-        traductor->throughtHorizontal2(dir); // Avanza por la linea horizontal a la izquierda o derecha cuando 'R'
+        traductor->throughtHorizontal2(dir, lastLevel, currentLevel); // Avanza por la linea horizontal a la izquierda o derecha cuando 'R'
     }
     
     if ((lastColor == 'B' && blue_boxes > 5) || (lastColor == 'G' && green_boxes > 5)){
@@ -140,10 +139,9 @@ void _Logic::shipToStack(){
         dir = (stack/2 + 1) % 2 == 0;
         traductor->moveToHorizontal(dir); // frente o reversa hasta topar linea horizontal. True es frente, False es atras
         lines = stack < 2 || stack > 5 ? -1 : 1;
-        traductor->mecanismo(currentLevel, lastLevel);  // eleva el stack para no chocar con los demas
+        // 2 son dos lineas, 1 es una. negativo es derecha, positivo izquierda        
+        traductor->horizontal(lines, dir, currentLevel, lastLevel); // Avanza por la linea horizontal a la izquierda o derecha        
         currentLevel = stacks[stack]; 
-        // 2 son dos lineas, 1 es una. negativo es derecha, positivo izquierda
-        traductor->horizontal(lines, dir); // Avanza por la linea horizontal a la izquierda o derecha
     }else{
         traductor->moveAtrasHorizontal(); // izquierda hasta topar linea horizontal
         traductor->mecanismo(currentLevel, lastLevel);  // eleva el stack para no chocar con los demas
@@ -177,4 +175,8 @@ void _Logic::shipToStack(){
     grabContainer(c);
     // traductor->mecanismo(stacks[stack], lastStack); // nivela el mecanismo al nivel adecuado
     // traductor->mecanismo(4, 5); // nivela el mecanismo al nivel adecuado
+}
+
+void _Logic::updateMechanismMovement(int actualLevel, int newLevel){
+    traductor->updateMechanismMovement(actualLevel, newLevel);
 }
