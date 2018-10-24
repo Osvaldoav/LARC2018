@@ -51,7 +51,7 @@ class Screen:
 
 		self.containers[stack].pop(0)
 
-		self.canvas.create_rectangle(x0, y0, x1, y1, fill="white", outline="")
+		# self.canvas.create_rectangle(x0, y0, x1, y1, fill="white", outline="")
 
 	# Displays an error message on the screen
 	def errorMessage(self, msg):

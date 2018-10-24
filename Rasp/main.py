@@ -19,8 +19,8 @@ serial.start()   #
 serial.read()   #
 cam1.shoot()    #
 cam2.shoot()    #
-screen.drawContainers(cam1.getImage(), 3)
-screen.drawContainers(cam2.getImage(), 2)
+# screen.drawContainers(cam1.getImage(), 3)
+# screen.drawContainers(cam2.getImage(), 2)
 first = brain.firstPick()  #
 screen.popContainer(first[0]) #
 serial.send(serial.convert(first))#
@@ -29,8 +29,8 @@ brain.setPriority()
 
 first_time = True
 
-def main():
-	global first_time
+while True:
+	# global first_time
 	c = serial.read()
 
 	if c == 'R' or c == 'S':
@@ -44,8 +44,8 @@ def main():
 		serial.read()
 		cam1.shoot()
 		cam2.shoot()
-		screen.drawContainers(cam1.getImage(), 1)
-		screen.drawContainers(cam2.getImage(), 0)
+		# screen.drawContainers(cam1.getImage(), 1)
+		# screen.drawContainers(cam2.getImage(), 0)
 		second = brain.secondPick()
 		screen.popContainer(second[0])
 		serial.send(serial.convert(second))
@@ -57,10 +57,38 @@ def main():
 		serial.send(serial.convert(res))
 	print "loop sent"
 
-	screen.run(5,main)
+# def main():
+# 	global first_time
+# 	c = serial.read()
 
-screen.run(0, main)
-screen.mainloop()
+# 	if c == 'R' or c == 'S':
+# 		brain.setPriority()
+# 		c = 'R1' if c == 'R' else 'R2'
+
+# 	brain.set_last_color(c)
+
+# 	if(first_time and c == 'G'):
+# 		serial.send('S')
+# 		serial.read()
+# 		cam1.shoot()
+# 		cam2.shoot()
+# 		screen.drawContainers(cam1.getImage(), 1)
+# 		screen.drawContainers(cam2.getImage(), 0)
+# 		second = brain.secondPick()
+# 		screen.popContainer(second[0])
+# 		serial.send(serial.convert(second))
+# 		brain.setPriority()
+# 		first_time = False
+# 	else:
+# 		res = brain.solve()
+# 		screen.popContainer(res[0])
+# 		serial.send(serial.convert(res))
+# 	print "loop sent"
+
+# 	screen.run(5,main)
+
+# screen.run(0, main)
+# screen.mainloop()
 
 cam1.release()
 cam2.release()
