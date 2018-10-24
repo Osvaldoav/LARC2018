@@ -1,12 +1,11 @@
 import cv2
 import sys
 sys.path.insert(0, './lib/')
+print "xd"
 from serial_comunication import Serial
 from cam import Cam
 from tkinter import Screen
 from algorithm import Algorithm
-
-print "xd"
 
 cam1 = Cam(0)
 cam2 = Cam(1)
