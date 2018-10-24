@@ -78,6 +78,6 @@ class Screen:
 			for c, s in enumerate(_stacks):
 				if 3 - self.stack[c] > b:
 					print " ",
-				else
+				else:
 					print s[b-(3-self.stack[c])],
 			print '\n'
