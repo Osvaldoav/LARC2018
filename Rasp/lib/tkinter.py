@@ -64,6 +64,7 @@ class Screen:
 
 	# Runs a function after certain time without closing the screen window
 	def run(self, milliseconds, function):
+		global first_time
 		self.root.after(milliseconds, function)
 
 	# Calls Tk.mainloop

@@ -14,16 +14,11 @@ screen.drawText()
 
 brain = Algorithm(screen.getContainers())
 
-print "starting..."
 serial = Serial(screen)
-print "before start"
 serial.start()   #
-# serial.read()
 serial.read()   #
-print "waiting for response"
 cam1.shoot()    #
 cam2.shoot()    #
-print "photos shooted"
 cam1.show()
 cam2.show()
 screen.drawContainers(cam1.getImage(), 3)
@@ -38,17 +33,8 @@ brain.setPriority()
 first_time = True
 
 def main():
-	c = serial.read()
 	global first_time
-
-	okka = True
-	if okka:
-		okka = False
-	else:
-		cam1.shoot()    #
-		cam2.shoot()    #
-		cam1.show()
-		cam2.show()
+	c = serial.read()
 
 	if c == 'R' or c == 'S':
 		brain.setPriority()
