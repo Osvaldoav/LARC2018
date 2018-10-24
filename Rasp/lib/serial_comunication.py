@@ -37,6 +37,7 @@ class Serial:
         if self.first_read() != '*':
             print "Serial communication enabled!"
         else:
+            print "No enabled"
             self.screen.errorMessage("Serial communication has failed")
             self.screen.mainloop()
 
