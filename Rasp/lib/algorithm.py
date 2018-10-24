@@ -91,9 +91,9 @@ class Algorithm:
 		return -1, 'B'
 
 
-	# # Sets the last_color picked
-	# def set_last_color(self, color):
-	# 	self.last_color = color
+	# Sets the last_color picked
+	def set_last_color(self, color):
+		self.last_color = color
 
 	# Prints the matrix
 	def printMatrix(self):
