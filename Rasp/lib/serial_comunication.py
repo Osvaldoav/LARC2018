@@ -33,6 +33,7 @@ class Serial:
         return chr(ord(str(pair[0])) + (ord(pair[1]) - 65) * 3)
 
     def start(self):
+        print "starting start"
         self.send('T')
         if self.first_read() != '*':
             print "Serial communication enabled!"

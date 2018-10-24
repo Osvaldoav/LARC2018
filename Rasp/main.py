@@ -16,6 +16,7 @@ brain = Algorithm(screen.getContainers())
 
 print "starting..."
 serial = Serial(screen)
+print "before start"
 serial.start()   #
 # serial.read()
 serial.read()   #
