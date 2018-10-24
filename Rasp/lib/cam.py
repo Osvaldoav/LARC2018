@@ -10,7 +10,7 @@ class Cam:
 
 	# Takes a picture, saves it into the images folder and updates self.image
 	def shoot(self):
-		for i in range(3):
+		for i in range(5):
 			print "in for"
 			ret, self.image = self.cam.read()
 
