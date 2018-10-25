@@ -39,18 +39,18 @@ void setup() {
 
   //Starts the communication
   c_serial = _Serial::read();
-  blink(4);
+  blink(2);
   _Serial::send('1');
 
   //move forward
   //move to right
   //move forward 
   //stop
-  blink(4);
+  blink(2);
   _Serial::send('1');
   c_serial = _Serial::read();
   color = c_serial > 98 ? 'R' : c_serial > 65 ? 'G' : 'B';
-  blink(4);
+  blink(2);
   _Serial::send(color);
 //    logic->firstPick(c_serial); // Se mueve al stack 6 o 7
 //    _Serial::send(logic->grabContainer(c_serial));
@@ -62,7 +62,7 @@ void loop(){
 //  logic->stackToShip();
 c_serial = _Serial::read();
 color = c_serial > 98 ? 'R' : c_serial > 65 ? 'G' : 'B';
-blink(4);
+blink(2);
 //  if(c_serial == 'S'){
 //    logic->gotoSecond(); // pendiente
 //    _Serial::send('1');

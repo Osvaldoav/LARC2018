@@ -61,7 +61,6 @@ while True:
 		serial.send(serial.convert(res))
 
 	screen.printMatrix()
-	print "loop sent"
 
 # def main():
 # 	global first_time
