@@ -29,7 +29,6 @@ screen.popContainer(first[0]) #
 screen.printMatrix()
 serial.send(serial.convert(first))#
 print "First Stack sent"
-# brain.setPriority()
 
 first_time = True
 
@@ -40,7 +39,6 @@ while True:
 	print c
 
 	if c == 'R' or c == 'S':
-		# brain.setPriority()
 		c = 'R1' if c == 'R' else 'R2'
 
 	brain.set_last_color(c)
@@ -56,7 +54,6 @@ while True:
 		second = brain.secondPick()
 		screen.popContainer(second[0])
 		serial.send(serial.convert(second))
-		brain.setPriority()
 		first_time = False
 	else:
 		res = brain.solve()
@@ -71,7 +68,6 @@ while True:
 # 	c = serial.read()
 
 # 	if c == 'R' or c == 'S':
-# 		brain.setPriority()
 # 		c = 'R1' if c == 'R' else 'R2'
 
 # 	brain.set_last_color(c)
