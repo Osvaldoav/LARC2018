@@ -14,49 +14,37 @@ screen.drawText()
 
 brain = Algorithm(screen.getContainers())
 
-print "starting..."
 serial = Serial(screen)
-print "before start"
+print "starting"
 serial.start()   #
-# serial.read()
 serial.read()   #
-print "waiting for response"
 cam1.shoot()    #
 cam2.shoot()    #
-print "photos shooted"
-cam1.show()
-cam2.show()
 screen.drawContainers(cam1.getImage(), 3)
 screen.drawContainers(cam2.getImage(), 2)
 first = brain.firstPick()  #
+brain.set_last_color(first[1])
+screen.printMatrix()
 screen.popContainer(first[0]) #
+screen.printMatrix()
 serial.send(serial.convert(first))#
-# serial.send('3')
 print "First Stack sent"
-brain.setPriority()
 
 first_time = True
 
-def main():
+while True:
+	# global first_time
 	c = serial.read()
-	global first_time
-
-	okka = True
-	if okka:
-		okka = False
-	else:
-		cam1.shoot()    #
-		cam2.shoot()    #
-		cam1.show()
-		cam2.show()
+	print "c = ",
+	print c
 
 	if c == 'R' or c == 'S':
-		brain.setPriority()
 		c = 'R1' if c == 'R' else 'R2'
 
 	brain.set_last_color(c)
 
 	if(first_time and c == 'G'):
+		print "SIMIOOOOOS"
 		serial.send('S')
 		serial.read()
 		cam1.shoot()
@@ -66,19 +54,46 @@ def main():
 		second = brain.secondPick()
 		screen.popContainer(second[0])
 		serial.send(serial.convert(second))
-		brain.setPriority()
 		first_time = False
 	else:
 		res = brain.solve()
 		screen.popContainer(res[0])
 		serial.send(serial.convert(res))
-	# serial.send('3')
+
+	screen.printMatrix()
 	print "loop sent"
 
-	screen.run(5,main)
+# def main():
+# 	global first_time
+# 	c = serial.read()
 
-screen.run(0, main)
-screen.mainloop()
+# 	if c == 'R' or c == 'S':
+# 		c = 'R1' if c == 'R' else 'R2'
+
+# 	brain.set_last_color(c)
+
+# 	if(first_time and c == 'G'):
+# 		serial.send('S')
+# 		serial.read()
+# 		cam1.shoot()
+# 		cam2.shoot()
+# 		screen.drawContainers(cam1.getImage(), 1)
+# 		screen.drawContainers(cam2.getImage(), 0)
+# 		second = brain.secondPick()
+# 		screen.popContainer(second[0])
+# 		serial.send(serial.convert(second))
+# 		brain.setPriority()
+# 		first_time = False
+# 	else:
+# 		res = brain.solve()
+# 		screen.popContainer(res[0])
+# 		serial.send(serial.convert(res))
+# 	print "loop sent"
+
+# 	screen.run(5,main)
+
+# screen.run(0, main)
+# screen.mainloop()
 
 cam1.release()
 cam2.release()

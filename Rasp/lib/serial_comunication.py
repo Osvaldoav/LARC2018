@@ -4,7 +4,8 @@ import time
 class Serial:
     def __init__(self, screen):
         try:
-            self.arduino = serial.Serial("/dev/ttyUSB0", 9600, timeout=0, writeTimeout=0)
+            # self.arduino = serial.Serial("/dev/ttyUSB0", 9600, timeout=0, writeTimeout=0)
+            self.arduino = serial.Serial("/dev/ttyACM0", 9600, timeout=0, writeTimeout=0)
             time.sleep(3)
             self.screen = screen
         except serial.SerialException:
@@ -33,12 +34,10 @@ class Serial:
         return chr(ord(str(pair[0])) + (ord(pair[1]) - 65) * 3)
 
     def start(self):
-        print "starting start"
         self.send('T')
         if self.first_read() != '*':
             print "Serial communication enabled!"
         else:
-            print "No enabled"
             self.screen.errorMessage("Serial communication has failed")
             self.screen.mainloop()
 
