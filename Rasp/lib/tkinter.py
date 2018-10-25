@@ -81,3 +81,4 @@ class Screen:
 				else:
 					print s[b-(3-self.stack[c])],
 			print '\n'
+		print "======================="
