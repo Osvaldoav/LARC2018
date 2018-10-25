@@ -12,7 +12,7 @@ cam2 = Cam(1)
 screen = Screen()
 screen.drawText()
 
-brain = Algorithm(screen.getContainers())
+brain = Algorithm(screen.getParams())
 
 serial = Serial(screen)
 print "starting"
@@ -25,7 +25,7 @@ screen.drawContainers(cam2.getImage(), 2)
 first = brain.firstPick()  #
 brain.set_last_color(first[1])
 screen.printMatrix()
-screen.popContainer(first[0]) #
+screen.popContainer(first) #
 screen.printMatrix()
 serial.send(serial.convert(first))#
 print "First Stack sent"
@@ -52,14 +52,15 @@ while True:
 		screen.drawContainers(cam1.getImage(), 1)
 		screen.drawContainers(cam2.getImage(), 0)
 		second = brain.secondPick()
-		screen.popContainer(second[0])
+		screen.popContainer(second)
 		serial.send(serial.convert(second))
 		first_time = False
 	else:
 		res = brain.solve()
-		screen.popContainer(res[0])
+		screen.popContainer(res)
 		serial.send(serial.convert(res))
 
+	
 	screen.printMatrix()
 
 # def main():
