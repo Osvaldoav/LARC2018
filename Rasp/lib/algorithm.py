@@ -64,9 +64,12 @@ class Algorithm:
 
 	# Returns the next stack and color to pick
 	def solve(self):
+		print "solve"
 		# Returns 'R' if there is any red container as priority
 		if self.priority != -1:
 			return self.priority, 'R'
+		
+		print "after priority"
 		
 		self.updateOrder()
 
@@ -75,6 +78,7 @@ class Algorithm:
 		if self.last_color == 'R1' or self.last_color == 'R2':
 			color = 'B' if self.blues > self.greens else 'G'
 
+		print "bedore first for"
 		# Looks for the first specific colored container in the corresponding order
 		for s in self.order:
 			print "len = ",
