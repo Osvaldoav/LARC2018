@@ -19,8 +19,6 @@ _Movements::_Movements(){
     BLACKLINE_TRIGGER = 400;//300
     BLACKLINE_TRIGGER_SHIP = 250;//300
     untilStepsMechanism = 0;
-    // FIXME:
-    // Start mechanism at top
 } 
 
 void _Movements::initMechanism(){
@@ -28,6 +26,13 @@ void _Movements::initMechanism(){
         motors->moveMechanism(true);        
     }
     motors->stopMechanism();
+    encoder->encoderStateMechanism = 1;
+    encoder->stepsMechanism = 0;
+    while(encoder->stepsMechanism < 8321){    //limitSwitch is pressed when == 0
+        motors->moveMechanism(false);        
+    }    
+    motors->stopMechanism();
+    encoder->encoderStateMechanism = 1;    
 }
 
 // TODO:
@@ -82,7 +87,7 @@ void _Movements::setBaseVelocitiesByDirection(bool goSlow, char direction){
             pid->frontRightOutput = motors->velFordFR;
             pid->backRightOutput = motors->velFordBR;    
         }
-    } else{
+    } else if(direction=='8' || direction=='2'){
         if (goSlow) {
             pid->frontLeftOutput = motors->velSlowFordFL;
             pid->backLeftOutput = motors->velSlowFordBL;
@@ -95,6 +100,12 @@ void _Movements::setBaseVelocitiesByDirection(bool goSlow, char direction){
             pid->backRightOutput = motors->velFordBR;
         }            
     }      
+    else if(direction=='4' || direction=='6'){
+        pid->frontLeftOutput = motors->velHorFL;
+        pid->backLeftOutput = motors->velHorBL;
+        pid->frontRightOutput = motors->velHorFR;
+        pid->backRightOutput = motors->velHorBR;          
+    }       
 }
 // TODO:
 void _Movements::setBaseSpecificVelocities(double vFL, double vBL, double vFR, double vBR){

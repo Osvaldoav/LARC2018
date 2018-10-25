@@ -35,6 +35,8 @@ bool boolFR_B;
 bool boolBR_F;
 bool boolBR_B;
 
+double const HORIZONTAL_OFFSET_POWER = 60;
+
 void _Motors::setupMotors(){
     velFordFL = 200;//200
     velFordBL = 200;
@@ -51,7 +53,11 @@ void _Motors::setupMotors(){
     velSlowTurnFL = 50;
     velSlowTurnBL = 50;
     velSlowTurnFR = 50;
-    velSlowTurnBR = 50;       
+    velSlowTurnBR = 50;   
+    velHorFL = 200-HORIZONTAL_OFFSET_POWER;//200
+    velHorBL = 200;
+    velHorFR = 200;
+    velHorBR = 200-HORIZONTAL_OFFSET_POWER;       
 
     pinMode(pinPWMFR_F,OUTPUT);
     pinMode(pinPWMFR_B,OUTPUT);

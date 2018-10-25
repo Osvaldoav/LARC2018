@@ -31,6 +31,10 @@ class _Motors{
         double velSlowTurnBL;
         double velSlowTurnFR;
         double velSlowTurnBR;
+        double velHorFL;
+        double velHorBL;
+        double velHorFR;
+        double velHorBR;
 };
         
         
