@@ -18,16 +18,12 @@ class Algorithm:
 	# Return stack 6 or 7 as first pick
 	def firstPick(self):
 		if self.matrix[7][0] == 'B':
-			self.last_color = 'B'
 			return 7, 'B'
 		elif self.matrix[6][0] == 'B':
-			self.last_color = 'B'
 			return 6, 'B'
 		elif self.matrix[7][0] == 'G':
-			self.last_color = 'G'
 			return 7, 'G'
 		else:
-			self.last_color = 'R'
 			return 7, 'R'
 
 	# Return stack 2 or 3 as second pick
@@ -66,8 +62,8 @@ class Algorithm:
 	def solve(self):
 		print "solve"
 		# Returns 'R' if there is any red container as priority
-		if self.priority != -1:
-			return self.priority, 'R'
+		# if self.priority != -1:
+		# 	return self.priority, 'R'
 		
 		print "after priority"
 		
@@ -81,9 +77,11 @@ class Algorithm:
 		print "bedore first for"
 		# Looks for the first specific colored container in the corresponding order
 		for s in self.order:
-			print "len = ",
-			print len(self.matrix[s]) 
+			# print "len = ",
+			# print len(self.matrix[s]) 
 			if len(self.matrix[s]) > 0:
+				if self.matrix[s][0] == 'R':
+					return s, 'R'
 				if self.matrix[s][0] == color:
 					return s, color
 

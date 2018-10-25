@@ -23,6 +23,7 @@ cam2.shoot()    #
 screen.drawContainers(cam1.getImage(), 3)
 screen.drawContainers(cam2.getImage(), 2)
 first = brain.firstPick()  #
+brain.set_last_color(first[1])
 screen.printMatrix()
 brain.printMatrix()
 screen.popContainer(first[0]) #
@@ -30,7 +31,7 @@ screen.printMatrix()
 brain.printMatrix()
 serial.send(serial.convert(first))#
 print "First Stack sent"
-brain.setPriority()
+# brain.setPriority()
 
 first_time = True
 
@@ -39,7 +40,7 @@ while True:
 	c = serial.read()
 
 	if c == 'R' or c == 'S':
-		brain.setPriority()
+		# brain.setPriority()
 		c = 'R1' if c == 'R' else 'R2'
 
 	brain.set_last_color(c)
