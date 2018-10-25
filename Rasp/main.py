@@ -25,10 +25,8 @@ screen.drawContainers(cam2.getImage(), 2)
 first = brain.firstPick()  #
 brain.set_last_color(first[1])
 screen.printMatrix()
-brain.printMatrix()
 screen.popContainer(first[0]) #
 screen.printMatrix()
-brain.printMatrix()
 serial.send(serial.convert(first))#
 print "First Stack sent"
 # brain.setPriority()
@@ -66,7 +64,6 @@ while True:
 		serial.send(serial.convert(res))
 
 	screen.printMatrix()
-	brain.printMatrix()
 	print "loop sent"
 
 # def main():
