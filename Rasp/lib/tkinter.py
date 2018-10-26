@@ -14,6 +14,9 @@ class Screen:
 		self.canvas = Canvas(self.root, width=320, height=240)
 		self.canvas.pack()
 		self.stack = [3 for i in range(8)]
+		self.blues = 0
+		self.greens = 0
+		self.last_color = 'B'
 
 	# Draws title and indexes in the screen
 	def drawText(self):
@@ -44,14 +47,20 @@ class Screen:
 			y0, y1 = 25, 43
 
 	# Remove the top container of a specific stack
-	def popContainer(self, stack):
-		x0 = stack * (rect_w + 4) + 4
+	def popContainer(self, pair):
+		x0 = pair[0] * (rect_w + 4) + 4
 		x1 = x0 + rect_w + 1
-		y0 = 91 - len(self.containers[stack]) * (rect_h + 4)
+		y0 = 91 - len(self.containers[pair[0]]) * (rect_h + 4)
 		y1 = y0 + rect_h + 1
 
-		self.containers[stack].pop(0)
-		self.stack[stack] -= 1
+		if pair[1] == 'G':
+			self.greens += 1
+		elif pair[1] == 'B':
+			self.blues += 1
+
+		self.last_color = pair[1]
+		self.containers[pair[0]].pop(0)
+		self.stack[pair[0]] -= 1
 
 		# self.canvas.create_rectangle(x0, y0, x1, y1, fill="white", outline="")
 
@@ -61,12 +70,11 @@ class Screen:
 		self.canvas.create_text(160,230, text=txt, fill="red")
 
 	# Returns the containers attribute
-	def getContainers(self):
-		return self.containers
+	def getParams(self):
+		return self.containers, self.last_color, self.greens, self.blues
 
 	# Runs a function after certain time without closing the screen window
 	def run(self, milliseconds, function):
-		# global first_time
 		self.root.after(milliseconds, function)
 
 	# Calls Tk.mainloop

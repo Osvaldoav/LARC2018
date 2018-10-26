@@ -6,11 +6,8 @@ R2_ORDER = [6,5,7,4,2,1,3,0]
 
 class Algorithm:
 
-	def __init__(self, matrix):
-		self.matrix = matrix
-		self.last_color = 'B'
-		self.blues = 0
-		self.greens = 0
+	def __init__(self, params):
+		self.matrix, self.last_color, self.greens, self.blues = params
 		self.reds = 0
 		self.priority = -1
 		self.order = BLUE_ORDER
@@ -54,24 +51,20 @@ class Algorithm:
 
 	# Returns the next stack and color to pick
 	def solve(self):
-		# Returns 'R' if there is any red container as priority
-		# if self.priority != -1:
-		# 	return self.priority, 'R'
-		
 		self.updateOrder()
 
 		# Sets the color we are trying to find
-		color = self.last_color
-		if self.last_color == 'R1' or self.last_color == 'R2':
-			color = 'B' if self.blues > self.greens else 'G'
+		color = 'B' if self.blues % 5 > self.greens % 5 else 'G'
 
-		# Looks for the first specific colored container in the corresponding order
+		# Looks for the first red colored container in the corresponding order
 		for s in self.order:
-			# print "len = ",
-			# print len(self.matrix[s]) 
 			if len(self.matrix[s]) > 0:
 				if self.matrix[s][0] == 'R':
 					return s, 'R'
+
+		# Looks for the first specific colored container in the corresponding order
+		for s in self.order:
+			if len(self.matrix[s]) > 0:
 				if self.matrix[s][0] == color:
 					return s, color
 
@@ -80,8 +73,8 @@ class Algorithm:
 			if len(self.matrix[s]) > 0:
 				return s, self.matrix[s][0]
 
-		# Returns -1 if there are not more containers to pick
-		return -1, 'B'
+		# Returns -1, 'X' if there are not more containers to pick
+		return -1, 'X'
 
 
 	# Sets the last_color picked
