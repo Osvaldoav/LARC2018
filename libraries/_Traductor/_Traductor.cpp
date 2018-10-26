@@ -109,8 +109,13 @@ void _Traductor::alinearStack(){
 
 void _Traductor::gotoFirst(){
     movements->larc_moveUntilBlackLine(false, '8', true, false, true, false);
+    movements->movePID_nCM(2.5, false, '8');
     movements->larc_moveUntilBlackLine(false, '6', true, true, false, false);
-    movements->movePID_nCM(28.5, false, '8');
+    do{
+        movements->movePID(false, '2');
+        movements->updateSensors(0,0,0,0,1,1);
+    } while(movements->tcrt5000->tcrtMechaLeft.kalmanDistance < movements->BLACKLINE_TRIGGER);
+    movements->movePID_nCM(31, false, '8');
     delay(1000);
 }
 

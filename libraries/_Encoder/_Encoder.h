@@ -7,8 +7,10 @@ class _Encoder{
 // TODO: METHODS
         void setupEncoder();
 // TODO: ATTRIBUTES
-        volatile unsigned long steps;
-        volatile byte encoderState;
+        volatile unsigned long stepsFR;
+        volatile byte encoderStateFR;
+        volatile unsigned long stepsBL;
+        volatile byte encoderStateBL;        
         long encoder30Cm;
         volatile unsigned long stepsMechanism;
         volatile byte encoderStateMechanism;       

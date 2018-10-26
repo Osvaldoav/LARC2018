@@ -7,16 +7,14 @@
 
 // TODO:
 void _Encoder::setupEncoder(){
-    //Steps counted by the encoder
-    steps = 0;
-    //State of the encoder
-    //0->Stop   1->Forward    2->Backwards
-    encoderState = 0;
-    //Const for encoder. Perfect at 60cm, 30cm fail by -1.5cm, 100cm by 2cm, 150cm by 3cm
     encoder30Cm = 3165L; // FIXME: Better it depends in the distance.
-    //Steps counted by the encoder
     stepsMechanism = 0;
-    //State of the encoder
-    //0->Stop   1->Forward    2->Backwards
+    //0->off   1->on    
     encoderStateMechanism = 0;
+    stepsFR = 0;
+    //0->off   1->on 
+    encoderStateFR = 0;    
+    stepsBL = 0;
+    //0->off   1->on     
+    encoderStateBL = 0;    
 }

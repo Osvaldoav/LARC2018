@@ -1,6 +1,11 @@
-void encoderStep(){
-    if (logic->traductor->movements->encoder->encoderState == 1)
-      logic->traductor->movements->encoder->steps++;
+void encoderStepFR(){
+    if (logic->traductor->movements->encoder->encoderStateFR == 1)
+      logic->traductor->movements->encoder->stepsFR++;
+}
+
+void encoderStepBL(){
+    if (logic->traductor->movements->encoder->encoderStateBL == 1)
+      logic->traductor->movements->encoder->stepsBL++;
 }
 
 void encoderStepMechanism(){

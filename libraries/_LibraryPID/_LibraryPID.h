@@ -44,6 +44,10 @@ class _LibraryPID{
         double forwardKp;
         double forwardKi;
         double forwardKd;
+        double horizontalKp;
+        double horizontalKi;
+        double horizontalKd;
+        double encoderKp;
         /////// Velocities ///////
         double maxTurnVel;      
         double minTurnVel;

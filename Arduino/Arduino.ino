@@ -5,7 +5,8 @@
 #include <Wire.h>
 _Logic *logic = new _Logic;
 
-const byte pinEncoder = 18;
+const byte pinEncoderFR = 18;
+const byte pinEncoderBL = 19;
 const byte pinEncoderMechanism = 2;
 
 
@@ -22,10 +23,12 @@ void setup() {
     logic->traductor->movements->tcrt5000->setupTCRT5000();
     logic->traductor->movements->encoder->setupEncoder();
     logic->traductor->movements->servo->setupServo();
-    pinMode(pinEncoder, INPUT_PULLUP);
+    pinMode(pinEncoderFR, INPUT_PULLUP);
+    pinMode(pinEncoderBL, INPUT_PULLUP);
     pinMode(pinEncoderMechanism, INPUT_PULLUP);
 
-    attachInterrupt(digitalPinToInterrupt(pinEncoder), encoderStep, CHANGE);   
+    attachInterrupt(digitalPinToInterrupt(pinEncoderFR), encoderStepFR, CHANGE);
+    attachInterrupt(digitalPinToInterrupt(pinEncoderBL), encoderStepBL, CHANGE);      
     attachInterrupt(digitalPinToInterrupt(pinEncoderMechanism), encoderStepMechanism, CHANGE);   
 //    logic->initCommunication();
 //    logic->traductor->movements->initMechanism();
@@ -39,11 +42,16 @@ void setup() {
 }
 
 void testMovements(){ 
-//    logic->traductor->movements->encoder->encoderState = 1;
+//    logic->traductor->movements->encoder->encoderStateFR = 1;
+//    logic->traductor->movements->encoder->encoderStateBL = 1;
+//    digitalWrite(3, HIGH);
+//    digitalWrite(8, HIGH);
+//    Serial.print(logic->traductor->movements->encoder->stepsFR);
+//    Serial.print(" ");
+//    Serial.println(logic->traductor->movements->encoder->stepsBL);     
     logic->traductor->movements->movePID(false, '6');
 //    logic->traductor->movements->spinPID(true, 90);
-//    delay(5000);
-//    Serial.println(logic->traductor->movements->encoder->steps);   
+//    delay(5000); 
 //    logic->traductor->movements->movePID_nSec(1.5, false, '1');
 //    delay(2000);
 //    logic->traductor->movements->spinPID(false, -90);
@@ -166,23 +174,27 @@ void mechanism(){
 //    delay(2000);
 //    logic->traductor->movements->motors->stopMechanism();
 //    delay(2000);
-    logic->traductor->mecanismo(4,5);
+//    logic->traductor->mecanismo(4,5);
 //    while(1);
+}
+void alignLine(){
+    alignLine();
 }
 
 void loop(){
 //  aligningTofTest();
 //  tof_vs_sharp();
-  testMovements(); 
+//  testMovements(); 
 //  testSteps();
 //  readTCRT5000();
 //  aligningTcrtTest();
 //  larc();
 //  logicTest();  
 //  colorSensor();
-//  logic->traductor->movements->initMechanism();
+//  logic->traductor->gotoFirst();
 //  mechanism();
 //  logic->stackToShip();
 //  logic->shipToStack();
+  alignLine();
 //  while(1);
 }

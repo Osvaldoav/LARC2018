@@ -40,6 +40,7 @@ class _Movements{
         void moveMechanism(int, int);
         void asyncMovement(int, char, int, int);
         void initMechanism();
+        void alignLine();
 // TODO: ATTRIBUTES
         _BNO055 *bno055; 
         _ColorSensor *colorSensor;

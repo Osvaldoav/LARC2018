@@ -175,7 +175,7 @@ void _Movements::calculateAngleOutputsByDirection(bool goSlow, char direction){
         case '4':         // WEST
             // bno055->offsetAngle = -bno055->offsetAngleForward;
             bno055->offsetAngle = 0;
-            pid->SetTunings(pid->forwardKp, pid->forwardKi, pid->forwardKd);
+            pid->SetTunings(pid->horizontalKp, pid->horizontalKi, pid->horizontalKd);
             pid->computeOutput_bno(bno055->rawInput, bno055->lastInput);
             if(angleDifference > 0){ // MOVE TO THE LEFT
                 pid->frontLeftOutput += pid->Output;
@@ -194,7 +194,7 @@ void _Movements::calculateAngleOutputsByDirection(bool goSlow, char direction){
         case '6':         // EAST
             // bno055->offsetAngle = -bno055->offsetAngleForward;
             bno055->offsetAngle = 0;
-            pid->SetTunings(pid->forwardKp, pid->forwardKi, pid->forwardKd);
+            pid->SetTunings(pid->horizontalKp, pid->horizontalKi, pid->horizontalKd);
             pid->computeOutput_bno(bno055->rawInput, bno055->lastInput);
             if(angleDifference > 0){ // MOVE TO THE LEFT
                 pid->frontLeftOutput -= pid->Output;
@@ -307,6 +307,13 @@ void _Movements::movePID(bool goSlow, char direction){
 //  Update Outputs
     setBaseVelocitiesByDirection(goSlow, direction);
     calculateAngleOutputsByDirection(goSlow, direction);
+ // if((direction=='4'||direction=='6') && (pid->getAngleDifference(bno055->rawInput))<0.5){
+    //     encoder->stepsBL > encoder->stepsFR
+    //     if()
+    //         pid->frontLeftOutput = pid->backLeftOutput = pid->backLeftOutput + encoderKp*
+    //     pid->frontRightOutput
+    //     pid->backRightOutput        
+    // }
     verifyAndUploadOutputsByDirection(direction);   
     if(encoder->stepsMechanism >= untilStepsMechanism){
         motors->stopMechanism();
@@ -360,18 +367,18 @@ void _Movements::movePID_nSec(double time, bool goSlow, char direction) {
 }
 // TODO:
 //Go forward the cm given in the parameter
-void _Movements::movePID_nCM(double cm, bool goSlow, char direction){
-    encoder->encoderState = 1;  
+void _Movements::movePID_nCM(double cm, bool goSlow, char direction){  
+    encoder->encoderStateFR=1; encoder->encoderStateBL=1;
 //  Counts of encoder to get to the objective
     int untilSteps = (encoder->encoder30Cm / 30) * cm;
 //  Restart encoder counts
-    encoder->steps = 0;
+    encoder->stepsFR=0; encoder->stepsBL=0;    
 //  Move with p correction until the encoder read the cm
-    while (encoder->steps < untilSteps){              
+    while (encoder->stepsFR < untilSteps){              
         movePID(goSlow, direction);        
     }
     motors->brake();
-    encoder->encoderState = 0; 
+    encoder->encoderStateFR=0; encoder->encoderStateBL=0;
 }
 // TODO:
 void _Movements::align_tof(){
@@ -636,4 +643,20 @@ void _Movements::moveMechanism(int lastStackLevel, int newStackLevel){
     motors->stopMechanism();
     untilStepsMechanism=0;
     encoder->encoderStateMechanism = 0;  
+}
+
+void _Movements::alignLine(){
+    updateSensors(0,0,0,0,1,1);
+    if(tcrtMidFrontLeft.kalmanDistance<BLACKLINE_TRIGGER && tcrtMidDownLeft.kalmanDistance<BLACKLINE_TRIGGER 
+    && tcrtMidFrontRight.kalmanDistance<BLACKLINE_TRIGGER && tcrtMidDownRight.kalmanDistance<BLACKLINE_TRIGGER){
+        motors->brake();
+    }
+    else if(tcrtMidFrontLeft.kalmanDistance<BLACKLINE_TRIGGER && tcrtMidDownLeft.kalmanDistance<BLACKLINE_TRIGGER 
+    && tcrtMidFrontRight.kalmanDistance<BLACKLINE_TRIGGER && tcrtMidDownRight.kalmanDistance<BLACKLINE_TRIGGER){
+        motors->brake();
+    }
+    else if(tcrtMidFrontLeft.kalmanDistance<BLACKLINE_TRIGGER && tcrtMidDownLeft.kalmanDistance<BLACKLINE_TRIGGER 
+    && tcrtMidFrontRight.kalmanDistance<BLACKLINE_TRIGGER && tcrtMidDownRight.kalmanDistance<BLACKLINE_TRIGGER){
+        motors->brake();
+    }        
 }
