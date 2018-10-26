@@ -102,6 +102,7 @@ void _Traductor::vertical(int lines){
 }
 
 void _Traductor::alinearStack(){ 
+    movements->alignLine();
     movements->movePID_nCM(2.7, true, '6');
     // movements->getCloseToStack();
     // movements->align_tof();
@@ -121,7 +122,7 @@ void _Traductor::gotoFirst(){
 
 void _Traductor::pickFirst(int stack){
     char c = stack < 7 ? '8' : '2';
-    int steps = stack < 7 ? 13 : 4;
+    int steps = stack < 7 ? 10 : 2.5;
     movements->movePID_nCM(steps, false, '8');
 }
 
@@ -140,7 +141,7 @@ void _Traductor::updateMechanismMovement(int actualLevel, int newLevel){
     else
         movements->motors->moveMechanism(false);    
 }
-
+// TODO:
 void _Traductor::waitForMechanism(){
     movements->motors->brake();
     while(movements->encoder->encoderStateMechanism == 1){

@@ -30,8 +30,8 @@ void setup() {
     attachInterrupt(digitalPinToInterrupt(pinEncoderFR), encoderStepFR, CHANGE);
     attachInterrupt(digitalPinToInterrupt(pinEncoderBL), encoderStepBL, CHANGE);      
     attachInterrupt(digitalPinToInterrupt(pinEncoderMechanism), encoderStepMechanism, CHANGE);   
-//    logic->initCommunication();
-//    logic->traductor->movements->initMechanism();
+    logic->traductor->movements->initMechanism();    
+    logic->initCommunication();
 
 
     //CALIBRATION 
@@ -179,6 +179,7 @@ void mechanism(){
 }
 void alignLine(){
     alignLine();
+//    while(1);
 }
 
 void loop(){
@@ -193,8 +194,8 @@ void loop(){
 //  colorSensor();
 //  logic->traductor->gotoFirst();
 //  mechanism();
-//  logic->stackToShip();
-//  logic->shipToStack();
-  alignLine();
+  logic->stackToShip();
+  logic->shipToStack();
+//  alignLine();
 //  while(1);
 }

@@ -267,7 +267,7 @@ void _Movements::calculateAngleOutputsByDirection(bool goSlow, char direction){
         case 'T':         // TURN                   
             pid->SetTunings(pid->turnKp, pid->turnKi, pid->turnKd);
             pid->computeOutput_bno(bno055->rawInput, bno055->lastInput);
-            if(angleDifference > 1){ // MOVE TO THE RIGHT
+            if(angleDifference > 1){ // MOVE TO THE LEFT
                 bno055->offsetAngle = bno055->offsetAngleTurn;   
                 pid->frontLeftOutput += pid->Output;
                 pid->backLeftOutput += pid->Output;
@@ -275,7 +275,7 @@ void _Movements::calculateAngleOutputsByDirection(bool goSlow, char direction){
                 pid->backRightOutput += pid->Output; 
                 motors->setMotor(0, 1, 0, 1, 1, 0, 1, 0);            
             }
-            else if(angleDifference < -1){ // MOVE TO THE LEFT
+            else if(angleDifference < -1){ // MOVE TO THE RIGHT
                 bno055->offsetAngle = -bno055->offsetAngleTurn;   
                 pid->frontLeftOutput += pid->Output;
                 pid->backLeftOutput += pid->Output;
@@ -644,19 +644,36 @@ void _Movements::moveMechanism(int lastStackLevel, int newStackLevel){
     untilStepsMechanism=0;
     encoder->encoderStateMechanism = 0;  
 }
-
+// TODO:
 void _Movements::alignLine(){
-    updateSensors(0,0,0,0,1,1);
-    if(tcrtMidFrontLeft.kalmanDistance<BLACKLINE_TRIGGER && tcrtMidDownLeft.kalmanDistance<BLACKLINE_TRIGGER 
-    && tcrtMidFrontRight.kalmanDistance<BLACKLINE_TRIGGER && tcrtMidDownRight.kalmanDistance<BLACKLINE_TRIGGER){
-        motors->brake();
-    }
-    else if(tcrtMidFrontLeft.kalmanDistance<BLACKLINE_TRIGGER && tcrtMidDownLeft.kalmanDistance<BLACKLINE_TRIGGER 
-    && tcrtMidFrontRight.kalmanDistance<BLACKLINE_TRIGGER && tcrtMidDownRight.kalmanDistance<BLACKLINE_TRIGGER){
-        motors->brake();
-    }
-    else if(tcrtMidFrontLeft.kalmanDistance<BLACKLINE_TRIGGER && tcrtMidDownLeft.kalmanDistance<BLACKLINE_TRIGGER 
-    && tcrtMidFrontRight.kalmanDistance<BLACKLINE_TRIGGER && tcrtMidDownRight.kalmanDistance<BLACKLINE_TRIGGER){
-        motors->brake();
-    }        
+    double velocityToAlign = 50;      
+    int times=0;
+    do{
+        updateSensors(0,0,0,0,1,1);  
+        if(tcrt5000->tcrtMidFrontLeft.kalmanDistance<BLACKLINE_TRIGGER && tcrt5000->tcrtMidDownLeft.kalmanDistance<BLACKLINE_TRIGGER && tcrt5000->tcrtMidFrontRight.kalmanDistance<BLACKLINE_TRIGGER && tcrt5000->tcrtMidDownRight.kalmanDistance<BLACKLINE_TRIGGER){
+            motors->brake();
+            times++;
+            delay(100);
+            if(times > 10)
+                break;
+        }
+        else if(tcrt5000->tcrtMidFrontLeft.kalmanDistance>BLACKLINE_TRIGGER || tcrt5000->tcrtMidDownRight.kalmanDistance>BLACKLINE_TRIGGER){
+            pid->frontLeftOutput = velocityToAlign;
+            pid->backLeftOutput = velocityToAlign;
+            pid->frontRightOutput = velocityToAlign;
+            pid->backRightOutput = velocityToAlign;
+            motors->setMotor(1, 0, 1, 0, 0, 1, 0, 1);   
+            motors->setVelocity(pid->frontLeftOutput, pid->backLeftOutput, pid->frontRightOutput, pid->backRightOutput);            
+        }
+        else if(tcrt5000->tcrtMidFrontRight.kalmanDistance>BLACKLINE_TRIGGER || tcrt5000->tcrtMidDownLeft.kalmanDistance>BLACKLINE_TRIGGER){
+            pid->frontLeftOutput = velocityToAlign;
+            pid->backLeftOutput = velocityToAlign;
+            pid->frontRightOutput = velocityToAlign;
+            pid->backRightOutput = velocityToAlign;
+            motors->setMotor(0, 1, 0, 1, 1, 0, 1, 0);
+            motors->setVelocity(pid->frontLeftOutput, pid->backLeftOutput, pid->frontRightOutput, pid->backRightOutput);                
+        }        
+    } while(1);
+    updateSensors(1,0,0,0,0,0);
+    pid->Setpoint = bno055->rawInput;
 }
