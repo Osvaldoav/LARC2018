@@ -119,7 +119,7 @@ void _Movements::calculateAngleOutputsByDirection(bool goSlow, char direction){
     int angleDifference = pid->getAngleDifference(bno055->rawInput);      
     switch(direction){
         case '7':         // NORTHWEST
-            bno055->offsetAngle = bno055->offsetAngleForward;
+            // bno055->offsetAngle = bno055->offsetAngleForward;
             pid->SetTunings(pid->forwardKp, pid->forwardKi, pid->forwardKd);
             pid->computeOutput_bno(bno055->rawInput, bno055->lastInput);
             if(angleDifference > 0){ // MOVE TO THE LEFT                
@@ -155,7 +155,7 @@ void _Movements::calculateAngleOutputsByDirection(bool goSlow, char direction){
             motors->setMotor(1, 0, 1, 0, 1, 0, 1, 0);
             break;
         case '9':         // NORTHEAST
-            bno055->offsetAngle = bno055->offsetAngleForward;
+            // bno055->offsetAngle = bno055->offsetAngleForward;
             pid->SetTunings(pid->forwardKp, pid->forwardKi, pid->forwardKd);
             pid->computeOutput_bno(bno055->rawInput, bno055->lastInput);
             if(angleDifference > 0){ // MOVE TO THE LEFT
@@ -211,7 +211,7 @@ void _Movements::calculateAngleOutputsByDirection(bool goSlow, char direction){
             motors->setMotor(1, 0, 0, 1, 0, 1, 1, 0);
             break;
         case '1':         // SOUTHWEST
-            bno055->offsetAngle = -bno055->offsetAngleForward;
+            // bno055->offsetAngle = -bno055->offsetAngleForward;
             pid->SetTunings(pid->forwardKp, pid->forwardKi, pid->forwardKd);
             pid->computeOutput_bno(bno055->rawInput, bno055->lastInput);
             if(angleDifference > 0){ // MOVE TO THE LEFT
@@ -247,7 +247,7 @@ void _Movements::calculateAngleOutputsByDirection(bool goSlow, char direction){
             motors->setMotor(0, 1, 0, 1, 0, 1, 0, 1);
             break;
         case '3':         // SOUTHEAST
-            bno055->offsetAngle = -bno055->offsetAngleForward;
+            // bno055->offsetAngle = -bno055->offsetAngleForward;
             pid->SetTunings(pid->forwardKp, pid->forwardKi, pid->forwardKd);
             pid->computeOutput_bno(bno055->rawInput, bno055->lastInput);
             if(angleDifference > 0){ // MOVE TO THE LEFT
@@ -264,18 +264,19 @@ void _Movements::calculateAngleOutputsByDirection(bool goSlow, char direction){
             }    
             motors->setMotor(0, 0, 0, 1, 0, 1, 0, 0);
             break;
-        case 'T':         // TURN
-            bno055->offsetAngle = bno055->offsetAngleTurn;          
+        case 'T':         // TURN                   
             pid->SetTunings(pid->turnKp, pid->turnKi, pid->turnKd);
             pid->computeOutput_bno(bno055->rawInput, bno055->lastInput);
-            if(angleDifference > 1){ // MOVE TO THE LEFT
+            if(angleDifference > 1){ // MOVE TO THE RIGHT
+                bno055->offsetAngle = bno055->offsetAngleTurn;   
                 pid->frontLeftOutput += pid->Output;
                 pid->backLeftOutput += pid->Output;
                 pid->frontRightOutput += pid->Output;
                 pid->backRightOutput += pid->Output; 
                 motors->setMotor(0, 1, 0, 1, 1, 0, 1, 0);            
             }
-            else if(angleDifference < -1){ // MOVE TO THE RIGHT
+            else if(angleDifference < -1){ // MOVE TO THE LEFT
+                bno055->offsetAngle = -bno055->offsetAngleTurn;   
                 pid->frontLeftOutput += pid->Output;
                 pid->backLeftOutput += pid->Output;
                 pid->frontRightOutput += pid->Output;
@@ -317,18 +318,7 @@ void _Movements::movePID(bool goSlow, char direction){
 void _Movements::spinPID(bool goSlow, double newAngle){
     int maxTime=2000;
     if(abs(newAngle) == 180)
-        maxTime=2500;
-    if(abs(newAngle) == 360){
-        if(newAngle == 360){
-            spinPID(goSlow, 180);
-            spinPID(goSlow, 180);
-        }
-        else if(newAngle == -360){
-            spinPID(goSlow, -180);
-            spinPID(goSlow, -180);
-        }    
-        return ;
-    } 
+        maxTime=2500; 
     pid->calculateNewSetpoint(newAngle);    
     int x = 0;
     double startTime = millis();    
@@ -344,6 +334,7 @@ void _Movements::spinPID(bool goSlow, double newAngle){
             if (++x == 3) break;
         }
     } while(millis() < startTime+maxTime);    
+    motors->brake();    
 }
 // TODO:
 void _Movements::turnPID(bool goSlow) {

@@ -28,7 +28,7 @@ void setup() {
     attachInterrupt(digitalPinToInterrupt(pinEncoder), encoderStep, CHANGE);   
     attachInterrupt(digitalPinToInterrupt(pinEncoderMechanism), encoderStepMechanism, CHANGE);   
 //    logic->initCommunication();
-    logic->traductor->movements->initMechanism();
+//    logic->traductor->movements->initMechanism();
 
 
     //CALIBRATION 
@@ -40,8 +40,8 @@ void setup() {
 
 void testMovements(){ 
 //    logic->traductor->movements->encoder->encoderState = 1;
-    logic->traductor->movements->movePID(false, '8');
-//    logic->traductor->movements->spinPID(true, -90);
+    logic->traductor->movements->movePID(false, '6');
+//    logic->traductor->movements->spinPID(true, 90);
 //    delay(5000);
 //    Serial.println(logic->traductor->movements->encoder->steps);   
 //    logic->traductor->movements->movePID_nSec(1.5, false, '1');
@@ -173,7 +173,7 @@ void mechanism(){
 void loop(){
 //  aligningTofTest();
 //  tof_vs_sharp();
-//  testMovements(); 
+  testMovements(); 
 //  testSteps();
 //  readTCRT5000();
 //  aligningTcrtTest();
