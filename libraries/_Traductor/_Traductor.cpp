@@ -93,6 +93,7 @@ void _Traductor::backUntilBlackLineSharps(bool tcrt){
 
 void _Traductor::moveAtrasHorizontal(){
     movements->larc_moveUntilBlackLine(false, '4', false, true, false, true);
+    movements->movePID_nCM(4, false, '4');
 }
 
 void _Traductor::vertical(int lines){
@@ -122,7 +123,7 @@ void _Traductor::gotoFirst(){
 
 void _Traductor::pickFirst(int stack){
     char c = stack < 7 ? '8' : '2';
-    int steps = stack < 7 ? 10 : 2.5;
+    int steps = stack < 7 ? 16.5 : 2.5;
     movements->movePID_nCM(steps, false, '8');
 }
 
