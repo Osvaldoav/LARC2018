@@ -53,7 +53,7 @@ brain.set_last_color(first[1])
 screen.printMatrix()
 screen.popContainer(first) #
 screen.printMatrix()
-time.sleep(1)
+time.sleep(15)
 serial.send(serial.convert(first))#
 print "c_serial =",
 print serial.convert(first)
