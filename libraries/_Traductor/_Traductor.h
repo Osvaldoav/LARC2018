@@ -29,6 +29,8 @@ class _Traductor{
         void updateMechanismMovement(int, int);
         void waitForMechanism();
 
+        void LcdPrint(String name, int value);
+
         void pickFirst(int stack);
         void gotoFirst();
 
