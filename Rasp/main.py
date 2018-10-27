@@ -29,6 +29,8 @@ screen.printMatrix()
 screen.popContainer(first) #
 screen.printMatrix()
 serial.send(serial.convert(first))#
+print "c_serial =",
+print serial.convert(first)
 print "First Stack sent"
 
 first_time = True
