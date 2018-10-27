@@ -64,6 +64,15 @@ void _Logic::pickFirst(char c){
     grabContainer(c);
 }
 
+void _Logic::blink(int times){
+    for(int i = 0; i < times; i++){
+        digitalWrite(22, HIGH);
+        delay(500);
+        digitalWrite(22, LOW);
+        delay(500);
+    }
+}
+
 void _Logic::stackToShip(){
     bool A = lastStack < 2 || (lastStack > 3 && lastStack < 6);
     bool B = lastColor != 'R';
@@ -74,17 +83,20 @@ void _Logic::stackToShip(){
         lastLevel++;
     lastLevel = stacks[lastLevel]+1;
     
-    traductor->LcdPrint("current Level", currentLevel);
-    delay(2000);
-    traductor->LcdPrint("last Level", lastLevel);
-    delay(2000);
+    blink(currentLevel);
+    delay(5000);
+    blink(lastLevel);
+    // traductor->LcdPrint("current Level", currentLevel);
+    // delay(2000);
+    // traductor->LcdPrint("last Level", lastLevel);
+    // delay(2000);
 
     traductor->mecanismo(currentLevel, lastLevel);   // eleva el stack para no chocar con los demas
     traductor->horizontalLine(A == B); // Avanza de frente o de reversa hasta linea horizontal
 
     currentLevel = lastColor == 'R' ? 2 : lastColor == 'G' ? green_boxes%6 : blue_boxes%6;
     traductor->updateMechanismMovement(lastLevel, currentLevel);
-
+ 
     if(B){
         if ((lastColor == 'B' && blue_boxes < 6) || (lastColor == 'G' && green_boxes < 6)){
             dir = lastStack < 4 ? 2 : 1;

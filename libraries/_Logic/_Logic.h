@@ -25,6 +25,8 @@ class _Logic{
         void gotoSecond();
         void initCommunication();
 
+        void blink(int times);
+
         _Traductor *traductor;  
         
 };

@@ -34,7 +34,6 @@ print "First Stack sent"
 first_time = True
 
 while True:
-	# global first_time
 	c = serial.read()
 	print "c = ",
 	print c
