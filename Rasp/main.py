@@ -5,6 +5,7 @@ from serial_comunication import Serial
 from cam import Cam
 from tkinter import Screen
 from algorithm import Algorithm
+import time
 
 cam1 = Cam(0)
 cam2 = Cam(1)
@@ -25,14 +26,17 @@ serial.read()   #
 # -------------------------
 while True:
 	serial.send('B')
+	time.sleep(0.5)
 	c = serial.read()
 	print "first = ",
 	print c
 	serial.send('j')
+	time.sleep(0.5)
 	c = serial.read()
 	print "second = ",
 	print c
 	serial.send('9')
+	time.sleep(0.5)
 	c = serial.read()
 	print "third = ",
 	print c
