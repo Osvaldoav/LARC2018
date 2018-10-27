@@ -19,27 +19,27 @@ serial = Serial(screen)
 print "starting"
 serial.start()   #
 serial.read()   #
-# cam1.shoot()    #
-# cam2.shoot()    #
+cam1.shoot()    #
+cam2.shoot()    #
 
 
 # -------------------------
-while True:
-	serial.send('B')
-	# time.sleep(1)
-	c = serial.read()
-	print "first = ",
-	print c
-	serial.send('j')
-	# time.sleep(1)
-	c = serial.read()
-	print "second = ",
-	print c
-	serial.send('9')
-	# time.sleep(1)
-	c = serial.read()
-	print "third = ",
-	print c
+# while True:
+# 	serial.send('B')
+# 	# time.sleep(1)
+# 	c = serial.read()
+# 	print "first = ",
+# 	print c
+# 	serial.send('j')
+# 	# time.sleep(1)
+# 	c = serial.read()
+# 	print "second = ",
+# 	print c
+# 	serial.send('9')
+# 	# time.sleep(1)
+# 	c = serial.read()
+# 	print "third = ",
+# 	print c
 
 
 # -------------------------
