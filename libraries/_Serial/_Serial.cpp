@@ -17,12 +17,10 @@ char _Serial::clean(){
     counter = 0;
 
     while(Serial.available() != 0){
-        _LCD *lcd = new _LCD;
+        // _LCD *lcd = new _LCD;
         c = Serial.read();
-        counter++;
-        delay(100);
+        // counter++;
+        delay(50);
     }
-    lcd -> printInt("counter", counter);
-    delay(3000);
     return c;
 }
