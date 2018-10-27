@@ -26,17 +26,17 @@ serial.read()   #
 # -------------------------
 while True:
 	serial.send('B')
-	time.sleep(0.2)
+	time.sleep(1)
 	c = serial.read()
 	print "first = ",
 	print c
 	serial.send('j')
-	time.sleep(0.2)
+	time.sleep(1)
 	c = serial.read()
 	print "second = ",
 	print c
 	serial.send('9')
-	time.sleep(0.2)
+	time.sleep(1)
 	c = serial.read()
 	print "third = ",
 	print c
