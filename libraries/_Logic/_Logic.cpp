@@ -17,13 +17,14 @@ _Logic::_Logic(){
 }
 
 void _Logic::initCommunication(){
-    c_serial = _Serial::read();
+    // c_serial = _Serial::read();
     _Serial::send('1');
     gotoFirst();
     _Serial::send('1');
+    delay(1000);
     c_serial = _Serial::read();
     traductor->LcdPrint("c_serial", c_serial);
-    delay(3000);
+    // delay(3000);
     pickFirst(c_serial);
 }
 
@@ -86,9 +87,9 @@ void _Logic::stackToShip(){
         lastLevel++;
     lastLevel = stacks[lastLevel]+1;
     
-    blink(currentLevel);
-    delay(5000);
-    blink(lastLevel);
+    // blink(currentLevel);
+    // delay(5000);
+    // blink(lastLevel);
     // traductor->LcdPrint("current Level", currentLevel);
     // delay(2000);
     // traductor->LcdPrint("last Level", lastLevel);
