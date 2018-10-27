@@ -23,6 +23,7 @@ void _Logic::initCommunication(){
     _Serial::send('2');
     delay(1000);
     c_serial = _Serial::read();
+    c_serial = _Serial::read();
     traductor->LcdPrint("c_serial", c_serial);
     // delay(3000);
     pickFirst(c_serial);

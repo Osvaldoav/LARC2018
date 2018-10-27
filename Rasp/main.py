@@ -18,14 +18,10 @@ brain = Algorithm(screen.getParams())
 serial = Serial(screen)
 print "starting"
 serial.start()   #
-time.sleep(1)
 serial.read()   #
 
 cam1.shoot()    #
 cam2.shoot()    #
-
-time.sleep(10)
-print "after first sleep"
 
 # -------------------------
 # while True:
@@ -57,7 +53,7 @@ brain.set_last_color(first[1])
 screen.printMatrix()
 screen.popContainer(first) #
 screen.printMatrix()
-time.sleep(15)
+time.sleep(1)
 serial.send(serial.convert(first))#
 print "c_serial =",
 print serial.convert(first)
