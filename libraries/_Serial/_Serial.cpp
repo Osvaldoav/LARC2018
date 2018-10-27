@@ -13,8 +13,11 @@ char _Serial::clean(){
     char c;
     while(Serial.available() <= 0);
 
+    counter = 0;
+
     while(Serial.available() != 0){
         c = Serial.read();
+        counter++;
         delay(500);
     }
     return c;
