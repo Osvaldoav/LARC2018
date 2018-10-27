@@ -175,8 +175,8 @@ void mechanism(){
 //    delay(2000);
 //    logic->traductor->movements->motors->stopMechanism();
 //    delay(2000);
-//    logic->traductor->mecanismo(4,5);
-//    while(1);
+    logic->traductor->mecanismo(4,5);
+    while(1);
 }
 void alignLine(){
     alignLine();

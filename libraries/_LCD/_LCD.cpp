@@ -1,5 +1,5 @@
 #include <_LCD.h>
-LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x3F, 16, 2);
+LiquidCrystal_I2C lcd(0x27,16,2);
 uint8_t updateTimeMs = 50;
 long lastUpdate = 0;
 
@@ -9,8 +9,9 @@ const byte ledPlaca = 22;
 void _LCD::setupLCD(){
     pinMode(ledPlaca, OUTPUT);
 	// Serial.println("LCD initializing...");
-	lcd.begin();
-	lcd.backlight();	
+    lcd.init();
+    lcd.backlight();
+    lcd.clear();	
     // Serial.println("LCD initialized");
 	// lcd.backlight();    
 }
