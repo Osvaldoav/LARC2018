@@ -26,12 +26,15 @@ serial.read()   #
 while True:
 	serial.send('B')
 	c = serial.read()
+	print "first = ",
 	print c
 	serial.send('j')
 	c = serial.read()
+	print "second = ",
 	print c
 	serial.send('9')
 	c = serial.read()
+	print "third = ",
 	print c
 
 
