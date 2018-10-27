@@ -7,7 +7,7 @@ class _Serial{
     public:
         static void send(char c);
         static char read();
-        static void clean();
+        static char clean();
 };
 
 #endif
