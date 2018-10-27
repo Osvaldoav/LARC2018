@@ -1,8 +1,8 @@
 #ifndef _LCD_h
 #define _LCD_h
 #include <_ArduinoLIBRARY.h>
-#include <LiquidCrystal_I2C.h>
-#include <Wire.h>
+#include <LiquidCrystal_I2C.h> // Debe descargar la Libreria que controla el I2C
+#include<Wire.h>
 
 class _LCD{
     public:
