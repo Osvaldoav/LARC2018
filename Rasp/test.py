@@ -9,7 +9,7 @@ import time
 screen = Screen()
 # screen.drawText()
 
-brain = Algorithm(screen.getParams())
+# brain = Algorithm(screen.getParams())
 
 serial = Serial(screen)
 print "starting"
