@@ -9,6 +9,7 @@ class _LCD{
 // TODO: METHODS
     void print(String, String message2="");
     void printInt(String, int);
+    void printChar(String, char);    
     void printAlertSec(String, int);
     void clear();
     void onLed();
