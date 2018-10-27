@@ -18,9 +18,26 @@ serial = Serial(screen)
 print "starting"
 serial.start()   #
 serial.read()   #
-cam1.shoot()    #
-cam2.shoot()    #
-# serial.read()
+# cam1.shoot()    #
+# cam2.shoot()    #
+
+
+# -------------------------
+while true:
+	serial.send('B')
+	c = serial.read()
+	print c
+	serial.send('j')
+	c = serial.read()
+	print c
+	serial.send('9')
+	c = serial.read()
+	print c
+
+
+# -------------------------
+
+
 screen.drawContainers(cam1.getImage(), 3)
 screen.drawContainers(cam2.getImage(), 2)
 first = brain.firstPick()  #
