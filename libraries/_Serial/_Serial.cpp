@@ -9,7 +9,7 @@ char _Serial::read(){
     return Serial.read();
 }
 
-void _Serial::clean(){
+char _Serial::clean(){
     char c;
     while(Serial.available() <= 0);
 
