@@ -20,9 +20,14 @@ print "starting"
 serial.start()   #
 time.sleep(1)
 serial.read()   #
+
+
+
 cam1.shoot()    #
 cam2.shoot()    #
 
+time.sleep(10)
+print "after first sleep"
 
 # -------------------------
 # while True:
@@ -50,6 +55,7 @@ screen.drawContainers(cam1.getImage(), 3)
 screen.drawContainers(cam2.getImage(), 2)
 first = brain.firstPick()  #
 brain.set_last_color(first[1])
+# ////////////
 screen.printMatrix()
 screen.popContainer(first) #
 screen.printMatrix()
