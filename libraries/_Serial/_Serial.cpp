@@ -12,12 +12,12 @@ char _Serial::read(){
 
 char _Serial::clean(){
     char c;
+    _LCD *lcd = new _LCD;    
     while(Serial.available() <= 0);
 
-    counter = 0;
+    int counter = 0;
 
     while(Serial.available() != 0){
-        _LCD *lcd = new _LCD;
         c = Serial.read();
         counter++;
         delay(500);
