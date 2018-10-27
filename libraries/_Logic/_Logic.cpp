@@ -89,13 +89,10 @@ void _Logic::stackToShip(){
         lastLevel++;
     lastLevel = stacks[lastLevel]+1;
     
-    // blink(currentLevel);
-    // delay(5000);
-    // blink(lastLevel);
-    // traductor->LcdPrint("current Level", currentLevel);
-    // delay(2000);
-    // traductor->LcdPrint("last Level", lastLevel);
-    // delay(2000);
+    traductor->LcdPrint("current Level", currentLevel);
+    delay(2000);
+    traductor->LcdPrint("last Level", lastLevel);
+    delay(2000);
 
     traductor->mecanismo(currentLevel, lastLevel);   // eleva el stack para no chocar con los demas
     traductor->horizontalLine(A == B); // Avanza de frente o de reversa hasta linea horizontal

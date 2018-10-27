@@ -30,6 +30,8 @@ class _Traductor{
         void waitForMechanism();
 
         void LcdPrint(String name, char value);
+        void LcdPrint(String name, int value);
+        void LcdPrint(String name, String value);
 
         void pickFirst(int stack);
         void gotoFirst();

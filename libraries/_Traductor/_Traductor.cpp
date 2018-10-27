@@ -130,6 +130,14 @@ void _Traductor::LcdPrint(String name, char value){
     movements->lcd->printChar(name, value);
 }
 
+void _Traductor::LcdPrint(String name, int value){
+    movements->lcd->printInt(name, value);
+}
+
+void _Traductor::LcdPrint(String name, String value){
+    movements->lcd->print(name, value);
+}
+
 void _Traductor::updateMechanismMovement(int actualLevel, int newLevel){
     // set new untilStepsMechanism value
     movements->encoder->encoderStateMechanism = 1;
