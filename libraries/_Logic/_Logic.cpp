@@ -18,10 +18,10 @@ _Logic::_Logic(){
 
 void _Logic::initCommunication(){
     // c_serial = _Serial::read();
-    _Serial::send('1');
+    // _Serial::send('1');
     gotoFirst();
     _Serial::send('1');
-    delay(1000);
+    delay(5000);
     c_serial = _Serial::read();
     traductor->LcdPrint("c_serial", c_serial);
     // delay(3000);
