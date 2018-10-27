@@ -23,7 +23,7 @@ serial.read()   #
 
 
 # -------------------------
-while true:
+while True:
 	serial.send('B')
 	c = serial.read()
 	print c
