@@ -13,7 +13,6 @@ _Logic::_Logic(){
     lastStack = 0;
     lastLevel = currentLevel = 4;
     lastColor = 'B';
-    stacks[7] = 3;
 }
 
 void _Logic::initCommunication(){
