@@ -142,11 +142,18 @@ void _Logic::stackToShip(){
 
 void _Logic::shipToStack(){
     char c = _Serial::read();
+    traductor->LcdPrint("char received", c);
+    delay(3000);
     char color = c > 98 ? 'R' : c > 65 ? 'G' : 'B';
     int stack = color == 'R' ? c - 99 : color == 'G' ? c - 66 : c - 51;
     bool dir, tcrt;
     int lines, angle;
     
+    traductor->LcdPrint("Stack to go", stack);
+    delay(3000);
+    traductor->LcdPrint("Color", color);
+    delay(3000);
+
     lastLevel = stack/2*2;
     if((color != 'R' && lastLevel%4 != 0)||(color == 'R' && lastLevel%4 == 0))
         lastLevel++;
