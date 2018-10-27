@@ -20,7 +20,7 @@ char _Serial::clean(){
     while(Serial.available() != 0){
         c = Serial.read();
         counter++;
-        delay(500);
+        delay(3000);
     }
     lcd -> printInt("counter", counter);
     delay(3000);
