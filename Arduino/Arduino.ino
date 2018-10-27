@@ -3,6 +3,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////
 #include <_Logic.h>
 #include <Wire.h>
+#include <_Serial.h>
 _Logic *logic = new _Logic;
 
 const byte pinEncoderFR = 18;
@@ -14,6 +15,7 @@ const byte pinEncoderMechanism = 2;
 void setup() {
     Serial.begin(9600);
     Wire.begin(); 
+    _Serial::read();
     logic->traductor->movements->lcd->setupLCD();    
     logic->traductor->movements->pid->setupLibraryPID(); 
     logic->traductor->movements->motors->setupMotors();

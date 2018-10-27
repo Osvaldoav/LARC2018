@@ -20,7 +20,7 @@ class Serial:
     def read(self):
         while(self.arduino.inWaiting() <= 0):
             pass
-        time.sleep(1)
+        # time.sleep(1)
         return self.arduino.read()
 
     def first_read(self):
