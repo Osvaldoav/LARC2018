@@ -21,8 +21,6 @@ serial.start()   #
 time.sleep(1)
 serial.read()   #
 
-
-
 cam1.shoot()    #
 cam2.shoot()    #
 
