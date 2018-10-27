@@ -29,13 +29,13 @@ void _TimeFlight::calibTimeFlights(double target){
         rightCompensation = -abs(right-target);
     else
         rightCompensation = abs(target-right);        
-    Serial.print(leftCompensation);
-    Serial.print(" ");
-    Serial.print(rightCompensation);
-    Serial.print("\t\t");
-    Serial.print(left+leftCompensation);
-    Serial.print(" ");
-    Serial.println(right+rightCompensation);    
+    // Serial.print(leftCompensation);
+    // Serial.print(" ");
+    // Serial.print(rightCompensation);
+    // Serial.print("\t\t");
+    // Serial.print(left+leftCompensation);
+    // Serial.print(" ");
+    // Serial.println(right+rightCompensation);    
 }
 
 // TODO:

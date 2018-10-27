@@ -387,7 +387,7 @@ void _Movements::align_tof(){
     double startTime = millis();
 //  Init baseVelocity as SlowTurnVel and offSetAngle
     bno055->offsetAngle = bno055->offsetAngleTurn; 
-    Serial.println("START");
+    // Serial.println("START");
     do{               
         updateSensors(0,0,0,1,0,0);
         double right = timeFlight->timeFlightRight.kalmanDistance;
@@ -427,15 +427,15 @@ void _Movements::align_tof(){
             delay(200);            
             if(++countCorrect == 6)     break;     
         }      
-        Serial.print(right);
-        Serial.print(" ");
-        Serial.print(left);
-        Serial.print(" ");
-        Serial.print(abs(right-left));
-        Serial.print(" ");        
-        Serial.print(pid->OutputAlignMechanism);       
-        Serial.print(" ");        
-        Serial.println(pid->frontRightOutput);              
+        // Serial.print(right);
+        // Serial.print(" ");
+        // Serial.print(left);
+        // Serial.print(" ");
+        // Serial.print(abs(right-left));
+        // Serial.print(" ");        
+        // Serial.print(pid->OutputAlignMechanism);       
+        // Serial.print(" ");        
+        // Serial.println(pid->frontRightOutput);              
     } while(millis() < startTime+3000);
     motors->brake();
     updateSensors(1,0,0,0,0,0);
@@ -638,7 +638,7 @@ void _Movements::moveMechanism(int lastStackLevel, int newStackLevel){
 //  Restart encoder counts
     encoder->stepsMechanism = 0;
 //  Move with p correction until the encoder read the cm
-    while (encoder->stepsMechanism < untilStepsMechanism)
+    while (encoder->stepsMechanism < untilStepsMechanism)   
         (newStackLevel > lastStackLevel) ? motors->moveMechanism(true): motors->moveMechanism(false);
     motors->stopMechanism();
     untilStepsMechanism=0;

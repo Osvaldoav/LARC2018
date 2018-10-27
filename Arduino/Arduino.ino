@@ -19,7 +19,7 @@ void setup() {
     logic->traductor->movements->motors->setupMotors();
     logic->traductor->movements->colorSensor->setupColorSensor();
     logic->traductor->movements->bno055->setupBNO055();
-    logic->traductor->movements->timeFlight->setupTimeFlight();
+//    logic->traductor->movements->timeFlight->setupTimeFlight();
     logic->traductor->movements->tcrt5000->setupTCRT5000();
     logic->traductor->movements->encoder->setupEncoder();
     logic->traductor->movements->servo->setupServo();
@@ -139,17 +139,18 @@ void colorSensor(){
   logic->traductor->movements->colorSensor->readColor();
 }
 void logicTest(){  
+    logic->traductor->movements->lcd->print("STACK", "HOLA");
 //    logic->traductor->mecanismo(3, 4);  
-    logic->shipToStack();                            
-    logic->stackToShip();
-    logic->shipToStack();
-    logic->stackToShip();
-    logic->shipToStack();
-    logic->stackToShip();
-    logic->shipToStack();
-    logic->stackToShip();
-    logic->shipToStack();
-    logic->stackToShip();
+//    logic->shipToStack();                            
+//    logic->stackToShip();
+//    logic->shipToStack();
+//    logic->stackToShip();
+//    logic->shipToStack();
+//    logic->stackToShip();
+//    logic->shipToStack();
+//    logic->stackToShip();
+//    logic->shipToStack();
+//    logic->stackToShip();
 //    logic->traductor->mecanismo(4, 1); // nivela el mecanismo al nivel adecuado       
 //    logic->traductor->dropContainer();    
 //    logic->traductor->mecanismo(1,3);
@@ -158,7 +159,7 @@ void logicTest(){
 //    logic->traductor->mecanismo(3, 2); // nivela el mecanismo al nivel adecuado       
 //    logic->traductor->dropContainer();  
 //    logic->traductor->mecanismo(2, 4); // nivela el mecanismo al nivel adecuado      
-    while(1);
+//    while(1);
 }
 void mechanism(){
 //    logic->traductor->movements->servo->pickContainer();
