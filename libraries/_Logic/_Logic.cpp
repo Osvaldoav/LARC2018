@@ -73,6 +73,12 @@ void _Logic::stackToShip(){
     if((lastColor != 'R' && lastLevel%4 != 0)||(lastColor == 'R' && lastLevel%4 == 0))
         lastLevel++;
     lastLevel = stacks[lastLevel]+1;
+    
+    traductor->LcdPrint("current Level", currentLevel);
+    delay(2000);
+    traductor->LcdPrint("last Level", lastLevel);
+    delay(2000);
+
     traductor->mecanismo(currentLevel, lastLevel);   // eleva el stack para no chocar con los demas
     traductor->horizontalLine(A == B); // Avanza de frente o de reversa hasta linea horizontal
 
