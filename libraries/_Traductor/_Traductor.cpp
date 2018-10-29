@@ -95,7 +95,7 @@ void _Traductor::backUntilBlackLineSharps(bool tcrt){
 
 void _Traductor::moveAtrasHorizontal(){
     movements->larc_moveUntilBlackLine(false, '4', false, true, false, true);
-    movements->movePID_nCM(2.2, false, '4');
+    movements->movePID_nCM(1.2, false, '4');
 }
 
 void _Traductor::vertical(int lines){
@@ -104,9 +104,10 @@ void _Traductor::vertical(int lines){
     movements->movePID_nCM(steps, false, dir);
 }
 
-void _Traductor::alinearStack(){ 
+void _Traductor::alinearStack(bool dir){ 
     // movements->alignLine();
-    movements->movePID_nCM(1.8, true, '6');
+    char c = dir ? '6' : '4';
+    movements->movePID_nCM(1.1, true, dir);
     // movements->getCloseToStack();
     // movements->align_tof();
 } 

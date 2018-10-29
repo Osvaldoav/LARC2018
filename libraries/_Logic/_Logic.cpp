@@ -52,8 +52,9 @@ char _Logic::verifyColor(char c){
 }
 
 char _Logic::grabContainer(char c){
-    traductor->alinearStack();
+    traductor->alinearStack(true);
     traductor->grabContainer();
+    traductor->alinearStack(false);
     _Serial::send(verifyColor(c));
 }
 
@@ -111,6 +112,9 @@ void _Logic::stackToShip(){
 
     currentLevel = lastColor == 'R' ? 2 : lastColor == 'G' ? green_boxes%6 : blue_boxes%6;
     bool redContainer = (lastColor == 'R') ? true: false; 
+    String sw = redContainer ? "True" : "False";
+    traductor->LcdPrint('redContainer', sw);
+    delay(5000);
     traductor->updateMechanismMovement(lastLevel, currentLevel, redContainer);
  
     if(B){

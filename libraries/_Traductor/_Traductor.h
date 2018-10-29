@@ -25,7 +25,7 @@ class _Traductor{
         void backUntilBlackLineSharps(bool tcrt);
         void moveAtrasHorizontal(); 
         void vertical(int lines);
-        void alinearStack();
+        void alinearStack(bool);
         void updateMechanismMovement(int, int, bool);
         void waitForMechanism();
         void fixContainerSteps(char);
