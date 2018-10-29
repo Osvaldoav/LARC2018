@@ -62,7 +62,7 @@ print "First Stack sent"
 first_time = True
 
 while True:
-	c = serial.read()
+	c = serial.read() 
 	print "c = ",
 	print c
 
@@ -72,8 +72,8 @@ while True:
 	brain.set_last_color(c)
 
 	if(first_time and c == 'G'):
-		print "SIMIOOOOOS"
-		serial.send('S')
+		print "FIRST TIME GREEN SHIP"
+		serial.send('S')  
 		serial.read()
 		cam1.shoot()
 		cam2.shoot()
@@ -81,6 +81,12 @@ while True:
 		screen.drawContainers(cam2.getImage(), 0)
 		second = brain.secondPick()
 		screen.popContainer(second)
+		print "char sent = ",
+		print serial.convert(res)
+		print "stack = ",
+		print res[0],
+		print "   color = ",
+		print res[1]
 		serial.send(serial.convert(second))
 		first_time = False
 	else:

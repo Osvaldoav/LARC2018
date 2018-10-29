@@ -35,6 +35,7 @@ class _Traductor{
 
         void pickFirst(int stack);
         void gotoFirst();
+        void gotoSecond();
 
         _Movements *movements;
 

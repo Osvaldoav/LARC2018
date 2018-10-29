@@ -61,6 +61,14 @@ void _Logic::gotoFirst(){
     traductor->gotoFirst();
 }
 
+void _Logic::gotoSecond(){
+    traductor->gotoSecond();
+    _Serial::send('1');
+    c_serial = _Serial::clean();
+    traductor->LcdPrint("c_serial", c_serial);
+    pickFirst(c_serial);
+}
+
 void _Logic::pickFirst(char c){
     char color = c > 98 ? 'R' : c > 65 ? 'G' : 'B';
     lastStack = color == 'R' ? c - 99 : color == 'G' ? c - 66 : c - 51;
@@ -144,6 +152,8 @@ void _Logic::shipToStack(){
     char c = _Serial::read();
     traductor->LcdPrint("char received", c);
     delay(3000);
+    if(c == 'S')
+        gotoSecond();
     char color = c > 98 ? 'R' : c > 65 ? 'G' : 'B';
     int stack = color == 'R' ? c - 99 : color == 'G' ? c - 66 : c - 51;
     bool dir, tcrt;

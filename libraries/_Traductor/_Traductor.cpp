@@ -121,9 +121,18 @@ void _Traductor::gotoFirst(){
     delay(1000);
 }
 
+void _Traductor::gotoSecond(){
+    moveAtrasHorizontal();
+    updateMechanismMovement(1, 4);
+    movements->spinPID(true, -90);
+    movements->larc_moveUntilBlackLine(false, '8', true, true, false, false);
+    waitForMechanism();
+    movements->movePID_nCM(31, false, '8');
+}
+
 void _Traductor::pickFirst(int stack){
-    char c = stack < 7 ? '8' : '2';
-    int steps = stack < 7 ? 24 : 2.5;
+    char c = stack%4 < 3 ? '8' : '2';
+    int steps = stack < 7 ? 24: 2.5;
     movements->movePID_nCM(steps, false, '8');
 }
 
