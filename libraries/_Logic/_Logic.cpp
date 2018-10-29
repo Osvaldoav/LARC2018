@@ -152,7 +152,8 @@ void _Logic::stackToShip(){
     traductor->waitForMechanism();    
     if (B){
         traductor->alinearPozo();
-        traductor->centerContainer();
+        if (lastLevel > 1)
+            traductor->centerContainer();
     }
     else
         traductor->alinearTren();
