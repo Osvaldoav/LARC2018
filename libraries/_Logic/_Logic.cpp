@@ -129,7 +129,7 @@ void _Logic::stackToShip(){
         dir += firstRed == 1 ? 2 : 0;
         dir *= ((lastStack/2 + 1)%2 == 0) != firstRed ? 1 : -1;
         front = (lastStack/2*2)%4 == 0; // True if facing SOUTH, False if facing NORTH
-
+        
         // Checar foto whatsapp para ver 1,2,3,4
         traductor->throughtHorizontal2(dir, front); // Avanza por la linea horizontal a la izquierda o derecha cuando 'R'
     }

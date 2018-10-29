@@ -6,7 +6,7 @@ R2_ORDER = [6,5,7,4,2,1,3,0]
 
 class Algorithm:
 
-	def __init__(self, params):
+	def __init__(self):
 		self.matrix = [['X' for j in range(3)] for i in range(8)]
 		self.priority = -1
 		self.order = BLUE_ORDER
@@ -110,11 +110,9 @@ class Algorithm:
 		# Returns -1,'X' if there are not more containers to pick
 		return -1, 'X'
 
-
 	# Sets the last_color picked
 	def set_last_color(self, color):
 		self.last_color = color
-
 
 	# Print all the containers matrix
 	def printMatrix(self):
