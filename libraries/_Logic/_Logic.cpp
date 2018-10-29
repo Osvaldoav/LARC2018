@@ -152,7 +152,7 @@ void _Logic::stackToShip(){
     traductor->waitForMechanism();    
     if (B){
         traductor->alinearPozo();
-        if (lastLevel > 1)
+        if (currentLevel > 1)
             traductor->centerContainer();
     }
     else
