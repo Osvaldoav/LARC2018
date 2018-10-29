@@ -27,6 +27,7 @@ class _Traductor{
         void vertical(int lines);
         void alinearStack(bool);
         void updateMechanismMovement(int, int, bool);
+        void setTrainLevel(bool);
         void waitForMechanism();
         void fixContainerSteps(char);
         void centerContainer();

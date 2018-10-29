@@ -52,7 +52,7 @@ char _Logic::verifyColor(char c){
 }
 
 char _Logic::grabContainer(char c){
-    traductor->alinearStack(true);
+    // traductor->alinearStack(true);
     traductor->grabContainer();
     traductor->alinearStack(false);
     _Serial::send(verifyColor(c));
@@ -77,7 +77,7 @@ void _Logic::pickFirst(char c){
     lastStack = color == 'R' ? c - 99 : color == 'G' ? c - 66 : c - 51;
     // blink(lastStack);
     traductor->LcdPrint("PF stack", lastStack);
-    delay(500);
+    // delay(500);
     traductor->pickFirst(lastStack);
     grabContainer(c);
 }
@@ -110,12 +110,12 @@ void _Logic::stackToShip(){
     traductor->mecanismo(currentLevel, lastLevel);   // eleva el stack para no chocar con los demas
     traductor->horizontalLine(A == B); // Avanza de frente o de reversa hasta linea horizontal
 
-    currentLevel = lastColor == 'R' ? 2 : lastColor == 'G' ? green_boxes%6 : blue_boxes%6;
+    currentLevel = lastColor == 'R' ? 3 : lastColor == 'G' ? green_boxes%6 : blue_boxes%6;
     bool redContainer = (lastColor == 'R') ? true: false; 
     String sw = redContainer ? "True" : "False";
-    traductor->LcdPrint('redContainer', sw);
+    traductor->LcdPrint("redContainer", sw);
     delay(5000);
-    traductor->updateMechanismMovement(lastLevel, currentLevel, redContainer);
+    traductor->updateMechanismMovement(lastLevel, currentLevel, false);
  
     if(B){
         if ((lastColor == 'B' && blue_boxes < 6) || (lastColor == 'G' && green_boxes < 6)){
@@ -156,15 +156,18 @@ void _Logic::stackToShip(){
         //     traductor->fixContainerSteps(true);
         // else if(lastColor=='B' && dir==-90);
         //     traductor->fixContainerSteps(false);        
-    }
-    traductor->waitForMechanism();    
+    }  
     if (B){
+        traductor->waitForMechanism();  
         traductor->alinearPozo();
         if (currentLevel > 1)
             traductor->centerContainer();
     }
-    else
+    else{
+        traductor->setTrainLevel(true);
         traductor->alinearTren();
+        traductor->waitForMechanism();  
+    }
     traductor->dropContainer();
 }
 
@@ -203,8 +206,9 @@ void _Logic::shipToStack(){
         traductor->horizontal(lines, dir); // Avanza por la linea horizontal a la izquierda o derecha        
         currentLevel = stacks[stack]; 
     }else{
+        traductor->setTrainLevel(false);
         traductor->moveAtrasHorizontal(); // izquierda hasta topar linea horizontal
-        traductor->updateMechanismMovement(currentLevel, lastLevel, true);  // eleva el stack para no chocar con los demas
+        traductor->updateMechanismMovement(currentLevel, lastLevel, false);  // eleva el stack para no chocar con los demas
         currentLevel = stacks[stack];
         angle = (stack/2 + 1)%2 != 0 ? 90 : -90;
         angle *= lastColor == 'R' ? -1 : 1;
