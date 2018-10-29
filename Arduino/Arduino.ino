@@ -21,7 +21,7 @@ void setup() {
     logic->traductor->movements->motors->setupMotors();
     logic->traductor->movements->colorSensor->setupColorSensor();
     logic->traductor->movements->bno055->setupBNO055();
-//    logic->traductor->movements->timeFlight->setupTimeFlight();
+    logic->traductor->movements->timeFlight->setupTimeFlight();
     logic->traductor->movements->tcrt5000->setupTCRT5000();
     logic->traductor->movements->encoder->setupEncoder();
     logic->traductor->movements->servo->setupServo();
@@ -51,9 +51,9 @@ void testMovements(){
 //    Serial.print(logic->traductor->movements->encoder->stepsFR);
 //    Serial.print(" ");
 //    Serial.println(logic->traductor->movements->encoder->stepsBL);     
-    logic->traductor->movements->movePID(false, '6');
-//    logic->traductor->movements->spinPID(true, 90);
-//    delay(5000); 
+//    logic->traductor->movements->movePID(false, '6');
+    logic->traductor->movements->spinPID(true, -90);
+    delay(5000); 
 //    logic->traductor->movements->movePID_nSec(1.5, false, '1');
 //    delay(2000);
 //    logic->traductor->movements->spinPID(false, -90);
@@ -76,11 +76,11 @@ void aligningTofTest(){
 }
 void tof_vs_sharp(){
     logic->traductor->movements->updateSensors(0,0,0,1,0,0);
-    Serial.print(logic->traductor->movements->timeFlight->timeFlightLeft.kalmanDistance);
-    Serial.print(" ");
-    Serial.print(logic->traductor->movements->timeFlight->timeFlightRight.kalmanDistance);
-    Serial.print(" ");
-    Serial.println((logic->traductor->movements->timeFlight->timeFlightLeft.kalmanDistance - logic->traductor->movements->timeFlight->timeFlightRight.kalmanDistance)*10);  
+//    Serial.print(logic->traductor->movements->timeFlight->timeFlightLeft.kalmanDistance);
+//    Serial.print(" ");
+    Serial.println(logic->traductor->movements->timeFlight->timeFlightRight.kalmanDistance);
+//    Serial.print(" ");
+//    Serial.println((logic->traductor->movements->timeFlight->timeFlightLeft.kalmanDistance - logic->traductor->movements->timeFlight->timeFlightRight.kalmanDistance)*10);  
 //
 //    Serial.print("\t\t");
 //
@@ -133,9 +133,11 @@ void larc(){
 //  logic->traductor->movements->larc_moveBetweenVerticalBlackLine(false, '2');
 //  logic->traductor->movements->movePID_nCM(21, false, '6');
 //  logic->traductor->movements->spinPID(true, 90);
-  logic->traductor->movements->larc_moveAndAlignToShip();
+//  logic->traductor->movements->larc_moveAndAlignToShip();
+    logic->traductor->alinearPozo();
+    logic->traductor->centerContainer();
 //  logic->traductor->movements->lcd->printAlertSec("CONTAINER DROPPED", 5);
-//  while(1); 
+  while(1); 
 }
 void colorSensor(){
   logic->traductor->movements->colorSensor->readColor();
@@ -177,8 +179,8 @@ void mechanism(){
 //    delay(2000);
 //    logic->traductor->movements->motors->stopMechanism();
 //    delay(2000);
-    logic->traductor->mecanismo(4,1);
-    while(1);
+//    logic->traductor->mecanismo(4,1);
+//    while(1);
 }
 void alignLine(){
     logic->traductor->movements->alignLine();
@@ -200,5 +202,5 @@ void loop(){
 //  logic->stackToShip();
 //  logic->shipToStack();
 //  alignLine();
-  while(1);  
+//  while(1);  
 }
