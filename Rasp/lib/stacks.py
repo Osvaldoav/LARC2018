@@ -110,9 +110,9 @@ def getMatrix(image, left_cam):
 
 	red_mask, green_mask, blue_mask = getMasks(image)
 	masks = []
-	masks.append(splitMask(red_mask), left_cam)
-	masks.append(splitMask(green_mask), left_cam)
-	masks.append(splitMask(blue_mask), left_cam)
+	masks.append(splitMask(red_mask, left_cam))
+	masks.append(splitMask(green_mask, left_cam))
+	masks.append(splitMask(blue_mask, left_cam))
 
 	_range = range(1, -1, -1)
 	for c, s in enumerate(_range):
