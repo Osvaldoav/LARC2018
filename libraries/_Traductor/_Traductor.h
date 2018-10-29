@@ -11,7 +11,7 @@ class _Traductor{
 
         void horizontalLine(bool b);
         void throughtHorizontal(int);
-        void throughtHorizontal2(int);
+        void throughtHorizontal2(int, bool);
         void girar(int angle);
         void avanzar(bool b);
         void alinearPozo();

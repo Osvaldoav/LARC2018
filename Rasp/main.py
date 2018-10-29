@@ -30,17 +30,17 @@ serial.read()
 cam1.shoot()    
 cam2.shoot()
 
-screen.drawContainers(cam1.getImage(), 3, False)
-screen.drawContainers(cam2.getImage(), 2, True)
+brain.updateContainers(cam1.getImage(), 3, False)
+brain.updateContainers(cam2.getImage(), 2, True)
 first = brain.firstPick()  
 brain.set_last_color(first[1])
 
-screen.printMatrix()
+brain.printMatrix()
 
 serial.send(serial.convert(first))
 printChar(first)
-screen.popContainer(first) 
-screen.printMatrix()
+brain.popContainer(first) 
+brain.printMatrix()
 
 first_time = True
 
@@ -58,20 +58,20 @@ while True:
 		serial.read()
 		cam1.shoot()
 		cam2.shoot()
-		screen.drawContainers(cam1.getImage(), 1, False)
-		screen.drawContainers(cam2.getImage(), 0, True)
+		brain.updateContainers(cam1.getImage(), 1, False)
+		brain.updateContainers(cam2.getImage(), 0, True)
 		second = brain.secondPick()
-		screen.popContainer(second)
+		brain.popContainer(second)
 		printChar(second)
 		serial.send(serial.convert(second))
 		first_time = False
 	else:
 		res = brain.solve()
-		screen.popContainer(res)
+		brain.popContainer(res)
 		printChar(res)
 		serial.send(serial.convert(res))
 	
-	screen.printMatrix()
+	brain.printMatrix()
 
 cam1.release()
 cam2.release()
