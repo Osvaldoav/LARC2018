@@ -10,7 +10,7 @@ void _Traductor::horizontalLine(bool b){
 }
 
 void _Traductor::throughtHorizontal(int dir){
-    double cm = abs(dir) < 2 ? 15 : 64.5;
+    double cm = abs(dir) < 2 ? 15 : 63.5;
     char c = dir < 0 ? '6' : '4';
     movements->movePID_nCM(cm, false, c);
 }
@@ -93,7 +93,7 @@ void _Traductor::backUntilBlackLineSharps(bool tcrt){
 
 void _Traductor::moveAtrasHorizontal(){
     movements->larc_moveUntilBlackLine(false, '4', false, true, false, true);
-    movements->movePID_nCM(3, false, '4');
+    movements->movePID_nCM(2.2, false, '4');
 }
 
 void _Traductor::vertical(int lines){
