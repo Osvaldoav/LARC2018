@@ -56,17 +56,13 @@ class Algorithm:
 	def solve(self):
 		self.updateOrder()
 
-		print "----- solving -------"
-		print "last color",
-		print self.last_color
-		print "blues = ",
-		print self.blues
-		print "greens = ",
-		print self.greens
-		print "---------------------"
-
 		# Sets the color we are trying to find
-		color = 'B' if self.blues % 5 > self.greens % 5 else 'G'
+		if self.greens % 5 == 0 and self.greens > 0:
+			color = 'B'
+		elif self.blues % 5 == 0 and self.blues > 0:
+			color = 'G'
+		else:
+			color = 'B' if self.blues % 5 > self.greens % 5 else 'G'
 
 		# Looks for the first red colored container in the corresponding order
 		for s in self.order:
@@ -80,12 +76,12 @@ class Algorithm:
 				if self.matrix[s][0] == color:
 					return s, color
 
-		# If there isn't any picks the first container in the corresponding order, non-color specified 
+		# If there isn't any, picks the first container in the corresponding order, non-color specified 
 		for s in self.order:
 			if len(self.matrix[s]) > 0:
 				return s, self.matrix[s][0]
 
-		# Returns -1, 'X' if there are not more containers to pick
+		# Returns -1,'X' if there are not more containers to pick
 		return -1, 'X'
 
 

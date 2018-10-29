@@ -7,6 +7,16 @@ from tkinter import Screen
 from algorithm import Algorithm
 import time
 
+def printChar(pair):
+	print "char sent = ",
+	print serial.convert(pair)
+	print "stack = ",
+	print pair[0],
+	print "   color = ",
+	print pair[1]
+
+
+# MAIN
 cam1 = Cam(0)
 cam2 = Cam(1)
 
@@ -17,54 +27,28 @@ brain = Algorithm(screen.getParams())
 
 serial = Serial(screen)
 print "starting"
-serial.start()   #
-serial.read()   #
+serial.start()
+serial.read()
 
-cam1.shoot()    #
-cam2.shoot()    #
+cam1.shoot()    
+cam2.shoot()
 
-# -------------------------
-# while True:
-# 	serial.send('B')
-# 	# time.sleep(1)
-# 	c = serial.read()
-# 	print "first = ",
-# 	print c
-# 	serial.send('j')
-# 	# time.sleep(1)
-# 	c = serial.read()
-# 	print "second = ",
-# 	print c
-# 	serial.send('9')
-# 	# time.sleep(1)
-# 	c = serial.read()
-# 	print "third = ",
-# 	print c
-
-
-# -------------------------
-
-
-screen.drawContainers(cam1.getImage(), 3)
-screen.drawContainers(cam2.getImage(), 2)
-first = brain.firstPick()  #
+screen.drawContainers(cam1.getImage(), 3, False)
+screen.drawContainers(cam2.getImage(), 2, True)
+first = brain.firstPick()  
 brain.set_last_color(first[1])
-# ////////////
+
 screen.printMatrix()
-screen.popContainer(first) #
+
+serial.send(serial.convert(first))
+printChar(first)
+screen.popContainer(first) 
 screen.printMatrix()
-# time.sleep(1)
-serial.send(serial.convert(first))#
-print "c_serial =",
-print serial.convert(first)
-print "First Stack sent"
 
 first_time = True
 
 while True:
 	c = serial.read() 
-	print "c = ",
-	print c
 
 	if c == 'R' or c == 'S':
 		c = 'R1' if c == 'R' else 'R2'
@@ -72,69 +56,25 @@ while True:
 	brain.set_last_color(c)
 
 	if(first_time and c == 'G'):
-		print "FIRST TIME GREEN SHIP"
+		print "FIRST TIME GREEN"
 		serial.send('S')  
 		serial.read()
 		cam1.shoot()
 		cam2.shoot()
-		screen.drawContainers(cam1.getImage(), 1)
-		screen.drawContainers(cam2.getImage(), 0)
+		screen.drawContainers(cam1.getImage(), 1, False)
+		screen.drawContainers(cam2.getImage(), 0, True)
 		second = brain.secondPick()
 		screen.popContainer(second)
-		print "char sent = ",
-		print serial.convert(second)
-		print "stack = ",
-		print second[0],
-		print "   color = ",
-		print second[1]
+		printChar(second)
 		serial.send(serial.convert(second))
 		first_time = False
 	else:
 		res = brain.solve()
 		screen.popContainer(res)
-		print "char sent = ",
-		print serial.convert(res)
-		print "stack = ",
-		print res[0],
-		print "   color = ",
-		print res[1]
-
+		printChar(res)
 		serial.send(serial.convert(res))
-
 	
 	screen.printMatrix()
-
-# def main():
-# 	global first_time
-# 	c = serial.read()
-
-# 	if c == 'R' or c == 'S':
-# 		c = 'R1' if c == 'R' else 'R2'
-
-# 	brain.set_last_color(c)
-
-# 	if(first_time and c == 'G'):
-# 		serial.send('S')
-# 		serial.read()
-# 		cam1.shoot()
-# 		cam2.shoot()
-# 		screen.drawContainers(cam1.getImage(), 1)
-# 		screen.drawContainers(cam2.getImage(), 0)
-# 		second = brain.secondPick()
-# 		screen.popContainer(second[0])
-# 		serial.send(serial.convert(second))
-# 		brain.setPriority()
-# 		first_time = False
-# 	else:
-# 		res = brain.solve()
-# 		screen.popContainer(res[0])
-# 		serial.send(serial.convert(res))
-# 	print "loop sent"
-
-# 	screen.run(5,main)
-
-# screen.run(0, main)
-# screen.mainloop()
 
 cam1.release()
 cam2.release()
