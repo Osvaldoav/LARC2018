@@ -1,3 +1,6 @@
+import sys
+sys.path.insert(0, './lib/')
+import stacks
 
 BLUE_ORDER = [7,6,3,2,4,5,0,1]
 GREEN_ORDER = [0,1,4,5,3,2,7,6]
@@ -6,7 +9,7 @@ R2_ORDER = [6,5,7,4,2,1,3,0]
 
 class Algorithm:
 
-	def __init__(self, params):
+	def __init__(self):
 		self.matrix = [['X' for j in range(3)] for i in range(8)]
 		self.priority = -1
 		self.order = BLUE_ORDER
@@ -22,21 +25,18 @@ class Algorithm:
 
 		for c, s in enumerate(_stacks):
 			for b in range(3):
-				self.containers[section*2 + c][b] = s[b]
-
+				self.matrix[section*2 + c][b] = s[b]
 
 	# Remove the top container of a specific stack
 	def popContainer(self, pair):
-
 		if pair[1] == 'G':
 			self.greens += 1
 		elif pair[1] == 'B':
 			self.blues += 1
 
 		self.last_color = pair[1]
-		self.containers[pair[0]].pop(0)
+		self.matrix[pair[0]].pop(0)
 		self.stack[pair[0]] -= 1
-
 
 	# Return stack 6 or 7 as first pick
 	def firstPick(self):
@@ -44,12 +44,12 @@ class Algorithm:
 			return 7, 'R'
 		elif self.matrix[6][0] == 'R':
 			return 6, 'R'
-		elif self.matrix[7][0] == 'B':
-			return 7, 'B'
-		elif self.matrix[6][0] == 'B':
-			return 6, 'B'
-		else:
+		elif self.matrix[7][0] == 'G':
 			return 7, 'G'
+		elif self.matrix[6][0] == 'G':
+			return 6, 'G'
+		else:
+			return 7, 'B'
 
 	# Return stack 2 or 3 as second pick
 	def secondPick(self):
@@ -110,16 +110,14 @@ class Algorithm:
 		# Returns -1,'X' if there are not more containers to pick
 		return -1, 'X'
 
-
 	# Sets the last_color picked
 	def set_last_color(self, color):
 		self.last_color = color
 
-
 	# Print all the containers matrix
 	def printMatrix(self):
 		for b in range(3):
-			for c, s in enumerate(self.containers):
+			for c, s in enumerate(self.matrix):
 				if 3 - self.stack[c] > b:
 					print " ",
 				else:

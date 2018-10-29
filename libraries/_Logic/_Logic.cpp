@@ -130,7 +130,7 @@ void _Logic::stackToShip(){
         dir += firstRed == 1 ? 2 : 0;
         dir *= ((lastStack/2 + 1)%2 == 0) != firstRed ? 1 : -1;
         front = (lastStack/2*2)%4 == 0; // True if facing SOUTH, False if facing NORTH
-
+        
         // Checar foto whatsapp para ver 1,2,3,4
         traductor->throughtHorizontal2(dir, front); // Avanza por la linea horizontal a la izquierda o derecha cuando 'R'
     }
@@ -183,7 +183,7 @@ void _Logic::shipToStack(){
     delay(3000);
 
     lastLevel = stack/2*2;
-    if((color != 'R' && lastLevel%4 != 0)||(color == 'R' && lastLevel%4 == 0))
+    if(((color != 'R' && lastLevel%4 != 0)||(color == 'R' && lastLevel%4 == 0)) && lastLevel > stacks[stack])
         lastLevel++;
     lastLevel = stacks[lastLevel];
 

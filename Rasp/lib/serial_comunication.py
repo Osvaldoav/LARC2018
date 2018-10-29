@@ -2,13 +2,12 @@ import serial
 import time
 
 class Serial:
-    def __init__(self, screen):
+    def __init__(self):
         try:
             # self.arduino = serial.Serial("/dev/ttyUSB0", 9600, timeout=0, writeTimeout=0)
             self.arduino = serial.Serial("/dev/ttyUSB0", 9600, timeout=0, writeTimeout=0)
             #self.arduino = serial.Serial("/dev/ttyACM1", 9600, timeout=0, writeTimeout=0)
             time.sleep(3)
-            self.screen = screen
         except serial.SerialException:
             print 'Bad port, check labeling'
             while True:
@@ -40,8 +39,7 @@ class Serial:
         if self.first_read() != '*':
             print "Serial communication enabled!"
         else:
-            self.screen.errorMessage("Serial communication has failed")
-            self.screen.mainloop()
+            print "Serial communication has failed"
 
 # def convert( pair):
 #     return chr(ord(str(pair[0])) + (ord(pair[1]) - 65) * 3)

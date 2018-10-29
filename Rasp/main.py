@@ -3,7 +3,6 @@ import sys
 sys.path.insert(0, './lib/')
 from serial_comunication import Serial
 from cam import Cam
-from tkinter import Screen
 from algorithm import Algorithm
 import time
 
@@ -15,14 +14,12 @@ def printChar(pair):
 	print "   color = ",
 	print pair[1]
 
-# MAIN
+# SETUP
+brain = Algorithm()
+serial = Serial()
 cam1 = Cam(0)
 cam2 = Cam(1)
 
-screen = Screen()
-brain = Algorithm(screen.getParams())
-
-serial = Serial(screen)
 print "starting..."
 serial.start()
 serial.read()
@@ -44,6 +41,7 @@ brain.printMatrix()
 
 first_time = True
 
+# MAIN
 while True:
 	c = serial.read() 
 
