@@ -28,7 +28,7 @@ void _Movements::initMechanism(){
     motors->stopMechanism();
     encoder->encoderStateMechanism = 1;
     encoder->stepsMechanism = 0;
-    while(encoder->stepsMechanism < 8850){    //limitSwitch is pressed when == 0
+    while(encoder->stepsMechanism < 7400){    //limitSwitch is pressed when == 0
         motors->moveMechanism(false);        
     }    
     motors->stopMechanism();
