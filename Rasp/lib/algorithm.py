@@ -66,7 +66,12 @@ class Algorithm:
 		print "---------------------"
 
 		# Sets the color we are trying to find
-		color = 'B' if self.blues % 5 > self.greens % 5 else 'G'
+		if self.greens % 5 == 0 and self.greens > 0:
+			color = 'B'
+		elif self.blues % 5 == 0 and self.blues > 0:
+			color = 'G'
+		else:
+			color = 'B' if self.blues % 5 > self.greens % 5 else 'G'
 
 		# Looks for the first red colored container in the corresponding order
 		for s in self.order:

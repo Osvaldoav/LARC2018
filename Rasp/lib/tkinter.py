@@ -28,8 +28,8 @@ class Screen:
 			x += rect_w + 4 
 
 	# Draws rectangles with a specific color and position regarding the image and section
-	def drawContainers(self, image, section):
-		_stacks = stacks.getMatrix(image)
+	def drawContainers(self, image, section, left_cam):
+		_stacks = stacks.getMatrix(image, left_cam)
 
 		x0, y0, x1, y1 = 4, 25, 39, 43
 		x0 += section * (rect_w + 4) * 2

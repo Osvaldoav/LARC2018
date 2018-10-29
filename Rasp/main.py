@@ -45,8 +45,8 @@ cam2.shoot()    #
 # -------------------------
 
 
-screen.drawContainers(cam1.getImage(), 3)
-screen.drawContainers(cam2.getImage(), 2)
+screen.drawContainers(cam1.getImage(), 3, False)
+screen.drawContainers(cam2.getImage(), 2, True)
 first = brain.firstPick()  #
 brain.set_last_color(first[1])
 # ////////////
@@ -77,8 +77,8 @@ while True:
 		serial.read()
 		cam1.shoot()
 		cam2.shoot()
-		screen.drawContainers(cam1.getImage(), 1)
-		screen.drawContainers(cam2.getImage(), 0)
+		screen.drawContainers(cam1.getImage(), 1, False)
+		screen.drawContainers(cam2.getImage(), 0, True)
 		second = brain.secondPick()
 		screen.popContainer(second)
 		print "char sent = ",

@@ -23,13 +23,42 @@ def getMasks(image):
 
 	return mask_red, mask_green, mask_blue
 
-# Splits a mask in six different smaller images at a specific position
-def splitMask(mask):
-	height, width = mask.shape[:2]
-	size_h = int(height*0.30)
-	size_w = int(width*0.29)
+# # Splits a mask in six different smaller images at a specific position
+# def checking(mask):
+# 	height, width = mask.shape[:2]
+# 	size_h = int(height*0.18)
+# 	size_w = int(width*0.18)
 
-	start_row, start_col = int(0), int(0)
+# 	start_row, start_col = int(40), int(75)
+# 	end_row, end_col = size_h, size_w
+
+# 	list_rows = []
+
+# 	for col in range(2):
+# 		list_cols = []
+# 		for row in range(3):
+# 			end_col = start_col + size_w
+# 			cnt = np.array([[start_col,start_row],[start_col,start_row+size_h],[start_col+size_w,start_row+size_h],[start_col+size_w,start_row]], dtype=np.int32)
+# 			cv2.drawContours(mask, [cnt], -1, (255,0,0), 2)
+# 			cv2.imshow('Image', mask)			
+# 			cv2.waitKey(0)
+# 			cropped = mask[start_row:end_row , start_col:end_col]
+# 			list_cols.append(cropped)
+# 			start_col += size_w + int(width*0.13)
+# 		list_rows.append(list_cols)
+# 		start_col, end_col = int(75), start_col + size_w
+# 		start_row, end_row = height-size_h-40, height
+
+# 	# return list_rows
+
+
+# Splits a mask in six different smaller images at a specific position
+def splitMask(mask, left_cam):
+	height, width = mask.shape[:2]
+	size_h = int(height*0.18)
+	size_w = int(width*0.18)
+
+	start_row, start_col = int(40), int(75)
 	end_row, end_col = size_h, size_w
 
 	list_rows = []
@@ -40,10 +69,19 @@ def splitMask(mask):
 			end_col = start_col + size_w
 			cropped = mask[start_row:end_row , start_col:end_col]
 			list_cols.append(cropped)
-			start_col += size_w
+			start_col += size_w + int(width*0.13)
 		list_rows.append(list_cols)
-		start_col, end_col = int(0), start_col + size_w
-		start_row, end_row = height-size_h, height
+		start_col, end_col = int(75), start_col + size_w
+		start_row, end_row = height-size_h-40, height
+
+	if left_cam:
+		for i in range(2):
+			temp = list_rows[i][0]
+			list_rows[i][0] = list_rows[i][2]
+			list_rows[i][2] = temp
+		temp = list_rows[0]
+		list_rows[0] = list_rows[1] 
+		list_rows[1] = temp
 
 	return list_rows
 
@@ -67,10 +105,10 @@ def getMaxColor(red_cnt, green_cnt, blue_cnt):
 		return 'B'
 
 # Returns a matrix 2x3 with the color of each container as 'R','G' or 'B'
-def getMatrix(image):
+def getMatrix(image, left_cam):
 	matrix = [['X' for j in range(3)] for i in range(2)]
 
-	red_mask, green_mask, blue_mask = getMasks(image)
+	red_mask, green_mask, blue_mask = getMasks(image, left_cam)
 	masks = []
 	masks.append(splitMask(red_mask))
 	masks.append(splitMask(green_mask))
