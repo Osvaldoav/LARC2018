@@ -637,7 +637,7 @@ void _Movements::moveMechanism(int lastStackLevel, int newStackLevel){
     if(newStackLevel<1)     newStackLevel=1;
     if(newStackLevel>4)      newStackLevel=4;
     (lastStackLevel == 1 || newStackLevel == 1) ?
-        untilStepsMechanism = 7100 * abs(newStackLevel - lastStackLevel) - 3800:
+        untilStepsMechanism = 7100 * abs(newStackLevel - lastStackLevel) - 3750:
         untilStepsMechanism = 7100 * abs(newStackLevel - lastStackLevel);
 //  Restart encoder counts
     encoder->stepsMechanism = 0;
@@ -650,11 +650,12 @@ void _Movements::moveMechanism(int lastStackLevel, int newStackLevel){
 }
 // TODO:
 void _Movements::alignLine(){
-    double velocityToAlign = 50;      
+    double velocityToAlign = 70;      
     int times=0;
     do{
         updateSensors(0,0,0,0,1,1);  
         if(tcrt5000->tcrtMidFrontLeft.kalmanDistance<BLACKLINE_TRIGGER && tcrt5000->tcrtMidDownLeft.kalmanDistance<BLACKLINE_TRIGGER && tcrt5000->tcrtMidFrontRight.kalmanDistance<BLACKLINE_TRIGGER && tcrt5000->tcrtMidDownRight.kalmanDistance<BLACKLINE_TRIGGER){
+            lcd->printOne("Done");
             motors->brake();
             times++;
             delay(100);
@@ -662,19 +663,21 @@ void _Movements::alignLine(){
                 break;
         }
         else if(tcrt5000->tcrtMidFrontLeft.kalmanDistance>BLACKLINE_TRIGGER || tcrt5000->tcrtMidDownRight.kalmanDistance>BLACKLINE_TRIGGER){
+            lcd->printOne("Move Left");
             pid->frontLeftOutput = velocityToAlign;
             pid->backLeftOutput = velocityToAlign;
             pid->frontRightOutput = velocityToAlign;
             pid->backRightOutput = velocityToAlign;
-            motors->setMotor(1, 0, 1, 0, 0, 1, 0, 1);   
+            motors->setMotor(0, 1, 0, 1, 1, 0, 1, 0);   
             motors->setVelocity(pid->frontLeftOutput, pid->backLeftOutput, pid->frontRightOutput, pid->backRightOutput);            
         }
         else if(tcrt5000->tcrtMidFrontRight.kalmanDistance>BLACKLINE_TRIGGER || tcrt5000->tcrtMidDownLeft.kalmanDistance>BLACKLINE_TRIGGER){
+            lcd->printOne("Move Right");
             pid->frontLeftOutput = velocityToAlign;
             pid->backLeftOutput = velocityToAlign;
             pid->frontRightOutput = velocityToAlign;
             pid->backRightOutput = velocityToAlign;
-            motors->setMotor(0, 1, 0, 1, 1, 0, 1, 0);
+            motors->setMotor(1, 0, 1, 0, 0, 1, 0, 1);
             motors->setVelocity(pid->frontLeftOutput, pid->backLeftOutput, pid->frontRightOutput, pid->backRightOutput);                
         }        
     } while(1);

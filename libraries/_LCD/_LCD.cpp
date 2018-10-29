@@ -8,30 +8,36 @@ const byte ledPlaca = 22;
 // TODO:
 void _LCD::setupLCD(){
     pinMode(ledPlaca, OUTPUT);
-	// Serial.println("LCD initializing...");
     lcd.init();
     lcd.backlight();
-    lcd.clear();	
-    // Serial.println("LCD initialized");
-	// lcd.backlight();    
+    lcd.clear();	    
+}
+// TODO:
+void _LCD::printOne(String message1) {
+    // if(millis() - lastUpdate > updateTimeMs){
+        lcd.setCursor(0, 0);    
+        lcd.clear();
+        lcd.print(message1);
+    // }
+    // lastUpdate = millis();    
 }
 // TODO:
 void _LCD::print(String message1, String message2) {
-    // if(millis() - lastUpdate > updateTimeMs){
-    lcd.setCursor(0, 0);    
-    lcd.clear();
-    lcd.print(message1);
-    lcd.setCursor(0, 1);
-    lcd.print(message2);
-    // }
-    // lastUpdate = millis();    
+    if(millis() - lastUpdate > updateTimeMs){
+        lcd.setCursor(0, 0);    
+        lcd.clear();
+        lcd.print(message1);
+        lcd.setCursor(0, 1);
+        lcd.print(message2);
+    }
+    lastUpdate = millis();    
 }
 // TODO:
 void _LCD::clear() {
     lcd.clear();  
 }
 // TODO:
-void _LCD::printInt(String message1, int message2) {
+void _LCD::printInt(String message1, int message2){
     if(millis() - lastUpdate > updateTimeMs){
         lcd.setCursor(0, 0);    
         lcd.clear();
