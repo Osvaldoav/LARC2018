@@ -10,15 +10,16 @@ void _Traductor::horizontalLine(bool b){
 }
 
 void _Traductor::throughtHorizontal(int dir){
-    double cm = abs(dir) < 2 ? 15 : 64;
+    double cm = abs(dir) < 2 ? 18 : 62;
     char c = dir < 0 ? '6' : '4';
     movements->movePID_nCM(cm, false, c);
 }
 
 void _Traductor::throughtHorizontal2(int dir, bool front){
-    
-    double cm = abs(dir) < 2 ? 25 : abs(dir) < 3 ? 71 : abs(dir) < 4 ? 90 : 49;
+    double cm = abs(dir) < 2 ? 25 : abs(dir) < 3 ? 71 : abs(dir) < 4 ? 90 : 37;
     char c = dir < 0 ? '6' : '4';
+    char frontDirection = front ? '2': '8';
+    movements->movePID_nCM(4, false, frontDirection);  
     movements->movePID_nCM(cm, false, c);
 }
 
@@ -38,7 +39,7 @@ void _Traductor::alinearPozo(){
 void _Traductor::alinearTren(){
     movements->movePID_nCM(5, false, '4');
     movements->larc_moveUntilBlackLine(false, '6', false, false, false, true);
-    movements->movePID_nCM(13, false, '6');
+    movements->movePID_nCM(12, false, '6');
 }
 
 void _Traductor::mecanismo(uint8_t newStack, uint8_t currentStack){
@@ -123,7 +124,7 @@ void _Traductor::gotoFirst(){
 }
 
 void _Traductor::gotoSecond(){
-    updateMechanismMovement(1, 4);
+    updateMechanismMovement(1, 4, false);
     moveAtrasHorizontal();
     movements->spinPID(true, -90);
     movements->movePID_nCM(1.8, false, '8');    
@@ -159,13 +160,14 @@ void _Traductor::LcdPrint(String name, double value){
     movements->lcd->print(name, value);
 }
 // TODO:
-void _Traductor::updateMechanismMovement(int actualLevel, int newLevel){
+void _Traductor::updateMechanismMovement(int actualLevel, int newLevel, bool train){
     // set new untilStepsMechanism value
     movements->encoder->encoderStateMechanism = 1;
+    int lowCompensation = (train)? (7100+4500): 3750;
     if (actualLevel == 1 || newLevel == 1)
-        movements->untilStepsMechanism = 6900 * abs(newLevel - actualLevel) - 3900; //6900 en fantasma
+        movements->untilStepsMechanism = 7100 * abs(newLevel - actualLevel) - lowCompensation; //6900 en fantasma
     else 
-        movements->untilStepsMechanism = 6900 * abs(newLevel - actualLevel);
+        movements->untilStepsMechanism = 7100 * abs(newLevel - actualLevel);
     // reset steps count
     movements->encoder->stepsMechanism = 0;    
     // start moving

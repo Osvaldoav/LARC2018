@@ -110,7 +110,8 @@ void _Logic::stackToShip(){
     traductor->horizontalLine(A == B); // Avanza de frente o de reversa hasta linea horizontal
 
     currentLevel = lastColor == 'R' ? 2 : lastColor == 'G' ? green_boxes%6 : blue_boxes%6;
-    traductor->updateMechanismMovement(lastLevel, currentLevel);
+    bool redContainer = (lastColor == 'R') ? true: false; 
+    traductor->updateMechanismMovement(lastLevel, currentLevel, redContainer);
  
     if(B){
         if ((lastColor == 'B' && blue_boxes < 6) || (lastColor == 'G' && green_boxes < 6)){
@@ -147,10 +148,10 @@ void _Logic::stackToShip(){
         bool tcrt = dir == 90? true: false;
         traductor->backUntilBlackLineSharps(tcrt);
         traductor->girar(dir); // giros de 90, + derecha, - izquierda
-        if(lastColor=='G' && dir==-90)
-            traductor->fixContainerSteps(true);
-        else if(lastColor=='B' && dirs==-90);
-            traductor->fixContainerSteps(false);        
+        // if(lastColor=='G' && dir==-90)
+        //     traductor->fixContainerSteps(true);
+        // else if(lastColor=='B' && dir==-90);
+        //     traductor->fixContainerSteps(false);        
     }
     traductor->waitForMechanism();    
     if (B){
@@ -188,7 +189,7 @@ void _Logic::shipToStack(){
 
     if((lastColor == 'B' && blue_boxes > 5) || (lastColor == 'G' && green_boxes > 5)){
         traductor->moveAtras(); // Se mueve poquito hacia atras
-        traductor->updateMechanismMovement(currentLevel, lastLevel); // eleva el stack para no chocar con los demas
+        traductor->updateMechanismMovement(currentLevel, lastLevel, false); // eleva el stack para no chocar con los demas
         if((lastColor == 'B' && (stack/2 + 1) % 2 == 1) || (lastColor == 'G' && (stack/2 + 1) % 2 == 0))
             traductor->girar(180);
         dir = (stack/2 + 1) % 2 == 0;
@@ -199,7 +200,7 @@ void _Logic::shipToStack(){
         currentLevel = stacks[stack]; 
     }else{
         traductor->moveAtrasHorizontal(); // izquierda hasta topar linea horizontal
-        traductor->updateMechanismMovement(currentLevel, lastLevel);  // eleva el stack para no chocar con los demas
+        traductor->updateMechanismMovement(currentLevel, lastLevel, true);  // eleva el stack para no chocar con los demas
         currentLevel = stacks[stack];
         angle = (stack/2 + 1)%2 != 0 ? 90 : -90;
         angle *= lastColor == 'R' ? -1 : 1;
