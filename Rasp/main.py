@@ -15,7 +15,6 @@ def printChar(pair):
 	print "   color = ",
 	print pair[1]
 
-
 # MAIN
 cam1 = Cam(0)
 cam2 = Cam(1)
@@ -47,7 +46,7 @@ first_time = True
 
 while True:
 	c = serial.read() 
-	
+
 	if c == 'R' or c == 'S':
 		c = 'R1' if c == 'R' else 'R2'
 
