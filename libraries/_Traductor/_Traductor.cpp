@@ -141,19 +141,23 @@ void _Traductor::pickFirst(int stack){
     int steps = stack%4 < 3 ? 24: 2.5;
     movements->movePID_nCM(steps, false, '8');
 }
-
+// TODO:
 void _Traductor::LcdPrint(String name, char value){
-    movements->lcd->printChar(name, value);
+    movements->lcd->print(name, value);
 }
-
+// TODO:
 void _Traductor::LcdPrint(String name, int value){
-    movements->lcd->printInt(name, value);
+    movements->lcd->print(name, value);
 }
-
+// TODO:
 void _Traductor::LcdPrint(String name, String value){
     movements->lcd->print(name, value);
 }
-
+// TODO:
+void _Traductor::LcdPrint(String name, double value){
+    movements->lcd->print(name, value);
+}
+// TODO:
 void _Traductor::updateMechanismMovement(int actualLevel, int newLevel){
     // set new untilStepsMechanism value
     movements->encoder->encoderStateMechanism = 1;
@@ -180,4 +184,23 @@ void _Traductor::waitForMechanism(){
         } 
     } 
     movements->motors->brake();
+}
+// TODO:
+void _Traductor::fixContainerSteps(char greenShip){
+    bool dir = (greenShip) ? '2' : '8';
+    movements->movePID_nCM(3.5, false, '2');
+}
+// TODO:
+void _Traductor::centerContainer(){
+    movements->movePID_nCM(1.5, false, '4');
+    for(int i=0; i<50; i++)
+        movements->updateSensors(0,0,0,1,0,0);
+    do{
+        movements->movePID(true, '2');
+        movements->updateSensors(0,0,0,1,0,0);
+        LcdPrint("TOF distance:", movements->timeFlight->timeFlightRight.kalmanDistance);
+    } while(movements->timeFlight->timeFlightRight.kalmanDistance < 7);
+    movements->motors->brake();
+    movements->movePID_nCM(8, false, '8');
+    alinearPozo();
 }

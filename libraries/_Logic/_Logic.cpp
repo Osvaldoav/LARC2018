@@ -75,7 +75,7 @@ void _Logic::pickFirst(char c){
     char color = c > 98 ? 'R' : c > 65 ? 'G' : 'B';
     lastStack = color == 'R' ? c - 99 : color == 'G' ? c - 66 : c - 51;
     // blink(lastStack);
-    traductor->LcdPrint("PF stack", stack);
+    traductor->LcdPrint("PF stack", lastStack);
     delay(5000);
     traductor->pickFirst(lastStack);
     grabContainer(c);
@@ -139,14 +139,21 @@ void _Logic::stackToShip(){
         }
         traductor->avanzar(b); // avanza hasta que llegue a la altura de los barcos
     }else{
+        traductor->LcdPrint("Ship Color:", lastColor);
         dir = ((lastStack/2 + 1)%2 == 0) != B ? -90 : 90;
         bool tcrt = dir == 90? true: false;
         traductor->backUntilBlackLineSharps(tcrt);
         traductor->girar(dir); // giros de 90, + derecha, - izquierda
+        if(lastColor=='G' && dir==-90)
+            traductor->fixContainerSteps(true);
+        else if(lastColor=='B' && dir == 90);
+            traductor->fixContainerSteps(false);        
     }
     traductor->waitForMechanism();    
-    if (B)
+    if (B){
         traductor->alinearPozo();
+        traductor->centerContainer();
+    }
     else
         traductor->alinearTren();
     traductor->dropContainer();

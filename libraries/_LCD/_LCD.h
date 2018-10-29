@@ -7,10 +7,10 @@
 class _LCD{
     public:
 // TODO: METHODS
-    void printOne(String);
     void print(String, String message2="");
-    void printInt(String, int);
-    void printChar(String, char);    
+    void print(String, int);
+    void print(String, char);  
+    void print(String, double);  
     void printAlertSec(String, int);
     void clear();
     void onLed();

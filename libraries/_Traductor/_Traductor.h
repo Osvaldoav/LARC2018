@@ -28,10 +28,13 @@ class _Traductor{
         void alinearStack();
         void updateMechanismMovement(int, int);
         void waitForMechanism();
+        void fixContainerSteps(char);
+        void centerContainer();
 
         void LcdPrint(String name, char value);
         void LcdPrint(String name, int value);
         void LcdPrint(String name, String value);
+        void LcdPrint(String name, double value);
 
         void pickFirst(int stack);
         void gotoFirst();

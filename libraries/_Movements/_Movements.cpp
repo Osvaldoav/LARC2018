@@ -471,7 +471,7 @@ void _Movements::larc_moveAndAlignToShip(){
     motors->brake();  
     movePID_nCM(3, false, '4');
     do{
-        lcd->printInt("Alignments:", doneAligning);      
+        lcd->print("Alignments:", doneAligning);      
         updateSensors(0,0,0,0,1,0);
         if(tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER_SHIP && tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER_SHIP){
             if(++doneAligning > 1)  break;
@@ -662,7 +662,7 @@ void _Movements::alignLine(){
     do{
         updateSensors(0,0,0,0,1,1);  
         if(tcrt5000->tcrtMidFrontLeft.kalmanDistance<BLACKLINE_TRIGGER && tcrt5000->tcrtMidDownLeft.kalmanDistance<BLACKLINE_TRIGGER && tcrt5000->tcrtMidFrontRight.kalmanDistance<BLACKLINE_TRIGGER && tcrt5000->tcrtMidDownRight.kalmanDistance<BLACKLINE_TRIGGER){
-            lcd->printOne("Done");
+            lcd->print("Done", "");
             motors->brake();
             times++;
             delay(100);
@@ -670,7 +670,7 @@ void _Movements::alignLine(){
                 break;
         }
         else if(tcrt5000->tcrtMidFrontLeft.kalmanDistance>BLACKLINE_TRIGGER || tcrt5000->tcrtMidDownRight.kalmanDistance>BLACKLINE_TRIGGER){
-            lcd->printOne("Move Left");
+            lcd->print("Move Left", "");
             pid->frontLeftOutput = velocityToAlign;
             pid->backLeftOutput = velocityToAlign;
             pid->frontRightOutput = velocityToAlign;
@@ -679,7 +679,7 @@ void _Movements::alignLine(){
             motors->setVelocity(pid->frontLeftOutput, pid->backLeftOutput, pid->frontRightOutput, pid->backRightOutput);            
         }
         else if(tcrt5000->tcrtMidFrontRight.kalmanDistance>BLACKLINE_TRIGGER || tcrt5000->tcrtMidDownLeft.kalmanDistance>BLACKLINE_TRIGGER){
-            lcd->printOne("Move Right");
+            lcd->print("Move Right", "");
             pid->frontLeftOutput = velocityToAlign;
             pid->backLeftOutput = velocityToAlign;
             pid->frontRightOutput = velocityToAlign;
