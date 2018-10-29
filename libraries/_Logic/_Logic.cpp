@@ -93,6 +93,7 @@ void _Logic::blink(int times){
 void _Logic::stackToShip(){
     bool A = lastStack < 2 || (lastStack > 3 && lastStack < 6);
     bool B = lastColor != 'R';
+    bool front;
     int dir;
 
     lastLevel = lastStack/2*2;
@@ -127,8 +128,10 @@ void _Logic::stackToShip(){
         dir = lastStack < 4 ? 1 : 2;
         dir += firstRed == 1 ? 2 : 0;
         dir *= ((lastStack/2 + 1)%2 == 0) != firstRed ? 1 : -1;
+        front = (lastStack/2*2)%4 == 0; // True if facing SOUTH, False if facing NORTH
+
         // Checar foto whatsapp para ver 1,2,3,4
-        traductor->throughtHorizontal2(dir); // Avanza por la linea horizontal a la izquierda o derecha cuando 'R'
+        traductor->throughtHorizontal2(dir, front); // Avanza por la linea horizontal a la izquierda o derecha cuando 'R'
     }
     
     if ((lastColor == 'B' && blue_boxes > 5) || (lastColor == 'G' && green_boxes > 5)){
