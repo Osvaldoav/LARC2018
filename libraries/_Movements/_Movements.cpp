@@ -28,7 +28,7 @@ void _Movements::initMechanism(){
     motors->stopMechanism();
     encoder->encoderStateMechanism = 1;
     encoder->stepsMechanism = 0;
-    while(encoder->stepsMechanism < 8450){    //limitSwitch is pressed when == 0
+    while(encoder->stepsMechanism < 8850){    //limitSwitch is pressed when == 0
         motors->moveMechanism(false);        
     }    
     motors->stopMechanism();
@@ -633,9 +633,9 @@ void _Movements::moveMechanism(int lastStackLevel, int newStackLevel){
     encoder->encoderStateMechanism = 1;  
     int difference = newStackLevel - lastStackLevel;
     if(lastStackLevel<1)    lastStackLevel=1; 
-    if(lastStackLevel>4)    lastStackLevel=4;
+    if(lastStackLevel>5)    lastStackLevel=5;
     if(newStackLevel<1)     newStackLevel=1;
-    if(newStackLevel>4)      newStackLevel=4;
+    if(newStackLevel>5)      newStackLevel=5;
     (lastStackLevel == 1 || newStackLevel == 1) ?
         untilStepsMechanism = 7100 * abs(newStackLevel - lastStackLevel) - 3750:
         untilStepsMechanism = 7100 * abs(newStackLevel - lastStackLevel);
