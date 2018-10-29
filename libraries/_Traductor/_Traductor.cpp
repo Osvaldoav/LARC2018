@@ -10,7 +10,7 @@ void _Traductor::horizontalLine(bool b){
 }
 
 void _Traductor::throughtHorizontal(int dir){
-    double cm = abs(dir) < 2 ? 15 : 63.5;
+    double cm = abs(dir) < 2 ? 15 : 64;
     char c = dir < 0 ? '6' : '4';
     movements->movePID_nCM(cm, false, c);
 }
@@ -122,12 +122,18 @@ void _Traductor::gotoFirst(){
 }
 
 void _Traductor::gotoSecond(){
-    moveAtrasHorizontal();
     updateMechanismMovement(1, 4);
+    moveAtrasHorizontal();
     movements->spinPID(true, -90);
+    movements->movePID_nCM(2.5, false, '8');    
     movements->larc_moveUntilBlackLine(false, '6', true, true, false, false);
+    do{
+        movements->movePID(false, '2');
+        movements->updateSensors(0,0,0,0,1,1);
+    } while(movements->tcrt5000->tcrtMechaLeft.kalmanDistance < movements->BLACKLINE_TRIGGER);   
     waitForMechanism();
     movements->movePID_nCM(31, false, '8');
+    delay(1000);
 }
 
 void _Traductor::pickFirst(int stack){
