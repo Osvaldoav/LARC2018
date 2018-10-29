@@ -108,11 +108,11 @@ def getMaxColor(red_cnt, green_cnt, blue_cnt):
 def getMatrix(image, left_cam):
 	matrix = [['X' for j in range(3)] for i in range(2)]
 
-	red_mask, green_mask, blue_mask = getMasks(image, left_cam)
+	red_mask, green_mask, blue_mask = getMasks(image)
 	masks = []
-	masks.append(splitMask(red_mask))
-	masks.append(splitMask(green_mask))
-	masks.append(splitMask(blue_mask))
+	masks.append(splitMask(red_mask), left_cam)
+	masks.append(splitMask(green_mask), left_cam)
+	masks.append(splitMask(blue_mask), left_cam)
 
 	_range = range(1, -1, -1)
 	for c, s in enumerate(_range):
