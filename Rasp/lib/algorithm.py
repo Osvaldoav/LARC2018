@@ -27,16 +27,19 @@ class Algorithm:
 
 	# Return stack 2 or 3 as second pick
 	def secondPick(self):
+		color1 = 'B' if self.blues % 5 > self.greens % 5 else 'G'
+		color2 = 'B' if color1 == 'G' else 'G'
+
 		if self.matrix[3][0] == 'R':
 			return 3, 'R'
 		elif self.matrix[2][0] == 'R':
 			return 2, 'R'
-		elif self.matrix[3][0] == 'G':
-			return 3, 'G'
-		elif self.matrix[2][0] == 'G':
-			return 2, 'G'
+		elif self.matrix[3][0] == color1:
+			return 3, color1
+		elif self.matrix[2][0] == color1:
+			return 2, color1
 		else:
-			return 3, 'B'
+			return 3, color2
 
 	# Updates the order regarding last_color
 	def updateOrder(self):
@@ -53,8 +56,14 @@ class Algorithm:
 	def solve(self):
 		self.updateOrder()
 
+		print "----- solving -------"
 		print "last color",
 		print self.last_color
+		print "blues = ",
+		print self.blues
+		print "greens = ",
+		print self.greens
+		print "---------------------"
 
 		# Sets the color we are trying to find
 		color = 'B' if self.blues % 5 > self.greens % 5 else 'G'
