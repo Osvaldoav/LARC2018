@@ -14,7 +14,7 @@ def printChar(pair):
 	print "   color = ",
 	print pair[1]
 
-# MAIN
+# SETUP
 brain = Algorithm()
 serial = Serial()
 cam1 = Cam(0)
@@ -41,6 +41,7 @@ brain.printMatrix()
 
 first_time = True
 
+# MAIN
 while True:
 	c = serial.read() 
 

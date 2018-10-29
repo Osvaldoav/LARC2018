@@ -24,10 +24,8 @@ class Algorithm:
 			for b in range(3):
 				self.containers[section*2 + c][b] = s[b]
 
-
 	# Remove the top container of a specific stack
 	def popContainer(self, pair):
-
 		if pair[1] == 'G':
 			self.greens += 1
 		elif pair[1] == 'B':
@@ -37,19 +35,18 @@ class Algorithm:
 		self.containers[pair[0]].pop(0)
 		self.stack[pair[0]] -= 1
 
-
 	# Return stack 6 or 7 as first pick
 	def firstPick(self):
 		if self.matrix[7][0] == 'R':
 			return 7, 'R'
 		elif self.matrix[6][0] == 'R':
 			return 6, 'R'
-		elif self.matrix[7][0] == 'B':
-			return 7, 'B'
-		elif self.matrix[6][0] == 'B':
-			return 6, 'B'
-		else:
+		elif self.matrix[7][0] == 'G':
 			return 7, 'G'
+		elif self.matrix[6][0] == 'G':
+			return 6, 'G'
+		else:
+			return 7, 'B'
 
 	# Return stack 2 or 3 as second pick
 	def secondPick(self):
@@ -81,7 +78,7 @@ class Algorithm:
 	# Returns the next stack and color to pick
 	def solve(self):
 		self.updateOrder()
-
+		
 		# Sets the color we are trying to find
 		if self.greens % 5 == 0 and self.greens > 0:
 			color = 'B'
