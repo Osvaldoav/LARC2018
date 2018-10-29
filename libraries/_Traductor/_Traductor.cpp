@@ -137,8 +137,8 @@ void _Traductor::gotoSecond(){
 }
 
 void _Traductor::pickFirst(int stack){
-    char c = stack%4 < 3 ? '8' : '2';
-    int steps = stack < 7 ? 24: 2.5;
+    // char c = stack%4 < 3 ? '8' : '2';
+    int steps = stack%4 < 3 ? 24: 2.5;
     movements->movePID_nCM(steps, false, '8');
 }
 

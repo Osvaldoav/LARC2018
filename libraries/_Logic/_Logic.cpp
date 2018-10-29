@@ -74,6 +74,8 @@ void _Logic::pickFirst(char c){
     char color = c > 98 ? 'R' : c > 65 ? 'G' : 'B';
     lastStack = color == 'R' ? c - 99 : color == 'G' ? c - 66 : c - 51;
     // blink(lastStack);
+    traductor->LcdPrint("PF stack", stack);
+    delay(5000);
     traductor->pickFirst(lastStack);
     grabContainer(c);
 }
