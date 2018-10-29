@@ -10,7 +10,7 @@ void _Traductor::horizontalLine(bool b){
 }
 
 void _Traductor::throughtHorizontal(int dir){
-    double cm = abs(dir) < 2 ? 18 : 62;
+    double cm = abs(dir) < 2 ? 18 : 61.5;
     char c = dir < 0 ? '6' : '4';
     movements->movePID_nCM(cm, false, c);
 }
@@ -39,7 +39,7 @@ void _Traductor::alinearPozo(){
 void _Traductor::alinearTren(){
     movements->movePID_nCM(5, false, '4');
     movements->larc_moveUntilBlackLine(false, '6', false, false, false, true);
-    movements->movePID_nCM(16, false, '6');
+    movements->movePID_nCM(20, false, '6');
 }
 
 void _Traductor::mecanismo(uint8_t newStack, uint8_t currentStack){
@@ -106,7 +106,8 @@ void _Traductor::vertical(int lines){
 
 void _Traductor::alinearStack(bool dir){ 
     char c = dir ? '6' : '4';
-    movements->movePID_nCM(1.3, true, dir);   
+    movements->movePID_nCM(1, true, c);  
+    delay(500); 
     // movements->alignLine();
     // movements->getCloseToStack();
     // movements->align_tof();
