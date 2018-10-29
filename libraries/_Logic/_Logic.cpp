@@ -66,8 +66,9 @@ void _Logic::gotoSecond(){
     _Serial::send('1');
     c_serial = _Serial::clean();
     traductor->LcdPrint("c_serial", c_serial);
-    delay(8000);
+    delay(3000);
     pickFirst(c_serial);
+    currentLevel = 4;
 }
 
 void _Logic::pickFirst(char c){
