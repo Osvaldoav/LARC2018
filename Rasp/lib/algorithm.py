@@ -53,6 +53,9 @@ class Algorithm:
 	def solve(self):
 		self.updateOrder()
 
+		print "last color",
+		print self.last_color
+
 		# Sets the color we are trying to find
 		color = 'B' if self.blues % 5 > self.greens % 5 else 'G'
 
