@@ -144,10 +144,10 @@ void _Logic::stackToShip(){
         bool tcrt = dir == 90? true: false;
         traductor->backUntilBlackLineSharps(tcrt);
         traductor->girar(dir); // giros de 90, + derecha, - izquierda
-        if(lastColor=='G' && dir==-90)
-            traductor->fixContainerSteps(true);
-        else if(lastColor=='B' && dirs==-90);
-            traductor->fixContainerSteps(false);        
+        // if(lastColor=='G' && dir==-90)
+        //     traductor->fixContainerSteps(true);
+        // else if(lastColor=='B' && dir==-90);
+        //     traductor->fixContainerSteps(false);        
     }
     traductor->waitForMechanism();    
     if (B){

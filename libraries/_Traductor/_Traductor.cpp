@@ -18,6 +18,7 @@ void _Traductor::throughtHorizontal(int dir){
 void _Traductor::throughtHorizontal2(int dir){
     double cm = abs(dir) < 2 ? 25 : abs(dir) < 3 ? 71 : abs(dir) < 4 ? 90 : 49;
     char c = dir < 0 ? '6' : '4';
+    char frontDirection = (c=='6' && dir)
     movements->movePID_nCM(cm, false, c);
 }
 
