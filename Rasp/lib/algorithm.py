@@ -25,7 +25,7 @@ class Algorithm:
 
 		for c, s in enumerate(_stacks):
 			for b in range(3):
-				self.containers[section*2 + c][b] = s[b]
+				self.matrix[section*2 + c][b] = s[b]
 
 	# Remove the top container of a specific stack
 	def popContainer(self, pair):
@@ -35,7 +35,7 @@ class Algorithm:
 			self.blues += 1
 
 		self.last_color = pair[1]
-		self.containers[pair[0]].pop(0)
+		self.matrix[pair[0]].pop(0)
 		self.stack[pair[0]] -= 1
 
 	# Return stack 6 or 7 as first pick
@@ -117,7 +117,7 @@ class Algorithm:
 	# Print all the containers matrix
 	def printMatrix(self):
 		for b in range(3):
-			for c, s in enumerate(self.containers):
+			for c, s in enumerate(self.matrix):
 				if 3 - self.stack[c] > b:
 					print " ",
 				else:
