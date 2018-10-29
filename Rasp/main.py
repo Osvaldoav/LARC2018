@@ -21,12 +21,10 @@ cam1 = Cam(0)
 cam2 = Cam(1)
 
 screen = Screen()
-screen.drawText()
-
 brain = Algorithm(screen.getParams())
 
 serial = Serial(screen)
-print "starting"
+print "starting..."
 serial.start()
 serial.read()
 
@@ -49,7 +47,7 @@ first_time = True
 
 while True:
 	c = serial.read() 
-
+	
 	if c == 'R' or c == 'S':
 		c = 'R1' if c == 'R' else 'R2'
 
