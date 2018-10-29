@@ -1,3 +1,6 @@
+import sys
+sys.path.insert(0, './lib/')
+import stacks
 
 BLUE_ORDER = [7,6,3,2,4,5,0,1]
 GREEN_ORDER = [0,1,4,5,3,2,7,6]
@@ -78,7 +81,7 @@ class Algorithm:
 	# Returns the next stack and color to pick
 	def solve(self):
 		self.updateOrder()
-		
+
 		# Sets the color we are trying to find
 		if self.greens % 5 == 0 and self.greens > 0:
 			color = 'B'
