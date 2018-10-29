@@ -20,7 +20,7 @@ void _Logic::initCommunication(){
     // _Serial::send('1');
     gotoFirst();
     _Serial::send('2');
-    delay(1000);
+    delay(500);
     // c_serial = _Serial::read();
 
     c_serial = _Serial::clean();
@@ -66,7 +66,7 @@ void _Logic::gotoSecond(){
     _Serial::send('1');
     c_serial = _Serial::clean();
     traductor->LcdPrint("c_serial", c_serial);
-    delay(3000);
+    // delay(3000);
     pickFirst(c_serial);
     currentLevel = 4;
 }
@@ -76,7 +76,7 @@ void _Logic::pickFirst(char c){
     lastStack = color == 'R' ? c - 99 : color == 'G' ? c - 66 : c - 51;
     // blink(lastStack);
     traductor->LcdPrint("PF stack", lastStack);
-    delay(5000);
+    delay(500);
     traductor->pickFirst(lastStack);
     grabContainer(c);
 }
@@ -102,9 +102,9 @@ void _Logic::stackToShip(){
     lastLevel = stacks[lastLevel]+1;
     
     traductor->LcdPrint("current Level", currentLevel);
-    delay(2000);
+    delay(500);
     traductor->LcdPrint("last Level", lastLevel);
-    delay(2000);
+    delay(500);
 
     traductor->mecanismo(currentLevel, lastLevel);   // eleva el stack para no chocar con los demas
     traductor->horizontalLine(A == B); // Avanza de frente o de reversa hasta linea horizontal
@@ -166,7 +166,7 @@ void _Logic::stackToShip(){
 void _Logic::shipToStack(){
     char c = _Serial::read();
     traductor->LcdPrint("char received", c);
-    delay(3000);
+    // delay(3000);
     if(c == 'S'){
         gotoSecond();
         return;
@@ -177,9 +177,9 @@ void _Logic::shipToStack(){
     int lines, angle;
     
     traductor->LcdPrint("Stack to go", stack);
-    delay(3000);
+    // delay(3000);
     traductor->LcdPrint("Color", color);
-    delay(3000);
+    // delay(3000);
 
     lastLevel = stack/2*2;
     if(((color != 'R' && lastLevel%4 != 0)||(color == 'R' && lastLevel%4 == 0)) && lastLevel > stacks[stack])
