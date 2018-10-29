@@ -82,11 +82,11 @@ while True:
 		second = brain.secondPick()
 		screen.popContainer(second)
 		print "char sent = ",
-		print serial.convert(res)
+		print serial.convert(second)
 		print "stack = ",
-		print res[0],
+		print second[0],
 		print "   color = ",
-		print res[1]
+		print second[1]
 		serial.send(serial.convert(second))
 		first_time = False
 	else:
