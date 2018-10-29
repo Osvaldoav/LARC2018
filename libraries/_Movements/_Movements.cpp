@@ -458,6 +458,7 @@ void _Movements::getCloseToStack(){
 }
 // TODO:
 void _Movements::larc_moveAndAlignToShip(){
+    int doneAligning=0;
     while(1){   //Move Until Ship
         updateSensors(0,0,0,0,1,0);
         movePID(true, '6');
@@ -468,8 +469,14 @@ void _Movements::larc_moveAndAlignToShip(){
         }
     }
     motors->brake();  
-    while(tcrt5000->tcrtMechaLeft.kalmanDistance<BLACKLINE_TRIGGER_SHIP || tcrt5000->tcrtMechaRight.kalmanDistance<BLACKLINE_TRIGGER_SHIP){
+    movePID_nCM(3, false, '4');
+    do{
+        lcd->printInt("Alignments:", doneAligning);      
         updateSensors(0,0,0,0,1,0);
+        if(tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER_SHIP && tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER_SHIP){
+            if(++doneAligning > 1)  break;
+            else                    movePID_nCM(1, false, '4');
+        }    
         if(tcrt5000->tcrtMechaLeft.kalmanDistance<BLACKLINE_TRIGGER_SHIP && tcrt5000->tcrtMechaRight.kalmanDistance<BLACKLINE_TRIGGER_SHIP)
             movePID(true, '6');
         else if(tcrt5000->tcrtMechaLeft.kalmanDistance>=BLACKLINE_TRIGGER_SHIP && tcrt5000->tcrtMechaRight.kalmanDistance<BLACKLINE_TRIGGER_SHIP){
@@ -486,7 +493,7 @@ void _Movements::larc_moveAndAlignToShip(){
                 turnPID(false);  
             }      
         }        
-    }      
+    } while(1);
     // movePID_nCM(0.5, true, '4');     
     motors->brake();   
     delay(300);
