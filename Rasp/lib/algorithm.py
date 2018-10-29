@@ -76,12 +76,12 @@ class Algorithm:
 				if self.matrix[s][0] == color:
 					return s, color
 
-		# If there isn't any picks the first container in the corresponding order, non-color specified 
+		# If there isn't any, picks the first container in the corresponding order, non-color specified 
 		for s in self.order:
 			if len(self.matrix[s]) > 0:
 				return s, self.matrix[s][0]
 
-		# Returns -1, 'X' if there are not more containers to pick
+		# Returns -1,'X' if there are not more containers to pick
 		return -1, 'X'
 
 
