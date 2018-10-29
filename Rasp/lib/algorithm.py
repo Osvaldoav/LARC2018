@@ -56,15 +56,6 @@ class Algorithm:
 	def solve(self):
 		self.updateOrder()
 
-		print "----- solving -------"
-		print "last color",
-		print self.last_color
-		print "blues = ",
-		print self.blues
-		print "greens = ",
-		print self.greens
-		print "---------------------"
-
 		# Sets the color we are trying to find
 		if self.greens % 5 == 0 and self.greens > 0:
 			color = 'B'
