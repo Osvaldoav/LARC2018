@@ -152,8 +152,10 @@ void _Logic::shipToStack(){
     char c = _Serial::read();
     traductor->LcdPrint("char received", c);
     delay(3000);
-    if(c == 'S')
+    if(c == 'S'){
         gotoSecond();
+        return;
+    }
     char color = c > 98 ? 'R' : c > 65 ? 'G' : 'B';
     int stack = color == 'R' ? c - 99 : color == 'G' ? c - 66 : c - 51;
     bool dir, tcrt;
