@@ -14,8 +14,8 @@ const byte pinEncoderMechanism = 2;
 void setup() {
     Serial.begin(9600);
     Wire.begin(); 
-    _Serial::read();
-    _Serial::send('1');
+//    _Serial::read();
+//    _Serial::send('1');
     logic->traductor->movements->lcd->setupLCD();    
     logic->traductor->movements->pid->setupLibraryPID(); 
     logic->traductor->movements->motors->setupMotors();
@@ -32,8 +32,8 @@ void setup() {
     attachInterrupt(digitalPinToInterrupt(pinEncoderFR), encoderStepFR, CHANGE);
     attachInterrupt(digitalPinToInterrupt(pinEncoderBL), encoderStepBL, CHANGE);      
     attachInterrupt(digitalPinToInterrupt(pinEncoderMechanism), encoderStepMechanism, CHANGE);   
-    logic->traductor->movements->initMechanism();    
-    logic->initCommunication();
+//    logic->traductor->movements->initMechanism();    
+//    logic->initCommunication();
 
 
     //CALIBRATION 
@@ -129,11 +129,11 @@ void larc(){
 //  logic->traductor->movements->larc_moveUntilBlackLine(false, '6', true, true, false, false);
 //  logic->traductor->movements->movePID_nCM(29, false, '8');
 //  delay(2000);
-  logic->traductor->movements->align_tof();
+//  logic->traductor->movements->align_tof();
 //  logic->traductor->movements->larc_moveBetweenVerticalBlackLine(false, '2');
 //  logic->traductor->movements->movePID_nCM(21, false, '6');
 //  logic->traductor->movements->spinPID(true, 90);
-//  logic->traductor->movements->larc_moveAndAlignToShip();
+  logic->traductor->movements->larc_moveAndAlignToShip();
 //  logic->traductor->movements->lcd->printAlertSec("CONTAINER DROPPED", 5);
 //  while(1); 
 }
@@ -192,13 +192,13 @@ void loop(){
 //  testSteps();
 //  readTCRT5000();
 //  aligningTcrtTest();
-//  larc();
+  larc();
 //  logicTest();  
 //  colorSensor();
 //  logic->traductor->gotoFirst();
 //  mechanism();
-  logic->stackToShip();
-  logic->shipToStack();
+//  logic->stackToShip();
+//  logic->shipToStack();
 //  alignLine();
-//  while(1);  
+  while(1);  
 }

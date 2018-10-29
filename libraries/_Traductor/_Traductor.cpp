@@ -111,7 +111,7 @@ void _Traductor::alinearStack(){
 
 void _Traductor::gotoFirst(){
     movements->larc_moveUntilBlackLine(false, '8', true, false, true, false);
-    movements->movePID_nCM(2.5, false, '8');
+    movements->movePID_nCM(1.8, false, '8');
     movements->larc_moveUntilBlackLine(false, '6', true, true, false, false);
     do{
         movements->movePID(false, '2');
@@ -125,14 +125,14 @@ void _Traductor::gotoSecond(){
     updateMechanismMovement(1, 4);
     moveAtrasHorizontal();
     movements->spinPID(true, -90);
-    movements->movePID_nCM(2.5, false, '8');    
+    movements->movePID_nCM(1.8, false, '8');    
     movements->larc_moveUntilBlackLine(false, '6', true, true, false, false);
     do{
         movements->movePID(false, '2');
         movements->updateSensors(0,0,0,0,1,1);
     } while(movements->tcrt5000->tcrtMechaLeft.kalmanDistance < movements->BLACKLINE_TRIGGER);   
     waitForMechanism();
-    movements->movePID_nCM(31, false, '8');
+    movements->movePID_nCM(30, false, '8');
     delay(1000);
 }
 
