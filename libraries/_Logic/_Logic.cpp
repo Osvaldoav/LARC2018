@@ -52,7 +52,7 @@ char _Logic::verifyColor(char c){
 }
 
 char _Logic::grabContainer(char c){
-    // traductor->alinearStack();
+    traductor->alinearStack();
     traductor->grabContainer();
     _Serial::send(verifyColor(c));
 }

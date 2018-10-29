@@ -10,13 +10,13 @@ void _Traductor::horizontalLine(bool b){
 }
 
 void _Traductor::throughtHorizontal(int dir){
-    double cm = abs(dir) < 2 ? 22 : 68;
+    double cm = abs(dir) < 2 ? 15 : 62;
     char c = dir < 0 ? '6' : '4';
     movements->movePID_nCM(cm, false, c);
 }
 
 void _Traductor::throughtHorizontal2(int dir){
-    double cm = abs(dir) < 2 ? 25 : abs(dir) < 3 ? 71 : abs(dir) < 4 ? 94 : 49;
+    double cm = abs(dir) < 2 ? 25 : abs(dir) < 3 ? 71 : abs(dir) < 4 ? 90 : 49;
     char c = dir < 0 ? '6' : '4';
     movements->movePID_nCM(cm, false, c);
 }
@@ -83,9 +83,9 @@ void _Traductor::backUntilBlackLineSharps(bool tcrt){
     do{
         movements->movePID(false, vertical);
         movements->updateSensors(0,0,0,0,1,1);        
-        if(tcrt && (movements->tcrt5000->tcrtMidFrontRight.kalmanDistance>movements->BLACKLINE_TRIGGER || movements->tcrt5000->tcrtMidFrontLeft.kalmanDistance>movements->BLACKLINE_TRIGGER))
+        if(tcrt && (movements->tcrt5000->tcrtSharpRight.kalmanDistance>movements->BLACKLINE_TRIGGER))
             break;  
-        else if(!tcrt && (movements->tcrt5000->tcrtMidDownRight.kalmanDistance>movements->BLACKLINE_TRIGGER || movements->tcrt5000->tcrtMidDownLeft.kalmanDistance>movements->BLACKLINE_TRIGGER))        
+        else if(!tcrt && (movements->tcrt5000->tcrtSharpLeft.kalmanDistance>movements->BLACKLINE_TRIGGER))        
             break;              
     } while(1);    
     movements->motors->brake();
@@ -103,8 +103,8 @@ void _Traductor::vertical(int lines){
 }
 
 void _Traductor::alinearStack(){ 
-    movements->alignLine();
-    movements->movePID_nCM(2.7, true, '6');
+    // movements->alignLine();
+    movements->movePID_nCM(1.8, true, '6');
     // movements->getCloseToStack();
     // movements->align_tof();
 } 
@@ -123,7 +123,7 @@ void _Traductor::gotoFirst(){
 
 void _Traductor::pickFirst(int stack){
     char c = stack < 7 ? '8' : '2';
-    int steps = stack < 7 ? 16.5 : 2.5;
+    int steps = stack < 7 ? 24 : 2.5;
     movements->movePID_nCM(steps, false, '8');
 }
 
@@ -164,4 +164,5 @@ void _Traductor::waitForMechanism(){
             movements->encoder->encoderStateMechanism = 0; 
         } 
     } 
+    movements->motors->brake();
 }

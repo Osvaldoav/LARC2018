@@ -28,7 +28,7 @@ void _Movements::initMechanism(){
     motors->stopMechanism();
     encoder->encoderStateMechanism = 1;
     encoder->stepsMechanism = 0;
-    while(encoder->stepsMechanism < 8321){    //limitSwitch is pressed when == 0
+    while(encoder->stepsMechanism < 8450){    //limitSwitch is pressed when == 0
         motors->moveMechanism(false);        
     }    
     motors->stopMechanism();
@@ -631,12 +631,14 @@ void _Movements::larc_moveBetweenVerticalBlackLine(bool goSlow, char direction, 
 
 void _Movements::moveMechanism(int lastStackLevel, int newStackLevel){
     encoder->encoderStateMechanism = 1;  
-
-    if(newStackLevel>5)     newStackLevel=5;
+    int difference = newStackLevel - lastStackLevel;
+    if(lastStackLevel<1)    lastStackLevel=1; 
+    if(lastStackLevel>4)    lastStackLevel=4;
     if(newStackLevel<1)     newStackLevel=1;
+    if(newStackLevel>4)      newStackLevel=4;
     (lastStackLevel == 1 || newStackLevel == 1) ?
-        untilStepsMechanism = 6900 * abs(newStackLevel - lastStackLevel) - 3900:
-        untilStepsMechanism = 6900 * abs(newStackLevel - lastStackLevel);
+        untilStepsMechanism = 7100 * abs(newStackLevel - lastStackLevel) - 3800:
+        untilStepsMechanism = 7100 * abs(newStackLevel - lastStackLevel);
 //  Restart encoder counts
     encoder->stepsMechanism = 0;
 //  Move with p correction until the encoder read the cm

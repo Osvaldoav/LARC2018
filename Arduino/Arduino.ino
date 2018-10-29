@@ -10,13 +10,12 @@ const byte pinEncoderFR = 18;
 const byte pinEncoderBL = 19;
 const byte pinEncoderMechanism = 2;
 
-
 /////////////////////////////////////////////SETUP////////////////////////////////////////////////
 void setup() {
     Serial.begin(9600);
     Wire.begin(); 
-    _Serial::read();
-    _Serial::send('1');
+//    _Serial::read();
+//    _Serial::send('1');
     logic->traductor->movements->lcd->setupLCD();    
     logic->traductor->movements->pid->setupLibraryPID(); 
     logic->traductor->movements->motors->setupMotors();
@@ -33,8 +32,8 @@ void setup() {
     attachInterrupt(digitalPinToInterrupt(pinEncoderFR), encoderStepFR, CHANGE);
     attachInterrupt(digitalPinToInterrupt(pinEncoderBL), encoderStepBL, CHANGE);      
     attachInterrupt(digitalPinToInterrupt(pinEncoderMechanism), encoderStepMechanism, CHANGE);   
-    logic->traductor->movements->initMechanism();    
-    logic->initCommunication();
+//    logic->traductor->movements->initMechanism();    
+//    logic->initCommunication();
 
 
     //CALIBRATION 
@@ -60,7 +59,7 @@ void testMovements(){
 //    logic->traductor->movements->spinPID(false, -90);
 //    logic->traductor->movements->motors->brake();
 //    delay(2000);
-//    logic->traductor->movements->movePID_nCM(179, false, '6');
+//    logic->traductor->movements->movePID_nCM(16.5, false, '8');
 //    delay(3000);
 //    logic->traductor->movements->movePID_nCM(179, false, '8');
 //    delay(3000);    
@@ -178,7 +177,7 @@ void mechanism(){
 //    delay(2000);
 //    logic->traductor->movements->motors->stopMechanism();
 //    delay(2000);
-    logic->traductor->mecanismo(4,5);
+    logic->traductor->mecanismo(4,1);
     while(1);
 }
 void alignLine(){
@@ -189,7 +188,7 @@ void alignLine(){
 void loop(){
 //  aligningTofTest();
 //  tof_vs_sharp();
-//  testMovements(); 
+  testMovements(); 
 //  testSteps();
 //  readTCRT5000();
 //  aligningTcrtTest();
@@ -198,8 +197,8 @@ void loop(){
 //  colorSensor();
 //  logic->traductor->gotoFirst();
 //  mechanism();
-  logic->stackToShip();
-  logic->shipToStack();
+//  logic->stackToShip();
+//  logic->shipToStack();
 //  alignLine();
 //  while(1);  
 }
