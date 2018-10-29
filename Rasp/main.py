@@ -86,6 +86,13 @@ while True:
 	else:
 		res = brain.solve()
 		screen.popContainer(res)
+		print "char sent = ",
+		print serial.convert(res)
+		print "stack = ",
+		print res[0],
+		print "   color = ",
+		print res[1]
+
 		serial.send(serial.convert(res))
 
 	
