@@ -211,7 +211,8 @@ void _Logic::shipToStack(){
         traductor->horizontal(lines, dir); // Avanza por la linea horizontal a la izquierda o derecha        
         currentLevel = stacks[stack]; 
     }else{
-        traductor->setTrainLevel(false);
+        if(lastColor == 'R')
+            traductor->setTrainLevel(false);
         traductor->moveAtrasHorizontal(); // izquierda hasta topar linea horizontal
         traductor->updateMechanismMovement(currentLevel, lastLevel, false);  // eleva el stack para no chocar con los demas
         currentLevel = stacks[stack];
