@@ -37,10 +37,10 @@ void _Traductor::avanzar(bool b){
 }
 
 void _Traductor::moveToShip(){
-    movements->larc_moveAndAlignToShip(true);
+    movements->moveToShip();
 }
 void _Traductor::alignShip(){
-    movements->larc_moveAndAlignToShip(false);
+    movements->alignShip();
 }
 
 void _Traductor::alinearTren(){
@@ -219,7 +219,6 @@ void _Traductor::centerContainer(){
     } while(movements->timeFlight->timeFlightRight.kalmanDistance < 7);
     movements->motors->brake();
     movements->movePID_nCM(8, false, '8');
-    alinearPozo();
 }
 // TODO:
 // when (stackToShip == true) -> level is your actual level

@@ -36,7 +36,8 @@ class _Movements{
         // Align using TCRT5000 PID
         void larc_moveBetweenVerticalBlackLine(bool, char, bool);
         char oppositeDirection(char);
-        void larc_moveAndAlignToShip(bool);
+        void moveToShip();
+        void alignShip();
         void larc_moveUntilBlackLine(bool, char, bool, bool, bool, bool);
         void moveMechanism(int, int);
         void asyncMovement(int, char, int, int);

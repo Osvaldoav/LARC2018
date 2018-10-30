@@ -119,7 +119,7 @@ void readTCRT5000(){
 }
 
 void aligningTcrtTest(){
-  logic->traductor->movements->larc_moveAndAlignToShip();
+//  logic->traductor->movements->larc_moveAndAlignToShip(false);
   delay(4000);
   while(1);
 //      logic->traductor->movements->larc_alignBetweenVerticalBlackLine(true, '8');
@@ -135,7 +135,7 @@ void larc(){
 //  logic->traductor->movements->movePID_nCM(21, false, '6');
 //  logic->traductor->movements->spinPID(true, 90);
 //  logic->traductor->movements->larc_moveAndAlignToShip();
-    logic->traductor->alinearPozo();
+    logic->traductor->alignShip();
     logic->traductor->centerContainer();
 //  logic->traductor->movements->lcd->printAlertSec("CONTAINER DROPPED", 5);
   while(1); 
