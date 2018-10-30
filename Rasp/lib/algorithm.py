@@ -69,14 +69,18 @@ class Algorithm:
 
 	# Updates the order regarding last_color
 	def updateOrder(self):
-		if self.last_color == 'B':
-			self.order = BLUE_ORDER
-		elif self.last_color == 'G':
-			self.order = GREEN_ORDER
-		elif self.last_color == 'R1':
-			self.order = R1_ORDER
-		else:
-			self.order = R2_ORDER
+		self.order = [i for i in range(8)]
+		if self.last_color == 'B' or self.last_color == 'R2':
+			self.order = reverse(self.order)
+
+		# if self.last_color == 'B':
+		# 	self.order = BLUE_ORDER
+		# elif self.last_color == 'G':
+		# 	self.order = GREEN_ORDER
+		# elif self.last_color == 'R1':
+		# 	self.order = R1_ORDER
+		# else:
+		# 	self.order = R2_ORDER
 
 	# Returns the next stack and color to pick
 	def solve(self):
