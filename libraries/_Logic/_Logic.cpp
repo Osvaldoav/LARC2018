@@ -30,6 +30,8 @@ void _Logic::initCommunication(){
 }
 
 char _Logic::handleRed(){
+    traductor->LcdPrint("handleRed", "entro");
+    delay(3000);
     if(firstRed > -1)
         firstRed = lastStack < 4 ? 0 : 1;
     else
@@ -102,16 +104,18 @@ void _Logic::stackToShip(){
         lastLevel++;
     lastLevel = stacks[lastLevel]+1;
     
+    traductor->LcdPrint("STACK TO SHIP", "equis");
+     delay(3000);
     traductor->LcdPrint("current Level", currentLevel);
-    // delay(2000);
+     delay(3000);
     traductor->LcdPrint("last Level", lastLevel);
-    // delay(2000);
+     delay(3000);
 
     traductor->mecanismo(currentLevel, lastLevel);   // eleva el stack para no chocar con los demas
     traductor->horizontalLine(A == B); // Avanza de frente o de reversa hasta linea horizontal
 
     currentLevel = lastColor == 'R' ? 3 : lastColor == 'G' ? green_boxes%6 : blue_boxes%6;
-    bool redContainer = (lastColor == 'R') ? true: false; 
+    bool redContainer = (lastColor == 'R');
     String sw = redContainer ? "True" : "False";
     traductor->LcdPrint("redContainer", sw);
     // delay(5000);
@@ -236,6 +240,13 @@ void _Logic::shipToStack(){
     // 2 son dos stacks, 1 es uno. negativo es frente, positivo reversa
     traductor->waitForMechanism();  
     traductor->vertical(lines); // Avanza por la linea vertical frente o reversa
+    traductor->LcdPrint("SHIP TO STACK", "equis");
+    delay(3000);
+    traductor->LcdPrint("lastLevel", lastLevel);
+    delay(3000);
+    traductor->LcdPrint("currentLevel", currentLevel);
+    delay(3000);
+
     traductor->mecanismo(lastLevel, currentLevel);
     grabContainer(c);
 }
