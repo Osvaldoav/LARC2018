@@ -71,7 +71,7 @@ class Algorithm:
 	def updateOrder(self):
 		self.order = [i for i in range(8)]
 		if self.last_color == 'B' or self.last_color == 'R2':
-			self.order = reverse(self.order)
+			self.order.sort(reverse=True)
 
 		# if self.last_color == 'B':
 		# 	self.order = BLUE_ORDER
