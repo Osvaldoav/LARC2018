@@ -10,7 +10,7 @@ void _Traductor::horizontalLine(bool b){
 }
 
 void _Traductor::throughtHorizontal(int dir){
-    double cm = abs(dir) < 2 ? 22 : 66;
+    double cm = abs(dir) < 2 ? 18 : 64; //23 y 75 para !crazyMode
     char c = dir < 0 ? '6' : '4';
     movements->crazyMode=true;
     movements->movePID_nCM(cm, false, c);
@@ -18,7 +18,7 @@ void _Traductor::throughtHorizontal(int dir){
 }
 
 void _Traductor::throughtHorizontal2(int dir, bool front){
-    double cm = abs(dir) < 2 ? 25 : abs(dir) < 3 ? 71 : abs(dir) < 4 ? 90 : 37;
+    double cm = abs(dir) < 2 ? 20.5 : abs(dir) < 3 ? 71 : abs(dir) < 4 ? 90 : 37;
     char c = dir < 0 ? '6' : '4';
     char frontDirection = front ? '2': '8';
     movements->movePID_nCM(4, false, frontDirection); 
@@ -36,14 +36,20 @@ void _Traductor::avanzar(bool b){
     movements->movePID_nCM(34, false, c);
 }
 
-void _Traductor::alinearPozo(){
-    movements->larc_moveAndAlignToShip();
+void _Traductor::moveToShip(bool goBack){
+    movements->moveToShip(goBack);
+}
+void _Traductor::alignShip(){
+    movements->alignShip();
+}
+void _Traductor::alignFirstShip(){
+    movements->alignFirstShip();
 }
 
 void _Traductor::alinearTren(){
     movements->movePID_nCM(5, false, '4');
     movements->larc_moveUntilBlackLine(false, '6', false, false, false, true);
-    movements->movePID_nCM(20, false, '6');
+    movements->movePID_nCM(17, false, '6');
 }
 
 void _Traductor::mecanismo(uint8_t newStack, uint8_t currentStack){
@@ -206,17 +212,7 @@ void _Traductor::fixContainerSteps(char greenShip){
 }
 // TODO:
 void _Traductor::centerContainer(){
-    movements->movePID_nCM(1.5, false, '4');
-    for(int i=0; i<50; i++)
-        movements->updateSensors(0,0,0,1,0,0);
-    do{
-        movements->movePID(true, '2');
-        movements->updateSensors(0,0,0,1,0,0);
-        // LcdPrint("TOF distance:", movements->timeFlight->timeFlightRight.kalmanDistance);
-    } while(movements->timeFlight->timeFlightRight.kalmanDistance < 7);
-    movements->motors->brake();
-    movements->movePID_nCM(8, false, '8');
-    alinearPozo();
+    movements->centerContainer();
 }
 // TODO:
 // when (stackToShip == true) -> level is your actual level

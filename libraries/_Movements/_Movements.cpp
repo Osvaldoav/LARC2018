@@ -307,10 +307,10 @@ void _Movements::verifySpecificAndUploadOutputs(double velMin, double velMax){
 // TODO:
 //forward with P correction
 void _Movements::movePID(bool goSlow, char direction){   
-    if(moveCalled>8 && crazyMode){
-        crazyMove(direction);
-        moveCalled=0;
-    }
+    // if(moveCalled>8 && crazyMode){
+    //     crazyMove(direction);
+    //     moveCalled=0;
+    // }
     updateSensors(1,0,0,0,1,1);
     setBaseVelocitiesByDirection(goSlow, direction);
     calculateAngleOutputsByDirection(goSlow, direction);         
@@ -320,7 +320,7 @@ void _Movements::movePID(bool goSlow, char direction){
         untilStepsMechanism=0;
         encoder->encoderStateMechanism = 0; 
     }   
-    moveCalled++;     
+    // moveCalled++;     
 } 
 // TODO:
 void _Movements::crazyMove(char direction){
@@ -357,7 +357,7 @@ void _Movements::crazyMove(char direction){
         crazyRight=!crazyRight;
     } 
     verifyAndUploadOutputsByDirection(direction); 
-    delay(25);     
+    delay(15);     
 }
 // TODO:
 void _Movements::spinPID(bool goSlow, double newAngle){
@@ -464,16 +464,7 @@ void _Movements::align_tof(){
             motors->brake();
             delay(200);            
             if(++countCorrect == 6)     break;     
-        }      
-        // Serial.print(right);
-        // Serial.print(" ");
-        // Serial.print(left);
-        // Serial.print(" ");
-        // Serial.print(abs(right-left));
-        // Serial.print(" ");        
-        // Serial.print(pid->OutputAlignMechanism);       
-        // Serial.print(" ");        
-        // Serial.println(pid->frontRightOutput);              
+        }                   
     } while(millis() < startTime+3000);
     motors->brake();
     updateSensors(1,0,0,0,0,0);
@@ -495,8 +486,7 @@ void _Movements::getCloseToStack(){
     delay(100);  
 }
 // TODO:
-void _Movements::larc_moveAndAlignToShip(){
-    int doneAligning=0;
+void _Movements::moveToShip(bool goBack){
     while(1){   //Move Until Ship
         updateSensors(0,0,0,0,1,0);
         movePID(true, '6');
@@ -507,7 +497,11 @@ void _Movements::larc_moveAndAlignToShip(){
         }
     }
     motors->brake();  
-    movePID_nCM(3, false, '4');
+    if(goBack)  movePID_nCM(3, false, '4');  
+}
+// TODO:
+void _Movements::alignShip(){
+    int doneAligning=0;    
     do{
         lcd->print("Alignments:", doneAligning);      
         updateSensors(0,0,0,0,1,0);
@@ -537,6 +531,51 @@ void _Movements::larc_moveAndAlignToShip(){
     delay(300);
     updateSensors(1,0,0,0,0,0);    
     pid->Setpoint = bno055->rawInput;    
+}
+// TODO:
+void _Movements::alignFirstShip(){
+    char direction;
+    updateSensors(0,0,0,0,1,0);
+    if(tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER_SHIP && tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER_SHIP)
+        direction = '8';
+    else if(tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER_SHIP)
+        direction = '8';
+    else if(tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER_SHIP)
+        direction = '2';
+    do{
+        updateSensors(0,0,0,0,1,0);
+        if(direction == '8'){
+            if(tcrt5000->tcrtMechaLeft.kalmanDistance<BLACKLINE_TRIGGER_SHIP){
+                motors->brake();
+                delay(30);
+                movePID_nCM(7, true, '2');                  
+                break;
+            }
+            movePID(true, '8');
+        }
+        else if(direction == '2'){
+            if(tcrt5000->tcrtMechaRight.kalmanDistance<BLACKLINE_TRIGGER_SHIP){
+                motors->brake();
+                delay(30);
+                movePID_nCM(7, true, '8');                  
+                break;
+            }
+            movePID(true, '2');
+        }        
+    } while(1);
+}
+// TODO:
+void _Movements::centerContainer(){
+    movePID_nCM(1.5, false, '4');
+    for(int i=0; i<50; i++)
+        updateSensors(0,0,0,1,0,0);
+    do{
+        movePID(true, '2');
+        updateSensors(0,0,0,1,0,0);
+        // LcdPrint("TOF distance:", movements->timeFlight->timeFlightRight.kalmanDistance);
+    } while(timeFlight->timeFlightRight.kalmanDistance < 7);
+    motors->brake();
+    movePID_nCM(8, true, '8');    
 }
 // FIXME: 
 /*
@@ -636,19 +675,6 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
 void _Movements::larc_moveBetweenVerticalBlackLine(bool goSlow, char direction, bool shipToStack){
     while(1){
         updateSensors(0,0,0,0,1,0);
-        // char tcrtPosition = pid->computeOutput_tcrtVerticalLine(
-        //     tcrt5000->tcrtMidFrontLeft.kalmanDistance,
-        //     tcrt5000->tcrtMidDownLeft.kalmanDistance,
-        //     tcrt5000->tcrtMidFrontRight.kalmanDistance,
-        //     tcrt5000->tcrtMidDownRight.kalmanDistance
-        // );
-        // if(pid->OutputVerticalBlackLine > 0.5){
-        //     if(tcrtPosition=='7' || tcrtPosition=='3')
-        //         pid->calculateNewSetpoint(pid->OutputVerticalBlackLine);
-        //     else if (tcrtPosition=='9' || tcrtPosition=='1')
-        //         pid->calculateNewSetpoint(-pid->OutputVerticalBlackLine);
-        // }
-        // movePID(goSlow, direction);
         movePID(goSlow, direction);
         if(shipToStack){
             if(direction == '8'){
