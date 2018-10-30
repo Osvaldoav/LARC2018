@@ -24,6 +24,17 @@ void _LCD::print(String message1, String message2) {
     lastUpdate = millis();    
 }
 // TODO:
+void _LCD::print(String message1, long message2) {
+    if(millis() - lastUpdate > updateTimeMs){
+        lcd.setCursor(0, 0);    
+        lcd.clear();
+        lcd.print(message1);
+        lcd.setCursor(0, 1);
+        lcd.print(message2);
+    }
+    lastUpdate = millis();    
+}
+// TODO:
 void _LCD::clear() {
     lcd.clear();  
 }

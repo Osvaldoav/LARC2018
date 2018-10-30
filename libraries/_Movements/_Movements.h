@@ -18,6 +18,7 @@ class _Movements{
         // Modular functions
         void updateSensors(bool, bool, bool, bool, bool, bool);
         void movePID(bool, char);
+        void crazyMove(char);
         void spinPID(bool, double);
         void turnPID(bool);        
         // Get Angle Outputs
@@ -55,6 +56,9 @@ class _Movements{
         double BLACKLINE_TRIGGER;//300
         double BLACKLINE_TRIGGER_SHIP;
         long untilStepsMechanism;
+        bool crazyMode;
+        bool crazyRight;
+        long moveCalled;        
 };
 
 #endif

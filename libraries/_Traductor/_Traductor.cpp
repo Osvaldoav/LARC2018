@@ -12,15 +12,19 @@ void _Traductor::horizontalLine(bool b){
 void _Traductor::throughtHorizontal(int dir){
     double cm = abs(dir) < 2 ? 22 : 66;
     char c = dir < 0 ? '6' : '4';
+    movements->crazyMode=true;
     movements->movePID_nCM(cm, false, c);
+    movements->crazyMode=false;
 }
 
 void _Traductor::throughtHorizontal2(int dir, bool front){
     double cm = abs(dir) < 2 ? 25 : abs(dir) < 3 ? 71 : abs(dir) < 4 ? 90 : 37;
     char c = dir < 0 ? '6' : '4';
     char frontDirection = front ? '2': '8';
-    movements->movePID_nCM(4, false, frontDirection);  
+    movements->movePID_nCM(4, false, frontDirection); 
+    movements->crazyMode=true; 
     movements->movePID_nCM(cm, false, c);
+    movements->crazyMode=false;
 }
 
 void _Traductor::girar(int angle){
@@ -67,7 +71,9 @@ void _Traductor::moveToHorizontal(bool b){
 void _Traductor::horizontal(int lines, bool tcrt){
     char c = lines < 0 ? '6' : '4'; 
     bool b = abs(lines) > 1;              
+    movements->crazyMode=true;
     movements->larc_moveUntilBlackLine(false, c, tcrt, true, b, false);
+    movements->crazyMode=false;
     char vertical = tcrt? '8': '2'; 
     do{
         movements->movePID(false, vertical);
@@ -116,7 +122,9 @@ void _Traductor::alinearStack(bool dir){
 void _Traductor::gotoFirst(){
     movements->larc_moveUntilBlackLine(false, '8', true, false, true, false);
     movements->movePID_nCM(1.8, false, '8');
+    movements->crazyMode=true;
     movements->larc_moveUntilBlackLine(false, '6', true, true, false, false);
+    movements->crazyMode=false;
     do{
         movements->movePID(false, '2');
         movements->updateSensors(0,0,0,0,1,1);
@@ -129,8 +137,10 @@ void _Traductor::gotoSecond(){
     updateMechanismMovement(1, 4, false);
     moveAtrasHorizontal();
     movements->spinPID(true, -90);
-    movements->movePID_nCM(1.8, false, '8');    
+    movements->movePID_nCM(1.8, false, '8');   
+    movements->crazyMode=true; 
     movements->larc_moveUntilBlackLine(false, '6', true, true, false, false);
+    movements->crazyMode=false;
     do{
         movements->movePID(false, '2');
         movements->updateSensors(0,0,0,0,1,1);
@@ -202,7 +212,7 @@ void _Traductor::centerContainer(){
     do{
         movements->movePID(true, '2');
         movements->updateSensors(0,0,0,1,0,0);
-        LcdPrint("TOF distance:", movements->timeFlight->timeFlightRight.kalmanDistance);
+        // LcdPrint("TOF distance:", movements->timeFlight->timeFlightRight.kalmanDistance);
     } while(movements->timeFlight->timeFlightRight.kalmanDistance < 7);
     movements->motors->brake();
     movements->movePID_nCM(8, false, '8');
