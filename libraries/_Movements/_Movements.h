@@ -55,6 +55,7 @@ class _Movements{
         double BLACKLINE_TRIGGER;//300
         double BLACKLINE_TRIGGER_SHIP;
         long untilStepsMechanism;
+        bool crazyMode;
 };
 
 #endif

@@ -1,6 +1,10 @@
 #include <_Movements.h>
 ///////////////////////////////// PINs ////////////////////////////////
 const byte limitSwitch = 30;
+bool crazyRight=false;
+uint8_t updateCrazyTimeMs = 400;
+long lastCrazyUpdate = 0;
+int crazytimes=0;
 
 /////////////////////////// LOCAL VARIABLES ///////////////////////////
 
@@ -19,6 +23,7 @@ _Movements::_Movements(){
     BLACKLINE_TRIGGER = 400;//300
     BLACKLINE_TRIGGER_SHIP = 250;//300
     untilStepsMechanism = 0;
+    crazyMode=false;
 } 
 
 void _Movements::initMechanism(){
@@ -301,25 +306,63 @@ void _Movements::verifySpecificAndUploadOutputs(double velMin, double velMax){
 }
 // TODO:
 //forward with P correction
-void _Movements::movePID(bool goSlow, char direction){
-//  Update Sensors
+void _Movements::movePID(bool goSlow, char direction){       
     updateSensors(1,0,0,0,1,1);
-//  Update Outputs
     setBaseVelocitiesByDirection(goSlow, direction);
-    calculateAngleOutputsByDirection(goSlow, direction);
- // if((direction=='4'||direction=='6') && (pid->getAngleDifference(bno055->rawInput))<0.5){
-    //     encoder->stepsBL > encoder->stepsFR
-    //     if()
-    //         pid->frontLeftOutput = pid->backLeftOutput = pid->backLeftOutput + encoderKp*
-    //     pid->frontRightOutput
-    //     pid->backRightOutput        
-    // }
-    verifyAndUploadOutputsByDirection(direction);   
+    calculateAngleOutputsByDirection(goSlow, direction);     
+    if(crazyMode){
+        if(millis() - lastCrazyUpdate > updateCrazyTimeMs){
+            lcd->print("Crazy", crazytimes);
+            if(direction=='6' && crazyRight){
+                pid->frontLeftOutput = 255;
+                pid->backLeftOutput = 255;
+                pid->frontRightOutput = 255;
+                pid->backRightOutput = 255;
+                motors->setMotor(1, 0, 1, 0, 0, 1, 0, 1);             
+                crazyRight=!crazyRight;
+            }
+            else if(direction=='6' && !crazyRight){
+                pid->frontLeftOutput = 255;
+                pid->backLeftOutput = 255;
+                pid->frontRightOutput = 255;
+                pid->backRightOutput = 255;                
+                motors->setMotor(0, 1, 0, 1, 1, 0, 1, 0);
+                crazyRight=!crazyRight;
+            }
+            else if(direction=='4' && crazyRight){
+                pid->frontLeftOutput = 255;
+                pid->backLeftOutput = 255;
+                pid->frontRightOutput = 255;
+                pid->backRightOutput = 255;
+                motors->setMotor(1, 0, 1, 0, 0, 1, 0, 1);             
+                crazyRight=!crazyRight;
+            }
+            else if(direction=='4' && !crazyRight){
+                pid->frontLeftOutput = 255;
+                pid->backLeftOutput = 255;
+                pid->frontRightOutput = 255;
+                pid->backRightOutput = 255;                
+                motors->setMotor(0, 1, 0, 1, 1, 0, 1, 0);
+                crazyRight=!crazyRight;
+            }   
+            verifyAndUploadOutputsByDirection(direction);
+            delay(150);    
+            if(encoder->stepsMechanism >= untilStepsMechanism){
+                motors->stopMechanism();
+                untilStepsMechanism=0;
+                encoder->encoderStateMechanism = 0; 
+            }      
+            lastCrazyUpdate = millis();         
+            return;
+        }
+    }     
+    verifyAndUploadOutputsByDirection(direction);
     if(encoder->stepsMechanism >= untilStepsMechanism){
         motors->stopMechanism();
         untilStepsMechanism=0;
         encoder->encoderStateMechanism = 0; 
-    }          
+    }         
+    lastCrazyUpdate = millis();    
 } 
 // TODO:
 void _Movements::spinPID(bool goSlow, double newAngle){
