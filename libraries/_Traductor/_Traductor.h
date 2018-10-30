@@ -14,7 +14,8 @@ class _Traductor{
         void throughtHorizontal2(int, bool);
         void girar(int angle);
         void avanzar(bool b);
-        void alinearPozo();
+        void moveToShip();
+        void alignShip();
         void alinearTren();
         void mecanismo(uint8_t newStack, uint8_t currentStack);
         void grabContainer();

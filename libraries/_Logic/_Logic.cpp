@@ -159,9 +159,10 @@ void _Logic::stackToShip(){
     }  
     if (B){
         traductor->waitForMechanism();  
-        traductor->alinearPozo();
+        traductor->moveToShip();
         if (currentLevel > 1)
             traductor->centerContainer();
+        traductor->alignShip();
     }
     else{
         traductor->setTrainLevel(true);

@@ -495,19 +495,22 @@ void _Movements::getCloseToStack(){
     delay(100);  
 }
 // TODO:
-void _Movements::larc_moveAndAlignToShip(){
+void _Movements::larc_moveAndAlignToShip(bool onlyMove){
     int doneAligning=0;
-    while(1){   //Move Until Ship
-        updateSensors(0,0,0,0,1,0);
-        movePID(true, '6');
-        if(tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER_SHIP 
-            || tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER_SHIP){
-            motors->brake();
-            break;        
+    if(onlyMove){
+        while(1){   //Move Until Ship
+            updateSensors(0,0,0,0,1,0);
+            movePID(true, '6');
+            if(tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER_SHIP 
+                || tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER_SHIP){
+                motors->brake();
+                break;        
+            }
         }
-    }
-    motors->brake();  
-    movePID_nCM(3, false, '4');
+        motors->brake();  
+        movePID_nCM(3, false, '4');  
+        return;
+    }  
     do{
         lcd->print("Alignments:", doneAligning);      
         updateSensors(0,0,0,0,1,0);

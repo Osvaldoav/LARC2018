@@ -36,8 +36,11 @@ void _Traductor::avanzar(bool b){
     movements->movePID_nCM(34, false, c);
 }
 
-void _Traductor::alinearPozo(){
-    movements->larc_moveAndAlignToShip();
+void _Traductor::moveToShip(){
+    movements->larc_moveAndAlignToShip(true);
+}
+void _Traductor::alignShip(){
+    movements->larc_moveAndAlignToShip(false);
 }
 
 void _Traductor::alinearTren(){

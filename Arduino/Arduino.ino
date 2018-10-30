@@ -14,8 +14,8 @@ const byte pinEncoderMechanism = 2;
 void setup() {
     Serial.begin(9600);
     Wire.begin(); 
-//    _Serial::read();
-//    _Serial::send('1');
+    _Serial::read();
+    _Serial::send('1');
     logic->traductor->movements->lcd->setupLCD();    
     logic->traductor->movements->pid->setupLibraryPID(); 
     logic->traductor->movements->motors->setupMotors();
@@ -32,8 +32,8 @@ void setup() {
     attachInterrupt(digitalPinToInterrupt(pinEncoderFR), encoderStepFR, CHANGE);
     attachInterrupt(digitalPinToInterrupt(pinEncoderBL), encoderStepBL, CHANGE);      
     attachInterrupt(digitalPinToInterrupt(pinEncoderMechanism), encoderStepMechanism, CHANGE);   
-//    logic->traductor->movements->initMechanism();    
-//    logic->initCommunication();
+    logic->traductor->movements->initMechanism();    
+    logic->initCommunication();
 
 
     //CALIBRATION 
@@ -191,7 +191,7 @@ void alignLine(){
 void loop(){
 //  aligningTofTest();
 //  tof_vs_sharp();
-  testMovements(); 
+//  testMovements(); 
 //  testSteps();
 //  readTCRT5000();
 //  aligningTcrtTest();
@@ -200,8 +200,8 @@ void loop(){
 //  colorSensor();
 //  logic->traductor->gotoFirst();
 //  mechanism();
-//  logic->stackToShip();
-//  logic->shipToStack();
+  logic->stackToShip();
+  logic->shipToStack();
 //  alignLine();
 //  while(1);  
 }
