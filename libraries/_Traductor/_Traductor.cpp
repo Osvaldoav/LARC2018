@@ -10,7 +10,7 @@ void _Traductor::horizontalLine(bool b){
 }
 
 void _Traductor::throughtHorizontal(int dir){
-    double cm = abs(dir) < 2 ? 18 : 62;
+    double cm = abs(dir) < 2 ? 18 : 61.5;
     char c = dir < 0 ? '6' : '4';
     movements->movePID_nCM(cm, false, c);
 }
@@ -39,7 +39,7 @@ void _Traductor::alinearPozo(){
 void _Traductor::alinearTren(){
     movements->movePID_nCM(5, false, '4');
     movements->larc_moveUntilBlackLine(false, '6', false, false, false, true);
-    movements->movePID_nCM(12, false, '6');
+    movements->movePID_nCM(20, false, '6');
 }
 
 void _Traductor::mecanismo(uint8_t newStack, uint8_t currentStack){
@@ -105,9 +105,10 @@ void _Traductor::vertical(int lines){
 }
 
 void _Traductor::alinearStack(bool dir){ 
-    // movements->alignLine();
     char c = dir ? '6' : '4';
-    movements->movePID_nCM(1.1, true, dir);
+    movements->movePID_nCM(1, true, c);  
+    delay(500); 
+    // movements->alignLine();
     // movements->getCloseToStack();
     // movements->align_tof();
 } 
@@ -164,9 +165,8 @@ void _Traductor::LcdPrint(String name, double value){
 void _Traductor::updateMechanismMovement(int actualLevel, int newLevel, bool train){
     // set new untilStepsMechanism value
     movements->encoder->encoderStateMechanism = 1;
-    int lowCompensation = (train)? (7100+4500): 3750;
-    if (actualLevel == 1 || newLevel == 1)
-        movements->untilStepsMechanism = 7100 * abs(newLevel - actualLevel) - lowCompensation; //6900 en fantasma
+    if (actualLevel == 1 || newLevel == 1 || train)
+        movements->untilStepsMechanism = 7100 * abs(newLevel - actualLevel) - 3750; //6900 en fantasma
     else 
         movements->untilStepsMechanism = 7100 * abs(newLevel - actualLevel);
     // reset steps count
@@ -207,4 +207,10 @@ void _Traductor::centerContainer(){
     movements->motors->brake();
     movements->movePID_nCM(8, false, '8');
     alinearPozo();
+}
+// TODO:
+// when (stackToShip == true) -> level is your actual level
+// when (stackToShip == false) -> level is your next level
+void _Traductor::setTrainLevel(bool stackToShip){
+    (stackToShip) ? updateMechanismMovement(3, 2, true): updateMechanismMovement(2, 3, true);
 }
