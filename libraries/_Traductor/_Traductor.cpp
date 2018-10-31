@@ -18,10 +18,10 @@ void _Traductor::throughtHorizontal(int dir){
 }
 
 void _Traductor::throughtHorizontal2(int dir, bool front){
-    double cm = abs(dir) < 2 ? 28 : abs(dir) < 3 ? 71 : abs(dir) < 4 ? 90 : 37;
+    double cm = abs(dir) < 2 ? 22 : abs(dir) < 3 ? 71 : abs(dir) < 4 ? 90 : 40;
     char c = dir < 0 ? '6' : '4';
     char frontDirection = front ? '2': '8';
-    movements->movePID_nCM(4, false, frontDirection); 
+    movements->movePID_nCM(4.5, false, frontDirection); 
     movements->crazyMode=true; 
     movements->movePID_nCM(cm, false, c);
     movements->crazyMode=false;
@@ -181,8 +181,8 @@ void _Traductor::LcdPrint(String name, double value){
 void _Traductor::updateMechanismMovement(int actualLevel, int newLevel, bool train){
     // set new untilStepsMechanism value
     movements->encoder->encoderStateMechanism = 1;
-    // if (actualLevel == 1 || newLevel == 1 || train)
-    if (actualLevel == 1 || newLevel == 1)
+    if (actualLevel == 1 || newLevel == 1 || train)
+    // if (actualLevel == 1 || newLevel == 1)
         movements->untilStepsMechanism = 7100 * abs(newLevel - actualLevel) - 3750; //6900 en fantasma
     else 
         movements->untilStepsMechanism = 7100 * abs(newLevel - actualLevel);
@@ -219,7 +219,7 @@ void _Traductor::centerContainer(bool ship, char orientation){
 // when (stackToShip == true) -> level is your actual level
 // when (stackToShip == false) -> level is your next level
 void _Traductor::setTrainLevel(bool stackToShip){
-    // (stackToShip) ? updateMechanismMovement(3, 2, true): updateMechanismMovement(2, 3, true);
+    (stackToShip) ? updateMechanismMovement(3, 2, true): updateMechanismMovement(2, 3, true);
 }
 // TODO: 
 void _Traductor::moveMechanismForAligning(bool before){
