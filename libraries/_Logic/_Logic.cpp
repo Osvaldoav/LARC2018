@@ -31,7 +31,7 @@ char _Logic::handleRed(){
     traductor->LcdPrint("handleRed", "entro");
     delay(3000);
     if(firstRed < 0)
-        firstRed = lastStack < 4 ? 1 : 0;
+        firstRed = lastStack < 4 ? 0 : 1;
     else
         firstRed = firstRed == 0 ? 1 : 0;
  
