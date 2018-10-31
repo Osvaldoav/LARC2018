@@ -549,7 +549,7 @@ void _Movements::alignFirstShip(){
         if(direction == '2'){
             if(tcrt5000->tcrtMechaRight.kalmanDistance<BLACKLINE_TRIGGER_SHIP){
                 motors->brake();
-                movePID_nCM(7, false, '8');                  
+                movePID_nCM(8, false, '8');                  
                 break;
             }
             movePID(false, '2');
@@ -557,7 +557,7 @@ void _Movements::alignFirstShip(){
         else if(direction == '8'){
             if(tcrt5000->tcrtMechaLeft.kalmanDistance<BLACKLINE_TRIGGER_SHIP){
                 motors->brake();
-                movePID_nCM(7, false, '2');                  
+                movePID_nCM(8, false, '2');                  
                 break;
             }
             movePID(false, '8');
@@ -585,7 +585,7 @@ void _Movements::centerContainer(bool ship, char orientation){
         if(direction == '2'){
             if(timeFlight->timeFlightRight.kalmanDistance > 7){
                 motors->brake();
-                movePID_nCM(8, false, '8');                  
+                movePID_nCM(9.8, false, '8');                  
                 break;
             }
             movePID(false, '2');
@@ -593,7 +593,7 @@ void _Movements::centerContainer(bool ship, char orientation){
         else if(direction == '8'){
             if(timeFlight->timeFlightLeft.kalmanDistance > 7){
                 motors->brake();
-                movePID_nCM(8, false, '2');                  
+                movePID_nCM(9.8, false, '2');                  
                 break;
             }
             movePID(false, '8');
