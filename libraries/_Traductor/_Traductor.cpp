@@ -18,7 +18,7 @@ void _Traductor::throughtHorizontal(int dir){
 }
 
 void _Traductor::throughtHorizontal2(int dir, bool front){
-    double cm = abs(dir) < 2 ? 22 : abs(dir) < 3 ? 71 : abs(dir) < 4 ? 90 : 40;
+    double cm = abs(dir) < 2 ? 20 : abs(dir) < 3 ? 71 : abs(dir) < 4 ? 90 : 40;
     char c = dir < 0 ? '6' : '4';
     char frontDirection = front ? '2': '8';
     movements->movePID_nCM(4.5, false, frontDirection); 
@@ -49,7 +49,7 @@ void _Traductor::alignFirstShip(){
 void _Traductor::alinearTren(){
     movements->movePID_nCM(5, false, '4');
     movements->larc_moveUntilBlackLine(false, '6', false, false, false, true);
-    movements->movePID_nCM(16, false, '6');
+    movements->movePID_nCM(18, false, '6');
 }
 
 void _Traductor::mecanismo(uint8_t newStack, uint8_t currentStack){
@@ -202,12 +202,14 @@ void _Traductor::waitForMechanism(){
             movements->untilStepsMechanism=0;
             movements->motors->stopMechanism();
             movements->encoder->encoderStateMechanism = 0; 
-        } 
+        }
     } 
     movements->motors->brake();
 }
 // TODO:
-void _Traductor::fixContainerSteps(char greenShip){
+void _Traductor::
+
+xContainerSteps(char greenShip){
     bool dir = (greenShip) ? '2' : '8';
     movements->movePID_nCM(3.5, false, '2');
 }
