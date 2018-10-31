@@ -197,8 +197,9 @@ void _Logic::shipToStack(){
     // delay(3000);
 
     lastLevel = stack/2*2;
-    if(((color != 'R' && lastLevel%4 != 0)||(color == 'R' && lastLevel%4 == 0)) && lastLevel > stacks[stack])
-        lastLevel++;
+    if(((color != 'R' && lastLevel%4 != 0)||(color == 'R' && lastLevel%4 == 0)) && 
+        stacks[lastLevel] > stacks[stack])
+            lastLevel++;
     lastLevel = stacks[lastLevel];
 
     if((lastColor == 'B' && blue_boxes > 5) || (lastColor == 'G' && green_boxes > 5)){
