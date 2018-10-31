@@ -31,7 +31,7 @@ char _Logic::handleRed(){
     traductor->LcdPrint("handleRed", "entro");
     delay(3000);
     if(firstRed < 0)
-        firstRed = lastStack < 4 ? 0 : 1;
+        firstRed = lastStack < 4 ? 1 : 0;
     else
         firstRed = firstRed == 0 ? 1 : 0;
  
@@ -102,9 +102,8 @@ void _Logic::stackToShip(){
     int dir;
 
     lastLevel = lastStack/2*2;
-    if((lastColor != 'R' && lastLevel%4 != 0)||(lastColor == 'R' && lastLevel%4 == 0) &&
-        stacks[lastStack] > stacks[lastLevel])
-            lastLevel++;
+    if((lastColor != 'R' && lastLevel%4 != 0)||(lastColor == 'R' && lastLevel%4 == 0))
+        lastLevel++;
     lastLevel = stacks[lastLevel]+1;
     
     // traductor->LcdPrint("STACK TO SHIP", "equis");
@@ -203,11 +202,11 @@ void _Logic::shipToStack(){
     traductor->LcdPrint("Color", color);
     // delay(3000);
 
-    lastLevel = stack/2*2;
-    if(((color != 'R' && lastLevel%4 != 0)||(color == 'R' && lastLevel%4 == 0)) && 
-        stacks[stack] > stacks[lastLevel])
-            lastLevel++;
-    lastLevel = stacks[lastLevel];
+    lastLevel = (stack+1)/2*2;
+    if((color != 'R' && lastLevel%4 != 0)||(color == 'R' && lastLevel%4 == 0)) 
+        lastLevel = stacks[stack/2*2] > stacks[stack/2*2+1] ? stacks[stack/2*2] : stacks[stack/2*2+1];
+    else
+        lastLevel = stacks[stack];
 
     if((lastColor == 'B' && blue_boxes > 5) || (lastColor == 'G' && green_boxes > 5)){
         traductor->moveAtras(); // Se mueve poquito hacia atras
