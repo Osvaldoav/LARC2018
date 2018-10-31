@@ -118,7 +118,7 @@ void _Logic::stackToShip(){
 
     currentLevel = lastColor == 'R' ? 3 : lastColor == 'G' ? green_boxes%6 : blue_boxes%6;
     traductor->LcdPrint("lastColor", lastColor);
-    // delay(1000);
+    delay(1000);
     traductor->updateMechanismMovement(lastLevel, currentLevel, false);
  
     if(B){
@@ -134,8 +134,8 @@ void _Logic::stackToShip(){
         // 2 son dos lineas, 1 es una. negativo es derecha, positivo izquierda
         traductor->throughtHorizontal(dir); // Avanza por la linea horizontal a la izquierda o derecha cuando 'B' o 'G'
     }else{
-        traductor->LcdPrint("firstRed jojo", firstRed);
-        delay(8000);
+        (firstRed<0)? traductor->LcdPrint("firstRed jojo", " CACAAA "): traductor->LcdPrint("firstRed jojo", firstRed);
+        delay(3000);
         dir = lastStack < 4 ? 1 : 2;
         dir += firstRed == 1 ? 2 : 0;
         dir *= ((lastStack/2 + 1)%2 == 0) != firstRed ? 1 : -1;

@@ -219,7 +219,7 @@ void _Traductor::centerContainer(bool ship, char orientation){
 // when (stackToShip == true) -> level is your actual level
 // when (stackToShip == false) -> level is your next level
 void _Traductor::setTrainLevel(bool stackToShip){
-    (stackToShip) ? updateMechanismMovement(3, 2, true): updateMechanismMovement(2, 3, true);
+    // (stackToShip) ? updateMechanismMovement(3, 2, true): updateMechanismMovement(2, 3, true);
 }
 // TODO: 
 void _Traductor::moveMechanismForAligning(bool before){
