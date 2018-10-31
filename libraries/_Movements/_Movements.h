@@ -39,7 +39,7 @@ class _Movements{
         void moveToShip(bool);
         void alignShip();
         void alignFirstShip();
-        void centerContainer(bool);
+        void centerContainer(bool, char);
         void larc_moveUntilBlackLine(bool, char, bool, bool, bool, bool);
         void moveMechanism(int, int);
         void asyncMovement(int, char, int, int);

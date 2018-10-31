@@ -549,52 +549,54 @@ void _Movements::alignFirstShip(){
         if(direction == '2'){
             if(tcrt5000->tcrtMechaRight.kalmanDistance<BLACKLINE_TRIGGER_SHIP){
                 motors->brake();
-                movePID_nCM(7, true, '8');                  
+                movePID_nCM(7, false, '8');                  
                 break;
             }
-            movePID(true, '2');
+            movePID(false, '2');
         }
         else if(direction == '8'){
             if(tcrt5000->tcrtMechaLeft.kalmanDistance<BLACKLINE_TRIGGER_SHIP){
                 motors->brake();
-                movePID_nCM(7, true, '2');                  
+                movePID_nCM(7, false, '2');                  
                 break;
             }
-            movePID(true, '8');
+            movePID(false, '8');
         }        
     } while(1);
 }
 // TODO:
-void _Movements::centerContainer(bool ship){
+void _Movements::centerContainer(bool ship, char orientation){
     char direction;    
     if(ship)            movePID_nCM(1.5, false, '4');
     for(int i=0; i<50; i++)
         updateSensors(0,0,0,1,0,0);
-    // if(timeFlight->timeFlightLeft.kalmanDistance<10 && timeFlight->timeFlightRight.kalmanDistance<10)
-    //     direction = '8';
-    // else if(timeFlight->timeFlightRight.kalmanDistance<10)
-    //     direction = '2';
-    // else if(timeFlight->timeFlightLeft.kalmanDistance<10)
-    //     direction = '8';    
-    direction = '2';    
+    if(orientation == ' '){
+        if(timeFlight->timeFlightLeft.kalmanDistance<10 && timeFlight->timeFlightRight.kalmanDistance<10)
+            direction = '8';
+        else if(timeFlight->timeFlightRight.kalmanDistance<10)
+            direction = '2';
+        else if(timeFlight->timeFlightLeft.kalmanDistance<10)
+            direction = '8'; 
+    }   
+    else
+        direction = orientation;
     do{
-        movePID(true, direction);
         updateSensors(0,0,0,1,0,0);
         if(direction == '2'){
             if(timeFlight->timeFlightRight.kalmanDistance > 7){
                 motors->brake();
-                movePID_nCM(7, true, '8');                  
+                movePID_nCM(8, false, '8');                  
                 break;
             }
-            movePID(true, '2');
+            movePID(false, '2');
         }
         else if(direction == '8'){
             if(timeFlight->timeFlightLeft.kalmanDistance > 7){
                 motors->brake();
-                movePID_nCM(7, true, '2');                  
+                movePID_nCM(8, false, '2');                  
                 break;
             }
-            movePID(true, '8');
+            movePID(false, '8');
         }  
     } while(1);
 }

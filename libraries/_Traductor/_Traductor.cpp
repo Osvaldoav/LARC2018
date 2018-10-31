@@ -111,7 +111,7 @@ void _Traductor::moveAtrasHorizontal(){
 }
 
 void _Traductor::vertical(int lines){
-    int steps = abs(lines) > 1 ? 42.5 : 19;
+    int steps = abs(lines) > 1 ? 43 : 19;
     char dir = lines < 0 ? '8' : '2';
     movements->movePID_nCM(steps, false, dir);
 }
@@ -212,8 +212,8 @@ void _Traductor::fixContainerSteps(char greenShip){
     movements->movePID_nCM(3.5, false, '2');
 }
 // TODO:
-void _Traductor::centerContainer(bool ship){
-    movements->centerContainer(ship);
+void _Traductor::centerContainer(bool ship, char orientation){
+    movements->centerContainer(ship, orientation);
 }
 // TODO:
 // when (stackToShip == true) -> level is your actual level

@@ -54,6 +54,7 @@ char _Logic::verifyColor(char c){
 }
 
 char _Logic::grabContainer(char c){
+    traductor->centerContainer(false, ' ');
     traductor->alinearStack(true);
     traductor->grabContainer();
     traductor->alinearStack(false);
@@ -170,7 +171,7 @@ void _Logic::stackToShip(){
         traductor->waitForMechanism();             //make sure mechanism is already (1/8) up 
         traductor->alignShip();
         traductor->LcdPrint("current level", currentLevel);
-        (currentLevel < 2)? traductor->alignFirstShip(): traductor->centerContainer(true);
+        (currentLevel < 2)? traductor->alignFirstShip(): traductor->centerContainer(true, '2');
         traductor->LcdPrint("before alignShip", "");
         traductor->alignShip();
         traductor->moveMechanismForAligning(false); //move mechanism a little down (1/8) of a level (back to normal)
