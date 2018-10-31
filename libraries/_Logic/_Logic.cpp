@@ -6,7 +6,6 @@ _Logic::_Logic(){
     stacks = new int[8];
     for(int i = 0; i < 8; i++)
         stacks[i] = 4;
-
     blue_boxes = 0;
     green_boxes = 0;
     lastStack = 0;
@@ -29,9 +28,9 @@ void _Logic::initCommunication(){
 }
 
 char _Logic::handleRed(){
-    // traductor->LcdPrint("handleRed", "entro");
-    // delay(3000);
-    if(firstRed > -1)
+    traductor->LcdPrint("handleRed", "entro");
+    delay(3000);
+    if(firstRed < 0)
         firstRed = lastStack < 4 ? 0 : 1;
     else
         firstRed = firstRed == 0 ? 1 : 0;
