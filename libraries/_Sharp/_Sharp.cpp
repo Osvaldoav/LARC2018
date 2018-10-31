@@ -1,8 +1,8 @@
 #include <_Sharp.h>
 
 /////////////////////// PINs DECLARATION ////////////////////////
-const byte pinSharpRight = A0;
-const byte pinSharpLeft = A1;
+const byte pinSharpRight = A1;
+const byte pinSharpLeft = A0;
 ////////////////////////////// LOCAL VARAIBLES ///////////////////////////////
 const double cantReads = 7;
 

@@ -33,6 +33,7 @@ class _Traductor{
         void waitForMechanism();
         void fixContainerSteps(char);
         void centerContainer();
+        void moveMechanismForAligning(bool);
 
         void LcdPrint(String name, char value);
         void LcdPrint(String name, int value);

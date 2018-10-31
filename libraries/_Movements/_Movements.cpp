@@ -357,7 +357,7 @@ void _Movements::crazyMove(char direction){
         crazyRight=!crazyRight;
     } 
     verifyAndUploadOutputsByDirection(direction); 
-    delay(15);     
+    delay(20);     
 }
 // TODO:
 void _Movements::spinPID(bool goSlow, double newAngle){
@@ -699,7 +699,7 @@ void _Movements::larc_moveBetweenVerticalBlackLine(bool goSlow, char direction, 
     }
     motors->brake();
 }
-
+// TODO:
 void _Movements::moveMechanism(int lastStackLevel, int newStackLevel){
     encoder->encoderStateMechanism = 1;  
     int difference = newStackLevel - lastStackLevel;
@@ -754,4 +754,13 @@ void _Movements::alignLine(){
     } while(1);
     updateSensors(1,0,0,0,0,0);
     pid->Setpoint = bno055->rawInput;
+}
+// TODO:
+void _Movements::moveMechanismForAligning(bool before){
+    encoder->encoderStateMechanism = 1;  
+        untilStepsMechanism = 1700;
+//  Restart encoder counts
+    encoder->stepsMechanism = 0;
+//  Move with p correction until the encoder read the cm 
+    (before) ? motors->moveMechanism(true): motors->moveMechanism(false);     
 }

@@ -163,12 +163,16 @@ void _Logic::stackToShip(){
     }  
     if (B){
         traductor->waitForMechanism();  
+        traductor->moveMechanismForAligning(true); //move mechanism a little up (1/8) of a level
         traductor->moveToShip(true);
+        traductor->waitForMechanism();             //make sure mechanism is already (1/8) up 
         traductor->alignShip();
         traductor->LcdPrint("current level", currentLevel);
         (currentLevel < 2)? traductor->alignFirstShip(): traductor->centerContainer();
         traductor->LcdPrint("before alignShip", "");
         traductor->alignShip();
+        traductor->moveMechanismForAligning(false); //move mechanism a little down (1/8) of a level (back to normal)
+        traductor->waitForMechanism();             //make sure mechanism is already (1/8) down (normal)
     }
     else{
         traductor->setTrainLevel(true);
