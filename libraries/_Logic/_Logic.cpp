@@ -54,11 +54,14 @@ char _Logic::verifyColor(char c){
 }
 
 char _Logic::grabContainer(char c){
-    traductor->centerContainer(false, ' ');
+    c = verifyColor(c);
+    char ori = lastStack/2*2 != lastStack ? '2' : '8';  // '2'  :  '8'
+    if (ori != '8')
+        traductor->centerContainer(false, ori);
     traductor->alinearStack(true);
     traductor->grabContainer();
     traductor->alinearStack(false);
-    _Serial::send(verifyColor(c));
+    _Serial::send(c);
 }
 
 void _Logic::gotoFirst(){
