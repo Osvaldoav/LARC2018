@@ -165,7 +165,9 @@ void _Logic::stackToShip(){
         traductor->waitForMechanism();  
         traductor->moveToShip(true);
         traductor->alignShip();
+        traductor->LcdPrint("current level", currentLevel);
         (currentLevel < 2)? traductor->alignFirstShip(): traductor->centerContainer();
+        traductor->LcdPrint("before alignShip", "");
         traductor->alignShip();
     }
     else{
