@@ -18,7 +18,7 @@ void _Traductor::throughtHorizontal(int dir){
 }
 
 void _Traductor::throughtHorizontal2(int dir, bool front){
-    double cm = abs(dir) < 2 ? 20.5 : abs(dir) < 3 ? 71 : abs(dir) < 4 ? 90 : 37;
+    double cm = abs(dir) < 2 ? 24 : abs(dir) < 3 ? 71 : abs(dir) < 4 ? 90 : 37;
     char c = dir < 0 ? '6' : '4';
     char frontDirection = front ? '2': '8';
     movements->movePID_nCM(4, false, frontDirection); 
@@ -49,7 +49,7 @@ void _Traductor::alignFirstShip(){
 void _Traductor::alinearTren(){
     movements->movePID_nCM(5, false, '4');
     movements->larc_moveUntilBlackLine(false, '6', false, false, false, true);
-    movements->movePID_nCM(17, false, '6');
+    movements->movePID_nCM(16, false, '6');
 }
 
 void _Traductor::mecanismo(uint8_t newStack, uint8_t currentStack){
@@ -111,7 +111,7 @@ void _Traductor::moveAtrasHorizontal(){
 }
 
 void _Traductor::vertical(int lines){
-    int steps = abs(lines) > 1 ? 41.6 : 19;
+    int steps = abs(lines) > 1 ? 42.5 : 19;
     char dir = lines < 0 ? '8' : '2';
     movements->movePID_nCM(steps, false, dir);
 }
@@ -181,7 +181,8 @@ void _Traductor::LcdPrint(String name, double value){
 void _Traductor::updateMechanismMovement(int actualLevel, int newLevel, bool train){
     // set new untilStepsMechanism value
     movements->encoder->encoderStateMechanism = 1;
-    if (actualLevel == 1 || newLevel == 1 || train)
+    // if (actualLevel == 1 || newLevel == 1 || train)
+    if (actualLevel == 1 || newLevel == 1)
         movements->untilStepsMechanism = 7100 * abs(newLevel - actualLevel) - 3750; //6900 en fantasma
     else 
         movements->untilStepsMechanism = 7100 * abs(newLevel - actualLevel);
@@ -218,5 +219,9 @@ void _Traductor::centerContainer(){
 // when (stackToShip == true) -> level is your actual level
 // when (stackToShip == false) -> level is your next level
 void _Traductor::setTrainLevel(bool stackToShip){
-    (stackToShip) ? updateMechanismMovement(3, 2, true): updateMechanismMovement(2, 3, true);
+    // (stackToShip) ? updateMechanismMovement(3, 2, true): updateMechanismMovement(2, 3, true);
+}
+// TODO: 
+void _Traductor::moveMechanismForAligning(bool before){
+    movements->moveMechanismForAligning(before);
 }

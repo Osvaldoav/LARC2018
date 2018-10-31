@@ -51,7 +51,7 @@ void testMovements(){
 //    Serial.print(logic->traductor->movements->encoder->stepsFR);
 //    Serial.print(" ");
 //    Serial.println(logic->traductor->movements->encoder->stepsBL); 
-    logic->traductor->movements->crazyMode=true;    
+//    logic->traductor->movements->crazyMode=true;    
     logic->traductor->movements->movePID(false, '6');
 //    logic->traductor->movements->spinPID(true, -90);
 //    delay(5000); 
@@ -79,18 +79,18 @@ void tof_vs_sharp(){
     logic->traductor->movements->updateSensors(0,0,0,1,0,0);
 //    Serial.print(logic->traductor->movements->timeFlight->timeFlightLeft.kalmanDistance);
 //    Serial.print(" ");
-    Serial.println(logic->traductor->movements->timeFlight->timeFlightRight.kalmanDistance);
+    Serial.print(logic->traductor->movements->timeFlight->timeFlightRight.kalmanDistance);
 //    Serial.print(" ");
 //    Serial.println((logic->traductor->movements->timeFlight->timeFlightLeft.kalmanDistance - logic->traductor->movements->timeFlight->timeFlightRight.kalmanDistance)*10);  
 //
-//    Serial.print("\t\t");
+    Serial.print("\t\t");
 //
-//    logic->traductor->movements->updateSensors(0,0,1,0,0,0);
-//    Serial.print(logic->traductor->movements->sharp->sharpBL.kalmanDistance);
-//    Serial.print(" ");
-//    Serial.print(logic->traductor->movements->sharp->sharpFR.kalmanDistance);
-//    Serial.print(" ");
-//    Serial.println((logic->traductor->movements->sharp->sharpBL.kalmanDistance - logic->traductor->movements->sharp->sharpFR.kalmanDistance)*10);   
+    logic->traductor->movements->updateSensors(0,0,1,0,0,0);
+    Serial.print(logic->traductor->movements->sharp->sharpLeft.kalmanDistance);
+    Serial.print(" ");
+    Serial.print(logic->traductor->movements->sharp->sharpRight.kalmanDistance);
+    Serial.print(" ");
+    Serial.println((logic->traductor->movements->sharp->sharpLeft.kalmanDistance - logic->traductor->movements->sharp->sharpRight.kalmanDistance)*10);   
   
 //     logic->traductor->movements->timeFlight->timeFlight_RawKalman(movements->timeFlight->timeFlightLeft);
     // logic->traductor->movements->sharp->sharp_RawKalman(movements->sharp->sharpBL);
@@ -175,7 +175,7 @@ void mechanism(){
 //    delay(1000);
 //    logic->traductor->movements->encoder->encoderStateMechanism=1;
 //    Serial.println(logic->traductor->movements->encoder->stepsMechanism);
-//    logic->traductor->movements->motors->moveMechanism(false);
+    logic->traductor->movements->motors->moveMechanism(false);
 //    logic->traductor->movements->initMechanism();
 //    delay(2000);
 //    logic->traductor->movements->motors->stopMechanism();
