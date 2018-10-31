@@ -120,10 +120,8 @@ void _Logic::stackToShip(){
     traductor->horizontalLine(A == B); // Avanza de frente o de reversa hasta linea horizontal
 
     currentLevel = lastColor == 'R' ? 3 : lastColor == 'G' ? green_boxes%6 : blue_boxes%6;
-    bool redContainer = (lastColor == 'R');
-    String sw = redContainer ? "True" : "False";
-    traductor->LcdPrint("redContainer", sw);
-    // delay(5000);
+    traductor->LcdPrint("lastColor", lastColor);
+    delay(1000);
     traductor->updateMechanismMovement(lastLevel, currentLevel, false);
  
     if(B){
