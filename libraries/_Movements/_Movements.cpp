@@ -33,7 +33,7 @@ void _Movements::initMechanism(){
     motors->stopMechanism();
     encoder->encoderStateMechanism = 1;
     encoder->stepsMechanism = 0;
-    while(encoder->stepsMechanism < 7400){    //limitSwitch is pressed when == 0
+    while(encoder->stepsMechanism < 7900){    //limitSwitch is pressed when == 0
         motors->moveMechanism(false);        
     }    
     motors->stopMechanism();
@@ -488,6 +488,7 @@ void _Movements::getCloseToStack(){
 // TODO:
 void _Movements::moveToShip(bool goBack){
     while(1){   //Move Until Ship
+        lcd->print("Move to Ship:", "moving");
         updateSensors(0,0,0,0,1,0);
         movePID(true, '6');
         if(tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER_SHIP 
@@ -496,6 +497,7 @@ void _Movements::moveToShip(bool goBack){
             break;        
         }
     }
+    lcd->print("Move to Ship:", "DONE");
     motors->brake();  
     if(goBack)  movePID_nCM(3, false, '4');  
 }
@@ -539,43 +541,62 @@ void _Movements::alignFirstShip(){
     if(tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER_SHIP && tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER_SHIP)
         direction = '8';
     else if(tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER_SHIP)
-        direction = '8';
-    else if(tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER_SHIP)
         direction = '2';
+    else if(tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER_SHIP)
+        direction = '8';
     do{
         updateSensors(0,0,0,0,1,0);
-        if(direction == '8'){
-            if(tcrt5000->tcrtMechaLeft.kalmanDistance<BLACKLINE_TRIGGER_SHIP){
-                motors->brake();
-                delay(30);
-                movePID_nCM(7, true, '2');                  
-                break;
-            }
-            movePID(true, '8');
-        }
-        else if(direction == '2'){
+        if(direction == '2'){
             if(tcrt5000->tcrtMechaRight.kalmanDistance<BLACKLINE_TRIGGER_SHIP){
                 motors->brake();
-                delay(30);
                 movePID_nCM(7, true, '8');                  
                 break;
             }
             movePID(true, '2');
+        }
+        else if(direction == '8'){
+            if(tcrt5000->tcrtMechaLeft.kalmanDistance<BLACKLINE_TRIGGER_SHIP){
+                motors->brake();
+                movePID_nCM(7, true, '2');                  
+                break;
+            }
+            movePID(true, '8');
         }        
     } while(1);
 }
 // TODO:
-void _Movements::centerContainer(){
-    movePID_nCM(1.5, false, '4');
+void _Movements::centerContainer(bool ship){
+    char direction;    
+    if(ship)            movePID_nCM(1.5, false, '4');
     for(int i=0; i<50; i++)
         updateSensors(0,0,0,1,0,0);
+    // if(timeFlight->timeFlightLeft.kalmanDistance<10 && timeFlight->timeFlightRight.kalmanDistance<10)
+    //     direction = '8';
+    // else if(timeFlight->timeFlightRight.kalmanDistance<10)
+    //     direction = '2';
+    // else if(timeFlight->timeFlightLeft.kalmanDistance<10)
+    //     direction = '8';    
+    direction = '2';    
     do{
-        movePID(true, '2');
+        movePID(true, direction);
         updateSensors(0,0,0,1,0,0);
-        // LcdPrint("TOF distance:", movements->timeFlight->timeFlightRight.kalmanDistance);
-    } while(timeFlight->timeFlightRight.kalmanDistance < 7);
-    motors->brake();
-    movePID_nCM(8, true, '8');    
+        if(direction == '2'){
+            if(timeFlight->timeFlightRight.kalmanDistance > 7){
+                motors->brake();
+                movePID_nCM(7, true, '8');                  
+                break;
+            }
+            movePID(true, '2');
+        }
+        else if(direction == '8'){
+            if(timeFlight->timeFlightLeft.kalmanDistance > 7){
+                motors->brake();
+                movePID_nCM(7, true, '2');                  
+                break;
+            }
+            movePID(true, '8');
+        }  
+    } while(1);
 }
 // FIXME: 
 /*

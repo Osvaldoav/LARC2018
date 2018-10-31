@@ -212,8 +212,8 @@ void _Traductor::fixContainerSteps(char greenShip){
     movements->movePID_nCM(3.5, false, '2');
 }
 // TODO:
-void _Traductor::centerContainer(){
-    movements->centerContainer();
+void _Traductor::centerContainer(bool ship){
+    movements->centerContainer(ship);
 }
 // TODO:
 // when (stackToShip == true) -> level is your actual level
