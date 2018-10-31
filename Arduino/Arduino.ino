@@ -136,7 +136,7 @@ void larc(){
 //  logic->traductor->movements->spinPID(true, 90);
 //  logic->traductor->movements->larc_moveAndAlignToShip();
     logic->traductor->alignShip();
-    logic->traductor->centerContainer();
+    logic->traductor->centerContainer(true);
 //  logic->traductor->movements->lcd->printAlertSec("CONTAINER DROPPED", 5);
   while(1); 
 }
