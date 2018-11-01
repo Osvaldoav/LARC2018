@@ -21,10 +21,10 @@ GPIO.setmode(GPIO.BOARD)
 GPIO.setup(8, GPIO.OUT, initial=GPIO.LOW)
 
 for i in range(5):
-	 GPIO.output(8, GPIO.HIGH) 
- 	time.sleep(0.5) 
- 	GPIO.output(8, GPIO.LOW) 
- 	time.sleep(0.5) 
+	GPIO.output(8, GPIO.HIGH) 
+	time.sleep(0.5) 
+	GPIO.output(8, GPIO.LOW) 
+	time.sleep(0.5) 
 
 brain = Algorithm()
 serial = Serial()
