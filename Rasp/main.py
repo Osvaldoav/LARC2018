@@ -22,7 +22,9 @@ cam2 = Cam(1)
 
 print "starting..."
 serial.start()
-serial.read()
+c = serial.read()
+print "FIRST CHAR RECEIVED = ",
+print c
 
 cam1.shoot()    
 cam2.shoot()
