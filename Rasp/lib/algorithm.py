@@ -110,7 +110,7 @@ class Algorithm:
 	def printMatrix(self):
 		for b in range(3):
 			for c, s in enumerate(self.matrix):
-				lvl = [i for c,i in enumerate(self.stacks) if i[0] == 0][0][1]
+				lvl = [i for i in self.stacks if i[0] == c][0][1]
 				if 3 - lvl > b:
 					print " ",
 				else:
