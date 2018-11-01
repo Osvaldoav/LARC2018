@@ -42,6 +42,8 @@ char _Logic::verifyColor(char c){
     char color = c > 98 ? 'R' : c > 65 ? 'G' : 'B';
     lastStack = color == 'R' ? c - 99 : color == 'G' ? c - 66 : c - 51;
     // verify and modify 'color' with sensor TCS3200
+    
+
     lastColor = color;
     stacks[lastStack]--;
     if(color == 'G')
@@ -116,9 +118,11 @@ void _Logic::stackToShip(){
     traductor->mecanismo(currentLevel, lastLevel);   // eleva el stack para no chocar con los demas
     traductor->horizontalLine(A == B); // Avanza de frente o de reversa hasta linea horizontal
 
-    currentLevel = lastColor == 'R' ? 3 : lastColor == 'G' ? green_boxes%6 : blue_boxes%6;
-    traductor->LcdPrint("lastColor", lastColor);
-    delay(1000);
+    currentLevel = lastColor == 'R' ? 3 : lastColor == 'G' ? green_boxes%5 : blue_boxes%5;
+    if((lastColor == 'B' && blue_boxes%5 == 0) || (lastColor == 'G' && green_boxes%5 == 0))
+        currentLevel = 5;
+    // traductor->LcdPrint("lastColor", lastColor);
+    // delay(1000);
     traductor->updateMechanismMovement(lastLevel, currentLevel, false);
  
     if(B){
