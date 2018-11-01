@@ -22,9 +22,9 @@ GPIO.setup(8, GPIO.OUT, initial=GPIO.LOW)
 
 for i in range(5):
 	 GPIO.output(8, GPIO.HIGH) 
- 	sleep(0.5) 
+ 	time.sleep(0.5) 
  	GPIO.output(8, GPIO.LOW) 
- 	sleep(0.5) 
+ 	time.sleep(0.5) 
 
 brain = Algorithm()
 serial = Serial()
