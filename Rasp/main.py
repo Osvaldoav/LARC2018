@@ -30,8 +30,20 @@ brain = Algorithm()
 serial = Serial()
 
 print "starting..."
-serial.start()
+# serial.start()
 c = serial.read()
+if c == 'Z':
+	GPIO.output(11, GPIO.HIGH) 
+	time.sleep(2) 
+	GPIO.output(11, GPIO.LOW) 
+else:
+	GPIO.output(8, GPIO.HIGH) 
+	time.sleep(2) 
+	GPIO.output(8, GPIO.LOW) 
+
+serial.send('1')
+serial.read()
+
 cam1 = Cam(0)
 cam2 = Cam(1)
 

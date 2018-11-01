@@ -13,8 +13,11 @@ const byte pinEncoderMechanism = 2;
 /////////////////////////////////////////////SETUP////////////////////////////////////////////////
 void setup() {
     Serial.begin(9600);
+
+    while(digitalRead(30) != HIGH);//limitswitch
+
+    _Serial::send('Z');
     _Serial::read();
-    _Serial::send('1');
     Wire.begin();     
     logic->traductor->movements->lcd->setupLCD();    
     logic->traductor->movements->pid->setupLibraryPID(); 
