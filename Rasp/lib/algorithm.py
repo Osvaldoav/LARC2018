@@ -21,7 +21,7 @@ class Algorithm:
 	def updateOrder(self):
 		if self.last_color == 'B' or self.last_color == 'R2':
 			self.stacks = sorted(self.stacks, key=lambda x: (-x[1], -x[0]))
-		else
+		else:
 			self.stacks = sorted(self.stacks, key=lambda x: (-x[1], x[0]))
 
 	# Remove the top container of a specific stack
