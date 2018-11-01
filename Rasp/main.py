@@ -48,6 +48,9 @@ while True:
 	if c == 'R' or c == 'S':
 		c = 'R1' if c == 'R' else 'R2'
 
+	print "char received = ",
+	print c
+
 	brain.set_last_color(c)
 
 	if(first_time and c == 'G'):

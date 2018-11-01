@@ -28,8 +28,8 @@ void _Logic::initCommunication(){
 }
 
 char _Logic::handleRed(){
-    traductor->LcdPrint("handleRed", "entro");
-    delay(3000);
+    // traductor->LcdPrint("handleRed", "entro");
+    // delay(3000);
     if(firstRed < 0)
         firstRed = lastStack < 4 ? 1 : 0;
     else
@@ -43,6 +43,8 @@ char _Logic::verifyColor(char c){
     lastStack = color == 'R' ? c - 99 : color == 'G' ? c - 66 : c - 51;
     // verify and modify 'color' with sensor TCS3200
     
+    traductor->LcdPrint("lastStack", lastStack);
+    delay(3000);
 
     lastColor = color;
     stacks[lastStack]--;
@@ -137,7 +139,7 @@ void _Logic::stackToShip(){
         // 2 son dos lineas, 1 es una. negativo es derecha, positivo izquierda
         traductor->throughtHorizontal(dir); // Avanza por la linea horizontal a la izquierda o derecha cuando 'B' o 'G'
     }else{
-        (firstRed<0)? traductor->LcdPrint("firstRed jojo", " CACAAA "): traductor->LcdPrint("firstRed jojo", firstRed);
+        (firstRed<0)? traductor->LcdPrint("firstRed jojo", " CACAAA "): traductor->LcdPrint("firstRed!!", firstRed);
         delay(3000);
         dir = lastStack < 4 ? 1 : 2;
         dir += firstRed == 1 ? 2 : 0;
