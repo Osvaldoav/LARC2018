@@ -36,6 +36,7 @@ class Serial:
 
     def start(self):
         self.send('T')
+        time.sleep(2)
         if self.first_read() != '*':
             print "Serial communication enabled!"
         else:
