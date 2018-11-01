@@ -72,6 +72,31 @@ void _Movements::updateSensors(bool readBNO, bool readColorSensor, bool readShar
     if(readTCRTVertical)    tcrt5000->filtrateDistancesTCRT5000(false);    
 }
 // FIXME:
+    // Function types:
+    //      1 -> (0      -   x/20)   (0-5% del trayecto)
+    //      2 -> (x/20   -   20x/17) (5-85% del trayecto)
+    //      3 -> (20x/17 -   x)      (85-100% del trayecto)
+// TODO:
+double _Movements::evaluatePWMFunctionByType(double baseVelocity, double xCM, double totalCM){
+    double m, b;
+    if(totalCM == 0)
+        return baseVelocity;
+    int functionType = (xCM < totalCM*0.05)? 1 : (xCM < totalCM*0.85)? 2 : 3;
+    if(functionType == 1){
+        b = motors->INITIAL_VELOCITY;
+        m = (baseVelocity-b)/(totalCM*0.05);
+        // return baseVelocity;
+    }
+    else if(functionType == 2){
+        return baseVelocity;
+    } 
+    else if(functionType == 3){
+        b = baseVelocity;
+        m = (motors->FINAL_VELOCITY-b)/(totalCM*0.15);
+    }   
+    return b + xCM*m;
+}
+// FIXME:
 /* DIRECTIONS
         ||  7  ||  8  ||  9  ||          || NorthWest || North || NorthEast ||
         ||  4  ||     ||  6  ||    =>    ||    West   ||       ||    East   ||
@@ -79,7 +104,7 @@ void _Movements::updateSensors(bool readBNO, bool readColorSensor, bool readShar
                ||  T  ||                              || TURN  ||
 */
 // TODO:
-void _Movements::setBaseVelocitiesByDirection(bool goSlow, char direction){
+void _Movements::setBaseVelocitiesByDirection(bool goSlow, char direction, double xCM, double totalCM){
     if(direction == 'T'){
         if (goSlow) {
             pid->frontLeftOutput = motors->velSlowTurnFL;
@@ -94,22 +119,22 @@ void _Movements::setBaseVelocitiesByDirection(bool goSlow, char direction){
         }
     } else if(direction=='8' || direction=='2'){
         if (goSlow) {
-            pid->frontLeftOutput = motors->velSlowFordFL;
-            pid->backLeftOutput = motors->velSlowFordBL;
-            pid->frontRightOutput = motors->velSlowFordFR;
-            pid->backRightOutput = motors->velSlowFordBR;
+            pid->frontLeftOutput = evaluatePWMFunctionByType(motors->velSlowFordFL, xCM, totalCM);
+            pid->backLeftOutput = evaluatePWMFunctionByType(motors->velSlowFordBL, xCM, totalCM);
+            pid->frontRightOutput = evaluatePWMFunctionByType(motors->velSlowFordFR, xCM, totalCM);
+            pid->backRightOutput = evaluatePWMFunctionByType(motors->velSlowFordBR, xCM, totalCM);
         } else {  
-            pid->frontLeftOutput = motors->velFordFL;
-            pid->backLeftOutput = motors->velFordBL;
-            pid->frontRightOutput = motors->velFordFR;
-            pid->backRightOutput = motors->velFordBR;
+            pid->frontLeftOutput = evaluatePWMFunctionByType(motors->velFordFL, xCM, totalCM);
+            pid->backLeftOutput = evaluatePWMFunctionByType(motors->velFordBL, xCM, totalCM);
+            pid->frontRightOutput = evaluatePWMFunctionByType(motors->velFordFR, xCM, totalCM);
+            pid->backRightOutput = evaluatePWMFunctionByType(motors->velFordBR, xCM, totalCM);
         }            
     }      
     else if(direction=='4' || direction=='6'){
-        pid->frontLeftOutput = motors->velHorFL;
-        pid->backLeftOutput = motors->velHorBL;
-        pid->frontRightOutput = motors->velHorFR;
-        pid->backRightOutput = motors->velHorBR;          
+        pid->frontLeftOutput = evaluatePWMFunctionByType(motors->velHorFL, xCM, totalCM);
+        pid->backLeftOutput = evaluatePWMFunctionByType(motors->velHorBL, xCM, totalCM);
+        pid->frontRightOutput = evaluatePWMFunctionByType(motors->velHorFR, xCM, totalCM);
+        pid->backRightOutput = evaluatePWMFunctionByType(motors->velHorBR, xCM, totalCM);        
     }       
 }
 // TODO:
@@ -312,7 +337,7 @@ void _Movements::movePID(bool goSlow, char direction){
     //     moveCalled=0;
     // }
     updateSensors(1,0,0,0,1,1);
-    setBaseVelocitiesByDirection(goSlow, direction);
+    setBaseVelocitiesByDirection(goSlow, direction, 0, 0);
     calculateAngleOutputsByDirection(goSlow, direction);         
     verifyAndUploadOutputsByDirection(direction);   
     if(encoder->stepsMechanism >= untilStepsMechanism){
@@ -321,6 +346,19 @@ void _Movements::movePID(bool goSlow, char direction){
         encoder->encoderStateMechanism = 0; 
     }   
     // moveCalled++;     
+} 
+// TODO:
+//forward with P correction
+void _Movements::movePID(bool goSlow, char direction, double xCM, double totalCM){   
+    updateSensors(1,0,0,0,1,1);
+    setBaseVelocitiesByDirection(goSlow, direction, xCM, totalCM);
+    calculateAngleOutputsByDirection(goSlow, direction);         
+    verifyAndUploadOutputsByDirection(direction);   
+    if(encoder->stepsMechanism >= untilStepsMechanism){
+        motors->stopMechanism();
+        untilStepsMechanism=0;
+        encoder->encoderStateMechanism = 0; 
+    }    
 } 
 // TODO:
 void _Movements::crazyMove(char direction){
@@ -386,7 +424,7 @@ void _Movements::turnPID(bool goSlow) {
 //  Update Sensors    
     updateSensors(0,0,0,0,0,0);    
 //  Update Outputs
-    setBaseVelocitiesByDirection(goSlow, 'T');
+    setBaseVelocitiesByDirection(goSlow, 'T', 0, 0);
     calculateAngleOutputsByDirection(goSlow, 'T'); 
     verifyAndUploadOutputsByDirection('T'); 
     if(encoder->stepsMechanism >= untilStepsMechanism){
@@ -413,7 +451,8 @@ void _Movements::movePID_nCM(double cm, bool goSlow, char direction){
     encoder->stepsFR=0; encoder->stepsBL=0;    
 //  Move with p correction until the encoder read the cm
     while (encoder->stepsFR < untilSteps){              
-        movePID(goSlow, direction);        
+        // movePID(goSlow, direction, encoder->stepsFR, untilSteps);
+        movePID(goSlow, direction, 0,0);        
     }
     motors->brake();
     encoder->encoderStateFR=0; encoder->encoderStateBL=0;
@@ -487,16 +526,30 @@ void _Movements::getCloseToStack(){
 }
 // TODO:
 void _Movements::moveToShip(bool goBack){
-    while(1){   //Move Until Ship
+    int inSeaArea=0;
+    do{   //Move Until Ship
         lcd->print("Move to Ship:", "moving");
-        updateSensors(0,0,0,0,1,0);
+        updateSensors(0,0,0,0,1,1);
         movePID(true, '6');
-        if(tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER_SHIP 
+        if(goBack){
+            if(tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER_SHIP 
             || tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER_SHIP){
-            motors->brake();
-            break;        
+                motors->brake();
+                delay(20);
+                if(++inSeaArea > 1)
+                    break;        
+            }            
         }
-    }
+        else{
+            if(tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER_SHIP 
+            || tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER_SHIP){
+                motors->brake();
+                delay(20);                
+                if(++inSeaArea > 3)
+                    break;        
+            }                     
+        }
+    } while(1);
     lcd->print("Move to Ship:", "DONE");
     motors->brake();  
     if(goBack)  movePID_nCM(3, false, '4');  
@@ -508,29 +561,32 @@ void _Movements::alignShip(){
         lcd->print("Alignments:", doneAligning);      
         updateSensors(0,0,0,0,1,0);
         if(tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER_SHIP && tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER_SHIP){
-            if(++doneAligning > 1)  break;
-            else                    movePID_nCM(1, false, '4');
+            if(++doneAligning > 4)  break;
+            else
+                movePID_nCM(1.5, true, '4');
         }    
         if(tcrt5000->tcrtMechaLeft.kalmanDistance<BLACKLINE_TRIGGER_SHIP && tcrt5000->tcrtMechaRight.kalmanDistance<BLACKLINE_TRIGGER_SHIP)
             movePID(true, '6');
         else if(tcrt5000->tcrtMechaLeft.kalmanDistance>=BLACKLINE_TRIGGER_SHIP && tcrt5000->tcrtMechaRight.kalmanDistance<BLACKLINE_TRIGGER_SHIP){
-            movePID_nCM(1, false, '4');
+            movePID_nCM(1.6, true, '4');
+            delay(40);
             pid->calculateNewSetpoint(-0.5);
-            for(int i=0; i<100; i++){
-                turnPID(false);  
+            for(int i=0; i<80; i++){
+                turnPID(true);  
             }   
         }
         else if(tcrt5000->tcrtMechaLeft.kalmanDistance<BLACKLINE_TRIGGER_SHIP && tcrt5000->tcrtMechaRight.kalmanDistance>=BLACKLINE_TRIGGER_SHIP){
-            movePID_nCM(1, false, '4');
+            movePID_nCM(1.6, true, '4');
+            delay(40);
             pid->calculateNewSetpoint(0.5);
-            for(int i=0; i<100; i++){
-                turnPID(false);  
+            for(int i=0; i<80; i++){
+                turnPID(true);  
             }      
         }        
     } while(1);
     // movePID_nCM(0.5, true, '4');     
     motors->brake();   
-    delay(300);
+    delay(50);
     updateSensors(1,0,0,0,0,0);    
     pid->Setpoint = bno055->rawInput;    
 }
@@ -549,25 +605,25 @@ void _Movements::alignFirstShip(){
         if(direction == '2'){
             if(tcrt5000->tcrtMechaRight.kalmanDistance<BLACKLINE_TRIGGER_SHIP){
                 motors->brake();
-                movePID_nCM(8, false, '8');                  
+                movePID_nCM(7.7, true, '8');                  
                 break;
             }
-            movePID(false, '2');
+            movePID(true, '2');
         }
         else if(direction == '8'){
             if(tcrt5000->tcrtMechaLeft.kalmanDistance<BLACKLINE_TRIGGER_SHIP){
                 motors->brake();
-                movePID_nCM(8, false, '2');                  
+                movePID_nCM(7.7, true, '2');                  
                 break;
             }
-            movePID(false, '8');
+            movePID(true, '8');
         }        
     } while(1);
 }
 // TODO:
-void _Movements::centerContainer(bool ship, char orientation){
+void _Movements::centerContainer(char orientation){
+    double stepsToMove = 6.7;
     char direction;    
-    if(ship)            movePID_nCM(1.5, false, '4');
     for(int i=0; i<50; i++)
         updateSensors(0,0,0,1,0,0);
     if(orientation == ' '){
@@ -585,18 +641,18 @@ void _Movements::centerContainer(bool ship, char orientation){
         if(direction == '2'){
             if(timeFlight->timeFlightRight.kalmanDistance > 7){
                 motors->brake();
-                movePID_nCM(9.8, false, '8');                  
+                movePID_nCM(stepsToMove, true, '8');                  
                 break;
             }
-            movePID(false, '2');
+            movePID(true, '2');
         }
         else if(direction == '8'){
             if(timeFlight->timeFlightLeft.kalmanDistance > 7){
                 motors->brake();
-                movePID_nCM(9.8, false, '2');                  
+                movePID_nCM(stepsToMove, true, '2');                  
                 break;
             }
-            movePID(false, '8');
+            movePID(true, '8');
         }  
     } while(1);
 }

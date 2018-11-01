@@ -31,7 +31,7 @@ char _Logic::handleRed(){
     traductor->LcdPrint("handleRed", "entro");
     delay(3000);
     if(firstRed < 0)
-        firstRed = lastStack < 4 ? 0 : 1;
+        firstRed = lastStack < 4 ? 1 : 0;
     else
         firstRed = firstRed == 0 ? 1 : 0;
  
@@ -56,8 +56,7 @@ char _Logic::verifyColor(char c){
 char _Logic::grabContainer(char c){
     c = verifyColor(c);
     char ori = lastStack/2*2 != lastStack ? '2' : '8';  // '2'  :  '8'
-    if (ori != '8')
-        traductor->centerContainer(false, ori);
+    traductor->centerContainer(ori);
     traductor->alinearStack(true);
     traductor->grabContainer();
     traductor->alinearStack(false);
@@ -168,16 +167,25 @@ void _Logic::stackToShip(){
         //     traductor->fixContainerSteps(false);        
     }  
     if (B){
+        bool firstContainer = (currentLevel < 2);
         traductor->waitForMechanism();  
-        traductor->moveMechanismForAligning(true); //move mechanism a little up (1/8) of a level
+        if(!firstContainer)
+            traductor->moveMechanismForAligning(true); //move mechanism a little up (1/8) of a level
         traductor->moveToShip(true);
         traductor->waitForMechanism();             //make sure mechanism is already (1/8) up 
         traductor->alignShip();
-        traductor->LcdPrint("current level", currentLevel);
-        (currentLevel < 2)? traductor->alignFirstShip(): traductor->centerContainer(true, '2');
-        traductor->LcdPrint("before alignShip", "");
-        traductor->alignShip();
-        traductor->moveMechanismForAligning(false); //move mechanism a little down (1/8) of a level (back to normal)
+        if(!firstContainer){
+            traductor->movements->movePID_nCM(4.5, true, '4');
+            traductor->moveToShip(false);
+            traductor->alignFirstShip();            
+        }
+        else{
+            traductor->movements->movePID_nCM(4.5, true, '4');
+            traductor->moveToShip(false);            
+            traductor->centerContainer(' ');
+        }
+        if(!firstContainer)
+            traductor->moveMechanismForAligning(false); //move mechanism a little down (1/8) of a level (back to normal)
         traductor->waitForMechanism();             //make sure mechanism is already (1/8) down (normal)
     }
     else{
