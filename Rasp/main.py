@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO 
 import cv2
 import sys
-sys.path.insert(0, 'home/pi/Documents/LARC2018/Rasp/lib/')
+sys.path.insert(0, '/home/pi/Documents/LARC2018/Rasp/lib/')
 from serial_comunication import Serial
 from cam import Cam
 from algorithm import Algorithm
