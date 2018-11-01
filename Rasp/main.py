@@ -1,3 +1,4 @@
+import RPi.GPIO as GPIO 
 import cv2
 import sys
 sys.path.insert(0, './lib/')
@@ -15,6 +16,16 @@ def printChar(pair):
 	print pair[1]
 
 # SETUP
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(8, GPIO.OUT, initial=GPIO.LOW)
+
+for i in range(5):
+	 GPIO.output(8, GPIO.HIGH) 
+ 	sleep(0.5) 
+ 	GPIO.output(8, GPIO.LOW) 
+ 	sleep(0.5) 
+
 brain = Algorithm()
 serial = Serial()
 
