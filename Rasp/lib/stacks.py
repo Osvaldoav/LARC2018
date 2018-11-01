@@ -122,7 +122,7 @@ def getMatrix(image, left_cam):
 	return matrix
 
 
-image = cv2.imread('../borrar/Image 2.png')
-cv2.imshow('Image', image)
-checking(image)
-cv2.waitKey(0)
+# image = cv2.imread('../borrar/Image 2.png')
+# cv2.imshow('Image', image)
+# checking(image)
+# cv2.waitKey(0)
