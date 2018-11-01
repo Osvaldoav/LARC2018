@@ -21,8 +21,6 @@ serial = Serial()
 print "starting..."
 serial.start()
 c = serial.read()
-print "FIRST CHAR RECEIVED = ",
-print c
 cam1 = Cam(0)
 cam2 = Cam(1)
 
