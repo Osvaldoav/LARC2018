@@ -13,8 +13,9 @@ const byte pinEncoderMechanism = 2;
 /////////////////////////////////////////////SETUP////////////////////////////////////////////////
 void setup() {
     Serial.begin(9600);
-
+    digitalWrite(22, HIGH);
     while(digitalRead(30) != HIGH);//limitswitch
+    digitalWrite(22, LOW);
 
     _Serial::send('Z');
     _Serial::read();
