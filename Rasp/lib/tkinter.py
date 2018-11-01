@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0, './lib/')
+sys.path.insert(0, '/home/pi/Documents/LARC2018/Rasp/lib/')
 import stacks
 
 class Screen:
