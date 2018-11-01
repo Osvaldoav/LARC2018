@@ -58,8 +58,8 @@ char _Logic::verifyColor(char c){
 char _Logic::grabContainer(char c){
     c = verifyColor(c);
     char ori = lastStack/2*2 != lastStack ? '2' : '8';  // '2'  :  '8'
-    if(ori != '8')
-        traductor->centerContainer(ori);
+    // if(ori != '8')
+    traductor->centerContainer(ori);
     traductor->alinearStack(true);
     traductor->grabContainer();
     traductor->alinearStack(false);

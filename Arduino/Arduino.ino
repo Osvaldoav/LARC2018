@@ -12,11 +12,12 @@ const byte pinEncoderMechanism = 2;
 
 /////////////////////////////////////////////SETUP////////////////////////////////////////////////
 void setup() {
+    delay(3000);
+    Wire.begin();
     Serial.begin(9600);
     _Serial::read();
-    _Serial::send('1');
-    Wire.begin();     
-    logic->traductor->movements->lcd->setupLCD();    
+    //_Serial::send('1');     
+//    logic->traductor->movements->lcd->setupLCD();    
     logic->traductor->movements->pid->setupLibraryPID(); 
     logic->traductor->movements->motors->setupMotors();
     logic->traductor->movements->colorSensor->setupColorSensor();
@@ -140,8 +141,8 @@ void larc(){
 //    logic->traductor->moveToShip(false);
     logic->traductor->movements->movePID_nCM(4.5, true, '4');
     logic->traductor->moveToShip(false);
-//    logic->traductor->alignFirstShip();
-    logic->traductor->centerContainer(' ');
+    logic->traductor->alignFirstShip();
+//    logic->traductor->centerContainer(' ');
 //    logic->traductor->alignShip();
 //  logic->traductor->movements->lcd->printAlertSec("CONTAINER DROPPED", 5);
   while(1); 
