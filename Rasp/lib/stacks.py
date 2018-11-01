@@ -3,8 +3,8 @@ import numpy as np
 
 # Color ranges
 lower_range_g = np.array([23,20,10], dtype=np.uint8)
-upper_range_g = np.array([90,255,255], dtype=np.uint8)
-lower_range_b = np.array([91,20,10], dtype=np.uint8)
+upper_range_g = np.array([100,255,255], dtype=np.uint8)
+lower_range_b = np.array([101,20,10], dtype=np.uint8)
 upper_range_b = np.array([150,255,255], dtype=np.uint8)
 lower_range_r = np.array([0, 50, 20], dtype=np.uint8)
 upper_range_r = np.array([22, 255, 255], dtype=np.uint8)
@@ -122,7 +122,8 @@ def getMatrix(image, left_cam):
 	return matrix
 
 
-# image = cv2.imread('../borrar/Image 2.png')
+# image = cv2.imread('../borrar/Image 4.png')
 # cv2.imshow('Image', image)
+# print getMatrix(image, False)
 # checking(image)
 # cv2.waitKey(0)
