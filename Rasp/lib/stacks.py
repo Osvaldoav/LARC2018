@@ -23,33 +23,33 @@ def getMasks(image):
 
 	return mask_red, mask_green, mask_blue
 
-# # Splits a mask in six different smaller images at a specific position
-# def checking(mask):
-# 	height, width = mask.shape[:2]
-# 	size_h = int(height*0.18)
-# 	size_w = int(width*0.18)
+# Splits a mask in six different smaller images at a specific position
+def checking(mask):
+	height, width = mask.shape[:2]
+	size_h = int(height*0.18)
+	size_w = int(width*0.18)
 
-# 	start_row, start_col = int(40), int(75)
-# 	end_row, end_col = size_h, size_w
+	start_row, start_col = int(40), int(75)
+	end_row, end_col = size_h, size_w
 
-# 	list_rows = []
+	list_rows = []
 
-# 	for col in range(2):
-# 		list_cols = []
-# 		for row in range(3):
-# 			end_col = start_col + size_w
-# 			cnt = np.array([[start_col,start_row],[start_col,start_row+size_h],[start_col+size_w,start_row+size_h],[start_col+size_w,start_row]], dtype=np.int32)
-# 			cv2.drawContours(mask, [cnt], -1, (255,0,0), 2)
-# 			cv2.imshow('Image', mask)			
-# 			cv2.waitKey(0)
-# 			cropped = mask[start_row:end_row , start_col:end_col]
-# 			list_cols.append(cropped)
-# 			start_col += size_w + int(width*0.13)
-# 		list_rows.append(list_cols)
-# 		start_col, end_col = int(75), start_col + size_w
-# 		start_row, end_row = height-size_h-40, height
+	for col in range(2):
+		list_cols = []
+		for row in range(3):
+			end_col = start_col + size_w
+			cnt = np.array([[start_col,start_row],[start_col,start_row+size_h],[start_col+size_w,start_row+size_h],[start_col+size_w,start_row]], dtype=np.int32)
+			cv2.drawContours(mask, [cnt], -1, (255,0,0), 2)
+			cv2.imshow('Image', mask)			
+			cv2.waitKey(0)
+			cropped = mask[start_row:end_row , start_col:end_col]
+			list_cols.append(cropped)
+			start_col += size_w + int(width*0.13)
+		list_rows.append(list_cols)
+		start_col, end_col = int(75), start_col + size_w
+		start_row, end_row = height-size_h-40, height
 
-# 	# return list_rows
+	# return list_rows
 
 
 # Splits a mask in six different smaller images at a specific position
@@ -120,3 +120,9 @@ def getMatrix(image, left_cam):
 			matrix[s][b] = getMaxColor(getContour(masks[0][c][b]), getContour(masks[1][c][b]), getContour(masks[2][c][b]))
 
 	return matrix
+
+
+image = cv2.imread('../borrar/Image 2.png')
+cv2.imshow('Image', image)
+checking(image)
+cv2.waitKey(0)
