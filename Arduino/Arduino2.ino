@@ -79,7 +79,7 @@
 //void setup(){
 //    Serial.begin(9600);
 //    Wire.begin(); 
-//    logic->traductor->movements->lcd->setupLCD(); 
+//    //logic->traductor->movements->lcd->setupLCD(); 
 //  c_serial = _Serial::read();
 //  _Serial::send('1');
 //  _Serial::send('1');  
@@ -88,7 +88,7 @@
 //void loop(){
 //  c_serial = _Serial::read();
 //  logic->traductor->LcdPrint("STACK", c_serial);
-//  delay(10);
+//  delay(100);
 //  _Serial::send(c_serial);
 //}
 

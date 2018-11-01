@@ -18,11 +18,13 @@ class _Movements{
         // Modular functions
         void updateSensors(bool, bool, bool, bool, bool, bool);
         void movePID(bool, char);
+        void movePID(bool, char, double, double);
         void crazyMove(char);
         void spinPID(bool, double);
         void turnPID(bool);        
         // Get Angle Outputs
-        void setBaseVelocitiesByDirection(bool, char);
+        double evaluatePWMFunctionByType(double, double, double);
+        void setBaseVelocitiesByDirection(bool, char, double, double);
         void setBaseSpecificVelocities(double, double, double, double);
         void calculateAngleOutputsByDirection(bool, char);
         void verifyAndUploadOutputsByDirection(char);
@@ -39,7 +41,7 @@ class _Movements{
         void moveToShip(bool);
         void alignShip();
         void alignFirstShip();
-        void centerContainer(bool, char);
+        void centerContainer(char);
         void larc_moveUntilBlackLine(bool, char, bool, bool, bool, bool);
         void moveMechanism(int, int);
         void asyncMovement(int, char, int, int);

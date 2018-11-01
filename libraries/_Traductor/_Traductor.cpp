@@ -107,7 +107,7 @@ void _Traductor::backUntilBlackLineSharps(bool tcrt){
 
 void _Traductor::moveAtrasHorizontal(){
     movements->larc_moveUntilBlackLine(false, '4', false, true, false, true);
-    movements->movePID_nCM(2.5, false, '4');
+    movements->movePID_nCM(2, false, '4');
 }
 
 void _Traductor::vertical(int lines){
@@ -207,15 +207,13 @@ void _Traductor::waitForMechanism(){
     movements->motors->brake();
 }
 // TODO:
-void _Traductor::
-
-xContainerSteps(char greenShip){
+void _Traductor::fixContainerSteps(char greenShip){
     bool dir = (greenShip) ? '2' : '8';
     movements->movePID_nCM(3.5, false, '2');
 }
 // TODO:
-void _Traductor::centerContainer(bool ship, char orientation){
-    movements->centerContainer(ship, orientation);
+void _Traductor::centerContainer(char orientation){
+    movements->centerContainer(orientation);
 }
 // TODO:
 // when (stackToShip == true) -> level is your actual level

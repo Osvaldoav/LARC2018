@@ -57,7 +57,9 @@ void _Motors::setupMotors(){
     velHorFL = 200;//185
     velHorBL = (200-HORIZONTAL_OFFSET_POWER)*1;//0.9666
     velHorFR = (200-HORIZONTAL_OFFSET_POWER);
-    velHorBR = 200;       
+    velHorBR = 200;   
+    INITIAL_VELOCITY = 80;
+    FINAL_VELOCITY = 30;        
 
     pinMode(pinPWMFR_F,OUTPUT);
     pinMode(pinPWMFR_B,OUTPUT);

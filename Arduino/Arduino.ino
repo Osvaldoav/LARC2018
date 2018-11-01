@@ -13,9 +13,9 @@ const byte pinEncoderMechanism = 2;
 /////////////////////////////////////////////SETUP////////////////////////////////////////////////
 void setup() {
     Serial.begin(9600);
-    Wire.begin(); 
     _Serial::read();
     _Serial::send('1');
+    Wire.begin();     
     logic->traductor->movements->lcd->setupLCD();    
     logic->traductor->movements->pid->setupLibraryPID(); 
     logic->traductor->movements->motors->setupMotors();
@@ -52,7 +52,7 @@ void testMovements(){
 //    Serial.print(" ");
 //    Serial.println(logic->traductor->movements->encoder->stepsBL); 
 //    logic->traductor->movements->crazyMode=true;    
-    logic->traductor->movements->movePID(false, '6');
+//    logic->traductor->movements->movePID(false, '6');
 //    logic->traductor->movements->spinPID(true, -90);
 //    delay(5000); 
 //    logic->traductor->movements->movePID_nSec(1.5, false, '1');
@@ -60,10 +60,10 @@ void testMovements(){
 //    logic->traductor->movements->spinPID(false, -90);
 //    logic->traductor->movements->motors->brake();
 //    delay(2000);
-//    logic->traductor->movements->movePID_nCM(16.5, false, '8');
-//    delay(3000);
-//    logic->traductor->movements->movePID_nCM(179, false, '8');
-//    delay(3000);    
+    logic->traductor->movements->movePID_nCM(37, false, '4');
+    delay(3000);
+    logic->traductor->movements->movePID_nCM(37, false, '6');
+    delay(3000);    
 }
 void aligningTofTest(){
 //    logic->traductor->movements->movePID_alignToPickContainer(2);
@@ -77,10 +77,10 @@ void aligningTofTest(){
 }
 void tof_vs_sharp(){
     logic->traductor->movements->updateSensors(0,0,0,1,0,0);
-//    Serial.print(logic->traductor->movements->timeFlight->timeFlightLeft.kalmanDistance);
-//    Serial.print(" ");
+    Serial.print(logic->traductor->movements->timeFlight->timeFlightLeft.kalmanDistance);
+    Serial.print(" ");
     Serial.print(logic->traductor->movements->timeFlight->timeFlightRight.kalmanDistance);
-//    Serial.print(" ");
+    Serial.print(" ");
 //    Serial.println((logic->traductor->movements->timeFlight->timeFlightLeft.kalmanDistance - logic->traductor->movements->timeFlight->timeFlightRight.kalmanDistance)*10);  
 //
     Serial.print("\t\t");
@@ -89,8 +89,8 @@ void tof_vs_sharp(){
     Serial.print(logic->traductor->movements->sharp->sharpLeft.kalmanDistance);
     Serial.print(" ");
     Serial.print(logic->traductor->movements->sharp->sharpRight.kalmanDistance);
-    Serial.print(" ");
-    Serial.println((logic->traductor->movements->sharp->sharpLeft.kalmanDistance - logic->traductor->movements->sharp->sharpRight.kalmanDistance)*10);   
+    Serial.println(" ");
+//    Serial.println((logic->traductor->movements->sharp->sharpLeft.kalmanDistance - logic->traductor->movements->sharp->sharpRight.kalmanDistance)*10);   
   
 //     logic->traductor->movements->timeFlight->timeFlight_RawKalman(movements->timeFlight->timeFlightLeft);
     // logic->traductor->movements->sharp->sharp_RawKalman(movements->sharp->sharpBL);
@@ -135,8 +135,14 @@ void larc(){
 //  logic->traductor->movements->movePID_nCM(21, false, '6');
 //  logic->traductor->movements->spinPID(true, 90);
 //  logic->traductor->movements->larc_moveAndAlignToShip();
+    logic->traductor->moveToShip(true);
     logic->traductor->alignShip();
-    logic->traductor->centerContainer(true, ' ');
+//    logic->traductor->moveToShip(false);
+    logic->traductor->movements->movePID_nCM(4.5, true, '4');
+    logic->traductor->moveToShip(false);
+//    logic->traductor->alignFirstShip();
+    logic->traductor->centerContainer(' ');
+//    logic->traductor->alignShip();
 //  logic->traductor->movements->lcd->printAlertSec("CONTAINER DROPPED", 5);
   while(1); 
 }
@@ -193,6 +199,7 @@ void loop(){
 //  tof_vs_sharp();
 //  testMovements(); 
 //  testSteps();
+
 //  readTCRT5000();
 //  aligningTcrtTest();
 //  larc();
