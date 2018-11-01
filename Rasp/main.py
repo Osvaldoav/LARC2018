@@ -17,8 +17,8 @@ def printChar(pair):
 # SETUP
 brain = Algorithm()
 serial = Serial()
-cam1 = Cam(0)
-cam2 = Cam(1)
+# cam1 = Cam(0)
+# cam2 = Cam(1)
 
 print "starting..."
 serial.start()
