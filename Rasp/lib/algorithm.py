@@ -93,7 +93,7 @@ class Algorithm:
 
 		# If there isn't any, picks the first container in the corresponding order, non-color specified 
 		for s in self.stacks:
-			if len(self.matrix[s[0]]) > 0:
+			if len(self.matrix[s[0]]) > 0 and self.matrix[s[0]][0] != 'X':
 				return s[0], self.matrix[s[0]][0]
 
 
