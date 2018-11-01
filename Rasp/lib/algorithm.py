@@ -69,6 +69,8 @@ class Algorithm:
 	def solve(self):
 		self.updateOrder()
 
+		print self.stacks
+
 		# Sets the color we are trying to find
 		if self.greens % 5 == 0 and self.greens > 0:
 			color = 'B'
