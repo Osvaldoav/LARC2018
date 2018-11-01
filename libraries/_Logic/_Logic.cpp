@@ -22,7 +22,7 @@ void _Logic::initCommunication(){
     // c_serial = _Serial::read();
 
     c_serial = _Serial::clean();
-    traductor->LcdPrint("c_serial", c_serial);
+    // traductor->LcdPrint("c_serial", c_serial);
     // delay(3000);
     pickFirst(c_serial);
 }
@@ -74,7 +74,7 @@ void _Logic::gotoSecond(){
     traductor->gotoSecond();
     _Serial::send('1');
     c_serial = _Serial::clean();
-    traductor->LcdPrint("c_serial", c_serial);
+    // traductor->LcdPrint("c_serial", c_serial);
     // delay(3000);
     pickFirst(c_serial);
     currentLevel = 4;
@@ -84,7 +84,7 @@ void _Logic::pickFirst(char c){
     char color = c > 98 ? 'R' : c > 65 ? 'G' : 'B';
     lastStack = color == 'R' ? c - 99 : color == 'G' ? c - 66 : c - 51;
     // blink(lastStack);
-    traductor->LcdPrint("PF stack", lastStack);
+    // traductor->LcdPrint("PF stack", lastStack);
     // delay(5000);
     traductor->pickFirst(lastStack);
     grabContainer(c);
@@ -159,7 +159,7 @@ void _Logic::stackToShip(){
         }
         traductor->avanzar(b); // avanza hasta que llegue a la altura de los barcos
     }else{
-        traductor->LcdPrint("Ship Color:", lastColor);
+        // traductor->LcdPrint("Ship Color:", lastColor);
         dir = ((lastStack/2 + 1)%2 == 0) != B ? -90 : 90;
         bool tcrt = dir == 90? true: false;
         traductor->backUntilBlackLineSharps(tcrt);
@@ -201,7 +201,7 @@ void _Logic::stackToShip(){
 
 void _Logic::shipToStack(){
     char c = _Serial::read();
-    traductor->LcdPrint("char received", c);
+    // traductor->LcdPrint("char received", c);
     // delay(3000);
     if(c == 'S'){
         gotoSecond();
@@ -212,9 +212,9 @@ void _Logic::shipToStack(){
     bool dir, tcrt;
     int lines, angle;
     
-    traductor->LcdPrint("Stack to go", stack);
+    // traductor->LcdPrint("Stack to go", stack);
     // delay(3000);
-    traductor->LcdPrint("Color", color);
+    // traductor->LcdPrint("Color", color);
     // delay(3000);
 
     lastLevel = (stack+1)/2*2;

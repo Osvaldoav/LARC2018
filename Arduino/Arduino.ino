@@ -12,7 +12,7 @@ const byte pinEncoderMechanism = 2;
 
 /////////////////////////////////////////////SETUP////////////////////////////////////////////////
 void setup() {
-    delay(3000);
+//    delay(3000);
     Wire.begin();
     Serial.begin(9600);
     _Serial::read();
