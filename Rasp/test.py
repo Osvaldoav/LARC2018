@@ -6,12 +6,11 @@ from cam import Cam
 from tkinter import Screen
 import time
 
-screen = Screen()
 # screen.drawText()
 
 # brain = Algorithm(screen.getParams())
 
-serial = Serial(screen)
+serial = Serial()
 print "starting"
 serial.start()   #
 serial.read()   #
