@@ -29,7 +29,12 @@ class Serial:
                 print "Time limit!"
                 return '*'
             pass
-        return self.arduino.read()
+
+
+        tur = self.arduino.read()
+        print "first read = ",
+        print tur
+        return tur 
 
     def convert(self, pair):
         return chr(ord(str(pair[0])) + (ord(pair[1]) - 65) * 3)
