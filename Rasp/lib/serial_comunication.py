@@ -36,11 +36,11 @@ class Serial:
 
     def start(self):
         self.send('T')
-        time.sleep(2)
         if self.first_read() != '*':
             print "Serial communication enabled!"
         else:
             print "Serial communication has failed"
+        time.sleep(2)
 
 # def convert( pair):
 #     return chr(ord(str(pair[0])) + (ord(pair[1]) - 65) * 3)
