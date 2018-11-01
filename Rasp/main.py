@@ -17,14 +17,14 @@ def printChar(pair):
 # SETUP
 brain = Algorithm()
 serial = Serial()
-# cam1 = Cam(0)
-# cam2 = Cam(1)
 
 print "starting..."
 serial.start()
 c = serial.read()
 print "FIRST CHAR RECEIVED = ",
 print c
+cam1 = Cam(0)
+cam2 = Cam(1)
 
 cam1.shoot()    
 cam2.shoot()
