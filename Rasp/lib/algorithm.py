@@ -2,30 +2,27 @@ import sys
 sys.path.insert(0, './lib/')
 import stacks
 
-BLUE_ORDER = [7,6,3,2,4,5,0,1]
-GREEN_ORDER = [0,1,4,5,3,2,7,6]
-R1_ORDER = [1,2,0,3,5,6,4,7]
-R2_ORDER = [6,5,7,4,2,1,3,0]
-
 class Algorithm:
 
 	def __init__(self):
 		self.matrix = [['X' for j in range(3)] for i in range(8)]
-		self.priority = -1
-		self.order = BLUE_ORDER
-		self.blues = 0
-		self.greens = 0
-		self.reds = 0
-		self.last_color = 'B'
-		self.stack = [3 for i in range(8)]
+		self.stacks = [(i, 3) for i in range(8)]
+		self.blues, self.greens, self.reds = 0, 0, 0
 
-	# Draws rectangles with a specific color and position regarding the image and section
+	# Updates the stacks matrix with the corresponding color regarding the image and section
 	def updateContainers(self, image, section, left_cam):
 		_stacks = stacks.getMatrix(image, left_cam)
 
 		for c, s in enumerate(_stacks):
 			for b in range(3):
 				self.matrix[section*2 + c][b] = s[b]
+
+	# Updates the order regarding last_color
+	def updateOrder(self):
+		if self.last_color == 'B' or self.last_color == 'R2':
+			self.stacks = sorted(self.stacks, key=lambda x: (-x[1], -x[0]))
+		else
+			self.stacks = sorted(self.stacks, key=lambda x: (-x[1], x[0]))
 
 	# Remove the top container of a specific stack
 	def popContainer(self, pair):
@@ -36,7 +33,8 @@ class Algorithm:
 
 		self.last_color = pair[1]
 		self.matrix[pair[0]].pop(0)
-		self.stack[pair[0]] -= 1
+		x = [c for c,i in enumerate(self.stacks) if i[0] == pair[0]][0]
+		self.stacks[x] = (self.stacks[x][0], self.stacks[x][1]-1)
 
 	# Return stack 6 or 7 as first pick
 	def firstPick(self):
@@ -67,21 +65,6 @@ class Algorithm:
 		else:
 			return 3, color2
 
-	# Updates the order regarding last_color
-	def updateOrder(self):
-		self.order = [i for i in range(8)]
-		if self.last_color == 'B' or self.last_color == 'R2':
-			self.order.sort(reverse=True)
-
-		# if self.last_color == 'B':
-		# 	self.order = BLUE_ORDER
-		# elif self.last_color == 'G':
-		# 	self.order = GREEN_ORDER
-		# elif self.last_color == 'R1':
-		# 	self.order = R1_ORDER
-		# else:
-		# 	self.order = R2_ORDER
-
 	# Returns the next stack and color to pick
 	def solve(self):
 		self.updateOrder()
@@ -95,23 +78,28 @@ class Algorithm:
 			color = 'B' if self.blues % 5 > self.greens % 5 else 'G'
 
 		# Looks for the first red colored container in the corresponding order
-		for s in self.order:
-			if len(self.matrix[s]) > 0:
-				if self.matrix[s][0] == 'R':
-					return s, 'R'
+		for s in self.stacks:
+			if len(self.matrix[s[0]]) > 0:
+				if self.matrix[s[0]][0] == 'R':
+					return s[0], 'R'
 
 		# Looks for the first specific colored container in the corresponding order
-		for s in self.order:
-			if len(self.matrix[s]) > 0:
-				if self.matrix[s][0] == color:
-					return s, color
+		for s in self.stacks:
+			if len(self.matrix[s[0]]) > 0:
+				if self.matrix[s[0]][0] == color:
+					return s[0], color
 
 		# If there isn't any, picks the first container in the corresponding order, non-color specified 
-		for s in self.order:
-			if len(self.matrix[s]) > 0:
-				return s, self.matrix[s][0]
+		for s in self.stacks:
+			if len(self.matrix[s[0]]) > 0:
+				return s[0], self.matrix[s[0]][0]
 
-		# Returns -1,'X' if there are not more containers to pick
+
+		# Infinite loop if there aren't more containers to pick
+		print "There aren't more containers to pick"
+		while True:
+			pass
+
 		return -1, 'X'
 
 	# Sets the last_color picked
@@ -122,9 +110,10 @@ class Algorithm:
 	def printMatrix(self):
 		for b in range(3):
 			for c, s in enumerate(self.matrix):
-				if 3 - self.stack[c] > b:
+				lvl = [i for c,i in enumerate(self.stacks) if i[0] == 0][0][1]
+				if 3 - lvl > b:
 					print " ",
 				else:
-					print s[b-(3-self.stack[c])],
+					print s[b-(3-lvl)],
 			print '\n'
 		print "======================="
