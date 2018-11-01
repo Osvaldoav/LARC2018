@@ -119,7 +119,7 @@ void _Traductor::vertical(int lines){
 void _Traductor::alinearStack(bool dir){ 
     char c = dir ? '6' : '4';
     movements->movePID_nCM(1, true, c);  
-    delay(500); 
+    delay(200); 
     // movements->alignLine();
     // movements->getCloseToStack();
     // movements->align_tof();
@@ -135,8 +135,8 @@ void _Traductor::gotoFirst(){
         movements->movePID(false, '2');
         movements->updateSensors(0,0,0,0,1,1);
     } while(movements->tcrt5000->tcrtMechaLeft.kalmanDistance < movements->BLACKLINE_TRIGGER);
-    movements->movePID_nCM(31, false, '8');
-    delay(1000);
+    movements->movePID_nCM(30.6, false, '8');
+    delay(500);
 }
 
 void _Traductor::gotoSecond(){
@@ -152,8 +152,8 @@ void _Traductor::gotoSecond(){
         movements->updateSensors(0,0,0,0,1,1);
     } while(movements->tcrt5000->tcrtMechaLeft.kalmanDistance < movements->BLACKLINE_TRIGGER);   
     waitForMechanism();
-    movements->movePID_nCM(30, false, '8');
-    delay(1000);
+    movements->movePID_nCM(30.6, false, '8');
+    delay(500);
 }
 
 void _Traductor::pickFirst(int stack){

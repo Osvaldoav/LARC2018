@@ -29,9 +29,9 @@ void _Logic::initCommunication(){
 
 char _Logic::handleRed(){
     traductor->LcdPrint("handleRed", "entro");
-    delay(3000);
+    // delay(3000);
     if(firstRed < 0)
-        firstRed = lastStack < 4 ? 1 : 0;
+        firstRed = lastStack < 4 ? 0 : 1;
     else
         firstRed = firstRed == 0 ? 1 : 0;
  
@@ -54,7 +54,8 @@ char _Logic::verifyColor(char c){
 char _Logic::grabContainer(char c){
     c = verifyColor(c);
     char ori = lastStack/2*2 != lastStack ? '2' : '8';  // '2'  :  '8'
-    traductor->centerContainer(ori);
+    if(ori != '8')
+        traductor->centerContainer(ori);
     traductor->alinearStack(true);
     traductor->grabContainer();
     traductor->alinearStack(false);
@@ -117,7 +118,7 @@ void _Logic::stackToShip(){
 
     currentLevel = lastColor == 'R' ? 3 : lastColor == 'G' ? green_boxes%6 : blue_boxes%6;
     traductor->LcdPrint("lastColor", lastColor);
-    delay(1000);
+    // delay(1000);
     traductor->updateMechanismMovement(lastLevel, currentLevel, false);
  
     if(B){
@@ -134,7 +135,7 @@ void _Logic::stackToShip(){
         traductor->throughtHorizontal(dir); // Avanza por la linea horizontal a la izquierda o derecha cuando 'B' o 'G'
     }else{
         (firstRed<0)? traductor->LcdPrint("firstRed jojo", " CACAAA "): traductor->LcdPrint("firstRed jojo", firstRed);
-        delay(3000);
+        // delay(3000);
         dir = lastStack < 4 ? 1 : 2;
         dir += firstRed == 1 ? 2 : 0;
         dir *= ((lastStack/2 + 1)%2 == 0) != firstRed ? 1 : -1;
