@@ -21,8 +21,6 @@ serial = Serial()
 print "starting..."
 serial.start()
 c = serial.read()
-print "FIRST CHAR RECEIVED = ",
-print c
 cam1 = Cam(0)
 cam2 = Cam(1)
 
@@ -49,6 +47,9 @@ while True:
 
 	if c == 'R' or c == 'S':
 		c = 'R1' if c == 'R' else 'R2'
+
+	print "char received = ",
+	print c
 
 	brain.set_last_color(c)
 
