@@ -32,8 +32,8 @@ void _BNO055::setupBNO055(){
     bno.setExtCrystalUse(true);
   //  calibrarBNO(Setpoint);
   //  delay(30000);
-    delay(2000);  
-    lcd->clear();
+    // delay(5000);  
+    // lcd->clear();
 }
 
 // TODO:

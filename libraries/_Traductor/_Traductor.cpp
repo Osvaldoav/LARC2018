@@ -105,11 +105,12 @@ void _Traductor::backUntilBlackLineSharps(bool tcrt){
             break;              
     } while(1);    
     movements->motors->brake();
-    movements->movePID_nCM(2, false, notVertical);    
+    movements->movePID_nCM(3, false, notVertical);    
 }
 
 void _Traductor::moveAtrasHorizontal(){
     movements->larc_moveUntilBlackLine(false, '4', false, true, false, true);
+    // movements->movePID_nCM(2, false, '4'); 
 }
 
 void _Traductor::vertical(int lines){
@@ -138,7 +139,7 @@ void _Traductor::gotoFirst(){
         movements->updateSensors(0,0,0,0,1,1);
     } while(movements->tcrt5000->tcrtMechaLeft.kalmanDistance < movements->BLACKLINE_TRIGGER);
     movements->movePID_nCM(30.6, false, '8');
-    delay(500);
+    delay(1000);
 }
 
 void _Traductor::gotoSecond(){
@@ -155,7 +156,7 @@ void _Traductor::gotoSecond(){
     } while(movements->tcrt5000->tcrtMechaLeft.kalmanDistance < movements->BLACKLINE_TRIGGER);   
     waitForMechanism();
     movements->movePID_nCM(30.6, false, '8');
-    delay(500);
+    delay(1000);
 }
 
 void _Traductor::pickFirst(int stack){
@@ -185,7 +186,7 @@ void _Traductor::updateMechanismMovement(int actualLevel, int newLevel, bool tra
     movements->encoder->encoderStateMechanism = 1;
     if (actualLevel == 1 || newLevel == 1 || train)
     // if (actualLevel == 1 || newLevel == 1)
-        movements->untilStepsMechanism = 7100 * abs(newLevel - actualLevel) - 3750; //6900 en fantasma
+        movements->untilStepsMechanism = 7100 * abs(newLevel - actualLevel) - 4200; //6900 en fantasma
     else 
         movements->untilStepsMechanism = 7100 * abs(newLevel - actualLevel);
     // reset steps count
