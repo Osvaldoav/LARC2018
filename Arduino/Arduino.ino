@@ -14,6 +14,7 @@ const byte pinEncoderMechanism = 2;
 void setup() {
 //    delay(3000);
     Wire.begin();
+    pinMode(30, INPUT);
     Serial.begin(9600);
     digitalWrite(22, HIGH);
     while(digitalRead(30) != HIGH);//limitswitch
