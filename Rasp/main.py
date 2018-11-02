@@ -45,12 +45,8 @@ else:
 serial.send('1')
 serial.read()
 
-print "before cam"
-
 cam1 = Cam(0)
 cam2 = Cam(1)
-
-print "after cam setup"
 
 cam1.shoot()    
 cam2.shoot()
