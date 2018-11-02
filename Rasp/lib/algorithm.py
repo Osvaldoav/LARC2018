@@ -2,6 +2,11 @@ import sys
 sys.path.insert(0, '/home/pi/Documents/LARC2018/Rasp/lib/')
 import stacks
 
+BLUE_ORDER = [7,4,6,5,3,0,2,1]
+GREEN_ORDER = [0,3,1,2,4,7,5,6]
+R1_ORDER = [1,2,0,3,5,6,4,7]
+R2_ORDER = [6,5,7,4,2,1,3,0]
+
 class Algorithm:
 
 	def __init__(self):
@@ -19,10 +24,35 @@ class Algorithm:
 
 	# Updates the order regarding last_color
 	def updateOrder(self):
-		if self.last_color == 'B' or self.last_color == 'R2':
-			self.stacks = sorted(self.stacks, key=lambda x: (-x[1], -x[0]))
+		if self.last_color == 'B':
+			order = BLUE_ORDER
+		elif self.last_color == 'G':
+			order = GREEN_ORDER
+		elif self.last_color == 'R1':
+			order = R1_ORDER
 		else:
-			self.stacks = sorted(self.stacks, key=lambda x: (-x[1], x[0]))
+			order = R2_ORDER
+
+		self.stacks = sorted(self.stacks, key = lambda x: -x[1])
+		for i in range(3,0,-1):
+			x1 = [c for c,index in enumerate(self.stacks) if index[1] == i]
+			if len(x1) < 1:
+				continue
+			x1 = x1[0]
+			x2 = x1 + len([index for index in self.stacks if index[1] == i])
+			for x in range(x2-x1-1):
+				for y in range(x1, x2-1):
+					t1 = [c for c,index in enumerate(order) if index == self.stacks[y][0]][0]
+					t2 = [c for c,index in enumerate(order) if index == self.stacks[y+1][0]][0]
+					if t1 > t2:
+						temp = self.stacks[y]
+						self.stacks[y] = self.stacks[y+1]
+						self.stacks[y+1] = temp
+				x2 -= 1
+		# if self.last_color == 'B' or self.last_color == 'R2':
+		# 	self.stacks = sorted(self.stacks, key=lambda x: (-x[1], -x[0]))
+		# else:
+		# 	self.stacks = sorted(self.stacks, key=lambda x: (-x[1], x[0]))
 
 	# Remove the top container of a specific stack
 	def popContainer(self, pair):
