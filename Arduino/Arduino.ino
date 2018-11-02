@@ -15,6 +15,11 @@ void setup() {
 //    delay(3000);
     Wire.begin();
     Serial.begin(9600);
+    digitalWrite(22, HIGH);
+    while(digitalRead(30) != HIGH);//limitswitch
+    digitalWrite(22, LOW);
+
+    _Serial::send('Z');
     _Serial::read();
     _Serial::send('1');     
 //    logic->traductor->movements->lcd->setupLCD();    

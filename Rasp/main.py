@@ -1,6 +1,7 @@
+import RPi.GPIO as GPIO 
 import cv2
 import sys
-sys.path.insert(0, './lib/')
+sys.path.insert(0, '/home/pi/Documents/LARC2018/Rasp/lib/')
 from serial_comunication import Serial
 from cam import Cam
 from algorithm import Algorithm
@@ -15,12 +16,34 @@ def printChar(pair):
 	print pair[1]
 
 # SETUP
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(8, GPIO.OUT, initial=GPIO.LOW)
+
+for i in range(5):
+	GPIO.output(8, GPIO.HIGH) 
+	time.sleep(0.5) 
+	GPIO.output(8, GPIO.LOW) 
+	time.sleep(0.5) 
+
 brain = Algorithm()
 serial = Serial()
 
 print "starting..."
-serial.start()
+# serial.start()
 c = serial.read()
+if c == 'Z':
+	GPIO.output(11, GPIO.HIGH) 
+	time.sleep(2) 
+	GPIO.output(11, GPIO.LOW) 
+else:
+	GPIO.output(8, GPIO.HIGH) 
+	time.sleep(2) 
+	GPIO.output(8, GPIO.LOW) 
+
+serial.send('1')
+serial.read()
+
 cam1 = Cam(0)
 cam2 = Cam(1)
 
