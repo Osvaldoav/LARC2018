@@ -19,6 +19,7 @@ def printChar(pair):
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(8, GPIO.OUT, initial=GPIO.LOW)
+GPIO.setup(11, GPIO.OUT, initial=GPIO.LOW)
 
 for i in range(5):
 	GPIO.output(8, GPIO.HIGH) 
