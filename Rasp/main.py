@@ -26,6 +26,8 @@ cam2 = False
 
 
 try:
+	global cam1
+	global cam2
 	for i in range(5):
 		GPIO.output(8, GPIO.HIGH) 
 		time.sleep(0.5) 
