@@ -16,7 +16,7 @@ void setup() {
     Wire.begin();
     Serial.begin(9600);
     _Serial::read();
-    //_Serial::send('1');     
+    _Serial::send('1');     
 //    logic->traductor->movements->lcd->setupLCD();    
     logic->traductor->movements->pid->setupLibraryPID(); 
     logic->traductor->movements->motors->setupMotors();

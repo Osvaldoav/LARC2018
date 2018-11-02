@@ -787,7 +787,7 @@ void _Movements::moveMechanism(int lastStackLevel, int newStackLevel){
     if(newStackLevel<1)     newStackLevel=1;
     if(newStackLevel>5)      newStackLevel=5;
     (lastStackLevel == 1 || newStackLevel == 1) ?
-        untilStepsMechanism = 7100 * abs(newStackLevel - lastStackLevel) - 3750:
+        untilStepsMechanism = 7100 * abs(newStackLevel - lastStackLevel) - 4000:
         untilStepsMechanism = 7100 * abs(newStackLevel - lastStackLevel);
 //  Restart encoder counts
     encoder->stepsMechanism = 0;

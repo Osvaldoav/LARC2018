@@ -33,7 +33,7 @@ void _Traductor::girar(int angle){
 
 void _Traductor::avanzar(bool b){
     char c = b ? '8' : '2';
-    movements->movePID_nCM(34, false, c);
+    movements->movePID_nCM(38, false, c);
 }
 
 void _Traductor::moveToShip(bool goBack){
@@ -73,6 +73,7 @@ void _Traductor::moveAtras(){
 void _Traductor::moveToHorizontal(bool b){
     char c = b ? '8' : '2';
     movements->larc_moveUntilBlackLine(false, c, true, false, false, false);
+    movements->movePID_nCM(1.4, false, c);
 }
 void _Traductor::horizontal(int lines, bool tcrt){
     char c = lines < 0 ? '6' : '4'; 
@@ -93,7 +94,8 @@ void _Traductor::horizontal(int lines, bool tcrt){
 }
 
 void _Traductor::backUntilBlackLineSharps(bool tcrt){
-    char vertical = tcrt? '8': '2'; 
+    char vertical = tcrt? '8': '2';
+    char notVertical = tcrt? '2': '8';
     do{
         movements->movePID(false, vertical);
         movements->updateSensors(0,0,0,0,1,1);        
@@ -103,11 +105,11 @@ void _Traductor::backUntilBlackLineSharps(bool tcrt){
             break;              
     } while(1);    
     movements->motors->brake();
+    movements->movePID_nCM(2, false, notVertical);    
 }
 
 void _Traductor::moveAtrasHorizontal(){
     movements->larc_moveUntilBlackLine(false, '4', false, true, false, true);
-    movements->movePID_nCM(2, false, '4');
 }
 
 void _Traductor::vertical(int lines){

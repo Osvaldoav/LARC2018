@@ -177,7 +177,7 @@ void _Logic::stackToShip(){
         traductor->moveToShip(true);
         traductor->waitForMechanism();             //make sure mechanism is already (1/8) up 
         traductor->alignShip();
-        if(!firstContainer){
+        if(firstContainer){
             traductor->movements->movePID_nCM(4.5, true, '4');
             traductor->moveToShip(false);
             traductor->alignFirstShip();            
