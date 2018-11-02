@@ -111,7 +111,7 @@ void _Logic::stackToShip(){
     // lastLevel = stacks[lastLevel]+1;
 
     lastLevel = (lastStack+1)/2*2;
-    if((color != 'R' && lastLevel%4 != 0)||(color == 'R' && lastLevel%4 == 0)) 
+    if((lastColor != 'R' && lastLevel%4 != 0)||(lastColor == 'R' && lastLevel%4 == 0)) 
         lastLevel = stacks[lastStack/2*2] > stacks[lastStack/2*2+1] ? stacks[lastStack/2*2] : stacks[lastStack/2*2+1];
     else
         lastLevel = stacks[lastStack];
