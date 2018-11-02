@@ -207,7 +207,7 @@ void loop(){
 
 //  readTCRT5000();
 //  aligningTcrtTest();
-//  larc();
+//  larc(); 
 //  logicTest();  
 //  colorSensor();
 //  logic->traductor->gotoFirst();
