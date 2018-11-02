@@ -15,7 +15,10 @@ void setup() {
 //    delay(3000);
     Wire.begin();
     pinMode(30, INPUT);
+    pinMode(22, OUTPUT);
+
     Serial.begin(9600);
+    
     digitalWrite(22, HIGH);
     while(digitalRead(30) != HIGH);//limitswitch
     digitalWrite(22, LOW);
