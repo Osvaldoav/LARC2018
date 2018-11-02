@@ -21,13 +21,10 @@ GPIO.setmode(GPIO.BOARD)
 GPIO.setup(8, GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(11, GPIO.OUT, initial=GPIO.LOW)
 
-cam1 = False
-cam2 = False
-
+cam1 = Cam(0)
+cam2 = Cam(1)
 
 try:
-	global cam1
-	global cam2
 	for i in range(5):
 		GPIO.output(8, GPIO.HIGH) 
 		time.sleep(0.5) 
@@ -51,9 +48,6 @@ try:
 
 	serial.send('1')
 	serial.read()
-
-	cam1 = Cam(0)
-	cam2 = Cam(1)
 
 	cam1.shoot()    
 	cam2.shoot()
