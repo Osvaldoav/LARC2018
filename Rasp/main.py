@@ -19,6 +19,7 @@ def printChar(pair):
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(8, GPIO.OUT, initial=GPIO.LOW)
+GPIO.setup(11, GPIO.OUT, initial=GPIO.LOW)
 
 for i in range(5):
 	GPIO.output(8, GPIO.HIGH) 
@@ -44,8 +45,12 @@ else:
 serial.send('1')
 serial.read()
 
+print "before cam"
+
 cam1 = Cam(0)
 cam2 = Cam(1)
+
+print "after cam setup"
 
 cam1.shoot()    
 cam2.shoot()
