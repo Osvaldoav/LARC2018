@@ -185,7 +185,7 @@ void _Logic::stackToShip(){
         else{
             traductor->movements->movePID_nCM(4.5, true, '4');
             traductor->moveToShip(false);
-            if(lastColor == 'B' && blue_boxes > 5){
+            if(lastColor == 'B' && blue_boxes > 5)
                 traductor->centerContainer('2');
             else if(lastColor == 'G' && green_boxes > 5)
                 traductor->centerContainer('8');
@@ -197,7 +197,7 @@ void _Logic::stackToShip(){
         traductor->waitForMechanism();             //make sure mechanism is already (1/8) down (normal)
     }
     else{
-        traductor->setTrainLevel(true);
+        // traductor->setTrainLevel(true);
         traductor->alinearTren();
         traductor->waitForMechanism();  
     }

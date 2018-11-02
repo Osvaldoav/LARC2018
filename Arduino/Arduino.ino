@@ -17,16 +17,8 @@ void setup() {
     pinMode(30, INPUT);
     pinMode(22, OUTPUT);
 
-    Serial.begin(9600);
-
-    digitalWrite(22, HIGH);
-    while(digitalRead(30) == LOW);//limitswitch
-    digitalWrite(22, LOW);
-
-    _Serial::send('Z');
-    _Serial::read();
-    //_Serial::send('1');     
 //    logic->traductor->movements->lcd->setupLCD();    
+
     logic->traductor->movements->pid->setupLibraryPID(); 
     logic->traductor->movements->motors->setupMotors();
     logic->traductor->movements->colorSensor->setupColorSensor();
@@ -161,7 +153,7 @@ void colorSensor(){
   logic->traductor->movements->colorSensor->readColor();
 }
 void logicTest(){  
-    logic->traductor->movements->lcd->print("STACK", "HOLA");
+//    logic->traductor->movements->lcd->print("STACK", "HOLA");
 //    logic->traductor->mecanismo(3, 4);  
 //    logic->shipToStack();                            
 //    logic->stackToShip();
@@ -173,15 +165,17 @@ void logicTest(){
 //    logic->stackToShip();
 //    logic->shipToStack();
 //    logic->stackToShip();
-//    logic->traductor->mecanismo(4, 1); // nivela el mecanismo al nivel adecuado       
+delay(4000);
+    logic->traductor->mecanismo(4, 1); // nivela el mecanismo al nivel adecuado   
+    delay(4000);    
 //    logic->traductor->dropContainer();    
 //    logic->traductor->mecanismo(1,3);
 //    logic->shipToStack('6');
 //    logic->stackToShip();  
 //    logic->traductor->mecanismo(3, 2); // nivela el mecanismo al nivel adecuado       
 //    logic->traductor->dropContainer();  
-//    logic->traductor->mecanismo(2, 4); // nivela el mecanismo al nivel adecuado      
-//    while(1);
+    logic->traductor->mecanismo(1, 4); // nivela el mecanismo al nivel adecuado      
+    while(1);
 }
 void mechanism(){
 //    logic->traductor->movements->servo->pickContainer();

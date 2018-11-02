@@ -16,7 +16,7 @@ _Movements::_Movements(){
     timeFlight = new _TimeFlight;
     tcrt5000 = new _TCRT5000;
     servo = new _Servo;
-    BLACKLINE_TRIGGER = 330;//300
+    BLACKLINE_TRIGGER = 300;//300
     BLACKLINE_TRIGGER_SHIP = 250;//300
     untilStepsMechanism = 0;
     crazyMode=false;
@@ -33,7 +33,7 @@ void _Movements::initMechanism(){
     motors->stopMechanism();
     encoder->encoderStateMechanism = 1;
     encoder->stepsMechanism = 0;
-    while(encoder->stepsMechanism < 7900){    //limitSwitch is pressed when == 0
+    while(encoder->stepsMechanism < 7600){    //limitSwitch is pressed when == 0
         motors->moveMechanism(false);        
     }    
     motors->stopMechanism();
@@ -787,7 +787,7 @@ void _Movements::moveMechanism(int lastStackLevel, int newStackLevel){
     if(newStackLevel<1)     newStackLevel=1;
     if(newStackLevel>5)      newStackLevel=5;
     (lastStackLevel == 1 || newStackLevel == 1) ?
-        untilStepsMechanism = 7100 * abs(newStackLevel - lastStackLevel) - 4200:
+        untilStepsMechanism = 7100 * abs(newStackLevel - lastStackLevel) - 4000:
         untilStepsMechanism = 7100 * abs(newStackLevel - lastStackLevel);
 //  Restart encoder counts
     encoder->stepsMechanism = 0;
