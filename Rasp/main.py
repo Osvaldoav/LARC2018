@@ -21,7 +21,8 @@ GPIO.setmode(GPIO.BOARD)
 GPIO.setup(8, GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(11, GPIO.OUT, initial=GPIO.LOW)
 
-cam1, cam2
+cam1 = False
+cam2 = False
 
 
 try:
