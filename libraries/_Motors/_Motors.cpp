@@ -35,7 +35,7 @@ bool boolFR_B;
 bool boolBR_F;
 bool boolBR_B;
 
-double const HORIZONTAL_OFFSET_POWER = 25;//50 (12.4V)  40(11.28V)
+double const HORIZONTAL_OFFSET_POWER = 32;//50 (12.4V)  40(11.28V)
 
 void _Motors::setupMotors(){
     velFordFL = 200;//200

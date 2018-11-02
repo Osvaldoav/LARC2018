@@ -184,8 +184,13 @@ void _Logic::stackToShip(){
         }
         else{
             traductor->movements->movePID_nCM(4.5, true, '4');
-            traductor->moveToShip(false);            
-            traductor->centerContainer(' ');
+            traductor->moveToShip(false);
+            if(lastColor == 'B' && blue_boxes > 5){
+                traductor->centerContainer('2');
+            else if(lastColor == 'G' && green_boxes > 5)
+                traductor->centerContainer('8');
+            else
+                traductor->centerContainer(' ');
         }
         if(!firstContainer)
             traductor->moveMechanismForAligning(false); //move mechanism a little down (1/8) of a level (back to normal)
@@ -245,6 +250,8 @@ void _Logic::shipToStack(){
         angle *= lastColor == 'R' ? -1 : 1;
         traductor->girar(angle); // 90 es vuelta de 90 hacia la derecha, -90 es 90 hacia izquierda
         tcrt = angle < 0;
+        char direction = (tcrt)? '8' : '2';
+        traductor->movements->movePID_nCM(4, false, direction);
         
         if(lastColor != 'R'){
             lines = (stack < 4 && lastColor == 'B') || (stack > 3 && lastColor == 'G') ? 2 : 1;

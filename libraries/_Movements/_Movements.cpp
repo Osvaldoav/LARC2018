@@ -16,7 +16,7 @@ _Movements::_Movements(){
     timeFlight = new _TimeFlight;
     tcrt5000 = new _TCRT5000;
     servo = new _Servo;
-    BLACKLINE_TRIGGER = 400;//300
+    BLACKLINE_TRIGGER = 330;//300
     BLACKLINE_TRIGGER_SHIP = 250;//300
     untilStepsMechanism = 0;
     crazyMode=false;
@@ -624,8 +624,8 @@ void _Movements::alignFirstShip(){
 void _Movements::centerContainer(char orientation){
     double stepsToMove = 6.7;
     char direction;    
-    for(int i=0; i<50; i++)
-        updateSensors(0,0,0,1,0,0);
+    // for(int i=0; i<30; i++)
+    updateSensors(0,0,0,1,0,0);
     if(orientation == ' '){
         if(timeFlight->timeFlightLeft.kalmanDistance<10 && timeFlight->timeFlightRight.kalmanDistance<10)
             direction = '8';
@@ -787,7 +787,7 @@ void _Movements::moveMechanism(int lastStackLevel, int newStackLevel){
     if(newStackLevel<1)     newStackLevel=1;
     if(newStackLevel>5)      newStackLevel=5;
     (lastStackLevel == 1 || newStackLevel == 1) ?
-        untilStepsMechanism = 7100 * abs(newStackLevel - lastStackLevel) - 4000:
+        untilStepsMechanism = 7100 * abs(newStackLevel - lastStackLevel) - 4200:
         untilStepsMechanism = 7100 * abs(newStackLevel - lastStackLevel);
 //  Restart encoder counts
     encoder->stepsMechanism = 0;
@@ -837,7 +837,7 @@ void _Movements::alignLine(){
 // TODO:
 void _Movements::moveMechanismForAligning(bool before){
     encoder->encoderStateMechanism = 1;  
-        untilStepsMechanism = 1700;
+        untilStepsMechanism = 800;
 //  Restart encoder counts
     encoder->stepsMechanism = 0;
 //  Move with p correction until the encoder read the cm 

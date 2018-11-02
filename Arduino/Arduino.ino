@@ -1,4 +1,4 @@
-//////////////////////////////////////////////////////////////////////////////////////////////
+ //////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////// LARC 2018 //////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 #include <_Logic.h>
@@ -12,8 +12,8 @@ const byte pinEncoderMechanism = 2;
 
 /////////////////////////////////////////////SETUP////////////////////////////////////////////////
 void setup() {
-//    delay(3000);
     Wire.begin();
+    Serial.begin(9600);    
     pinMode(30, INPUT);
     pinMode(22, OUTPUT);
 
@@ -41,10 +41,16 @@ void setup() {
 
     attachInterrupt(digitalPinToInterrupt(pinEncoderFR), encoderStepFR, CHANGE);
     attachInterrupt(digitalPinToInterrupt(pinEncoderBL), encoderStepBL, CHANGE);      
-    attachInterrupt(digitalPinToInterrupt(pinEncoderMechanism), encoderStepMechanism, CHANGE);   
-    logic->traductor->movements->initMechanism();    
-    logic->initCommunication();
+    attachInterrupt(digitalPinToInterrupt(pinEncoderMechanism), encoderStepMechanism, CHANGE);
+    
+    digitalWrite(22, HIGH);
+    while(digitalRead(30) == HIGH);//limitswitch
+    digitalWrite(22, LOW);
 
+    _Serial::send('Z');
+    _Serial::read();     
+    logic->traductor->movements->initMechanism();    
+    logic->initCommunication();        
 
     //CALIBRATION 
 //      logic->traductor->movements->lcd->onLed('g');    
@@ -70,10 +76,10 @@ void testMovements(){
 //    logic->traductor->movements->spinPID(false, -90);
 //    logic->traductor->movements->motors->brake();
 //    delay(2000);
-    logic->traductor->movements->movePID_nCM(37, false, '4');
-    delay(3000);
-    logic->traductor->movements->movePID_nCM(37, false, '6');
-    delay(3000);    
+//    logic->traductor->movements->movePID_nCM(37, false, '4');
+//    delay(3000);
+//    logic->traductor->movements->movePID_nCM(37, false, '6');
+//    delay(3000);    
 }
 void aligningTofTest(){
 //    logic->traductor->movements->movePID_alignToPickContainer(2);
@@ -136,24 +142,19 @@ void aligningTcrtTest(){
 }
 
 void larc(){
-//  logic->traductor->movements->larc_moveUntilBlackLine(false, '8', true, false, true, false);
-//  logic->traductor->movements->larc_moveUntilBlackLine(false, '6', true, true, false, false);
-//  logic->traductor->movements->movePID_nCM(29, false, '8');
-//  delay(2000);
-//  logic->traductor->movements->align_tof();
-//  logic->traductor->movements->larc_moveBetweenVerticalBlackLine(false, '2');
-//  logic->traductor->movements->movePID_nCM(21, false, '6');
-//  logic->traductor->movements->spinPID(true, 90);
-//  logic->traductor->movements->larc_moveAndAlignToShip();
-    logic->traductor->moveToShip(true);
-    logic->traductor->alignShip();
-//    logic->traductor->moveToShip(false);
-    logic->traductor->movements->movePID_nCM(4.5, true, '4');
-    logic->traductor->moveToShip(false);
-    logic->traductor->alignFirstShip();
-//    logic->traductor->centerContainer(' ');
-//    logic->traductor->alignShip();
-//  logic->traductor->movements->lcd->printAlertSec("CONTAINER DROPPED", 5);
+  logic->traductor->moveAtrasHorizontal();
+  logic->traductor->girar(-90);
+  logic->traductor->movements->movePID_nCM(4, false, '8');
+  logic->traductor->movements->larc_moveUntilBlackLine(false, '6', true, true, true, false);
+//  do{
+//      movements->movePID(false, '8');
+//      movements->updateSensors(0,0,0,0,1,1);        
+//      if(tcrt && movements->tcrt5000->tcrtSharpLeft.kalmanDistance>movements->BLACKLINE_TRIGGER)
+//          break;  
+//      else if(!tcrt && movements->tcrt5000->tcrtSharpRight.kalmanDistance>movements->BLACKLINE_TRIGGER)
+//          break;              
+//  } while(1);    
+//  movements->motors->brake();
   while(1); 
 }
 void colorSensor(){
