@@ -105,10 +105,17 @@ void _Logic::stackToShip(){
     bool front;
     int dir;
 
-    lastLevel = lastStack/2*2;
-    if((lastColor != 'R' && lastLevel%4 != 0)||(lastColor == 'R' && lastLevel%4 == 0))
-        lastLevel++;
-    lastLevel = stacks[lastLevel]+1;
+    // lastLevel = lastStack/2*2;
+    // if((lastColor != 'R' && lastLevel%4 != 0)||(lastColor == 'R' && lastLevel%4 == 0))
+    //     lastLevel++;
+    // lastLevel = stacks[lastLevel]+1;
+
+    lastLevel = (lastStack+1)/2*2;
+    if((color != 'R' && lastLevel%4 != 0)||(color == 'R' && lastLevel%4 == 0)) 
+        lastLevel = stacks[lastStack/2*2] > stacks[lastStack/2*2+1] ? stacks[lastStack/2*2] : stacks[lastStack/2*2+1];
+    else
+        lastLevel = stacks[lastStack];
+    lastLevel++;
     
     // traductor->LcdPrint("STACK TO SHIP", "equis");
     //  delay(3000);
