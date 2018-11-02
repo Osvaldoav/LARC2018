@@ -26,8 +26,6 @@ cam2 = False
 
 
 try:
-	global cam1, cam2
-
 	for i in range(5):
 		GPIO.output(8, GPIO.HIGH) 
 		time.sleep(0.5) 
@@ -106,7 +104,6 @@ try:
 		brain.printMatrix()
 
 except (KeyboardInterrupt, SystemExit):
-	global cam1, cam2
 	cam1.release()
 	cam2.release()
 	cv2.destroyAllWindows()
