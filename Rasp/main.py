@@ -103,4 +103,6 @@ except (KeyboardInterrupt, SystemExit):
 	cam1.release()
 	cam2.release()
 	cv2.destroyAllWindows()
-	print "\nprogram has ended"
+	print "\nProgram has ended!"
+else:
+	print "\nSomething went wrong..."
