@@ -22,7 +22,15 @@ const byte  tcrtSharpLeftSensor = A4;
 
 // TODO:
 void _TCRT5000::setupTCRT5000(){
-
+    leftMechanism = 0;
+    rightMechanism = 0;    
+    for(int i=0; i<100; i++){
+        filtrateDistancesTCRT5000(true);
+        leftMechanism += tcrtMechaLeft.kalmanDistance;
+        rightMechanism += tcrtMechaRight.kalmanDistance;
+    }
+    leftMechanism /= 100.0;
+    rightMechanism /= 100.0;
 }
 // TODO:
 double _TCRT5000::getRawDistance(byte tcrt){
@@ -56,16 +64,16 @@ void _TCRT5000::tcrt5000KalmanFilter(TCRT5000Kalman &tcrt){
 void _TCRT5000::filtrateDistancesTCRT5000(bool dropContainer){
     calculateRawDistancesTCRT5000(dropContainer); 
     if(dropContainer){
-        tcrt5000KalmanFilter(tcrtMechaLeft);
-        tcrt5000KalmanFilter(tcrtMechaRight);
-        tcrt5000KalmanFilter(tcrtSharpLeft);
-        tcrt5000KalmanFilter(tcrtSharpRight);         
+        tcrtMechaLeft.kalmanDistance = tcrtMechaLeft.rawDistance;
+        tcrtMechaRight.kalmanDistance = tcrtMechaRight.rawDistance;
+        tcrtSharpLeft.kalmanDistance = tcrtSharpLeft.rawDistance;
+        tcrtSharpRight.kalmanDistance = tcrtSharpRight.rawDistance;         
     } 
     else{
-        tcrt5000KalmanFilter(tcrtMidFrontLeft);
-        tcrt5000KalmanFilter(tcrtMidDownLeft);
-        tcrt5000KalmanFilter(tcrtMidFrontRight);
-        tcrt5000KalmanFilter(tcrtMidDownRight);    
+        tcrtMidFrontLeft.kalmanDistance = tcrtMidFrontLeft.rawDistance;
+        tcrtMidDownLeft.kalmanDistance = tcrtMidDownLeft.rawDistance;
+        tcrtMidFrontRight.kalmanDistance = tcrtMidFrontRight.rawDistance;
+        tcrtMidDownRight.kalmanDistance = tcrtMidDownRight.rawDistance;    
     }    
 }
 // TODO:

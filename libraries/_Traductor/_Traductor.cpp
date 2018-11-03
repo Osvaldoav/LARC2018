@@ -48,7 +48,7 @@ void _Traductor::alignFirstShip(){
 
 void _Traductor::alinearTren(){
     movements->movePID_nCM(5, false, '4');
-    movements->larc_moveUntilBlackLine(false, '6', false, false, false, true);
+    movements->larc_moveUntilBlackLine(false, '6', false, false, false, true, false);
     movements->movePID_nCM(18, false, '6');
 }
 
@@ -58,12 +58,10 @@ void _Traductor::mecanismo(uint8_t newStack, uint8_t currentStack){
 
 void _Traductor::grabContainer(){
     movements->servo->pickContainer();
-    delay(1000);
 }
 
 void _Traductor::dropContainer(){
     movements->servo->dropContainer();
-    delay(1000);
 }
 
 void _Traductor::moveAtras(){
@@ -72,14 +70,14 @@ void _Traductor::moveAtras(){
 
 void _Traductor::moveToHorizontal(bool b){
     char c = b ? '8' : '2';
-    movements->larc_moveUntilBlackLine(false, c, true, false, false, false);
+    movements->larc_moveUntilBlackLine(false, c, true, false, false, false, false);
     movements->movePID_nCM(1.4, false, c);
 }
 void _Traductor::horizontal(int lines, bool tcrt){
     char c = lines < 0 ? '6' : '4'; 
     bool b = abs(lines) > 1;              
     movements->crazyMode=true;
-    movements->larc_moveUntilBlackLine(false, c, tcrt, true, b, false);
+    movements->larc_moveUntilBlackLine(false, c, tcrt, true, b, false, false);
     movements->crazyMode=false;
     char vertical = tcrt? '8': '2'; 
     do{
@@ -109,8 +107,8 @@ void _Traductor::backUntilBlackLineSharps(bool tcrt){
 }
 
 void _Traductor::moveAtrasHorizontal(){
-    movements->larc_moveUntilBlackLine(false, '4', false, true, false, true);
-    // movements->movePID_nCM(2, false, '4'); 
+    movements->larc_moveUntilBlackLine(false, '4', false, true, false, true, false);
+    movements->movePID_nCM(1.1, false, '6'); 
 }
 
 void _Traductor::vertical(int lines){
@@ -121,25 +119,23 @@ void _Traductor::vertical(int lines){
 
 void _Traductor::alinearStack(bool dir){ 
     char c = dir ? '6' : '4';
-    movements->movePID_nCM(1, true, c);  
+    movements->movePID_nCM(0.4, true, c);  
     delay(200); 
-    // movements->alignLine();
-    // movements->getCloseToStack();
-    // movements->align_tof();
 } 
 
 void _Traductor::gotoFirst(){
-    movements->larc_moveUntilBlackLine(false, '8', true, false, true, false);
+    movements->larc_moveUntilBlackLine(false, '8', true, false, true, false, false);
     movements->movePID_nCM(1.8, false, '8');
     movements->crazyMode=true;
-    movements->larc_moveUntilBlackLine(false, '6', true, true, false, false);
-    movements->crazyMode=false;
+    movements->larc_moveUntilBlackLine(false, '6', true, true, false, false, true);
+    movements->crazyMode=false;  
     do{
         movements->movePID(false, '2');
         movements->updateSensors(0,0,0,0,1,1);
-    } while(movements->tcrt5000->tcrtMechaLeft.kalmanDistance < movements->BLACKLINE_TRIGGER);
-    movements->movePID_nCM(30.6, false, '8');
+    } while(movements->tcrt5000->tcrtMechaLeft.kalmanDistance < movements->tcrt5000->leftMechanism+movements->BLACKLINE_TRIGGER_SHIP);
+    movements->movePID_nCM(28.3, false, '8'); 
     delay(1000);
+    movements->movePID_nCM(2, true, '4');
 }
 
 void _Traductor::gotoSecond(){
@@ -148,15 +144,16 @@ void _Traductor::gotoSecond(){
     movements->spinPID(true, -90);
     movements->movePID_nCM(1.8, false, '8');   
     movements->crazyMode=true; 
-    movements->larc_moveUntilBlackLine(false, '6', true, true, false, false);
+    movements->larc_moveUntilBlackLine(false, '6', true, true, false, false, true);
     movements->crazyMode=false;
     do{
         movements->movePID(false, '2');
         movements->updateSensors(0,0,0,0,1,1);
-    } while(movements->tcrt5000->tcrtMechaLeft.kalmanDistance < movements->BLACKLINE_TRIGGER);   
+    } while(movements->tcrt5000->tcrtMechaLeft.kalmanDistance < movements->tcrt5000->leftMechanism+movements->BLACKLINE_TRIGGER_SHIP);   
     waitForMechanism();
-    movements->movePID_nCM(30.6, false, '8');
+    movements->movePID_nCM(28.3, false, '8');
     delay(1000);
+    movements->movePID_nCM(2, true, '4'); 
 }
 
 void _Traductor::pickFirst(int stack){
