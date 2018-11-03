@@ -664,7 +664,7 @@ void _Movements::centerContainer(char orientation){
     goVerticalLine => TRUE when vertical black line is the destination
 */
 // TODO:
-void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool frontTCRT, bool goVerticalLine, bool secondLine, bool tcrtSharps){
+void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool frontTCRT, bool goVerticalLine, bool secondLine, bool tcrtSharps, bool takePhoto){
     int nLine=0;
     do{
         updateSensors(0,0,0,0,1,1);
@@ -737,6 +737,14 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
         movePID_nCM(1.8, true, '8');
     else if(direction=='2')
         movePID_nCM(1.8, true, '2'); 
+    else if(takePhoto){
+        if(direction=='6')
+            movePID_nCM(0.5, true, '6');
+            // movePID_nCM(0, true, '6');
+        else if(direction=='4')
+            movePID_nCM(0.5, true, '4'); 
+            // movePID_nCM(3.5, true, '4');
+    }
     else if(goVerticalLine){
         if(direction=='4' && frontTCRT)
             movePID_nCM(2.8, true, '4'); 
@@ -764,21 +772,21 @@ void _Movements::larc_moveBetweenVerticalBlackLine(bool goSlow, char direction, 
         movePID(goSlow, direction);
         if(shipToStack){
             if(direction == '8'){
-                if(tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER)
+                if(tcrt5000->tcrtMechaLeft.kalmanDistance>tcrt5000->leftMechanism+BLACKLINE_TRIGGER_SHIP)
                     break;
             }
             else if(direction == '2'){
-                if(tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER)
+                if(tcrt5000->tcrtMechaRight.kalmanDistance>tcrt5000->rightMechanism+BLACKLINE_TRIGGER_SHIP)
                     break;
             }   
         }
         else{
             if(direction == '8'){
-                if(tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER)
+                if(tcrt5000->tcrtMechaRight.kalmanDistance>tcrt5000->rightMechanism+BLACKLINE_TRIGGER_SHIP)
                     break;
             }
             else if(direction == '2'){
-                if(tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER)
+                if(tcrt5000->tcrtMechaLeft.kalmanDistance>tcrt5000->leftMechanism+BLACKLINE_TRIGGER_SHIP)
                     break;
             }
         }     
