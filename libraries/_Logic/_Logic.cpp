@@ -9,7 +9,7 @@ _Logic::_Logic(){
     blue_boxes = 0;
     green_boxes = 0;
     lastStack = 0;
-    lastLevel = currentLevel = 5;
+    lastLevel = currentLevel = 4;
     lastColor = 'B';
 }
 
@@ -77,7 +77,7 @@ void _Logic::gotoSecond(){
     // traductor->LcdPrint("c_serial", c_serial);
     // delay(3000);
     pickFirst(c_serial);
-    currentLevel = 5;
+    currentLevel = 4;
 }
 
 void _Logic::pickFirst(char c){
@@ -86,6 +86,7 @@ void _Logic::pickFirst(char c){
     // blink(lastStack);
     // traductor->LcdPrint("PF stack", lastStack);
     // delay(5000);
+    traductor->movements->moveMechanism(5,4);
     traductor->pickFirst(lastStack);
     grabContainer(c);
 }
