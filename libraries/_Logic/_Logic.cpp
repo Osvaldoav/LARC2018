@@ -9,7 +9,7 @@ _Logic::_Logic(){
     blue_boxes = 0;
     green_boxes = 0;
     lastStack = 0;
-    lastLevel = currentLevel = 4;
+    lastLevel = currentLevel = 5;
     lastColor = 'B';
 }
 
