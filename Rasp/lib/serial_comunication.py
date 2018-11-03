@@ -4,8 +4,8 @@ import time
 class Serial:
     def __init__(self):
         try:
-            # self.arduino = serial.Serial("/dev/ttyUSB0", 9600, timeout=0, writeTimeout=0)
-            self.arduino = serial.Serial("/dev/ttyUSB1", 9600, timeout=1, writeTimeout=1)
+            self.arduino = serial.Serial("/dev/ttyUSB0", 9600, timeout=0, writeTimeout=0)
+            # self.arduino = serial.Serial("/dev/ttyUSB1", 9600, timeout=1, writeTimeout=1)
             #self.arduino = serial.Serial("/dev/ttyACM1", 9600, timeout=0, writeTimeout=0)
             time.sleep(3)
         except serial.SerialException:
