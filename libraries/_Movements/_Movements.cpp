@@ -689,14 +689,14 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
             if(tcrtSharps){
                 if(tcrt5000->tcrtSharpLeft.kalmanDistance>BLACKLINE_TRIGGER || tcrt5000->tcrtSharpRight.kalmanDistance>BLACKLINE_TRIGGER)
                     if(secondLine){
-                        if(++nLine<2)   delay(400);
+                        if(++nLine<2)   delay(1);
                         else            break;
                     } 
                     else                break;
             }
             if(frontTCRT){
                 if(direction=='4'){
-                    if(tcrt5000->tcrtMidFrontLeft.kalmanDistance>BLACKLINE_TRIGGER+20)
+                    if(tcrt5000->tcrtMidFrontLeft.kalmanDistance>BLACKLINE_TRIGGER)
                         if(secondLine){
                             if(++nLine<2)   delay(500);
                             else            break;
@@ -704,7 +704,7 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
                         else                break;
                 } 
                 else if(direction=='6'){
-                    if(tcrt5000->tcrtMidFrontRight.kalmanDistance>BLACKLINE_TRIGGER+20)
+                    if(tcrt5000->tcrtMidFrontRight.kalmanDistance>BLACKLINE_TRIGGER)
                         if(secondLine){
                             if(++nLine<2)   delay(500);
                             else            break;
@@ -714,7 +714,7 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
             }
             else{
                 if(direction=='4'){
-                    if(tcrt5000->tcrtMidDownLeft.kalmanDistance>BLACKLINE_TRIGGER+20)
+                    if(tcrt5000->tcrtMidDownLeft.kalmanDistance>BLACKLINE_TRIGGER)
                         if(secondLine){
                             if(++nLine<2)   delay(500);
                             else            break;
@@ -722,7 +722,7 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
                         else                break;
                 } 
                 else if(direction=='6'){
-                    if(tcrt5000->tcrtMidDownRight.kalmanDistance>BLACKLINE_TRIGGER+20)
+                    if(tcrt5000->tcrtMidDownRight.kalmanDistance>BLACKLINE_TRIGGER)
                         if(secondLine){
                             if(++nLine<2)   delay(500);
                             else            break;
@@ -739,21 +739,21 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
         movePID_nCM(1.8, true, '2'); 
     else if(takePhoto){
         if(direction=='6')
-            movePID_nCM(0.5, true, '6');
+            movePID_nCM(1.2, true, '6');
             // movePID_nCM(0, true, '6');
         else if(direction=='4')
-            movePID_nCM(0.5, true, '4'); 
+            movePID_nCM(1.2, true, '4'); 
             // movePID_nCM(3.5, true, '4');
     }
     else if(goVerticalLine){
         if(direction=='4' && frontTCRT)
-            movePID_nCM(2.8, true, '4'); 
+            movePID_nCM(1.9, true, '4'); 
         else if(direction=='6' && frontTCRT)
-            movePID_nCM(1, true, '4');               
+            movePID_nCM(1.1, true, '6');               
         else if(direction=='6' && !frontTCRT)
-            movePID_nCM(2.8, true, '6');     
+            movePID_nCM(1.1, true, '6');     
         else if(direction=='4' && !frontTCRT)
-            movePID_nCM(1, true, '6');                               
+            movePID_nCM(1.9, true, '4');                               
     }     
     else{
         if(direction=='6')

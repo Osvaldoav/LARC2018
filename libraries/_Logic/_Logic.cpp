@@ -103,6 +103,7 @@ void _Logic::blink(int times){
 void _Logic::stackToShip(){
     bool A = lastStack < 2 || (lastStack > 3 && lastStack < 6);
     bool B = lastColor != 'R';
+    bool blueContainer = (lastColor == 'B');
     bool front;
     int dir;
 
@@ -186,7 +187,7 @@ void _Logic::stackToShip(){
         traductor->moveToShip(true);
         traductor->waitForMechanism();             //make sure mechanism is already (1/8) up 
         traductor->alignShip();
-        if(firstContainer){
+        if(firstContainer && ((blueContainer&&blue_boxes<4) || (!blueContainer&&green_boxes<4))){
             traductor->movements->movePID_nCM(4.5, true, '4');
             traductor->moveToShip(false);
             traductor->alignFirstShip();            
@@ -203,6 +204,7 @@ void _Logic::stackToShip(){
         }
         if(!firstContainer)
             traductor->moveMechanismForAligning(false); //move mechanism a little down (1/8) of a level (back to normal)
+        traductor->movements->movePID_nCM(0.5, true, '6');            
         traductor->waitForMechanism();             //make sure mechanism is already (1/8) down (normal)
     }
     else{

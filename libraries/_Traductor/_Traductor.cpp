@@ -108,7 +108,7 @@ void _Traductor::backUntilBlackLineSharps(bool tcrt){
 
 void _Traductor::moveAtrasHorizontal(){
     movements->larc_moveUntilBlackLine(false, '4', false, true, false, true, false);
-    // movements->movePID_nCM(2, false, '4'); 
+    movements->movePID_nCM(1.1, false, '6'); 
 }
 
 void _Traductor::vertical(int lines){
@@ -133,7 +133,7 @@ void _Traductor::gotoFirst(){
         movements->movePID(false, '2');
         movements->updateSensors(0,0,0,0,1,1);
     } while(movements->tcrt5000->tcrtMechaLeft.kalmanDistance < movements->tcrt5000->leftMechanism+movements->BLACKLINE_TRIGGER_SHIP);
-    movements->movePID_nCM(29, false, '8'); 
+    movements->movePID_nCM(28.3, false, '8'); 
     delay(1000);
     movements->movePID_nCM(2, true, '4');
 }
@@ -151,7 +151,7 @@ void _Traductor::gotoSecond(){
         movements->updateSensors(0,0,0,0,1,1);
     } while(movements->tcrt5000->tcrtMechaLeft.kalmanDistance < movements->tcrt5000->leftMechanism+movements->BLACKLINE_TRIGGER_SHIP);   
     waitForMechanism();
-    movements->movePID_nCM(39, false, '8');
+    movements->movePID_nCM(28.3, false, '8');
     delay(1000);
     movements->movePID_nCM(2, true, '4'); 
 }
