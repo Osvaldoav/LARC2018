@@ -115,9 +115,11 @@ void _BNO055::calibrarBNO(double &Setpoint){
 
 // TODO:
 void _BNO055::readBNO(double &Setpoint){
-  if(millis()%300 == 0) Setpoint+=offsetAngle;
-  delay(20);
-  bno.getEvent(&event);
-  lastInput = rawInput;
-  rawInput=round(bno.getVector(Adafruit_BNO055::VECTOR_EULER).x());
+  if (millis() - lastReadTime > readRateMs){
+    if(millis()%300 == 0) Setpoint+=offsetAngle;
+    delay(20);
+    bno.getEvent(&event);
+    lastInput = rawInput;
+    rawInput=round(bno.getVector(Adafruit_BNO055::VECTOR_EULER).x());
+  }
 }

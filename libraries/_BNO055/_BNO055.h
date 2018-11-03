@@ -9,6 +9,10 @@
 #include <math.h>
 
 class _BNO055{
+    private:
+    long lastReadTime = 0;
+    int readRateMs = 50;
+    
     public:
 // TODO: METHODS
         void setupBNO055();
