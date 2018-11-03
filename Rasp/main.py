@@ -25,15 +25,14 @@ cam1 = Cam(2)
 cam2 = Cam(3)
 
 try:
-	for i in range(5):
+	brain = Algorithm()
+	serial = Serial()
+
+	for i in range(2):
 		GPIO.output(8, GPIO.HIGH) 
 		time.sleep(0.5) 
 		GPIO.output(8, GPIO.LOW) 
 		time.sleep(0.5) 
-
-	brain = Algorithm()
-	serial = Serial()
-
 	print "starting..."
 	# serial.start()
 	c = serial.read()
