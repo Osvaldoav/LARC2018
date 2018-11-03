@@ -17,7 +17,8 @@ void setup() {
     pinMode(30, INPUT);
     pinMode(22, OUTPUT);
 
-//    logic->traductor->movements->lcd->setupLCD();    
+    digitalWrite(22, HIGH);
+    while(digitalRead(30) == HIGH);//limitswitch
 
     logic->traductor->movements->pid->setupLibraryPID(); 
     logic->traductor->movements->motors->setupMotors();
@@ -33,22 +34,13 @@ void setup() {
 
     attachInterrupt(digitalPinToInterrupt(pinEncoderFR), encoderStepFR, CHANGE);
     attachInterrupt(digitalPinToInterrupt(pinEncoderBL), encoderStepBL, CHANGE);      
-    attachInterrupt(digitalPinToInterrupt(pinEncoderMechanism), encoderStepMechanism, CHANGE);
-    
-    digitalWrite(22, HIGH);
-    while(digitalRead(30) == HIGH);//limitswitch
-    digitalWrite(22, LOW);
+    attachInterrupt(digitalPinToInterrupt(pinEncoderMechanism), encoderStepMechanism, CHANGE);      
 
+    digitalWrite(22, LOW);   
     _Serial::send('Z');
     _Serial::read();     
     logic->traductor->movements->initMechanism();    
-    logic->initCommunication();        
-
-    //CALIBRATION 
-//      logic->traductor->movements->lcd->onLed('g');    
-//      logic->traductor->movements->timeFlight->calibTimeFlights(4);    
-//      logic->traductor->movements->lcd->offLed('g'); 
-//      delay(5000);   
+    logic->initCommunication();         
 }
 
 void testMovements(){ 
@@ -60,7 +52,7 @@ void testMovements(){
 //    Serial.print(" ");
 //    Serial.println(logic->traductor->movements->encoder->stepsBL); 
 //    logic->traductor->movements->crazyMode=true;    
-//    logic->traductor->movements->movePID(false, '6');
+    logic->traductor->movements->movePID(false, '8');
 //    logic->traductor->movements->spinPID(true, -90);
 //    delay(5000); 
 //    logic->traductor->movements->movePID_nSec(1.5, false, '1');
@@ -134,10 +126,17 @@ void aligningTcrtTest(){
 }
 
 void larc(){
-  logic->traductor->moveAtrasHorizontal();
-  logic->traductor->girar(-90);
-  logic->traductor->movements->movePID_nCM(4, false, '8');
-  logic->traductor->movements->larc_moveUntilBlackLine(false, '6', true, true, true, false);
+//  logic->traductor->moveAtrasHorizontal();
+//  logic->traductor->girar(-90);
+//  logic->traductor->movements->movePID_nCM(4, false, '8');
+//  logic->traductor->movements->larc_moveUntilBlackLine(false, '6', true, true, true, false);
+
+  logic->traductor->moveToShip(true);
+  logic->traductor->alignShip();
+  logic->traductor->movements->movePID_nCM(4.5, true, '4');
+  logic->traductor->moveToShip(false);
+  logic->traductor->alignFirstShip();
+  
 //  do{
 //      movements->movePID(false, '8');
 //      movements->updateSensors(0,0,0,0,1,1);        
@@ -165,7 +164,7 @@ void logicTest(){
 //    logic->stackToShip();
 //    logic->shipToStack();
 //    logic->stackToShip();
-delay(4000);
+    delay(4000);
     logic->traductor->mecanismo(4, 1); // nivela el mecanismo al nivel adecuado   
     delay(4000);    
 //    logic->traductor->dropContainer();    
@@ -178,15 +177,15 @@ delay(4000);
     while(1);
 }
 void mechanism(){
-//    logic->traductor->movements->servo->pickContainer();
+    logic->traductor->movements->servo->pickContainer();
 //    Serial.println("HOLA");
-//    delay(1000);
-//    logic->traductor->movements->servo->dropContainer();
+    delay(1000);
+    logic->traductor->movements->servo->dropContainer();
 //    Serial.println("ADIOS");    
-//    delay(1000);
+    delay(1000);
 //    logic->traductor->movements->encoder->encoderStateMechanism=1;
 //    Serial.println(logic->traductor->movements->encoder->stepsMechanism);
-    logic->traductor->movements->motors->moveMechanism(false);
+//    logic->traductor->movements->motors->moveMechanism(false);
 //    logic->traductor->movements->initMechanism();
 //    delay(2000);
 //    logic->traductor->movements->motors->stopMechanism();
@@ -200,10 +199,15 @@ void alignLine(){
 }
 
 void loop(){
+//  logic->traductor->dropContainer();
+//  logic->traductor->grabContainer();
 //  aligningTofTest();
 //  tof_vs_sharp();
-//  testMovements(); 
+  testMovements(); 
 //  testSteps();
+
+//    logic->traductor->movements->updateSensors(1,0,0,0,0,0);
+//    Serial.println(logic->traductor->movements->bno055->rawInput);
 
 //  readTCRT5000();
 //  aligningTcrtTest();
@@ -212,8 +216,8 @@ void loop(){
 //  colorSensor();
 //  logic->traductor->gotoFirst();
 //  mechanism();
-  logic->stackToShip();
-  logic->shipToStack();
+//  logic->stackToShip();
+//  logic->shipToStack();
 //  alignLine();
 //  while(1);  
 }

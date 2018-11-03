@@ -60,9 +60,9 @@ char _Logic::grabContainer(char c){
     char ori = lastStack/2*2 != lastStack ? '2' : '8';  // '2'  :  '8'
     // if(ori != '8')
     traductor->centerContainer(ori);
-    traductor->alinearStack(true);
+    // traductor->alinearStack(true);
     traductor->grabContainer();
-    traductor->alinearStack(false);
+    // traductor->alinearStack(false);
     _Serial::send(c);
 }
 
@@ -181,6 +181,7 @@ void _Logic::stackToShip(){
         traductor->waitForMechanism();  
         if(!firstContainer)
             traductor->moveMechanismForAligning(true); //move mechanism a little up (1/8) of a level
+        traductor->movements->movePID_nCM(5, false, '6');
         traductor->moveToShip(true);
         traductor->waitForMechanism();             //make sure mechanism is already (1/8) up 
         traductor->alignShip();

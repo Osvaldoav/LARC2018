@@ -58,12 +58,10 @@ void _Traductor::mecanismo(uint8_t newStack, uint8_t currentStack){
 
 void _Traductor::grabContainer(){
     movements->servo->pickContainer();
-    delay(1000);
 }
 
 void _Traductor::dropContainer(){
     movements->servo->dropContainer();
-    delay(1000);
 }
 
 void _Traductor::moveAtras(){
@@ -123,9 +121,6 @@ void _Traductor::alinearStack(bool dir){
     char c = dir ? '6' : '4';
     movements->movePID_nCM(1, true, c);  
     delay(200); 
-    // movements->alignLine();
-    // movements->getCloseToStack();
-    // movements->align_tof();
 } 
 
 void _Traductor::gotoFirst(){
@@ -133,7 +128,7 @@ void _Traductor::gotoFirst(){
     movements->movePID_nCM(1.8, false, '8');
     movements->crazyMode=true;
     movements->larc_moveUntilBlackLine(false, '6', true, true, false, false);
-    movements->crazyMode=false;
+    movements->crazyMode=false;  
     do{
         movements->movePID(false, '2');
         movements->updateSensors(0,0,0,0,1,1);

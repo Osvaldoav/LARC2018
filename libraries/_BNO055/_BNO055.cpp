@@ -21,19 +21,15 @@ void _BNO055::setupBNO055(){
     offsetAngleForward=0.34444;   //1.7777     //(+)=RIGHT, (-)=LEFT
     offsetAngleTurn=1.5555;   //1.5555      //(+)=LEFT, (-)=RIGHT
     offsetAngle=offsetAngleForward;//0.0011
-    delay(400);
     // USING I2C ADDRESS 0X28
+    // Serial.println("Before");
     if(!bno.begin(bno.OPERATION_MODE_IMUPLUS)){
-      // lcd->print("BNO055 FAILED");         // Debug
       while(1);
-    }
-    // lcd->print("BNO055 READY");       // Debug
-  //  setCal();                                      // Set 9DOF Calibration Values
+    }      
+    // Serial.println("After");
+    // setCal();                                      // Set 9DOF Calibration Values
     bno.setExtCrystalUse(true);
-  //  calibrarBNO(Setpoint);
-  //  delay(30000);
-    // delay(5000);  
-    // lcd->clear();
+    // calibrarBNO(Setpoint);
 }
 
 // TODO:
@@ -92,25 +88,23 @@ bool _BNO055::getCalStat(){
   // Serial.print("Mag    calibration status "); Serial.println(calMag);
   
   delay(1000);
-  if(calMag==3 && calGyro==3)
+  if(calGyro==3)
     return true;
   return false;
 }
 
 // TODO:
 void _BNO055::calibrarBNO(double &Setpoint){
-  bool calibrated = false; 
   double startTime = millis();  
   int x=0;                  
-  while (x<2 || millis()<startTime+12000){                                                      // Mag cal status indicates complete
-    readCal();            
-    calibrated = getCalStat();                                          // Continue to screen 5
+  while (x<2 || millis()<startTime+3000){                                                      // Mag cal status indicates complete
+    readCal();                                                    // Continue to screen 5
     if(getCalStat())  x++;
     delay(BNO055_SAMPLERATE_DELAY_MS);
   }  
   readBNO(Setpoint);
   Setpoint = rawInput;
-  delay(4000);
+  // delay(2000);
 }
 
 // TODO:
