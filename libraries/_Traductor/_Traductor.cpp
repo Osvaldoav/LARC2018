@@ -143,7 +143,7 @@ void _Traductor::gotoFirst(){
 }
 
 void _Traductor::gotoSecond(){
-    updateMechanismMovement(1, 4, false);
+    updateMechanismMovement(1, 5, false);
     moveAtrasHorizontal();
     movements->spinPID(true, -90);
     movements->movePID_nCM(1.8, false, '8');   
