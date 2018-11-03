@@ -22,7 +22,15 @@ const byte  tcrtSharpLeftSensor = A4;
 
 // TODO:
 void _TCRT5000::setupTCRT5000(){
-
+    leftMechanism = 0;
+    rightMechanism = 0;    
+    for(int i=0; i<100; i++){
+        filtrateDistancesTCRT5000(true);
+        leftMechanism += tcrtMechaLeft.kalmanDistance;
+        rightMechanism += tcrtMechaRight.kalmanDistance;
+    }
+    leftMechanism /= 100.0;
+    rightMechanism /= 100.0;
 }
 // TODO:
 double _TCRT5000::getRawDistance(byte tcrt){

@@ -47,7 +47,9 @@ class _TCRT5000{
     TCRT5000Kalman tcrtMidFrontRight; 
     TCRT5000Kalman tcrtMidDownRight;   
     TCRT5000Kalman tcrtSharpLeft;
-    TCRT5000Kalman tcrtSharpRight;        
+    TCRT5000Kalman tcrtSharpRight;   
+    double leftMechanism;
+    double rightMechanism;     
 };
 
 #endif

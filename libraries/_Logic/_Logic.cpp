@@ -60,9 +60,9 @@ char _Logic::grabContainer(char c){
     char ori = lastStack/2*2 != lastStack ? '2' : '8';  // '2'  :  '8'
     // if(ori != '8')
     traductor->centerContainer(ori);
-    // traductor->alinearStack(true);
+    traductor->alinearStack(true);
     traductor->grabContainer();
-    // traductor->alinearStack(false);
+    traductor->alinearStack(false);
     _Serial::send(c);
 }
 

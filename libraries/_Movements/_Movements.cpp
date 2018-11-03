@@ -17,7 +17,7 @@ _Movements::_Movements(){
     tcrt5000 = new _TCRT5000;
     servo = new _Servo;
     BLACKLINE_TRIGGER = 300;//300
-    BLACKLINE_TRIGGER_SHIP = 260;//300
+    BLACKLINE_TRIGGER_SHIP = 30;//300
     untilStepsMechanism = 0;
     crazyMode=false;
     crazyRight=false;
@@ -37,7 +37,8 @@ void _Movements::initMechanism(){
         motors->moveMechanism(false);        
     }    
     motors->stopMechanism();
-    encoder->encoderStateMechanism = 1;    
+    encoder->encoderStateMechanism = 1;   
+    moveMechanism(4,5); 
 }
 
 // TODO:
@@ -532,8 +533,8 @@ void _Movements::moveToShip(bool goBack){
         updateSensors(0,0,0,0,1,1);
         movePID(true, '6');
         if(goBack){
-            if(tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER_SHIP 
-            || tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER_SHIP){
+            if(tcrt5000->tcrtMechaLeft.kalmanDistance>tcrt5000->leftMechanism+BLACKLINE_TRIGGER_SHIP 
+            || tcrt5000->tcrtMechaRight.kalmanDistance>tcrt5000->rightMechanism+BLACKLINE_TRIGGER_SHIP){
                 motors->brake();
                 delay(20);
                 if(++inSeaArea > 1)
@@ -541,8 +542,8 @@ void _Movements::moveToShip(bool goBack){
             }            
         }
         else{
-            if(tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER_SHIP 
-            || tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER_SHIP){
+            if(tcrt5000->tcrtMechaLeft.kalmanDistance>tcrt5000->leftMechanism+BLACKLINE_TRIGGER_SHIP 
+            || tcrt5000->tcrtMechaRight.kalmanDistance>tcrt5000->rightMechanism+BLACKLINE_TRIGGER_SHIP){
                 motors->brake();
                 delay(20);                
                 if(++inSeaArea > 3)
@@ -560,14 +561,14 @@ void _Movements::alignShip(){
     do{
         // lcd->print("Alignments:", doneAligning);      
         updateSensors(0,0,0,0,1,0);
-        if(tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER_SHIP && tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER_SHIP){
+        if(tcrt5000->tcrtMechaLeft.kalmanDistance>tcrt5000->leftMechanism+BLACKLINE_TRIGGER_SHIP && tcrt5000->tcrtMechaRight.kalmanDistance>tcrt5000->rightMechanism+BLACKLINE_TRIGGER_SHIP){
             if(++doneAligning > 4)  break;
             else
                 movePID_nCM(1.5, true, '4');
         }    
-        if(tcrt5000->tcrtMechaLeft.kalmanDistance<BLACKLINE_TRIGGER_SHIP && tcrt5000->tcrtMechaRight.kalmanDistance<BLACKLINE_TRIGGER_SHIP)
+        if(tcrt5000->tcrtMechaLeft.kalmanDistance<tcrt5000->leftMechanism+BLACKLINE_TRIGGER_SHIP && tcrt5000->tcrtMechaRight.kalmanDistance<tcrt5000->rightMechanism+BLACKLINE_TRIGGER_SHIP)
             movePID(true, '6');
-        else if(tcrt5000->tcrtMechaLeft.kalmanDistance>=BLACKLINE_TRIGGER_SHIP && tcrt5000->tcrtMechaRight.kalmanDistance<BLACKLINE_TRIGGER_SHIP){
+        else if(tcrt5000->tcrtMechaLeft.kalmanDistance>=tcrt5000->leftMechanism+BLACKLINE_TRIGGER_SHIP && tcrt5000->tcrtMechaRight.kalmanDistance<tcrt5000->rightMechanism+BLACKLINE_TRIGGER_SHIP){
             movePID_nCM(1.6, true, '4');
             delay(40);
             pid->calculateNewSetpoint(-0.5);
@@ -575,7 +576,7 @@ void _Movements::alignShip(){
                 turnPID(true);  
             }   
         }
-        else if(tcrt5000->tcrtMechaLeft.kalmanDistance<BLACKLINE_TRIGGER_SHIP && tcrt5000->tcrtMechaRight.kalmanDistance>=BLACKLINE_TRIGGER_SHIP){
+        else if(tcrt5000->tcrtMechaLeft.kalmanDistance<tcrt5000->leftMechanism+BLACKLINE_TRIGGER_SHIP && tcrt5000->tcrtMechaRight.kalmanDistance>=tcrt5000->rightMechanism+BLACKLINE_TRIGGER_SHIP){
             movePID_nCM(1.6, true, '4');
             delay(40);
             pid->calculateNewSetpoint(0.5);
@@ -594,16 +595,16 @@ void _Movements::alignShip(){
 void _Movements::alignFirstShip(){
     char direction;
     updateSensors(0,0,0,0,1,0);
-    if(tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER_SHIP && tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER_SHIP)
+    if(tcrt5000->tcrtMechaRight.kalmanDistance>tcrt5000->rightMechanism+BLACKLINE_TRIGGER_SHIP && tcrt5000->tcrtMechaLeft.kalmanDistance>tcrt5000->leftMechanism+BLACKLINE_TRIGGER_SHIP)
         direction = '8';
-    else if(tcrt5000->tcrtMechaRight.kalmanDistance>BLACKLINE_TRIGGER_SHIP)
+    else if(tcrt5000->tcrtMechaRight.kalmanDistance>tcrt5000->rightMechanism+BLACKLINE_TRIGGER_SHIP)
         direction = '2';
-    else if(tcrt5000->tcrtMechaLeft.kalmanDistance>BLACKLINE_TRIGGER_SHIP)
+    else if(tcrt5000->tcrtMechaLeft.kalmanDistance>tcrt5000->leftMechanism+BLACKLINE_TRIGGER_SHIP)
         direction = '8';
     do{
         updateSensors(0,0,0,0,1,0);
         if(direction == '2'){
-            if(tcrt5000->tcrtMechaRight.kalmanDistance<BLACKLINE_TRIGGER_SHIP){
+            if(tcrt5000->tcrtMechaRight.kalmanDistance<tcrt5000->rightMechanism+BLACKLINE_TRIGGER_SHIP){
                 motors->brake();
                 movePID_nCM(9, true, '8');                  
                 break;
@@ -611,7 +612,7 @@ void _Movements::alignFirstShip(){
             movePID(true, '2');
         }
         else if(direction == '8'){
-            if(tcrt5000->tcrtMechaLeft.kalmanDistance<BLACKLINE_TRIGGER_SHIP){
+            if(tcrt5000->tcrtMechaLeft.kalmanDistance<tcrt5000->leftMechanism+BLACKLINE_TRIGGER_SHIP){
                 motors->brake();
                 movePID_nCM(9, true, '2');                  
                 break;
@@ -740,11 +741,11 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
         if(direction=='4' && frontTCRT)
             movePID_nCM(2.8, true, '4'); 
         else if(direction=='6' && frontTCRT)
-            movePID_nCM(1.2, true, '4');               
+            movePID_nCM(1, true, '4');               
         else if(direction=='6' && !frontTCRT)
             movePID_nCM(2.8, true, '6');     
         else if(direction=='4' && !frontTCRT)
-            movePID_nCM(1.2, true, '6');                               
+            movePID_nCM(1, true, '6');                               
     }     
     else{
         if(direction=='6')
