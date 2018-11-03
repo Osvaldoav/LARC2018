@@ -28,7 +28,7 @@ try:
 	brain = Algorithm()
 	serial = Serial()
 
-	for i in range(2):
+	for i in range(3):
 		GPIO.output(8, GPIO.HIGH) 
 		time.sleep(0.5) 
 		GPIO.output(8, GPIO.LOW) 
