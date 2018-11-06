@@ -26,6 +26,11 @@ _Movements::_Movements(){
     moveCalled=0;    
 } 
 
+void _Movements::setInitialSetpoint(){
+    updateSensors(1,0,0,0,0,0);
+    pid->Setpoint = bno055->rawInput;
+}
+
 void _Movements::initMechanism(){
     while(digitalRead(limitSwitch)){    //limitSwitch is pressed when == 0
         motors->moveMechanism(true);        
