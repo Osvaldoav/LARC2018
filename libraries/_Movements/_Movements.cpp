@@ -566,7 +566,7 @@ void _Movements::alignShip(){
         // lcd->print("Alignments:", doneAligning);      
         updateSensors(0,0,0,0,1,0);
         if(tcrt5000->tcrtMechaLeft.kalmanDistance>tcrt5000->leftMechanism+BLACKLINE_TRIGGER_SHIP && tcrt5000->tcrtMechaRight.kalmanDistance>tcrt5000->rightMechanism+BLACKLINE_TRIGGER_SHIP){
-            if(++doneAligning > 2)  break;
+            if(++doneAligning > 4)  break;
             else
                 movePID_nCM(1.5, true, '4');
         }    
