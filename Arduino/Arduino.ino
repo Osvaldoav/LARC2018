@@ -15,10 +15,12 @@ void setup() {
     Wire.begin();
     Serial.begin(9600);    
     pinMode(30, INPUT);
-    pinMode(22, OUTPUT);
+    pinMode(22, OUTPUT);          
 
     digitalWrite(22, HIGH);
     while(digitalRead(30) == HIGH);//limitswitch
+    delay(700);
+    digitalWrite(22, LOW);      
 
     logic->traductor->movements->pid->setupLibraryPID(); 
     logic->traductor->movements->motors->setupMotors();
@@ -34,11 +36,11 @@ void setup() {
 
     attachInterrupt(digitalPinToInterrupt(pinEncoderFR), encoderStepFR, CHANGE);
     attachInterrupt(digitalPinToInterrupt(pinEncoderBL), encoderStepBL, CHANGE);      
-    attachInterrupt(digitalPinToInterrupt(pinEncoderMechanism), encoderStepMechanism, CHANGE);      
-
-    digitalWrite(22, LOW);   
+    attachInterrupt(digitalPinToInterrupt(pinEncoderMechanism), encoderStepMechanism, CHANGE);    
+    
     _Serial::send('Z');
     _Serial::read();     
+    logic->traductor->movements->setInitialSetpoint();
     logic->traductor->movements->initMechanism();    
     logic->initCommunication();         
 }
@@ -52,7 +54,7 @@ void testMovements(){
 //    Serial.print(" ");
 //    Serial.println(logic->traductor->movements->encoder->stepsBL); 
 //    logic->traductor->movements->crazyMode=true;    
-    logic->traductor->movements->movePID(false, '8');
+    logic->traductor->movements->movePID(false, '6');
 //    logic->traductor->movements->spinPID(true, -90);
 //    delay(5000); 
 //    logic->traductor->movements->movePID_nSec(1.5, false, '1');
@@ -184,16 +186,31 @@ void mechanism(){
 //    logic->traductor->movements->encoder->encoderStateMechanism=1;
 //    Serial.println(logic->traductor->movements->encoder->stepsMechanism);
 //    logic->traductor->movements->motors->moveMechanism(false);
-    Serial.println("DOWN");
+//    Serial.println("DOWN");
 //    logic->traductor->movements->initMechanism();
 //    delay(2000);
-    logic->traductor->movements->motors->moveMechanism(false);
+//    logic->traductor->movements->motors->moveMechanism(false);
 //    digitalWrite(10,HIGH);
 //    digitalWrite(11,LOW);
 //    logic->traductor->movements->motors->stopMechanism();
 //    delay(2000);
-//    logic->traductor->mecanismo(4,1);
-//    while(1);
+
+//    delay(12000);    
+//    logic->traductor->mecanismo(5,4);
+//    while(digitalRead(30) == HIGH);//limitswitch
+//    logic->traductor->mecanismo(4,3);
+//    while(digitalRead(30) == HIGH);//limitswitch
+//    logic->traductor->mecanismo(3,2);
+//    while(digitalRead(30) == HIGH);//limitswitch
+//    logic->traductor->mecanismo(2,1); 
+//    while(digitalRead(30) == HIGH);//limitswitch
+//    logic->traductor->mecanismo(1,2);
+//    while(digitalRead(30) == HIGH);//limitswitch
+//    logic->traductor->mecanismo(2,3);
+//    while(digitalRead(30) == HIGH);//limitswitch
+//    logic->traductor->mecanismo(3,4);
+//    while(digitalRead(30) == HIGH);//limitswitch
+//    logic->traductor->mecanismo(4,5);    
 }
 void alignLine(){
     logic->traductor->movements->alignLine();
@@ -205,7 +222,7 @@ void loop(){
 //  logic->traductor->grabContainer();
 //  aligningTofTest();
 //  tof_vs_sharp();
-//  testMovements(); 
+  testMovements(); 
 //  testSteps();
 
 //    logic->traductor->movements->updateSensors(1,0,0,0,0,0);
@@ -218,8 +235,8 @@ void loop(){
 //  colorSensor();
 //  logic->traductor->gotoFirst();
 //  mechanism();
-  logic->stackToShip();
-  logic->shipToStack();
+//  logic->stackToShip();
+//  logic->shipToStack();
 //  alignLine();
 //  while(1);  
 }

@@ -61,7 +61,11 @@ char _Logic::grabContainer(char c){
     // if(ori != '8')
     traductor->centerContainer(ori);
     traductor->alinearStack(true);
+    traductor->moveMechanismForAligning(false);
+    traductor->waitForMechanism();     
     traductor->grabContainer();
+    traductor->moveMechanismForAligning(true);
+    traductor->waitForMechanism(); 
     traductor->alinearStack(false);
     _Serial::send(c);
 }
@@ -75,7 +79,7 @@ void _Logic::gotoSecond(){
     _Serial::send('1');
     c_serial = _Serial::clean();
     // traductor->LcdPrint("c_serial", c_serial);
-    // delay(3000);
+    // delay(3000);    
     pickFirst(c_serial);
     currentLevel = 4;
 }
@@ -88,6 +92,8 @@ void _Logic::pickFirst(char c){
     // delay(5000);
     traductor->movements->moveMechanism(5,4);
     traductor->pickFirst(lastStack);
+    traductor->moveMechanismForAligning(false);
+    traductor->waitForMechanism(); 
     grabContainer(c);
 }
 
@@ -126,6 +132,8 @@ void _Logic::stackToShip(){
     // traductor->LcdPrint("last Level", lastLevel);
     //  delay(3000);
 
+    traductor->moveMechanismForAligning(true);
+    traductor->waitForMechanism(); 
     traductor->mecanismo(currentLevel, lastLevel);   // eleva el stack para no chocar con los demas
     traductor->horizontalLine(A == B); // Avanza de frente o de reversa hasta linea horizontal
 
@@ -178,11 +186,11 @@ void _Logic::stackToShip(){
         // else if(lastColor=='B' && dir==-90);
         //     traductor->fixContainerSteps(false);        
     }  
-    if (B){
-        bool firstContainer = (currentLevel < 2);
-        traductor->waitForMechanism();  
-        if(!firstContainer)
-            traductor->moveMechanismForAligning(true); //move mechanism a little up (1/8) of a level
+    traductor->waitForMechanism();  
+    bool firstContainer = (currentLevel < 2); 
+    if(firstContainer)
+        traductor->moveMechanismForAligning(false);    
+    if (B){              
         traductor->movements->movePID_nCM(5, false, '6');
         traductor->moveToShip(true);
         traductor->waitForMechanism();             //make sure mechanism is already (1/8) up 
@@ -223,6 +231,8 @@ void _Logic::shipToStack(){
         gotoSecond();
         return;
     }
+    traductor->moveMechanismForAligning(true);
+    traductor->waitForMechanism();   
     char color = c > 98 ? 'R' : c > 65 ? 'G' : 'B';
     int stack = color == 'R' ? c - 99 : color == 'G' ? c - 66 : c - 51;
     bool dir, tcrt;
@@ -293,5 +303,7 @@ void _Logic::shipToStack(){
     // delay(3000);
 
     traductor->mecanismo(lastLevel, currentLevel);
+    traductor->moveMechanismForAligning(false);
+    traductor->waitForMechanism();     
     grabContainer(c);
 }
