@@ -136,10 +136,17 @@ void _Movements::setBaseVelocitiesByDirection(bool goSlow, char direction, doubl
         }            
     }      
     else if(direction=='4' || direction=='6'){
-        pid->frontLeftOutput = evaluatePWMFunctionByType(motors->velHorFL, xCM, totalCM);
-        pid->backLeftOutput = evaluatePWMFunctionByType(motors->velHorBL, xCM, totalCM);
-        pid->frontRightOutput = evaluatePWMFunctionByType(motors->velHorFR, xCM, totalCM);
-        pid->backRightOutput = evaluatePWMFunctionByType(motors->velHorBR, xCM, totalCM);        
+        if (goSlow) {
+            pid->frontLeftOutput = evaluatePWMFunctionByType(motors->velSlowHorFL, xCM, totalCM);
+            pid->backLeftOutput = evaluatePWMFunctionByType(motors->velSlowHorBL, xCM, totalCM);
+            pid->frontRightOutput = evaluatePWMFunctionByType(motors->velSlowHorFR, xCM, totalCM);
+            pid->backRightOutput = evaluatePWMFunctionByType(motors->velSlowHorBR, xCM, totalCM);     
+        } else {  
+            pid->frontLeftOutput = evaluatePWMFunctionByType(motors->velHorFL, xCM, totalCM);
+            pid->backLeftOutput = evaluatePWMFunctionByType(motors->velHorBL, xCM, totalCM);
+            pid->frontRightOutput = evaluatePWMFunctionByType(motors->velHorFR, xCM, totalCM);
+            pid->backRightOutput = evaluatePWMFunctionByType(motors->velHorBR, xCM, totalCM);     
+        }               
     }       
 }
 // TODO:
@@ -557,7 +564,7 @@ void _Movements::moveToShip(bool goBack){
     } while(1);
     // lcd->print("Move to Ship:", "DONE");
     motors->brake();  
-    if(goBack)  movePID_nCM(3, false, '4');  
+    if(goBack)  movePID_nCM(3, true, '4');  
 }
 // TODO:
 void _Movements::alignShip(){
@@ -566,7 +573,7 @@ void _Movements::alignShip(){
         // lcd->print("Alignments:", doneAligning);      
         updateSensors(0,0,0,0,1,0);
         if(tcrt5000->tcrtMechaLeft.kalmanDistance>tcrt5000->leftMechanism+BLACKLINE_TRIGGER_SHIP && tcrt5000->tcrtMechaRight.kalmanDistance>tcrt5000->rightMechanism+BLACKLINE_TRIGGER_SHIP){
-            if(++doneAligning > 4)  break;
+            if(++doneAligning > 2)  break;
             else
                 movePID_nCM(1.5, true, '4');
         }    
@@ -612,6 +619,7 @@ void _Movements::alignFirstShip(){
         if(direction == '2'){
             if(tcrt5000->tcrtMechaRight.kalmanDistance<tcrt5000->rightMechanism+BLACKLINE_TRIGGER_SHIP){
                 motors->brake();
+                delay(60);
                 movePID_nCM(8.5, true, '8');                  
                 break;
             }
@@ -620,6 +628,7 @@ void _Movements::alignFirstShip(){
         else if(direction == '8'){
             if(tcrt5000->tcrtMechaLeft.kalmanDistance<tcrt5000->leftMechanism+BLACKLINE_TRIGGER_SHIP){
                 motors->brake();
+                delay(60);
                 movePID_nCM(8.5, true, '2');                  
                 break;
             }

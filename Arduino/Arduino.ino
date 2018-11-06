@@ -136,7 +136,7 @@ void larc(){
   logic->traductor->moveToShip(true);
   logic->traductor->alignShip();
   logic->traductor->movements->movePID_nCM(4.5, true, '4');
-  logic->traductor->moveToShip(false);
+  logic->traductor->moveToShip(false);  
   logic->traductor->alignFirstShip();
   
 //  do{

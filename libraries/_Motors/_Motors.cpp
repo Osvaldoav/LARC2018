@@ -42,10 +42,10 @@ void _Motors::setupMotors(){
     velFordBL = 200;
     velFordFR = 200;
     velFordBR = 200; 
-    velSlowFordFL = 120;
-    velSlowFordBL = 120; 
-    velSlowFordFR = 120;
-    velSlowFordBR = 120;        
+    velSlowFordFL = 140;
+    velSlowFordBL = 140; 
+    velSlowFordFR = 140;
+    velSlowFordBR = 140;        
     velTurnFL = 175;
     velTurnBL = 175;
     velTurnFR = 175;
@@ -58,6 +58,10 @@ void _Motors::setupMotors(){
     velHorBL = (200-HORIZONTAL_OFFSET_POWER)*1;//0.9666
     velHorFR = (200-HORIZONTAL_OFFSET_POWER);
     velHorBR = 200;   
+    velSlowHorFL = 140;//185
+    velSlowHorBL = (140-HORIZONTAL_OFFSET_POWER)*1;//0.9666
+    velSlowHorFR = (140-HORIZONTAL_OFFSET_POWER);
+    velSlowHorBR = 140;       
     INITIAL_VELOCITY = 80;
     FINAL_VELOCITY = 30;        
 
