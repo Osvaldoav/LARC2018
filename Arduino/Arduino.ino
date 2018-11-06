@@ -38,11 +38,11 @@ void setup() {
     attachInterrupt(digitalPinToInterrupt(pinEncoderBL), encoderStepBL, CHANGE);      
     attachInterrupt(digitalPinToInterrupt(pinEncoderMechanism), encoderStepMechanism, CHANGE);    
     
-    _Serial::send('Z');
-    _Serial::read();     
+//    _Serial::send('Z');
+//    _Serial::read();     
     logic->traductor->movements->setInitialSetpoint();
-    logic->traductor->movements->initMechanism();    
-    logic->initCommunication();         
+//    logic->traductor->movements->initMechanism();    
+//    logic->initCommunication();         
 }
 
 void testMovements(){ 
@@ -222,7 +222,7 @@ void loop(){
 //  logic->traductor->grabContainer();
 //  aligningTofTest();
 //  tof_vs_sharp();
-  testMovements(); 
+//  testMovements(); 
 //  testSteps();
 
 //    logic->traductor->movements->updateSensors(1,0,0,0,0,0);
@@ -230,7 +230,7 @@ void loop(){
 
 //  readTCRT5000();
 //  aligningTcrtTest();
-//  larc(); 
+  larc(); 
 //  logicTest();  
 //  colorSensor();
 //  logic->traductor->gotoFirst();
