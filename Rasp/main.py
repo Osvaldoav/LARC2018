@@ -22,7 +22,7 @@ GPIO.setup(8, GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(11, GPIO.OUT, initial=GPIO.LOW)
 
 cam1 = Cam(2)
-# cam2 = Cam(1)
+cam2 = Cam(1)
 
 try:
 	brain = Algorithm()
@@ -34,7 +34,7 @@ try:
 		GPIO.output(8, GPIO.LOW) 
 		time.sleep(0.5) 
 	print "starting..."
-	# serial.start()
+	serial.start()
 	c = serial.read()
 	if c == 'Z':
 		GPIO.output(11, GPIO.HIGH) 
@@ -49,10 +49,10 @@ try:
 	serial.read()
 
 	cam1.shoot()    
-	# cam2.shoot()
+	cam2.shoot()
 
 	brain.updateContainers(cam1.getImage(), 3, False)
-	# brain.updateContainers(cam2.getImage(), 2, True)
+	brain.updateContainers(cam2.getImage(), 2, True)
 	first = brain.firstPick()  
 	brain.set_last_color(first[1])
 
@@ -82,9 +82,9 @@ try:
 			serial.send('S')  
 			serial.read()
 			cam1.shoot()
-			# cam2.shoot()
+			cam2.shoot()
 			brain.updateContainers(cam1.getImage(), 1, False)
-			# brain.updateContainers(cam2.getImage(), 0, True)
+			brain.updateContainers(cam2.getImage(), 0, True)
 			second = brain.secondPick()
 			brain.popContainer(second)
 			printChar(second)
@@ -100,7 +100,7 @@ try:
 
 except (KeyboardInterrupt, SystemExit):
 	cam1.release()
-	# cam2.release()
+	cam2.release()
 	cv2.destroyAllWindows()
 	print "\nProgram has ended!"
 else:
