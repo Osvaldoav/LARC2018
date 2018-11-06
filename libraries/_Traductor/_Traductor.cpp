@@ -49,7 +49,7 @@ void _Traductor::alignFirstShip(){
 void _Traductor::alinearTren(){
     movements->movePID_nCM(5, false, '4');
     movements->larc_moveUntilBlackLine(false, '6', false, false, false, true, false);
-    movements->movePID_nCM(18, false, '6');
+    movements->movePID_nCM(19, false, '6');
 }
 
 void _Traductor::mecanismo(uint8_t newStack, uint8_t currentStack){
@@ -124,33 +124,33 @@ void _Traductor::alinearStack(bool dir){
 } 
 
 void _Traductor::gotoFirst(){
+    moveMechanismForAligning(true);    
     movements->larc_moveUntilBlackLine(false, '8', true, false, true, false, false);
     movements->movePID_nCM(1.8, false, '8');
-    movements->crazyMode=true;
-    movements->larc_moveUntilBlackLine(false, '6', true, true, false, false, true);
-    movements->crazyMode=false;  
+    movements->larc_moveUntilBlackLine(false, '6', true, true, false, false, true);  
     do{
         movements->movePID(false, '2');
         movements->updateSensors(0,0,0,0,1,1);
     } while(movements->tcrt5000->tcrtMechaLeft.kalmanDistance < movements->tcrt5000->leftMechanism+movements->BLACKLINE_TRIGGER_SHIP);
+    waitForMechanism(); 
     movements->movePID_nCM(28.3, false, '8'); 
     delay(1000);
     movements->movePID_nCM(2, true, '4');
 }
 
 void _Traductor::gotoSecond(){
+    moveMechanismForAligning(true);
+    waitForMechanism();       
     updateMechanismMovement(1, 5, false);
     moveAtrasHorizontal();
     movements->spinPID(true, -90);
     movements->movePID_nCM(1.8, false, '8');   
-    movements->crazyMode=true; 
     movements->larc_moveUntilBlackLine(false, '6', true, true, false, false, true);
-    movements->crazyMode=false;
     do{
         movements->movePID(false, '2');
         movements->updateSensors(0,0,0,0,1,1);
     } while(movements->tcrt5000->tcrtMechaLeft.kalmanDistance < movements->tcrt5000->leftMechanism+movements->BLACKLINE_TRIGGER_SHIP);   
-    waitForMechanism();
+    waitForMechanism();  
     movements->movePID_nCM(28.3, false, '8');
     delay(1000);
     movements->movePID_nCM(2, true, '4'); 
@@ -183,9 +183,9 @@ void _Traductor::updateMechanismMovement(int actualLevel, int newLevel, bool tra
     movements->encoder->encoderStateMechanism = 1;
     if (actualLevel == 1 || newLevel == 1 || train)
     // if (actualLevel == 1 || newLevel == 1)
-        movements->untilStepsMechanism = 7100 * abs(newLevel - actualLevel) - 4200; //6900 en fantasma
+        movements->untilStepsMechanism = 7350 * abs(newLevel - actualLevel) - 3800; //6900 en fantasma
     else 
-        movements->untilStepsMechanism = 7100 * abs(newLevel - actualLevel);
+        movements->untilStepsMechanism = 7350 * abs(newLevel - actualLevel);
     // reset steps count
     movements->encoder->stepsMechanism = 0;    
     // start moving

@@ -26,6 +26,11 @@ _Movements::_Movements(){
     moveCalled=0;    
 } 
 
+void _Movements::setInitialSetpoint(){
+    updateSensors(1,0,0,0,0,0);
+    pid->Setpoint = bno055->rawInput;
+}
+
 void _Movements::initMechanism(){
     while(digitalRead(limitSwitch)){    //limitSwitch is pressed when == 0
         motors->moveMechanism(true);        
@@ -33,12 +38,11 @@ void _Movements::initMechanism(){
     motors->stopMechanism();
     encoder->encoderStateMechanism = 1;
     encoder->stepsMechanism = 0;
-    while(encoder->stepsMechanism < 7600){    //limitSwitch is pressed when == 0
+    while(encoder->stepsMechanism < 450){    //limitSwitch is pressed when == 0
         motors->moveMechanism(false);        
     }    
     motors->stopMechanism();
     encoder->encoderStateMechanism = 1;   
-    moveMechanism(4,5); 
 }
 
 // TODO:
@@ -804,8 +808,8 @@ void _Movements::moveMechanism(int lastStackLevel, int newStackLevel){
     if(newStackLevel<1)     newStackLevel=1;
     if(newStackLevel>5)      newStackLevel=5;
     (lastStackLevel == 1 || newStackLevel == 1) ?
-        untilStepsMechanism = 7100 * abs(newStackLevel - lastStackLevel) - 4200:
-        untilStepsMechanism = 7100 * abs(newStackLevel - lastStackLevel);
+        untilStepsMechanism = 7350 * abs(newStackLevel - lastStackLevel) - 3800:
+        untilStepsMechanism = 7350 * abs(newStackLevel - lastStackLevel);
 //  Restart encoder counts
     encoder->stepsMechanism = 0;
 //  Move with p correction until the encoder read the cm
@@ -854,7 +858,7 @@ void _Movements::alignLine(){
 // TODO:
 void _Movements::moveMechanismForAligning(bool before){
     encoder->encoderStateMechanism = 1;  
-        untilStepsMechanism = 800;
+        untilStepsMechanism = 600;
 //  Restart encoder counts
     encoder->stepsMechanism = 0;
 //  Move with p correction until the encoder read the cm 

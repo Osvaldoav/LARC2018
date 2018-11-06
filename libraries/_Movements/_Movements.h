@@ -16,6 +16,7 @@ class _Movements{
         _Movements();
 // TODO: METHODS
         // Modular functions
+        void setInitialSetpoint();
         void updateSensors(bool, bool, bool, bool, bool, bool);
         void movePID(bool, char);
         void movePID(bool, char, double, double);
