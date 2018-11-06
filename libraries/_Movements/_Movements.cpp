@@ -562,12 +562,14 @@ void _Movements::alignShip(){
         // lcd->print("Alignments:", doneAligning);      
         updateSensors(0,0,0,0,1,0);
         if(tcrt5000->tcrtMechaLeft.kalmanDistance>tcrt5000->leftMechanism+BLACKLINE_TRIGGER_SHIP && tcrt5000->tcrtMechaRight.kalmanDistance>tcrt5000->rightMechanism+BLACKLINE_TRIGGER_SHIP){
-            if(++doneAligning > 4)  break;
+            if(++doneAligning > 2)  break;
             else
                 movePID_nCM(1.5, true, '4');
         }    
-        if(tcrt5000->tcrtMechaLeft.kalmanDistance<tcrt5000->leftMechanism+BLACKLINE_TRIGGER_SHIP && tcrt5000->tcrtMechaRight.kalmanDistance<tcrt5000->rightMechanism+BLACKLINE_TRIGGER_SHIP)
+        if(tcrt5000->tcrtMechaLeft.kalmanDistance<tcrt5000->leftMechanism+BLACKLINE_TRIGGER_SHIP && tcrt5000->tcrtMechaRight.kalmanDistance<tcrt5000->rightMechanism+BLACKLINE_TRIGGER_SHIP){
             movePID(true, '6');
+            delay(25);
+        }
         else if(tcrt5000->tcrtMechaLeft.kalmanDistance>=tcrt5000->leftMechanism+BLACKLINE_TRIGGER_SHIP && tcrt5000->tcrtMechaRight.kalmanDistance<tcrt5000->rightMechanism+BLACKLINE_TRIGGER_SHIP){
             movePID_nCM(1.6, true, '4');
             delay(40);
@@ -606,7 +608,7 @@ void _Movements::alignFirstShip(){
         if(direction == '2'){
             if(tcrt5000->tcrtMechaRight.kalmanDistance<tcrt5000->rightMechanism+BLACKLINE_TRIGGER_SHIP){
                 motors->brake();
-                movePID_nCM(9, true, '8');                  
+                movePID_nCM(8.5, true, '8');                  
                 break;
             }
             movePID(true, '2');
@@ -614,7 +616,7 @@ void _Movements::alignFirstShip(){
         else if(direction == '8'){
             if(tcrt5000->tcrtMechaLeft.kalmanDistance<tcrt5000->leftMechanism+BLACKLINE_TRIGGER_SHIP){
                 motors->brake();
-                movePID_nCM(9, true, '2');                  
+                movePID_nCM(8.5, true, '2');                  
                 break;
             }
             movePID(true, '8');
@@ -802,7 +804,7 @@ void _Movements::moveMechanism(int lastStackLevel, int newStackLevel){
     if(newStackLevel<1)     newStackLevel=1;
     if(newStackLevel>5)      newStackLevel=5;
     (lastStackLevel == 1 || newStackLevel == 1) ?
-        untilStepsMechanism = 7100 * abs(newStackLevel - lastStackLevel) - 4000:
+        untilStepsMechanism = 7100 * abs(newStackLevel - lastStackLevel) - 4200:
         untilStepsMechanism = 7100 * abs(newStackLevel - lastStackLevel);
 //  Restart encoder counts
     encoder->stepsMechanism = 0;

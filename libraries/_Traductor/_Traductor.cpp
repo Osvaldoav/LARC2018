@@ -183,7 +183,7 @@ void _Traductor::updateMechanismMovement(int actualLevel, int newLevel, bool tra
     movements->encoder->encoderStateMechanism = 1;
     if (actualLevel == 1 || newLevel == 1 || train)
     // if (actualLevel == 1 || newLevel == 1)
-        movements->untilStepsMechanism = 7100 * abs(newLevel - actualLevel) - 4000; //6900 en fantasma
+        movements->untilStepsMechanism = 7100 * abs(newLevel - actualLevel) - 4200; //6900 en fantasma
     else 
         movements->untilStepsMechanism = 7100 * abs(newLevel - actualLevel);
     // reset steps count

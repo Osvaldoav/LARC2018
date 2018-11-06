@@ -69,6 +69,8 @@ void _Motors::setupMotors(){
     pinMode(pinPWMBR_B,OUTPUT);
     pinMode(pinPWMBL_F,OUTPUT);
     pinMode(pinPWMBL_B,OUTPUT);  
+    pinMode(pinMechanismUp,OUTPUT);
+    pinMode(pinMechanismDown,OUTPUT);
 }
 
 // TODO:

@@ -254,7 +254,7 @@ void _Logic::shipToStack(){
         if(lastColor == 'R')
             traductor->setTrainLevel(false);
         traductor->moveAtrasHorizontal(); // izquierda hasta topar linea horizontal
-        traductor->waitForMechanism(); 
+        traductor->waitForMechanism();
         traductor->updateMechanismMovement(currentLevel, lastLevel, false);  // eleva el stack para no chocar con los demas
         currentLevel = stacks[stack];
         angle = (stack/2 + 1)%2 != 0 ? 90 : -90;
