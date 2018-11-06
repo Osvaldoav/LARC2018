@@ -34,7 +34,7 @@ try:
 		GPIO.output(8, GPIO.LOW) 
 		time.sleep(0.5) 
 	print "starting..."
-	serial.start()
+	# serial.start()
 	c = serial.read()
 	if c == 'Z':
 		GPIO.output(11, GPIO.HIGH) 
