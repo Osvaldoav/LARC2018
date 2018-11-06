@@ -21,8 +21,8 @@ GPIO.setmode(GPIO.BOARD)
 GPIO.setup(8, GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(11, GPIO.OUT, initial=GPIO.LOW)
 
-cam1 = Cam(2)
-cam2 = Cam(3)
+cam1 = Cam(0)
+cam2 = Cam(1)
 
 try:
 	brain = Algorithm()
