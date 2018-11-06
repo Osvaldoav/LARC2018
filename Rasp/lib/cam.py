@@ -15,6 +15,7 @@ class Cam:
 			ret, self.image = self.cam.read()
 
 		cv2.imwrite("./images/Image %s.png"%(self.port), self.image)
+		print "image saved!"
 
 	# Shows the image taken with a waitKey()
 	def show(self):
