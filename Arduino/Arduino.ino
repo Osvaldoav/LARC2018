@@ -177,17 +177,19 @@ void logicTest(){
     while(1);
 }
 void mechanism(){
-    logic->traductor->movements->servo->pickContainer();
-//    Serial.println("HOLA");
-    delay(1000);
-    logic->traductor->movements->servo->dropContainer();
-//    Serial.println("ADIOS");    
-    delay(1000);
+//    logic->traductor->movements->servo->pickContainer();
+//    delay(1000);
+//    logic->traductor->movements->servo->dropContainer();
+//    delay(1000);
 //    logic->traductor->movements->encoder->encoderStateMechanism=1;
 //    Serial.println(logic->traductor->movements->encoder->stepsMechanism);
 //    logic->traductor->movements->motors->moveMechanism(false);
+    Serial.println("DOWN");
 //    logic->traductor->movements->initMechanism();
 //    delay(2000);
+    logic->traductor->movements->motors->moveMechanism(false);
+//    digitalWrite(10,HIGH);
+//    digitalWrite(11,LOW);
 //    logic->traductor->movements->motors->stopMechanism();
 //    delay(2000);
 //    logic->traductor->mecanismo(4,1);
