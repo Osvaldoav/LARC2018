@@ -249,6 +249,8 @@ void _Logic::shipToStack(){
     else
         lastLevel = stacks[stack];
 
+    lastLevel++;
+
     if((lastColor == 'B' && blue_boxes > 5) || (lastColor == 'G' && green_boxes > 5)){
         traductor->moveAtras(); // Se mueve poquito hacia atras
         traductor->updateMechanismMovement(currentLevel, lastLevel, false); // eleva el stack para no chocar con los demas
