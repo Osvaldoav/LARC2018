@@ -937,3 +937,19 @@ void _Movements::moveUntilThreshold(){
     motors->velSlowHorFR = lastVelFR;
     motors->velSlowHorBR = lastVelBR;  
 }
+
+void _Movemets::moveToTrain(){
+    for (int i = 0; i < 30; i++)
+        updateSensors(0,0,0,1,0,0);
+    movePID(true, '4');        
+    while(timeFlight->timeFlightLeft.kalmanDistance<minLeftTofThreshold > 5)
+        for (int i = 0; i < 10; i++)
+            updateSensors(0,0,0,1,0,0);
+    motors->break();
+    movePID(false, '2');
+    while(timeFlight->timeFlightLeft.kalmanDistance<minLeftTofThreshold < 10)
+        for (int i = 0; i < 10; i++)
+            updateSensors(0,0,0,1,0,0);
+    motors->break();
+    movePID_nCM(3, false, '8');  
+}

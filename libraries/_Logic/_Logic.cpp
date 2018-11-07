@@ -216,7 +216,8 @@ void _Logic::stackToShip(){
     }
     else{
         // traductor->setTrainLevel(true);
-        traductor->alinearTren();
+        // traductor->alinearTren();
+        traductor->moveToTrain();
         traductor->waitForMechanism();  
     }
     traductor->dropContainer();
