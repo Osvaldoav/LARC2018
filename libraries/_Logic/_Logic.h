@@ -11,6 +11,8 @@ class _Logic{
         uint8_t lastStack, currentLevel, lastLevel;
         int firstRed;      
         char lastColor, c_serial;
+        const int limitSwitchPin = 35;
+        int limitIsPressed;
     
     public:
         _Logic();

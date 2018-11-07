@@ -59,11 +59,21 @@ char _Logic::grabContainer(char c){
     c = verifyColor(c);
     char ori = lastStack/2*2 != lastStack ? '2' : '8';  // '2'  :  '8'
     // if(ori != '8')
-    traductor->centerContainer(ori);    
-    traductor->movements->moveUntilThreshold();    
+    traductor->centerContainer(ori);  
+      
+    // traductor->movements->moveUntilThreshold();    
     // traductor->alinearStack(true);
-    traductor->moveMechanismForAligning(false);
-    traductor->waitForMechanism();     
+    do{
+        traductor->moveMechanismForAligning(false);
+        traductor->waitForMechanism();
+        limitIsPressed = digitalRead(limitSwitchPin);
+        if(limitIsPressed){
+            traductor->moveMechanismForAligning(true);
+            traductor->waitForMechanism(); 
+            traductor->movements->movePID_nCM(0.2, true, '4');
+        } 
+    }while(limitIsPressed);
+
     traductor->grabContainer();
     traductor->moveMechanismForAligning(true);
     traductor->waitForMechanism(); 
