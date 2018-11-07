@@ -50,6 +50,7 @@ class _Movements{
         void alignLine();
         void moveMechanismForAligning(bool);
         void moveUntilThreshold();
+        void moveToTrain();
 // TODO: ATTRIBUTES
         _BNO055 *bno055; 
         _ColorSensor *colorSensor;
