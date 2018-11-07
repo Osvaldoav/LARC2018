@@ -61,7 +61,6 @@ char _Logic::grabContainer(char c){
     // if(ori != '8')
     traductor->centerContainer(ori);    
     traductor->movements->moveUntilThreshold();    
-    traductor->movements->moveMechanism(5,4);
     // traductor->alinearStack(true);
     traductor->moveMechanismForAligning(false);
     traductor->waitForMechanism();     
@@ -93,6 +92,7 @@ void _Logic::pickFirst(char c){
     // traductor->LcdPrint("PF stack", lastStack);
     // delay(5000);
     traductor->pickFirst(lastStack);
+    traductor->movements->moveMechanism(5,4);
     grabContainer(c);
 }
 
