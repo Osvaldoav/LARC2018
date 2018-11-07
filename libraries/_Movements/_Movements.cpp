@@ -1,7 +1,7 @@
 #include <_Movements.h>
 ///////////////////////////////// PINs ////////////////////////////////
 const byte limitSwitch = 30;
-double const minLeftTofThreshold=2.558*1.1, minRightTofThreshold=1.71*1.1;
+double const minLeftTofThreshold=2.558*1.05, minRightTofThreshold=1.71*1.05;
 double const maxLeftTofThreshold=2.558*1.65, maxRightTofThreshold=1.71*1.65;
 
 /////////////////////////// LOCAL VARIABLES ///////////////////////////
@@ -40,7 +40,7 @@ void _Movements::initMechanism(){
     motors->stopMechanism();
     encoder->encoderStateMechanism = 1;
     encoder->stepsMechanism = 0;
-    while(encoder->stepsMechanism < 450){    //limitSwitch is pressed when == 0
+    while(encoder->stepsMechanism < 300){    //limitSwitch is pressed when == 0
         motors->moveMechanism(false);        
     }    
     motors->stopMechanism();
@@ -938,18 +938,26 @@ void _Movements::moveUntilThreshold(){
     motors->velSlowHorBR = lastVelBR;  
 }
 
-void _Movemets::moveToTrain(){
+void _Movements::moveToTrain(){
     for (int i = 0; i < 30; i++)
         updateSensors(0,0,0,1,0,0);
     movePID(true, '4');        
     while(timeFlight->timeFlightLeft.kalmanDistance<minLeftTofThreshold > 5)
         for (int i = 0; i < 10; i++)
             updateSensors(0,0,0,1,0,0);
-    motors->break();
+    motors->brake();
     movePID(false, '2');
     while(timeFlight->timeFlightLeft.kalmanDistance<minLeftTofThreshold < 10)
         for (int i = 0; i < 10; i++)
             updateSensors(0,0,0,1,0,0);
-    motors->break();
+    motors->brake();
     movePID_nCM(3, false, '8');  
+}
+
+// TODO:
+void _Movements::backUntilLimitSwitch(){
+    do{
+        moveMechanismForAligning(false);
+        
+    }
 }

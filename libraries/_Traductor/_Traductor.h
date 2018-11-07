@@ -34,6 +34,7 @@ class _Traductor{
         void fixContainerSteps(char);
         void centerContainer(char);
         void moveMechanismForAligning(bool);
+        void moveToTrain();
 
         void LcdPrint(String name, char value);
         void LcdPrint(String name, int value);

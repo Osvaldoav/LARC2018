@@ -226,3 +226,7 @@ void _Traductor::setTrainLevel(bool stackToShip){
 void _Traductor::moveMechanismForAligning(bool before){
     movements->moveMechanismForAligning(before);
 }
+// TODO:
+void _Traductor::moveToTrain(){
+    movements->moveToTrain();
+}
