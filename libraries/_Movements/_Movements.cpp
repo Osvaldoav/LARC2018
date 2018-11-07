@@ -953,11 +953,3 @@ void _Movements::moveToTrain(){
     motors->brake();
     movePID_nCM(3, false, '8');  
 }
-
-// TODO:
-void _Movements::backUntilLimitSwitch(){
-    do{
-        moveMechanismForAligning(false);
-        
-    }
-}
