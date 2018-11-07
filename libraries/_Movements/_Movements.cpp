@@ -898,14 +898,14 @@ void _Movements::moveUntilThreshold(){
     while(1){
         if(timeFlight->timeFlightLeft.kalmanDistance<minLeftTofThreshold && timeFlight->timeFlightRight.kalmanDistance<minRightTofThreshold){
             while(timeFlight->timeFlightLeft.kalmanDistance<minLeftTofThreshold || timeFlight->timeFlightRight.kalmanDistance<minRightTofThreshold){
-                for(int i=0; i<15; i++)
+                for(int i=0; i<20; i++)
                     updateSensors(0,0,0,1,0,0);
                 movePID(true, '4');
             }
         }
         else if(timeFlight->timeFlightLeft.kalmanDistance>maxLeftTofThreshold && timeFlight->timeFlightRight.kalmanDistance>maxRightTofThreshold){
             while(timeFlight->timeFlightLeft.kalmanDistance>maxLeftTofThreshold || timeFlight->timeFlightRight.kalmanDistance>maxRightTofThreshold){
-                for(int i=0; i<15; i++)
+                for(int i=0; i<20; i++)
                     updateSensors(0,0,0,1,0,0);
                 movePID(true, '6');
             }
