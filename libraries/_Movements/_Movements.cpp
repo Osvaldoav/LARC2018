@@ -1,7 +1,7 @@
 #include <_Movements.h>
 ///////////////////////////////// PINs ////////////////////////////////
 const byte limitSwitch = 30;
-double const minLeftTofThreshold=2.558*1.2, minRightTofThreshold=1.71*1.2;
+double const minLeftTofThreshold=2.558*1.1, minRightTofThreshold=1.71*1.1;
 double const maxLeftTofThreshold=2.558*1.65, maxRightTofThreshold=1.71*1.65;
 
 /////////////////////////// LOCAL VARIABLES ///////////////////////////
@@ -877,7 +877,7 @@ void _Movements::alignLine(){
 // TODO:
 void _Movements::moveMechanismForAligning(bool before){
     encoder->encoderStateMechanism = 1;  
-        untilStepsMechanism = 600;
+    untilStepsMechanism = 200;
 //  Restart encoder counts
     encoder->stepsMechanism = 0;
 //  Move with p correction until the encoder read the cm 

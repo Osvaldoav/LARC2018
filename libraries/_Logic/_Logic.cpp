@@ -59,8 +59,8 @@ char _Logic::grabContainer(char c){
     c = verifyColor(c);
     char ori = lastStack/2*2 != lastStack ? '2' : '8';  // '2'  :  '8'
     // if(ori != '8')
+    traductor->centerContainer(ori);    
     traductor->movements->moveUntilThreshold();    
-    traductor->centerContainer(ori);
     traductor->movements->moveMechanism(5,4);
     // traductor->alinearStack(true);
     traductor->moveMechanismForAligning(false);

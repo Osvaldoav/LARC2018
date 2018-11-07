@@ -10,15 +10,15 @@ Servo servo;  // create servo object to control a servo
 // TODO:
 void _Servo::setupServo(){
     servo.attach(servoPWM, minValue, maxValue);
-    servo.write(60);
+    servo.write(35);
 }
 // TODO:
 void _Servo::pickContainer(){
-    servo.write(165);
+    servo.write(150);
     delay(1000);
 }
 // TODO:
 void _Servo::dropContainer(){
-    servo.write(60);
+    servo.write(35);
     delay(1000);
 }
