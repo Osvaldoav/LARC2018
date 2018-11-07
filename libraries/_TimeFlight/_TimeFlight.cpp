@@ -15,9 +15,10 @@ void _TimeFlight::calibTimeFlights(double target){
     double left=0, right=0, difference;
     int n=500;
     for(int i=0; i<n; i++){
-        // Serial.println("START");
-        left += getRawDistance(true);
-        right += getRawDistance(false);
+        if(i>10 && i<490){
+            left += getRawDistance(true);
+            right += getRawDistance(false);
+        }
     }
     left/=n;
     right/=n;
@@ -29,13 +30,13 @@ void _TimeFlight::calibTimeFlights(double target){
         rightCompensation = -abs(right-target);
     else
         rightCompensation = abs(target-right);        
-    // Serial.print(leftCompensation);
-    // Serial.print(" ");
-    // Serial.print(rightCompensation);
-    // Serial.print("\t\t");
-    // Serial.print(left+leftCompensation);
-    // Serial.print(" ");
-    // Serial.println(right+rightCompensation);    
+    Serial.print(leftCompensation);
+    Serial.print(" ");
+    Serial.print(rightCompensation);
+    Serial.print("\t\t");
+    Serial.print(left+leftCompensation);
+    Serial.print(" ");
+    Serial.println(right+rightCompensation);    
 }
 
 // TODO:
@@ -79,7 +80,6 @@ double _TimeFlight::getRawDistance(bool leftTimeFlight){
         distance = 10;
     if(distance < 0)   
         distance *= -1; 
-    lastDistance = distance;
     return distance;
 }
 
@@ -112,18 +112,18 @@ void _TimeFlight::filtrateDistancesTimeFlight(){
     // timeFlightLeft.kalmanDistance = sumaLeft/15;
     // timeFlightRight.kalmanDistance = sumaRight/15;
     calculateRawDistancesTimeFlight(); 
-    timeFlightLeft.kalmanDistance = timeFlightLeft.rawDistance;
-    timeFlightRight.kalmanDistance = timeFlightRight.rawDistance;  
-    // timeFlightKalmanFilter(timeFlightLeft);
-    // timeFlightKalmanFilter(timeFlightRight);      
+    // timeFlightLeft.kalmanDistance = timeFlightLeft.rawDistance;
+    // timeFlightRight.kalmanDistance = timeFlightRight.rawDistance;  
+    timeFlightKalmanFilter(timeFlightLeft);
+    timeFlightKalmanFilter(timeFlightRight);      
     
 }
 
 // TODO:
 void _TimeFlight::timeFlight_RawKalman(TimeFlightKalman &timeFlight){
   calculateRawDistancesTimeFlight();
-//   Serial.print(timeFlight.rawDistance);
-//   Serial.print(",");
+  Serial.print(timeFlight.rawDistance);
+  Serial.print(",");
   timeFlightKalmanFilter(timeFlight);
-//   Serial.println(timeFlight.kalmanDistance);
+  Serial.println(timeFlight.kalmanDistance);
 }

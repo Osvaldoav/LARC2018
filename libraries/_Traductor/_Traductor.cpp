@@ -125,7 +125,8 @@ void _Traductor::alinearStack(bool dir){
 
 void _Traductor::gotoFirst(){
     moveMechanismForAligning(true);    
-    movements->larc_moveUntilBlackLine(false, '8', true, false, true, false, false);
+    // movements->larc_moveUntilBlackLine(false, '8', true, false, true, false, false);
+    movements->larc_moveUntilBlackLine(false, '8', true, false, false, false, false);
     movements->movePID_nCM(1.8, false, '8');
     movements->larc_moveUntilBlackLine(false, '6', true, true, false, false, true);  
     do{
@@ -183,9 +184,9 @@ void _Traductor::updateMechanismMovement(int actualLevel, int newLevel, bool tra
     movements->encoder->encoderStateMechanism = 1;
     if (actualLevel == 1 || newLevel == 1 || train)
     // if (actualLevel == 1 || newLevel == 1)
-        movements->untilStepsMechanism = 7350 * abs(newLevel - actualLevel) - 3800; //6900 en fantasma
+        movements->untilStepsMechanism = 7250 * abs(newLevel - actualLevel) - 3300; //6900 en fantasma
     else 
-        movements->untilStepsMechanism = 7350 * abs(newLevel - actualLevel);
+        movements->untilStepsMechanism = 7250 * abs(newLevel - actualLevel);
     // reset steps count
     movements->encoder->stepsMechanism = 0;    
     // start moving

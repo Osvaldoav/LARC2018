@@ -14,6 +14,8 @@ byte calMOYL = 0;
 byte calMOYM = 0;
 byte calMOZL = 0;
 byte calMOZM = 0;
+uint8_t updateTimeMsBno = 30;
+long lastUpdateBno = 0;
 
 // TODO:
 void _BNO055::setupBNO055(){
@@ -109,12 +111,13 @@ void _BNO055::calibrarBNO(double &Setpoint){
 
 // TODO:
 void _BNO055::readBNO(double &Setpoint){
-    if (millis() - lastReadTime > readRateMs){
+    double distance;
+    if(millis() - lastUpdateBno > updateTimeMsBno){
         if(millis()%300 == 0) Setpoint+=offsetAngle;
-        delay(20);
+        // delay(20);
         bno.getEvent(&event);
         lastInput = rawInput;
-        rawInput=round(bno.getVector(Adafruit_BNO055::VECTOR_EULER).x());
-        lastReadTime = millis();          
-    }
+        rawInput=round(bno.getVector(Adafruit_BNO055::VECTOR_EULER).x());   
+        lastUpdateBno = millis(); 
+    }  
 }

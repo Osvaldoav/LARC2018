@@ -46,6 +46,8 @@ class _TimeFlight{
 // TODO: ATTRIBUTES
         TimeFlightKalman timeFlightLeft;
         TimeFlightKalman timeFlightRight;
+        uint8_t updateTimeMsTof;
+        long lastUpdateTof;        
 };
 
 #endif

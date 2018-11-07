@@ -20,8 +20,8 @@ void _LCD::print(String message1, String message2) {
         lcd.print(message1);
         lcd.setCursor(0, 1);
         lcd.print(message2);
-    }
-    lastUpdate = millis();    
+        lastUpdate = millis();   
+    } 
 }
 // TODO:
 void _LCD::print(String message1, long message2) {
@@ -31,8 +31,8 @@ void _LCD::print(String message1, long message2) {
         lcd.print(message1);
         lcd.setCursor(0, 1);
         lcd.print(message2);
-    }
-    lastUpdate = millis();    
+        lastUpdate = millis();   
+    }  
 }
 // TODO:
 void _LCD::clear() {
@@ -46,8 +46,8 @@ void _LCD::print(String message1, int message2){
         lcd.print(message1);
         lcd.setCursor(0, 1);
         lcd.print(message2);
-    }
-    lastUpdate = millis();    
+        lastUpdate = millis();   
+    } 
 }
 // TODO:
 void _LCD::print(String message1, char message2) {
@@ -57,8 +57,8 @@ void _LCD::print(String message1, char message2) {
         lcd.print(message1);
         lcd.setCursor(0, 1);
         lcd.print(message2);
-    }
-    lastUpdate = millis();    
+        lastUpdate = millis();   
+    } 
 }
 // TODO:
 void _LCD::print(String message1, double message2) {
@@ -68,8 +68,8 @@ void _LCD::print(String message1, double message2) {
         lcd.print(message1);
         lcd.setCursor(0, 1);
         lcd.print(message2);
+        lastUpdate = millis();   
     }
-    lastUpdate = millis();    
 }
 // TODO:
 void _LCD::printAlertSec(String alert, int seconds){

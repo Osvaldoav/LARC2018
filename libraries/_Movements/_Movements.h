@@ -49,6 +49,7 @@ class _Movements{
         void initMechanism();
         void alignLine();
         void moveMechanismForAligning(bool);
+        void moveUntilThreshold();
 // TODO: ATTRIBUTES
         _BNO055 *bno055; 
         _ColorSensor *colorSensor;

@@ -1,6 +1,7 @@
 #include <_Movements.h>
 ///////////////////////////////// PINs ////////////////////////////////
 const byte limitSwitch = 30;
+double const leftTofThreshold=2.558*1.2, rightTofThreshold=1.71*1.2;
 
 /////////////////////////// LOCAL VARIABLES ///////////////////////////
 
@@ -761,14 +762,22 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
             // movePID_nCM(3.5, true, '4');
     }
     else if(goVerticalLine){
+        // if(direction=='4' && frontTCRT)
+        //     movePID_nCM(1.9, true, '4'); 
+        // else if(direction=='6' && frontTCRT)
+        //     movePID_nCM(1.1, true, '6');               
+        // else if(direction=='6' && !frontTCRT)
+        //     movePID_nCM(1.1, true, '6');     
+        // else if(direction=='4' && !frontTCRT)
+        //     movePID_nCM(1.9, true, '4');  
         if(direction=='4' && frontTCRT)
-            movePID_nCM(1.9, true, '4'); 
+            movePID_nCM(0.5, true, '4'); 
         else if(direction=='6' && frontTCRT)
-            movePID_nCM(1.1, true, '6');               
+            movePID_nCM(0.5, true, '6');               
         else if(direction=='6' && !frontTCRT)
-            movePID_nCM(1.1, true, '6');     
+            movePID_nCM(0.5, true, '6');     
         else if(direction=='4' && !frontTCRT)
-            movePID_nCM(1.9, true, '4');                               
+            movePID_nCM(0.5, true, '4');                                        
     }     
     else{
         if(direction=='6')
@@ -817,8 +826,8 @@ void _Movements::moveMechanism(int lastStackLevel, int newStackLevel){
     if(newStackLevel<1)     newStackLevel=1;
     if(newStackLevel>5)      newStackLevel=5;
     (lastStackLevel == 1 || newStackLevel == 1) ?
-        untilStepsMechanism = 7350 * abs(newStackLevel - lastStackLevel) - 3800:
-        untilStepsMechanism = 7350 * abs(newStackLevel - lastStackLevel);
+        untilStepsMechanism = 7250 * abs(newStackLevel - lastStackLevel) - 3300:
+        untilStepsMechanism = 7250 * abs(newStackLevel - lastStackLevel);
 //  Restart encoder counts
     encoder->stepsMechanism = 0;
 //  Move with p correction until the encoder read the cm
@@ -871,5 +880,22 @@ void _Movements::moveMechanismForAligning(bool before){
 //  Restart encoder counts
     encoder->stepsMechanism = 0;
 //  Move with p correction until the encoder read the cm 
-    (before) ? motors->moveMechanism(true): motors->moveMechanism(false);     
+    (before) ? motors->moveMechanism(true): motors->moveMechanism(false);   
+}  
+// TODO:
+void _Movements::moveUntilThreshold(){
+    motors->velSlowHorFL = motors->velSlowHorFL-70;
+    motors->velSlowHorBL = motors->velSlowHorBL-70;
+    motors->velSlowHorFR = motors->velSlowHorFR-70;
+    motors->velSlowHorBR = motors->velSlowHorBR-70;
+    updateSensors(0,0,0,1,0,0);
+    while(timeFlight->timeFlightLeft.kalmanDistance<leftTofThreshold && timeFlight->timeFlightRight.kalmanDistance<rightTofThreshold){
+        updateSensors(0,0,0,1,0,0);
+        movePID(true, '4');
+    }
+    motors->brake();
+    motors->velSlowHorFL = motors->velSlowHorFL;
+    motors->velSlowHorBL = motors->velSlowHorBL;
+    motors->velSlowHorFR = motors->velSlowHorFR;
+    motors->velSlowHorBR = motors->velSlowHorBR;  
 }

@@ -42,7 +42,11 @@ void setup() {
 //    _Serial::read();     
     logic->traductor->movements->setInitialSetpoint();
 //    logic->traductor->movements->initMechanism();    
-//    logic->initCommunication();         
+//    logic->initCommunication(); 
+
+    //CALIBRATION   
+//      logic->traductor->movements->timeFlight->calibTimeFlights(8);    
+//      delay(5000);  
 }
 
 void testMovements(){ 
@@ -78,24 +82,39 @@ void aligningTofTest(){
 //    logic->traductor->movements->lcd->offLed('b');  
 }
 void tof_vs_sharp(){
-    logic->traductor->movements->updateSensors(0,0,0,1,0,0);
-    Serial.print(logic->traductor->movements->timeFlight->timeFlightLeft.kalmanDistance);
-    Serial.print(" ");
-    Serial.print(logic->traductor->movements->timeFlight->timeFlightRight.kalmanDistance);
-    Serial.print(" ");
+//    logic->traductor->movements->updateSensors(0,0,0,1,0,0);
+//    Serial.print(logic->traductor->movements->timeFlight->timeFlightLeft.kalmanDistance);
+//    Serial.print(" ");
+//    Serial.print(logic->traductor->movements->timeFlight->timeFlightRight.kalmanDistance);
+//    Serial.print(" ");
 //    Serial.println((logic->traductor->movements->timeFlight->timeFlightLeft.kalmanDistance - logic->traductor->movements->timeFlight->timeFlightRight.kalmanDistance)*10);  
 //
-    Serial.print("\t\t");
+//    Serial.print("\t\t");
 //
-    logic->traductor->movements->updateSensors(0,0,1,0,0,0);
-    Serial.print(logic->traductor->movements->sharp->sharpLeft.kalmanDistance);
-    Serial.print(" ");
-    Serial.print(logic->traductor->movements->sharp->sharpRight.kalmanDistance);
-    Serial.println(" ");
+//    logic->traductor->movements->updateSensors(0,0,1,0,0,0);
+//    Serial.print(logic->traductor->movements->sharp->sharpLeft.kalmanDistance);
+//    Serial.print(" ");
+//    Serial.print(logic->traductor->movements->sharp->sharpRight.kalmanDistance);
+//    Serial.println(" ");
 //    Serial.println((logic->traductor->movements->sharp->sharpLeft.kalmanDistance - logic->traductor->movements->sharp->sharpRight.kalmanDistance)*10);   
   
-//     logic->traductor->movements->timeFlight->timeFlight_RawKalman(movements->timeFlight->timeFlightLeft);
+//     logic->traductor->movements->timeFlight->timeFlight_RawKalman(logic->traductor->movements->timeFlight->timeFlightLeft);
     // logic->traductor->movements->sharp->sharp_RawKalman(movements->sharp->sharpBL);
+
+    double left=0, right=0, difference;
+    int n=500;
+    for(int i=0; i<n; i++){
+        if(i>22 && i<478){
+            left += logic->traductor->movements->timeFlight->getRawDistance(true);
+            right += logic->traductor->movements->timeFlight->getRawDistance(false);
+            delay(20);
+        }
+    }
+    left/=n;
+    right/=n;
+    Serial.print(left);
+    Serial.print(" ");
+    Serial.println(right);       
 }
 
 void readTCRT5000(){
@@ -166,16 +185,13 @@ void logicTest(){
 //    logic->stackToShip();
 //    logic->shipToStack();
 //    logic->stackToShip();
-    delay(4000);
-    logic->traductor->mecanismo(4, 1); // nivela el mecanismo al nivel adecuado   
-    delay(4000);    
 //    logic->traductor->dropContainer();    
 //    logic->traductor->mecanismo(1,3);
 //    logic->shipToStack('6');
 //    logic->stackToShip();  
 //    logic->traductor->mecanismo(3, 2); // nivela el mecanismo al nivel adecuado       
 //    logic->traductor->dropContainer();  
-    logic->traductor->mecanismo(1, 4); // nivela el mecanismo al nivel adecuado      
+    logic->traductor->movements->moveUntilThreshold(); // nivela el mecanismo al nivel adecuado      
     while(1);
 }
 void mechanism(){
@@ -195,22 +211,22 @@ void mechanism(){
 //    logic->traductor->movements->motors->stopMechanism();
 //    delay(2000);
 
-//    delay(12000);    
-//    logic->traductor->mecanismo(5,4);
-//    while(digitalRead(30) == HIGH);//limitswitch
-//    logic->traductor->mecanismo(4,3);
-//    while(digitalRead(30) == HIGH);//limitswitch
-//    logic->traductor->mecanismo(3,2);
-//    while(digitalRead(30) == HIGH);//limitswitch
-//    logic->traductor->mecanismo(2,1); 
-//    while(digitalRead(30) == HIGH);//limitswitch
-//    logic->traductor->mecanismo(1,2);
-//    while(digitalRead(30) == HIGH);//limitswitch
-//    logic->traductor->mecanismo(2,3);
-//    while(digitalRead(30) == HIGH);//limitswitch
-//    logic->traductor->mecanismo(3,4);
-//    while(digitalRead(30) == HIGH);//limitswitch
-//    logic->traductor->mecanismo(4,5);    
+    delay(1000);    
+    logic->traductor->mecanismo(5,4);
+    while(digitalRead(30) == HIGH);//limitswitch
+    logic->traductor->mecanismo(4,3);
+    while(digitalRead(30) == HIGH);//limitswitch
+    logic->traductor->mecanismo(3,2);
+    while(digitalRead(30) == HIGH);//limitswitch
+    logic->traductor->mecanismo(2,1); 
+    while(digitalRead(30) == HIGH);//limitswitch
+    logic->traductor->mecanismo(1,2);
+    while(digitalRead(30) == HIGH);//limitswitch
+    logic->traductor->mecanismo(2,3);
+    while(digitalRead(30) == HIGH);//limitswitch
+    logic->traductor->mecanismo(3,4);
+    while(digitalRead(30) == HIGH);//limitswitch
+    logic->traductor->mecanismo(4,5);    
 }
 void alignLine(){
     logic->traductor->movements->alignLine();
@@ -230,13 +246,13 @@ void loop(){
 
 //  readTCRT5000();
 //  aligningTcrtTest();
-  larc(); 
+//  larc(); 
 //  logicTest();  
 //  colorSensor();
 //  logic->traductor->gotoFirst();
 //  mechanism();
-//  logic->stackToShip();
-//  logic->shipToStack();
+  logic->stackToShip();
+  logic->shipToStack();
 //  alignLine();
 //  while(1);  
 }
