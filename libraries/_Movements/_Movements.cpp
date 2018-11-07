@@ -1,7 +1,8 @@
 #include <_Movements.h>
 ///////////////////////////////// PINs ////////////////////////////////
 const byte limitSwitch = 30;
-double const leftTofThreshold=2.558*1.2, rightTofThreshold=1.71*1.2;
+double const minLeftTofThreshold=2.558*1.2, minRightTofThreshold=1.71*1.2;
+double const maxLeftTofThreshold=2.558*1.65, maxRightTofThreshold=1.71*1.65;
 
 /////////////////////////// LOCAL VARIABLES ///////////////////////////
 
@@ -884,18 +885,55 @@ void _Movements::moveMechanismForAligning(bool before){
 }  
 // TODO:
 void _Movements::moveUntilThreshold(){
-    motors->velSlowHorFL = motors->velSlowHorFL-70;
-    motors->velSlowHorBL = motors->velSlowHorBL-70;
-    motors->velSlowHorFR = motors->velSlowHorFR-70;
-    motors->velSlowHorBR = motors->velSlowHorBR-70;
-    updateSensors(0,0,0,1,0,0);
-    while(timeFlight->timeFlightLeft.kalmanDistance<leftTofThreshold && timeFlight->timeFlightRight.kalmanDistance<rightTofThreshold){
+    double lastVelFL = motors->velSlowHorFL;    
+    double lastVelBL = motors->velSlowHorBL;
+    double lastVelFR = motors->velSlowHorFR;
+    double lastVelBR = motors->velSlowHorBR;
+    motors->velSlowHorFL = 60;
+    motors->velSlowHorBL = 60;
+    motors->velSlowHorFR = 60;
+    motors->velSlowHorBR = 60;
+    for(int i=0; i<50; i++)
         updateSensors(0,0,0,1,0,0);
-        movePID(true, '4');
+    while(1){
+        if(timeFlight->timeFlightLeft.kalmanDistance<minLeftTofThreshold && timeFlight->timeFlightRight.kalmanDistance<minRightTofThreshold){
+            while(timeFlight->timeFlightLeft.kalmanDistance<minLeftTofThreshold || timeFlight->timeFlightRight.kalmanDistance<minRightTofThreshold){
+                for(int i=0; i<15; i++)
+                    updateSensors(0,0,0,1,0,0);
+                movePID(true, '4');
+            }
+        }
+        else if(timeFlight->timeFlightLeft.kalmanDistance>maxLeftTofThreshold && timeFlight->timeFlightRight.kalmanDistance>maxRightTofThreshold){
+            while(timeFlight->timeFlightLeft.kalmanDistance>maxLeftTofThreshold || timeFlight->timeFlightRight.kalmanDistance>maxRightTofThreshold){
+                for(int i=0; i<15; i++)
+                    updateSensors(0,0,0,1,0,0);
+                movePID(true, '6');
+            }
+        }
+        // else if(timeFlight->timeFlightLeft.kalmanDistance<minLeftTofThreshold && timeFlight->timeFlightRight.kalmanDistance>maxRightTofThreshold){
+        //     while(timeFlight->timeFlightLeft.kalmanDistance<minLeftTofThreshold && timeFlight->timeFlightRight.kalmanDistance<minRightTofThreshold){
+        //         delay(40);
+        //         pid->calculateNewSetpoint(-0.5);
+        //         for(int i=0; i<80; i++){
+        //             turnPID(true); 
+        //         }
+        //     }
+        // }
+        // else if(timeFlight->timeFlightLeft.kalmanDistance>maxLeftTofThreshold && timeFlight->timeFlightRight.kalmanDistance>maxRightTofThreshold){
+        //     while(timeFlight->timeFlightLeft.kalmanDistance>maxLeftTofThreshold || timeFlight->timeFlightRight.kalmanDistance>maxRightTofThreshold){
+        //         delay(40);
+        //         pid->calculateNewSetpoint(0.5);
+        //         for(int i=0; i<80; i++){
+        //             turnPID(true);  
+        //         }    
+        //     }
+        // }  
+        else 
+            break;  
     }
     motors->brake();
-    motors->velSlowHorFL = motors->velSlowHorFL;
-    motors->velSlowHorBL = motors->velSlowHorBL;
-    motors->velSlowHorFR = motors->velSlowHorFR;
-    motors->velSlowHorBR = motors->velSlowHorBR;  
+    motors->velSlowHorFL = lastVelFL;
+    motors->velSlowHorBL = lastVelBL;
+    motors->velSlowHorFR = lastVelFR;
+    motors->velSlowHorBR = lastVelBR;  
 }

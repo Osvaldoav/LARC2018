@@ -195,10 +195,10 @@ void logicTest(){
     while(1);
 }
 void mechanism(){
-//    logic->traductor->movements->servo->pickContainer();
-//    delay(1000);
-//    logic->traductor->movements->servo->dropContainer();
-//    delay(1000);
+    logic->traductor->movements->servo->pickContainer();
+    delay(1000);
+    logic->traductor->movements->servo->dropContainer();
+    delay(1000);
 //    logic->traductor->movements->encoder->encoderStateMechanism=1;
 //    Serial.println(logic->traductor->movements->encoder->stepsMechanism);
 //    logic->traductor->movements->motors->moveMechanism(false);
@@ -211,22 +211,22 @@ void mechanism(){
 //    logic->traductor->movements->motors->stopMechanism();
 //    delay(2000);
 
-    delay(1000);    
-    logic->traductor->mecanismo(5,4);
-    while(digitalRead(30) == HIGH);//limitswitch
-    logic->traductor->mecanismo(4,3);
-    while(digitalRead(30) == HIGH);//limitswitch
-    logic->traductor->mecanismo(3,2);
-    while(digitalRead(30) == HIGH);//limitswitch
-    logic->traductor->mecanismo(2,1); 
-    while(digitalRead(30) == HIGH);//limitswitch
-    logic->traductor->mecanismo(1,2);
-    while(digitalRead(30) == HIGH);//limitswitch
-    logic->traductor->mecanismo(2,3);
-    while(digitalRead(30) == HIGH);//limitswitch
-    logic->traductor->mecanismo(3,4);
-    while(digitalRead(30) == HIGH);//limitswitch
-    logic->traductor->mecanismo(4,5);    
+//    delay(1000);    
+//    logic->traductor->mecanismo(5,4);
+//    while(digitalRead(30) == HIGH);//limitswitch
+//    logic->traductor->mecanismo(4,3);
+//    while(digitalRead(30) == HIGH);//limitswitch
+//    logic->traductor->mecanismo(3,2);
+//    while(digitalRead(30) == HIGH);//limitswitch
+//    logic->traductor->mecanismo(2,1); 
+//    while(digitalRead(30) == HIGH);//limitswitch
+//    logic->traductor->mecanismo(1,2);
+//    while(digitalRead(30) == HIGH);//limitswitch
+//    logic->traductor->mecanismo(2,3);
+//    while(digitalRead(30) == HIGH);//limitswitch
+//    logic->traductor->mecanismo(3,4);
+//    while(digitalRead(30) == HIGH);//limitswitch
+//    logic->traductor->mecanismo(4,5);    
 }
 void alignLine(){
     logic->traductor->movements->alignLine();
@@ -250,9 +250,9 @@ void loop(){
 //  logicTest();  
 //  colorSensor();
 //  logic->traductor->gotoFirst();
-//  mechanism();
-  logic->stackToShip();
-  logic->shipToStack();
+  mechanism();
+//  logic->stackToShip();
+//  logic->shipToStack();
 //  alignLine();
 //  while(1);  
 }

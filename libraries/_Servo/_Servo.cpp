@@ -14,7 +14,7 @@ void _Servo::setupServo(){
 }
 // TODO:
 void _Servo::pickContainer(){
-    servo.write(180);
+    servo.write(165);
     delay(1000);
 }
 // TODO:

@@ -125,8 +125,8 @@ void _Traductor::alinearStack(bool dir){
 
 void _Traductor::gotoFirst(){
     moveMechanismForAligning(true);    
-    // movements->larc_moveUntilBlackLine(false, '8', true, false, true, false, false);
-    movements->larc_moveUntilBlackLine(false, '8', true, false, false, false, false);
+    movements->larc_moveUntilBlackLine(false, '8', true, false, true, false, false);
+    // movements->larc_moveUntilBlackLine(false, '8', true, false, false, false, false);
     movements->movePID_nCM(1.8, false, '8');
     movements->larc_moveUntilBlackLine(false, '6', true, true, false, false, true);  
     do{
@@ -136,7 +136,7 @@ void _Traductor::gotoFirst(){
     waitForMechanism(); 
     movements->movePID_nCM(28.3, false, '8'); 
     delay(1000);
-    movements->movePID_nCM(2, true, '4');
+    // movements->movePID_nCM(2, true, '4');
 }
 
 void _Traductor::gotoSecond(){
@@ -154,7 +154,7 @@ void _Traductor::gotoSecond(){
     waitForMechanism();  
     movements->movePID_nCM(28.3, false, '8');
     delay(1000);
-    movements->movePID_nCM(2, true, '4'); 
+    // movements->movePID_nCM(2, true, '4'); 
 }
 
 void _Traductor::pickFirst(int stack){

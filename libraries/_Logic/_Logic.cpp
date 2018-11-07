@@ -59,9 +59,10 @@ char _Logic::grabContainer(char c){
     c = verifyColor(c);
     char ori = lastStack/2*2 != lastStack ? '2' : '8';  // '2'  :  '8'
     // if(ori != '8')
+    traductor->movements->moveUntilThreshold();    
     traductor->centerContainer(ori);
+    traductor->movements->moveMechanism(5,4);
     // traductor->alinearStack(true);
-    traductor->movements->moveUntilThreshold();
     traductor->moveMechanismForAligning(false);
     traductor->waitForMechanism();     
     traductor->grabContainer();
@@ -91,10 +92,7 @@ void _Logic::pickFirst(char c){
     // blink(lastStack);
     // traductor->LcdPrint("PF stack", lastStack);
     // delay(5000);
-    traductor->movements->moveMechanism(5,4);
     traductor->pickFirst(lastStack);
-    traductor->moveMechanismForAligning(false);
-    traductor->waitForMechanism(); 
     grabContainer(c);
 }
 
