@@ -790,13 +790,13 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
     }
     else if(goVerticalLine){
         if(direction=='4' && frontTCRT)
-            movePID_nCM(1, true, '4'); 
+            movePID_nCM(1.5, true, '4'); 
         else if(direction=='6' && frontTCRT)
             movePID_nCM(2, true, '6');               
         else if(direction=='6' && !frontTCRT)
             movePID_nCM(2, true, '6');     
         else if(direction=='4' && !frontTCRT)
-            movePID_nCM(1, true, '4');  
+            movePID_nCM(1.5, true, '4');  
         // if(direction=='4' && frontTCRT)
         //     movePID_nCM(0.5, true, '4'); 
         // else if(direction=='6' && frontTCRT)
