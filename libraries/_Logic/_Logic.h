@@ -19,13 +19,14 @@ class _Logic{
  
         char verifyColor(char c);
         char handleRed();
-        char grabContainer(char c);
+        char grabContainer(char c, bool b);
         void stackToShip();
         void shipToStack();
         void pickFirst(char c); // Elige 6 o 7 despues de la primera foto
         void gotoFirst();
         void gotoSecond();
         void initCommunication();
+        void backUsingLimitSwitch();
 
         void blink(int times);
 

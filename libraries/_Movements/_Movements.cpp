@@ -7,6 +7,10 @@ double const maxLeftTofThreshold=2.558*1.65, maxRightTofThreshold=1.71*1.65;
 /////////////////////////// LOCAL VARIABLES ///////////////////////////
 
 _Movements::_Movements(){
+    pinMode(34, OUTPUT);
+    pinMode(33, OUTPUT);
+    pinMode(37, OUTPUT);
+    pinMode(36, OUTPUT);       
     pinMode(limitSwitch, INPUT);
     bno055 = new _BNO055;
     colorSensor = new _ColorSensor;
@@ -640,7 +644,7 @@ void _Movements::alignFirstShip(){
 }
 // TODO:
 void _Movements::centerContainer(char orientation){
-    double stepsToMove = 6.7;
+    double stepsToMove = 8.5;
     char direction;    
     // for(int i=0; i<30; i++)
     updateSensors(0,0,0,1,0,0);
@@ -713,25 +717,42 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
             }
             if(frontTCRT){
                 if(direction=='4'){
-                    if(tcrt5000->tcrtMidFrontLeft.kalmanDistance>BLACKLINE_TRIGGER)
+                    if(tcrt5000->tcrtMidFrontLeft.kalmanDistance>BLACKLINE_TRIGGER){
+                        movePID_nCM(2,true,'6');
+                        do{
+                            movePID(true,'4');
+                            updateSensors(0,0,0,0,1,1);
+                        }while(tcrt5000->tcrtMidFrontLeft.kalmanDistance<BLACKLINE_TRIGGER);                        
                         if(secondLine){
                             if(++nLine<2)   delay(500);
                             else            break;
                         } 
                         else                break;
+                    }
                 } 
                 else if(direction=='6'){
-                    if(tcrt5000->tcrtMidFrontRight.kalmanDistance>BLACKLINE_TRIGGER)
+                    if(tcrt5000->tcrtMidFrontRight.kalmanDistance>BLACKLINE_TRIGGER){
+                        movePID_nCM(2,true,'4');
+                        do{
+                            movePID(true,'6');
+                            updateSensors(0,0,0,0,1,1);
+                        }while(tcrt5000->tcrtMidFrontRight.kalmanDistance<BLACKLINE_TRIGGER);                        
                         if(secondLine){
                             if(++nLine<2)   delay(500);
                             else            break;
                         } 
                         else                break;
+                    }
                 }                        
             }
             else{
                 if(direction=='4'){
                     if(tcrt5000->tcrtMidDownLeft.kalmanDistance>BLACKLINE_TRIGGER)
+                        movePID_nCM(2,true,'6');
+                        do{
+                            movePID(true,'4');
+                            updateSensors(0,0,0,0,1,1);
+                        }while(tcrt5000->tcrtMidDownLeft.kalmanDistance<BLACKLINE_TRIGGER);                     
                         if(secondLine){
                             if(++nLine<2)   delay(500);
                             else            break;
@@ -740,6 +761,11 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
                 } 
                 else if(direction=='6'){
                     if(tcrt5000->tcrtMidDownRight.kalmanDistance>BLACKLINE_TRIGGER)
+                        movePID_nCM(2,true,'4');
+                        do{
+                            movePID(true,'6');
+                            updateSensors(0,0,0,0,1,1);
+                        }while(tcrt5000->tcrtMidDownRight.kalmanDistance<BLACKLINE_TRIGGER);                     
                         if(secondLine){
                             if(++nLine<2)   delay(500);
                             else            break;
@@ -763,22 +789,22 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
             // movePID_nCM(3.5, true, '4');
     }
     else if(goVerticalLine){
-        // if(direction=='4' && frontTCRT)
-        //     movePID_nCM(1.9, true, '4'); 
-        // else if(direction=='6' && frontTCRT)
-        //     movePID_nCM(1.1, true, '6');               
-        // else if(direction=='6' && !frontTCRT)
-        //     movePID_nCM(1.1, true, '6');     
-        // else if(direction=='4' && !frontTCRT)
-        //     movePID_nCM(1.9, true, '4');  
         if(direction=='4' && frontTCRT)
-            movePID_nCM(0.5, true, '4'); 
+            movePID_nCM(1, true, '4'); 
         else if(direction=='6' && frontTCRT)
-            movePID_nCM(0.5, true, '6');               
+            movePID_nCM(2, true, '6');               
         else if(direction=='6' && !frontTCRT)
-            movePID_nCM(0.5, true, '6');     
+            movePID_nCM(2, true, '6');     
         else if(direction=='4' && !frontTCRT)
-            movePID_nCM(0.5, true, '4');                                        
+            movePID_nCM(1, true, '4');  
+        // if(direction=='4' && frontTCRT)
+        //     movePID_nCM(0.5, true, '4'); 
+        // else if(direction=='6' && frontTCRT)
+        //     movePID_nCM(0.5, true, '6');               
+        // else if(direction=='6' && !frontTCRT)
+        //     movePID_nCM(0.5, true, '6');     
+        // else if(direction=='4' && !frontTCRT)
+        //     movePID_nCM(0.5, true, '4');                                        
     }     
     else{
         if(direction=='6')
@@ -827,7 +853,7 @@ void _Movements::moveMechanism(int lastStackLevel, int newStackLevel){
     if(newStackLevel<1)     newStackLevel=1;
     if(newStackLevel>5)      newStackLevel=5;
     (lastStackLevel == 1 || newStackLevel == 1) ?
-        untilStepsMechanism = 7250 * abs(newStackLevel - lastStackLevel) - 3300:
+        untilStepsMechanism = 7250 * abs(newStackLevel - lastStackLevel) - 2500:
         untilStepsMechanism = 7250 * abs(newStackLevel - lastStackLevel);
 //  Restart encoder counts
     encoder->stepsMechanism = 0;
@@ -938,18 +964,22 @@ void _Movements::moveUntilThreshold(){
     motors->velSlowHorBR = lastVelBR;  
 }
 
-void _Movements::moveToTrain(){
+void _Movements::moveToTrain(bool redRight){
+    char horizontal = (redRight)? '2': '8';
+    char horizontalBack = (redRight)? '8': '2';
     for (int i = 0; i < 30; i++)
-        updateSensors(0,0,0,1,0,0);
-    movePID(true, '4');        
-    while(timeFlight->timeFlightLeft.kalmanDistance<minLeftTofThreshold > 5)
+        updateSensors(0,0,0,1,0,0);      
+    do{
+        movePID(true, '6');  
         for (int i = 0; i < 10; i++)
             updateSensors(0,0,0,1,0,0);
+    }while(timeFlight->timeFlightLeft.kalmanDistance > 4);
     motors->brake();
-    movePID(false, '2');
-    while(timeFlight->timeFlightLeft.kalmanDistance<minLeftTofThreshold < 10)
+    do{
+        movePID(true, horizontal);
         for (int i = 0; i < 10; i++)
             updateSensors(0,0,0,1,0,0);
+    } while(timeFlight->timeFlightLeft.kalmanDistance < 10);
     motors->brake();
-    movePID_nCM(3, false, '8');  
+    movePID_nCM(5, true, horizontalBack);  
 }

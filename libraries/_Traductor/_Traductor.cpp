@@ -10,7 +10,7 @@ void _Traductor::horizontalLine(bool b){
 }
 
 void _Traductor::throughtHorizontal(int dir){
-    double cm = abs(dir) < 2 ? 18 : 64; //23 y 75 para !crazyMode
+    double cm = abs(dir) < 2 ? 21 : 64; //23 y 75 para !crazyMode
     char c = dir < 0 ? '6' : '4';
     movements->crazyMode=true;
     movements->movePID_nCM(cm, false, c);
@@ -108,7 +108,7 @@ void _Traductor::backUntilBlackLineSharps(bool tcrt){
 
 void _Traductor::moveAtrasHorizontal(){
     movements->larc_moveUntilBlackLine(false, '4', false, true, false, true, false);
-    movements->movePID_nCM(1.1, false, '6'); 
+    movements->movePID_nCM(3, false, '6'); 
 }
 
 void _Traductor::vertical(int lines){
@@ -184,7 +184,7 @@ void _Traductor::updateMechanismMovement(int actualLevel, int newLevel, bool tra
     movements->encoder->encoderStateMechanism = 1;
     if (actualLevel == 1 || newLevel == 1 || train)
     // if (actualLevel == 1 || newLevel == 1)
-        movements->untilStepsMechanism = 7250 * abs(newLevel - actualLevel) - 3300; //6900 en fantasma
+        movements->untilStepsMechanism = 7250 * abs(newLevel - actualLevel) - 2500; //6900 en fantasma
     else 
         movements->untilStepsMechanism = 7250 * abs(newLevel - actualLevel);
     // reset steps count
@@ -227,6 +227,6 @@ void _Traductor::moveMechanismForAligning(bool before){
     movements->moveMechanismForAligning(before);
 }
 // TODO:
-void _Traductor::moveToTrain(){
-    movements->moveToTrain();
+void _Traductor::moveToTrain(bool redRight){
+    movements->moveToTrain(redRight);
 }

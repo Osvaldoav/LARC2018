@@ -24,7 +24,7 @@ void setup() {
 
     logic->traductor->movements->pid->setupLibraryPID(); 
     logic->traductor->movements->motors->setupMotors();
-    logic->traductor->movements->colorSensor->setupColorSensor();
+//    logic->traductor->movements->colorSensor->setupColorSensor();
     logic->traductor->movements->bno055->setupBNO055();
     logic->traductor->movements->timeFlight->setupTimeFlight();
     logic->traductor->movements->tcrt5000->setupTCRT5000();
@@ -38,11 +38,11 @@ void setup() {
     attachInterrupt(digitalPinToInterrupt(pinEncoderBL), encoderStepBL, CHANGE);      
     attachInterrupt(digitalPinToInterrupt(pinEncoderMechanism), encoderStepMechanism, CHANGE);    
     
-//    _Serial::send('Z');
-//    _Serial::read();     
+    _Serial::send('Z');
+    _Serial::read();     
     logic->traductor->movements->setInitialSetpoint();
-    logic->traductor->movements->initMechanism();    
-//    logic->initCommunication(); 
+    logic->traductor->movements->initMechanism();
+    logic->initCommunication(); 
 
     //CALIBRATION   
 //      logic->traductor->movements->timeFlight->calibTimeFlights(8);    
@@ -152,11 +152,13 @@ void larc(){
 //  logic->traductor->movements->movePID_nCM(4, false, '8');
 //  logic->traductor->movements->larc_moveUntilBlackLine(false, '6', true, true, true, false);
 
-  logic->traductor->moveToShip(true);
-  logic->traductor->alignShip();
-  logic->traductor->movements->movePID_nCM(4.5, true, '4');
-  logic->traductor->moveToShip(false);  
-  logic->traductor->alignFirstShip();
+//  logic->traductor->moveToShip(true);
+//  logic->traductor->alignShip();
+//  logic->traductor->movements->movePID_nCM(4.5, true, '4');
+//  logic->traductor->moveToShip(false);  
+//  logic->traductor->alignFirstShip();
+
+//  logic->traductor->movements->moveToTrain();
   
 //  do{
 //      movements->movePID(false, '8');
@@ -210,29 +212,30 @@ void mechanism(){
 //    digitalWrite(11,LOW);
 //    logic->traductor->movements->motors->stopMechanism();
 //    delay(2000);
-    logic->traductor->mecanismo(5,1);
-    delay(1000);    
+//    logic->traductor->mecanismo(5,1);
+//    delay(1000);    
     while(digitalRead(30) == HIGH);//limitswitch
-    logic->traductor->movements->moveMechanismForAligning(true);
-    logic->traductor->waitForMechanism();
-    logic->traductor->mecanismo(1,5);    
-    delay(5000);
-    while(digitalRead(30) == HIGH);//limitswitch
-    logic->traductor->mecanismo(5,4);    
-    while(digitalRead(30) == HIGH);//limitswitch
-    logic->traductor->mecanismo(4,3);
-    while(digitalRead(30) == HIGH);//limitswitch
-    logic->traductor->mecanismo(3,2);
-    while(digitalRead(30) == HIGH);//limitswitch
-    logic->traductor->mecanismo(2,1); 
-    while(digitalRead(30) == HIGH);//limitswitch
-    logic->traductor->mecanismo(1,2);
-    while(digitalRead(30) == HIGH);//limitswitch
-    logic->traductor->mecanismo(2,3);
-    while(digitalRead(30) == HIGH);//limitswitch
-    logic->traductor->mecanismo(3,4);
-    while(digitalRead(30) == HIGH);//limitswitch
-    logic->traductor->mecanismo(4,5);    
+//    logic->traductor->movements->moveMechanismForAligning(true);
+//    logic->traductor->waitForMechanism();
+    logic->traductor->mecanismo(5,1);    
+//    delay(5000);
+//    while(digitalRead(30) == HIGH);//limitswitch
+//    logic->traductor->mecanismo(5,4);    
+//    while(digitalRead(30) == HIGH);//limitswitch
+//    logic->traductor->mecanismo(4,3);
+//    while(digitalRead(30) == HIGH);//limitswitch
+//    logic->traductor->mecanismo(3,2);
+//    while(digitalRead(30) == HIGH);//limitswitch
+//    logic->traductor->mecanismo(2,1); 
+//    while(digitalRead(30) == HIGH);//limitswitch
+//    logic->traductor->mecanismo(1,2);
+//    while(digitalRead(30) == HIGH);//limitswitch
+//    logic->traductor->mecanismo(2,3);
+//    while(digitalRead(30) == HIGH);//limitswitch
+//    logic->traductor->mecanismo(3,4);
+//    while(digitalRead(30) == HIGH);//limitswitch
+//    logic->traductor->mecanismo(4,5);  
+    while(1);  
 }
 void alignLine(){
     logic->traductor->movements->alignLine();
@@ -254,12 +257,16 @@ void loop(){
 //  readTCRT5000();
 //  aligningTcrtTest();
 //  larc(); 
-  logicTest();  
+//  logicTest();
+//  Serial.println(digitalRead(35));
 //  colorSensor();
 //  logic->traductor->gotoFirst();
 //  mechanism();
-//  logic->stackToShip();
-//  logic->shipToStack();
+
+//  Serial.println(digitalRead(35));
+
+  logic->stackToShip();
+  logic->shipToStack();
 //  alignLine();
 //  while(1);  
 }
