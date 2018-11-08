@@ -710,7 +710,7 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
             if(tcrtSharps){
                 if(tcrt5000->tcrtSharpLeft.kalmanDistance>BLACKLINE_TRIGGER || tcrt5000->tcrtSharpRight.kalmanDistance>BLACKLINE_TRIGGER)
                     if(secondLine){
-                        if(++nLine<2)   delay(1);
+                        if(++nLine<2)   delay(400);
                         else            break;
                     } 
                     else                break;
@@ -724,7 +724,7 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
                             updateSensors(0,0,0,0,1,1);
                         }while(tcrt5000->tcrtMidFrontLeft.kalmanDistance<BLACKLINE_TRIGGER);                        
                         if(secondLine){
-                            if(++nLine<2)   delay(500);
+                            if(++nLine<2)   delay(400);
                             else            break;
                         } 
                         else                break;
@@ -738,7 +738,7 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
                             updateSensors(0,0,0,0,1,1);
                         }while(tcrt5000->tcrtMidFrontRight.kalmanDistance<BLACKLINE_TRIGGER);                        
                         if(secondLine){
-                            if(++nLine<2)   delay(500);
+                            if(++nLine<2)   delay(400);
                             else            break;
                         } 
                         else                break;
@@ -754,7 +754,7 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
                             updateSensors(0,0,0,0,1,1);
                         }while(tcrt5000->tcrtMidDownLeft.kalmanDistance<BLACKLINE_TRIGGER);                     
                         if(secondLine){
-                            if(++nLine<2)   delay(500);
+                            if(++nLine<2)   delay(400);
                             else            break;
                         } 
                         else                break;
@@ -767,7 +767,7 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
                             updateSensors(0,0,0,0,1,1);
                         }while(tcrt5000->tcrtMidDownRight.kalmanDistance<BLACKLINE_TRIGGER);                     
                         if(secondLine){
-                            if(++nLine<2)   delay(500);
+                            if(++nLine<2)   delay(400);
                             else            break;
                         } 
                         else                break;

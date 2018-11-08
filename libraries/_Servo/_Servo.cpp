@@ -19,8 +19,8 @@ void _Servo::pickContainer(){
 }
 // TODO:
 void _Servo::dropContainer(){
-    servo.write(82);
-    delay(800);
+    servo.write(85);
+    delay(850);
     servo.write(15);
     delay(500);    
 }

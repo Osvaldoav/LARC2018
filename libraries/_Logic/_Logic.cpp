@@ -66,7 +66,7 @@ void _Logic::backUsingLimitSwitch(){
         traductor->waitForMechanism();
         traductor->moveMechanismForAligning(false);
         traductor->waitForMechanism();    
-        delay(600);    
+        delay(300);    
         limitIsPressed = (digitalRead(35));
         if(limitIsPressed){
             traductor->moveMechanismForAligning(true);
@@ -168,8 +168,13 @@ void _Logic::stackToShip(){
     // traductor->LcdPrint("last Level", lastLevel);
     //  delay(3000);
 
-    // traductor->moveMechanismForAligning(true);
-    // traductor->waitForMechanism(); 
+    // if(lastLevel < 5){
+        traductor->moveMechanismForAligning(true);
+        traductor->waitForMechanism();  
+        traductor->moveMechanismForAligning(true);
+        traductor->waitForMechanism();  
+    // }
+
     traductor->mecanismo(currentLevel, lastLevel);   // eleva el stack para no chocar con los demas
     traductor->horizontalLine(A == B); // Avanza de frente o de reversa hasta linea horizontal
 
@@ -259,7 +264,14 @@ void _Logic::stackToShip(){
         traductor->waitForMechanism();  
     }
 
-    delay(600);
+    // if(lastLevel < 5){
+        traductor->moveMechanismForAligning(true);
+        traductor->waitForMechanism();  
+        traductor->moveMechanismForAligning(true);
+        traductor->waitForMechanism();  
+    // }    
+
+    delay(700);
     traductor->dropContainer();
 }
 
@@ -290,6 +302,12 @@ void _Logic::shipToStack(){
         lastLevel = stacks[stack];
 
     lastLevel++;
+    // if(lastLevel < 5){
+        traductor->moveMechanismForAligning(true);
+        traductor->waitForMechanism();  
+        traductor->moveMechanismForAligning(true);
+        traductor->waitForMechanism();  
+    // }
 
     if((lastColor == 'B' && blue_boxes > 5) || (lastColor == 'G' && green_boxes > 5)){
         traductor->moveAtras(); // Se mueve poquito hacia atras
@@ -347,6 +365,12 @@ void _Logic::shipToStack(){
     //currentLevel++;
     traductor->mecanismo(lastLevel, currentLevel+1);
     // traductor->moveMechanismForAligning(false);
-    // traductor->waitForMechanism();     
+    // traductor->waitForMechanism();    
+    // if(lastLevel < 5){
+        traductor->moveMechanismForAligning(false);
+        traductor->waitForMechanism();
+        traductor->moveMechanismForAligning(false);
+        traductor->waitForMechanism();            
+    // } 
     grabContainer(c, false);
 }
