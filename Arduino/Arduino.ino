@@ -265,8 +265,11 @@ void loop(){
 
 //  Serial.println(digitalRead(35));
 
+//  logic->backUsingLimitSwitch();
+
   logic->stackToShip();
   logic->shipToStack();
 //  alignLine();
+
 //  while(1);  
 }

@@ -249,7 +249,7 @@ void _Logic::stackToShip(){
         if(!firstContainer)
             traductor->moveMechanismForAligning(false); //move mechanism a little down (1/8) of a level (back to normal)
         delay(400);
-        traductor->movements->movePID_nCM(1.3, true, '6');            
+        traductor->movements->movePID_nCM(1.2, true, '6');            
         traductor->waitForMechanism();             //make sure mechanism is already (1/8) down (normal)
     }
     else{

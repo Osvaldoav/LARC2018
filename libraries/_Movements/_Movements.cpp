@@ -644,7 +644,7 @@ void _Movements::alignFirstShip(){
 }
 // TODO:
 void _Movements::centerContainer(char orientation){
-    double stepsToMove = 8.5;
+    double stepsToMove = 8.2;
     char direction;    
     // for(int i=0; i<30; i++)
     updateSensors(0,0,0,1,0,0);
