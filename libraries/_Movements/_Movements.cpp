@@ -901,9 +901,9 @@ void _Movements::alignLine(){
     pid->Setpoint = bno055->rawInput;
 }
 // TODO:
-void _Movements::moveMechanismForAligning(bool before){
+void _Movements::moveMechanismForAligning(bool before, double steps){
     encoder->encoderStateMechanism = 1;  
-    untilStepsMechanism = 200;
+    untilStepsMechanism = steps;
 //  Restart encoder counts
     encoder->stepsMechanism = 0;
 //  Move with p correction until the encoder read the cm 

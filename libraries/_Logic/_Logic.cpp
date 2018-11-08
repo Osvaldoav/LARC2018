@@ -58,35 +58,35 @@ char _Logic::verifyColor(char c){
 
 void _Logic::backUsingLimitSwitch(){
     do{
-        traductor->moveMechanismForAligning(false);
+        traductor->moveMechanismForAligning(false, 200);
         traductor->waitForMechanism();
-        traductor->moveMechanismForAligning(false);
+        traductor->moveMechanismForAligning(false, 200);
         traductor->waitForMechanism();   
-        traductor->moveMechanismForAligning(false);
+        traductor->moveMechanismForAligning(false, 200);
         traductor->waitForMechanism();
-        traductor->moveMechanismForAligning(false);
+        traductor->moveMechanismForAligning(false, 200);
         traductor->waitForMechanism();    
         delay(300);    
         limitIsPressed = (digitalRead(35));
         if(limitIsPressed){
-            traductor->moveMechanismForAligning(true);
+            traductor->moveMechanismForAligning(true, 200);
             traductor->waitForMechanism();
-            traductor->moveMechanismForAligning(true);
+            traductor->moveMechanismForAligning(true, 200);
             traductor->waitForMechanism();   
-            traductor->moveMechanismForAligning(true);
+            traductor->moveMechanismForAligning(true, 200);
             traductor->waitForMechanism(); 
-            traductor->moveMechanismForAligning(true);
+            traductor->moveMechanismForAligning(true, 200);
             traductor->waitForMechanism(); 
             traductor->movements->movePID_nCM(0.8, true, '4');
         } 
     }while(limitIsPressed);
-    traductor->moveMechanismForAligning(true);
+    traductor->moveMechanismForAligning(true, 200);
     traductor->waitForMechanism();
-    traductor->moveMechanismForAligning(true);
+    traductor->moveMechanismForAligning(true, 200);
     traductor->waitForMechanism();   
-    traductor->moveMechanismForAligning(true);
+    traductor->moveMechanismForAligning(true, 200);
     traductor->waitForMechanism();     
-    traductor->moveMechanismForAligning(true);
+    traductor->moveMechanismForAligning(true, 200);
     traductor->waitForMechanism(); 
 }
 
@@ -169,9 +169,7 @@ void _Logic::stackToShip(){
     //  delay(3000);
 
     // if(lastLevel < 5){
-        traductor->moveMechanismForAligning(true);
-        traductor->waitForMechanism();  
-        traductor->moveMechanismForAligning(true);
+        traductor->moveMechanismForAligning(true, 300);
         traductor->waitForMechanism();  
     // }
 
@@ -231,7 +229,7 @@ void _Logic::stackToShip(){
     bool firstContainer = (currentLevel < 2);     
     if (B){              
         if(!firstContainer)
-            traductor->moveMechanismForAligning(true);
+            traductor->moveMechanismForAligning(true, 200);
         traductor->movements->movePID_nCM(5, false, '6');
         traductor->moveToShip(true);
         traductor->waitForMechanism();             //make sure mechanism is already (1/8) up 
@@ -252,7 +250,7 @@ void _Logic::stackToShip(){
                 traductor->centerContainer(' ');
         }
         if(!firstContainer)
-            traductor->moveMechanismForAligning(false); //move mechanism a little down (1/8) of a level (back to normal)
+            traductor->moveMechanismForAligning(false, 200); //move mechanism a little down (1/8) of a level (back to normal)
         delay(400);
         traductor->movements->movePID_nCM(1.2, true, '6');            
         traductor->waitForMechanism();             //make sure mechanism is already (1/8) down (normal)
@@ -265,9 +263,7 @@ void _Logic::stackToShip(){
     }
 
     // if(lastLevel < 5){
-        traductor->moveMechanismForAligning(true);
-        traductor->waitForMechanism();  
-        traductor->moveMechanismForAligning(true);
+        traductor->moveMechanismForAligning(false, 300);
         traductor->waitForMechanism();  
     // }    
 
@@ -303,10 +299,8 @@ void _Logic::shipToStack(){
 
     lastLevel++;
     // if(lastLevel < 5){
-        traductor->moveMechanismForAligning(true);
-        traductor->waitForMechanism();  
-        traductor->moveMechanismForAligning(true);
-        traductor->waitForMechanism();  
+        traductor->moveMechanismForAligning(true, 300);
+        traductor->waitForMechanism();   
     // }
 
     if((lastColor == 'B' && blue_boxes > 5) || (lastColor == 'G' && green_boxes > 5)){
@@ -367,10 +361,8 @@ void _Logic::shipToStack(){
     // traductor->moveMechanismForAligning(false);
     // traductor->waitForMechanism();    
     // if(lastLevel < 5){
-        traductor->moveMechanismForAligning(false);
-        traductor->waitForMechanism();
-        traductor->moveMechanismForAligning(false);
-        traductor->waitForMechanism();            
+        traductor->moveMechanismForAligning(false, 300);
+        traductor->waitForMechanism();        
     // } 
     grabContainer(c, false);
 }

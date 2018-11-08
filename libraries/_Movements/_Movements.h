@@ -48,7 +48,7 @@ class _Movements{
         void asyncMovement(int, char, int, int);
         void initMechanism();
         void alignLine();
-        void moveMechanismForAligning(bool);
+        void moveMechanismForAligning(bool, double);
         void moveUntilThreshold();
         void moveToTrain(bool);
 // TODO: ATTRIBUTES
