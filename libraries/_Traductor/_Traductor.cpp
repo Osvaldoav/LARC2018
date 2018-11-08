@@ -31,9 +31,12 @@ void _Traductor::girar(int angle){
     movements->spinPID(true, angle);
 }
 
-void _Traductor::avanzar(bool b){
+void _Traductor::avanzar(bool b, bool thirdStack){
     char c = b ? '8' : '2';
-    movements->movePID_nCM(38, false, c);
+    if(thirdStack)
+        movements->movePID_nCM(90, false, c);
+    else
+        movements->movePID_nCM(43, false, c);
 }
 
 void _Traductor::moveToShip(bool goBack){
@@ -76,12 +79,12 @@ void _Traductor::moveToHorizontal(bool b){
 void _Traductor::horizontal(int lines, bool tcrt){
     char c = lines < 0 ? '6' : '4'; 
     bool b = abs(lines) > 1;              
-    movements->crazyMode=true;
+    // movements->crazyMode=true;
     movements->larc_moveUntilBlackLine(false, c, tcrt, true, b, false, false);
-    movements->crazyMode=false;
+    // movements->crazyMode=false;
     char vertical = tcrt? '8': '2'; 
     do{
-        movements->movePID(false, vertical);
+        movements->movePID(true, vertical);
         movements->updateSensors(0,0,0,0,1,1);        
         if(tcrt && movements->tcrt5000->tcrtSharpLeft.kalmanDistance>movements->BLACKLINE_TRIGGER)
             break;  
@@ -124,7 +127,7 @@ void _Traductor::alinearStack(bool dir){
 } 
 
 void _Traductor::gotoFirst(){
-    moveMechanismForAligning(true, 200);    
+    moveMechanismForAligning(true, 300);    
     movements->larc_moveUntilBlackLine(false, '8', true, false, true, false, false);
     // movements->larc_moveUntilBlackLine(false, '8', true, false, false, false, false);
     movements->movePID_nCM(1.8, false, '8');
@@ -140,7 +143,7 @@ void _Traductor::gotoFirst(){
 }
 
 void _Traductor::gotoSecond(){
-    moveMechanismForAligning(true, 200);
+    moveMechanismForAligning(true, 300);
     waitForMechanism();       
     updateMechanismMovement(1, 5, false);
     moveAtrasHorizontal();
@@ -184,7 +187,7 @@ void _Traductor::updateMechanismMovement(int actualLevel, int newLevel, bool tra
     movements->encoder->encoderStateMechanism = 1;
     if (actualLevel == 1 || newLevel == 1 || train)
     // if (actualLevel == 1 || newLevel == 1)
-        movements->untilStepsMechanism = 7250 * abs(newLevel - actualLevel) - 2500; //6900 en fantasma
+        movements->untilStepsMechanism = 7250 * abs(newLevel - actualLevel) - 2600; //6900 en fantasma
     else 
         movements->untilStepsMechanism = 7250 * abs(newLevel - actualLevel);
     // reset steps count

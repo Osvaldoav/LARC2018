@@ -12,6 +12,7 @@ _Logic::_Logic(){
     lastLevel = currentLevel = 4;
     lastColor = 'B';
     pinMode(limitSwitchPin, INPUT); 
+    //needToAlign=false;
 }
 
 void _Logic::initCommunication(){
@@ -75,9 +76,9 @@ void _Logic::backUsingLimitSwitch(){
             traductor->waitForMechanism();   
             traductor->moveMechanismForAligning(true, 200);
             traductor->waitForMechanism(); 
-            traductor->moveMechanismForAligning(true, 200);
+            traductor->moveMechanismForAligning(true, 400);
             traductor->waitForMechanism(); 
-            traductor->movements->movePID_nCM(0.8, true, '4');
+            traductor->movements->movePID_nCM(1, true, '4');
         } 
     }while(limitIsPressed);
     traductor->moveMechanismForAligning(true, 200);
@@ -99,6 +100,9 @@ char _Logic::grabContainer(char c, bool isFirst){
     traductor->centerContainer(ori); 
 
     backUsingLimitSwitch();
+
+    // traductor->moveMechanismForAligning(false, 600);
+    // traductor->waitForMechanism();  
 
     // traductor->alinearStack(true);
     // if(isFirst)
@@ -169,10 +173,10 @@ void _Logic::stackToShip(){
     //  delay(3000);
 
     // if(lastLevel < 5){
-        traductor->moveMechanismForAligning(true, 300);
-        traductor->waitForMechanism();  
+        // traductor->moveMechanismForAligning(true, 600);
+        // traductor->waitForMechanism();  
     // }
-
+    //lastLevel++;
     traductor->mecanismo(currentLevel, lastLevel);   // eleva el stack para no chocar con los demas
     traductor->horizontalLine(A == B); // Avanza de frente o de reversa hasta linea horizontal
 
@@ -213,7 +217,8 @@ void _Logic::stackToShip(){
             b = !b;
             traductor->girar(180); // gira 180 grados
         }
-        traductor->avanzar(b); // avanza hasta que llegue a la altura de los barcos
+        bool thirdStack = (lastColor == 'B' && blue_boxes > 10) || (lastColor == 'G' && green_boxes > 10);
+        traductor->avanzar(b, thirdStack); // avanza hasta que llegue a la altura de los barcos
     }else{
         // traductor->LcdPrint("Ship Color:", lastColor);
         dir = ((lastStack/2 + 1)%2 == 0) != B ? -90 : 90;
@@ -226,22 +231,23 @@ void _Logic::stackToShip(){
         //     traductor->fixContainerSteps(false);        
     }  
     traductor->waitForMechanism();  
-    bool firstContainer = (currentLevel < 2);     
+    bool firstContainer = (currentLevel < 2);   
     if (B){              
         if(!firstContainer)
-            traductor->moveMechanismForAligning(true, 200);
+            traductor->moveMechanismForAligning(true, 400);
         traductor->movements->movePID_nCM(5, false, '6');
         traductor->moveToShip(true);
         traductor->waitForMechanism();             //make sure mechanism is already (1/8) up 
         traductor->alignShip();
-        if(firstContainer && ((blueContainer&&blue_boxes==1) || (!blueContainer&&green_boxes==1))){
+        if(firstContainer){
             traductor->movements->movePID_nCM(4.5, true, '4');
-            traductor->moveToShip(false);
-            traductor->alignFirstShip();            
+            traductor->moveToShip(false); 
+            if((blueContainer&&blue_boxes==1) || (!blueContainer&&green_boxes==1))
+                traductor->alignFirstShip();   
         }
         else{
             traductor->movements->movePID_nCM(4.5, true, '4');
-            traductor->moveToShip(false);
+            traductor->moveToShip(false);      
             if(lastColor == 'B' && blue_boxes > 5)
                 traductor->centerContainer('2');
             else if(lastColor == 'G' && green_boxes > 5)
@@ -249,26 +255,29 @@ void _Logic::stackToShip(){
             else
                 traductor->centerContainer(' ');
         }
+        delay(400); 
+        traductor->movements->movePID_nCM(1.1, true, '6');               
         if(!firstContainer)
-            traductor->moveMechanismForAligning(false, 200); //move mechanism a little down (1/8) of a level (back to normal)
-        delay(400);
-        traductor->movements->movePID_nCM(1.2, true, '6');            
+            traductor->moveMechanismForAligning(false, 400); //move mechanism a little down (1/8) of a level (back to normal)        
         traductor->waitForMechanism();             //make sure mechanism is already (1/8) down (normal)
     }
     else{
         // traductor->setTrainLevel(true);
         // traductor->alinearTren();
-        traductor->moveToTrain(!(firstRed == 1));
+        traductor->moveToTrain((firstRed == 1));
         traductor->waitForMechanism();  
     }
 
     // if(lastLevel < 5){
-        traductor->moveMechanismForAligning(false, 300);
-        traductor->waitForMechanism();  
+        // traductor->moveMechanismForAligning(false, 400);
+        // traductor->waitForMechanism();  
     // }    
 
     delay(700);
     traductor->dropContainer();
+    // if(needToAlign){
+        // traductor->movements->initMechanism();
+    // }
 }
 
 void _Logic::shipToStack(){
@@ -299,10 +308,15 @@ void _Logic::shipToStack(){
 
     lastLevel++;
     // if(lastLevel < 5){
-        traductor->moveMechanismForAligning(true, 300);
-        traductor->waitForMechanism();   
+        // traductor->moveMechanismForAligning(true, 600);
+        // traductor->waitForMechanism();   
     // }
 
+    // if(needToAlign){
+    //     needToAlign=false;
+    //     currentLevel=5;
+    // }
+    //lastLevel++;
     if((lastColor == 'B' && blue_boxes > 5) || (lastColor == 'G' && green_boxes > 5)){
         traductor->moveAtras(); // Se mueve poquito hacia atras
         traductor->updateMechanismMovement(currentLevel, lastLevel, false); // eleva el stack para no chocar con los demas
@@ -360,9 +374,7 @@ void _Logic::shipToStack(){
     traductor->mecanismo(lastLevel, currentLevel+1);
     // traductor->moveMechanismForAligning(false);
     // traductor->waitForMechanism();    
-    // if(lastLevel < 5){
-        traductor->moveMechanismForAligning(false, 300);
-        traductor->waitForMechanism();        
+    // if(lastLevel < 5){      
     // } 
     grabContainer(c, false);
 }

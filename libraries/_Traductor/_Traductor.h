@@ -13,7 +13,7 @@ class _Traductor{
         void throughtHorizontal(int);
         void throughtHorizontal2(int, bool);
         void girar(int angle);
-        void avanzar(bool b);
+        void avanzar(bool b, bool b2);
         void moveToShip(bool);
         void alignShip();
         void alignFirstShip();

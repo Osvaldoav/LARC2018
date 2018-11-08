@@ -13,6 +13,7 @@ class _Logic{
         char lastColor, c_serial;
         const int limitSwitchPin = 35;
         int limitIsPressed;
+        bool needToAlign;  
     
     public:
         _Logic();

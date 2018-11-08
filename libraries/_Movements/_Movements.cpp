@@ -777,9 +777,9 @@ void _Movements::larc_moveUntilBlackLine(bool goSlow, char direction, bool front
     } while(1);
     motors->brake();
     if(direction=='8')
-        movePID_nCM(1.8, true, '8');
+        movePID_nCM(0.6, true, '8');
     else if(direction=='2')
-        movePID_nCM(1.8, true, '2'); 
+        movePID_nCM(0.6, true, '2'); 
     else if(takePhoto){
         if(direction=='6')
             movePID_nCM(1.2, true, '6');
@@ -853,7 +853,7 @@ void _Movements::moveMechanism(int lastStackLevel, int newStackLevel){
     if(newStackLevel<1)     newStackLevel=1;
     if(newStackLevel>5)      newStackLevel=5;
     (lastStackLevel == 1 || newStackLevel == 1) ?
-        untilStepsMechanism = 7250 * abs(newStackLevel - lastStackLevel) - 2500:
+        untilStepsMechanism = 7250 * abs(newStackLevel - lastStackLevel) - 2600:
         untilStepsMechanism = 7250 * abs(newStackLevel - lastStackLevel);
 //  Restart encoder counts
     encoder->stepsMechanism = 0;

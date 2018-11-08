@@ -35,7 +35,7 @@ bool boolFR_B;
 bool boolBR_F;
 bool boolBR_B;
 
-double const HORIZONTAL_OFFSET_POWER = 15;//50 (12.4V)  40(11.28V)
+double const HORIZONTAL_OFFSET_POWER = 20;//50 (12.4V)  40(11.28V)
 
 void _Motors::setupMotors(){
     velFordFL = 200;//200
@@ -59,8 +59,8 @@ void _Motors::setupMotors(){
     velHorFR = (200-HORIZONTAL_OFFSET_POWER);
     velHorBR = 200;   
     velSlowHorFL = 140;//185
-    velSlowHorBL = (140-HORIZONTAL_OFFSET_POWER)*1;//0.9666
-    velSlowHorFR = (140-HORIZONTAL_OFFSET_POWER);
+    velSlowHorBL = (140-10)*1;//0.9666
+    velSlowHorFR = (140-10);
     velSlowHorBR = 140;       
     INITIAL_VELOCITY = 80;
     FINAL_VELOCITY = 30;        
