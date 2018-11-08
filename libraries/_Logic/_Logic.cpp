@@ -76,7 +76,7 @@ void _Logic::backUsingLimitSwitch(){
             traductor->waitForMechanism();   
             traductor->moveMechanismForAligning(true, 200);
             traductor->waitForMechanism(); 
-            traductor->moveMechanismForAligning(true, 400);
+            traductor->moveMechanismForAligning(true, 200);
             traductor->waitForMechanism(); 
             traductor->movements->movePID_nCM(1, true, '4');
         } 
