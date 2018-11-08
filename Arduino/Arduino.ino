@@ -152,11 +152,13 @@ void larc(){
 //  logic->traductor->movements->movePID_nCM(4, false, '8');
 //  logic->traductor->movements->larc_moveUntilBlackLine(false, '6', true, true, true, false);
 
-//  logic->traductor->moveToShip(true);
-//  logic->traductor->alignShip();
-//  logic->traductor->movements->movePID_nCM(4.5, true, '4');
-//  logic->traductor->moveToShip(false);  
+  logic->traductor->movements->movePID_nCM(5, false, '6');
+  logic->traductor->moveToShip(true);
+  logic->traductor->alignShip();
+  logic->traductor->movements->movePID_nCM(4.5, true, '4');
+  logic->traductor->moveToShip(false);  
 //  logic->traductor->alignFirstShip();
+//  logic->traductor->centerContainer();
 
 //  logic->traductor->movements->moveToTrain();
   

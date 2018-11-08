@@ -59,34 +59,22 @@ char _Logic::verifyColor(char c){
 
 void _Logic::backUsingLimitSwitch(){
     do{
-        traductor->moveMechanismForAligning(false, 200);
-        traductor->waitForMechanism();
-        traductor->moveMechanismForAligning(false, 200);
-        traductor->waitForMechanism();   
-        traductor->moveMechanismForAligning(false, 200);
+        traductor->moveMechanismForAligning(false, 600);
         traductor->waitForMechanism();
         // traductor->moveMechanismForAligning(false, 200);
         // traductor->waitForMechanism();    
         delay(300);    
         limitIsPressed = (digitalRead(35));
         if(limitIsPressed){
-            traductor->moveMechanismForAligning(true, 200);
+            traductor->moveMechanismForAligning(true, 600);
             traductor->waitForMechanism();
-            traductor->moveMechanismForAligning(true, 200);
-            traductor->waitForMechanism();   
-            traductor->moveMechanismForAligning(true, 200);
-            traductor->waitForMechanism(); 
             // traductor->moveMechanismForAligning(true, 200);
             // traductor->waitForMechanism(); 
             traductor->movements->movePID_nCM(1, true, '4');
         } 
     }while(limitIsPressed);
-    traductor->moveMechanismForAligning(true, 200);
+    traductor->moveMechanismForAligning(true, 600);
     traductor->waitForMechanism();
-    traductor->moveMechanismForAligning(true, 200);
-    traductor->waitForMechanism();   
-    traductor->moveMechanismForAligning(true, 200);
-    traductor->waitForMechanism();     
     // traductor->moveMechanismForAligning(true, 200);
     // traductor->waitForMechanism(); 
 }
@@ -257,9 +245,6 @@ void _Logic::stackToShip(){
         }
         delay(400); 
         traductor->movements->movePID_nCM(1.1, true, '6');               
-        if(!firstContainer)
-            traductor->moveMechanismForAligning(false, 500); //move mechanism a little down (1/8) of a level (back to normal)        
-        traductor->waitForMechanism();             //make sure mechanism is already (1/8) down (normal)
     }
     else{
         // traductor->setTrainLevel(true);
@@ -268,16 +253,11 @@ void _Logic::stackToShip(){
         traductor->waitForMechanism();  
     }
 
-    // if(lastLevel < 5){
-        // traductor->moveMechanismForAligning(false, 400);
-        // traductor->waitForMechanism();  
-    // }    
-
     delay(700);
     traductor->dropContainer();
-    // if(needToAlign){
-        // traductor->movements->initMechanism();
-    // }
+    if(!firstContainer)
+        traductor->moveMechanismForAligning(false, 500); //move mechanism a little down (1/8) of a level (back to normal)        
+    traductor->waitForMechanism();             //make sure mechanism is already (1/8) down (normal)
 }
 
 void _Logic::shipToStack(){

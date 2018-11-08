@@ -354,7 +354,7 @@ void _Movements::movePID(bool goSlow, char direction){
     //     crazyMove(direction);
     //     moveCalled=0;
     // }
-    updateSensors(1,0,0,0,1,1);
+    updateSensors(1,0,0,1,1,1);
     setBaseVelocitiesByDirection(goSlow, direction, 0, 0);
     calculateAngleOutputsByDirection(goSlow, direction);         
     verifyAndUploadOutputsByDirection(direction);   
@@ -646,8 +646,8 @@ void _Movements::alignFirstShip(){
 void _Movements::centerContainer(char orientation){
     double stepsToMove = 8.7;
     char direction;    
-    // for(int i=0; i<30; i++)
-    updateSensors(0,0,0,1,0,0);
+    for(int i=0; i<30; i++)
+        updateSensors(0,0,0,1,0,0);
     if(orientation == ' '){
         if(timeFlight->timeFlightLeft.kalmanDistance<10 && timeFlight->timeFlightRight.kalmanDistance<10)
             direction = '8';
@@ -659,7 +659,6 @@ void _Movements::centerContainer(char orientation){
     else
         direction = orientation;
     do{
-        updateSensors(0,0,0,1,0,0);
         if(direction == '2'){
             if(timeFlight->timeFlightRight.kalmanDistance > 7){
                 motors->brake();
