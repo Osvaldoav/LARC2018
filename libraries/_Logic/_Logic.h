@@ -27,7 +27,8 @@ class _Logic{
         void gotoFirst();
         void gotoSecond();
         void initCommunication();
-        void backUsingLimitSwitch();
+        void backUsingLimitSwitch(double);
+        void checkLimit(double);
 
         void blink(int times);
 

@@ -2,6 +2,7 @@
 
 _Traductor::_Traductor(){
     movements = new _Movements;
+    stepsHigh = 350;
 }
 
 void _Traductor::horizontalLine(bool b){
@@ -127,9 +128,8 @@ void _Traductor::alinearStack(bool dir){
 } 
 
 void _Traductor::gotoFirst(){
-    moveMechanismForAligning(true, 300);    
+    moveMechanismForAligning(true, stepsHigh);    
     movements->larc_moveUntilBlackLine(false, '8', true, false, true, false, false);
-    // movements->larc_moveUntilBlackLine(false, '8', true, false, false, false, false);
     movements->movePID_nCM(1.8, false, '8');
     movements->larc_moveUntilBlackLine(false, '6', true, true, false, false, true);  
     do{
@@ -143,7 +143,7 @@ void _Traductor::gotoFirst(){
 }
 
 void _Traductor::gotoSecond(){
-    moveMechanismForAligning(true, 300);
+    moveMechanismForAligning(true, stepsHigh);
     waitForMechanism();       
     updateMechanismMovement(1, 5, false);
     moveAtrasHorizontal();
@@ -226,8 +226,8 @@ void _Traductor::setTrainLevel(bool stackToShip){
     // (stackToShip) ? updateMechanismMovement(3, 2, true): updateMechanismMovement(2, 3, true);
 }
 // TODO: 
-void _Traductor::moveMechanismForAligning(bool before, double steps){
-    movements->moveMechanismForAligning(before, steps);
+void _Traductor::moveMechanismForAligning(bool up, double steps){
+    movements->moveMechanismForAligning(up, steps);
 }
 // TODO:
 void _Traductor::moveToTrain(bool redRight){

@@ -195,7 +195,7 @@ void logicTest(){
 //    logic->stackToShip();  
 //    logic->traductor->mecanismo(3, 2); // nivela el mecanismo al nivel adecuado       
 //    logic->traductor->dropContainer();  
-    logic->traductor->movements->moveUntilThreshold(); // nivela el mecanismo al nivel adecuado      
+    logic->backUsingLimitSwitch(850); // nivela el mecanismo al nivel adecuado      
     while(1);
 }
 void mechanism(){

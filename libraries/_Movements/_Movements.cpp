@@ -900,13 +900,13 @@ void _Movements::alignLine(){
     pid->Setpoint = bno055->rawInput;
 }
 // TODO:
-void _Movements::moveMechanismForAligning(bool before, double steps){
+void _Movements::moveMechanismForAligning(bool up, double steps){
     encoder->encoderStateMechanism = 1;  
     untilStepsMechanism = steps;
 //  Restart encoder counts
     encoder->stepsMechanism = 0;
 //  Move with p correction until the encoder read the cm 
-    (before) ? motors->moveMechanism(true): motors->moveMechanism(false);   
+    (up) ? motors->moveMechanism(true): motors->moveMechanism(false);   
 }  
 // TODO:
 void _Movements::moveUntilThreshold(){
@@ -982,3 +982,4 @@ void _Movements::moveToTrain(bool redRight){
     motors->brake();
     movePID_nCM(5, true, horizontalBack);  
 }
+

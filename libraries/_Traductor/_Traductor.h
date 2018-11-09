@@ -46,7 +46,7 @@ class _Traductor{
         void gotoSecond();
 
         _Movements *movements;
-
+        long stepsHigh;
 };
 
 #endif

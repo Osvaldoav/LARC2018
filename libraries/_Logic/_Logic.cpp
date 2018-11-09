@@ -57,47 +57,64 @@ char _Logic::verifyColor(char c){
     return color == 'R' ? handleRed() : color;
 }
 
-void _Logic::backUsingLimitSwitch(){
+void _Logic::checkLimit(double steps){
+    traductor->movements->encoder->encoderStateMechanism = 1;  
+    traductor->movements->untilStepsMechanism = steps;
+    traductor->movements->encoder->stepsMechanism = 0;
     do{
-        traductor->moveMechanismForAligning(false, 600);
-        traductor->waitForMechanism();
-        // traductor->moveMechanismForAligning(false, 200);
-        // traductor->waitForMechanism();    
-        delay(300);    
-        limitIsPressed = (digitalRead(35));
+        traductor->movements->motors->moveMechanism(false); 
+        limitIsPressed = digitalRead(limitSwitchPin);
+    } while(traductor->movements->encoder->stepsMechanism<traductor->movements->untilStepsMechanism && !limitIsPressed);
+    traductor->movements->motors->stopMechanism();
+}
+
+void _Logic::backUsingLimitSwitch(double steps){
+    do{
+        checkLimit(steps);
         if(limitIsPressed){
-            traductor->moveMechanismForAligning(true, 600);
-            traductor->waitForMechanism();
-            // traductor->moveMechanismForAligning(true, 200);
-            // traductor->waitForMechanism(); 
+            traductor->moveMechanismForAligning(true, traductor->movements->encoder->stepsMechanism+300);
+            traductor->waitForMechanism();                        
             traductor->movements->movePID_nCM(1, true, '4');
+            traductor->moveMechanismForAligning(false, 300);
+            traductor->waitForMechanism(); 
         } 
-    }while(limitIsPressed);
-    traductor->moveMechanismForAligning(true, 600);
-    traductor->waitForMechanism();
-    // traductor->moveMechanismForAligning(true, 200);
-    // traductor->waitForMechanism(); 
+    }while(limitIsPressed); 
+    traductor->moveMechanismForAligning(true, traductor->movements->encoder->stepsMechanism+300);
+    traductor->waitForMechanism();    
+    traductor->movements->movePID_nCM(0.5, true, '6');
+    traductor->moveMechanismForAligning(false, 300);
+    traductor->waitForMechanism();     
+    checkLimit(steps);
+    if(limitIsPressed){
+        traductor->moveMechanismForAligning(true, traductor->movements->encoder->stepsMechanism+300);
+        traductor->waitForMechanism();                      
+        traductor->movements->movePID_nCM(1.2, true, '4');
+        traductor->moveMechanismForAligning(false, 300);
+        traductor->waitForMechanism();        
+    }         
+    else{
+        traductor->moveMechanismForAligning(true, traductor->movements->encoder->stepsMechanism);
+        traductor->waitForMechanism();
+    }    
 }
 
 char _Logic::grabContainer(char c, bool isFirst){
     c = verifyColor(c);
-    char ori = lastStack/2*2 != lastStack ? '2' : '8';  // '2'  :  '8'
-    // if(ori != '8')      
-    // traductor->movements->moveUntilThreshold();     
+    char ori = lastStack/2*2 != lastStack ? '2' : '8';  // '2'  :  '8'  
 
     traductor->centerContainer(ori); 
 
-    backUsingLimitSwitch();
+    backUsingLimitSwitch(2000);
 
-    // traductor->moveMechanismForAligning(false, 600);
-    // traductor->waitForMechanism();  
+    traductor->moveMechanismForAligning(false, traductor->stepsHigh);
+    traductor->waitForMechanism();  
 
-    // traductor->alinearStack(true);
-    // if(isFirst)
     traductor->movements->moveMechanism(5,4);
     traductor->grabContainer();
 
-    // traductor->alinearStack(false);
+    traductor->moveMechanismForAligning(true, traductor->stepsHigh);
+    traductor->waitForMechanism(); 
+
     _Serial::send(c);
 }
 
@@ -141,38 +158,19 @@ void _Logic::stackToShip(){
     bool front;
     int dir;
 
-    // lastLevel = lastStack/2*2;
-    // if((lastColor != 'R' && lastLevel%4 != 0)||(lastColor == 'R' && lastLevel%4 == 0))
-    //     lastLevel++;
-    // lastLevel = stacks[lastLevel]+1;
-
     lastLevel = (lastStack+1)/2*2;
     if((lastColor != 'R' && lastLevel%4 != 0)||(lastColor == 'R' && lastLevel%4 == 0)) 
         lastLevel = stacks[lastStack/2*2] > stacks[lastStack/2*2+1] ? stacks[lastStack/2*2] : stacks[lastStack/2*2+1];
     else
         lastLevel = stacks[lastStack];
     lastLevel++;
-    
-    // traductor->LcdPrint("STACK TO SHIP", "equis");
-    //  delay(3000);
-    // traductor->LcdPrint("current Level", currentLevel);
-    //  delay(3000);
-    // traductor->LcdPrint("last Level", lastLevel);
-    //  delay(3000);
 
-    // if(lastLevel < 5){
-        // traductor->moveMechanismForAligning(true, 600);
-        // traductor->waitForMechanism();  
-    // }
-    //lastLevel++;
     traductor->mecanismo(currentLevel, lastLevel);   // eleva el stack para no chocar con los demas
     traductor->horizontalLine(A == B); // Avanza de frente o de reversa hasta linea horizontal
 
     currentLevel = lastColor == 'R' ? 3 : lastColor == 'G' ? green_boxes%5 : blue_boxes%5;
     if((lastColor == 'B' && blue_boxes%5 == 0) || (lastColor == 'G' && green_boxes%5 == 0))
         currentLevel = 5;
-    // traductor->LcdPrint("lastColor", lastColor);
-    // delay(1000);
     traductor->updateMechanismMovement(lastLevel, currentLevel, false);
  
     if(B){
@@ -188,8 +186,6 @@ void _Logic::stackToShip(){
         // 2 son dos lineas, 1 es una. negativo es derecha, positivo izquierda
         traductor->throughtHorizontal(dir); // Avanza por la linea horizontal a la izquierda o derecha cuando 'B' o 'G'
     }else{
-        // (firstRed<0)? traductor->LcdPrint("firstRed jojo", " CACAAA "): traductor->LcdPrint("firstRed!!", firstRed);
-        // delay(3000);
         dir = lastStack < 4 ? 1 : 2;
         dir += firstRed == 1 ? 2 : 0;
         dir *= ((lastStack/2 + 1)%2 == 0) != firstRed ? 1 : -1;
@@ -219,10 +215,12 @@ void _Logic::stackToShip(){
         //     traductor->fixContainerSteps(false);        
     }  
     traductor->waitForMechanism();  
+    traductor->moveMechanismForAligning(false, traductor->stepsHigh);
+    traductor->waitForMechanism();     
     bool firstContainer = (currentLevel < 2);   
     if (B){              
         if(!firstContainer)
-            traductor->moveMechanismForAligning(true, 500);
+            traductor->moveMechanismForAligning(true, 350);
         traductor->movements->movePID_nCM(5, false, '6');
         traductor->moveToShip(true);
         traductor->waitForMechanism();             //make sure mechanism is already (1/8) up 
@@ -254,31 +252,33 @@ void _Logic::stackToShip(){
     }
 
     delay(700);
+    if(!firstContainer)
+        traductor->moveMechanismForAligning(false, 350); //move mechanism a little down (1/8) of a level (back to normal)        
+    traductor->waitForMechanism();       
     traductor->dropContainer();
     if(!firstContainer)
-        traductor->moveMechanismForAligning(false, 500); //move mechanism a little down (1/8) of a level (back to normal)        
+        traductor->moveMechanismForAligning(true, 350); //move mechanism a little down (1/8) of a level (back to normal)        
+    traductor->waitForMechanism();       
+    traductor->movements->movePID_nCM(5, true, '4');
+    if(!firstContainer)
+        traductor->moveMechanismForAligning(false, 350); //move mechanism a little down (1/8) of a level (back to normal)        
     traductor->waitForMechanism();             //make sure mechanism is already (1/8) down (normal)
 }
 
 void _Logic::shipToStack(){
     char c = _Serial::read();
-    // traductor->LcdPrint("char received", c);
-    // delay(3000);
     if(c == 'S'){
         gotoSecond();
         return;
     }
-    //traductor->moveMechanismForAligning(true);
-    //traductor->waitForMechanism();   
+
+    traductor->moveMechanismForAligning(true, traductor->stepsHigh);
+    traductor->waitForMechanism(); 
+    
     char color = c > 98 ? 'R' : c > 65 ? 'G' : 'B';
     int stack = color == 'R' ? c - 99 : color == 'G' ? c - 66 : c - 51;
     bool dir, tcrt;
     int lines, angle;
-    
-    // traductor->LcdPrint("Stack to go", stack);
-    // delay(3000);
-    // traductor->LcdPrint("Color", color);
-    // delay(3000);
 
     lastLevel = (stack+1)/2*2;
     if((lastColor != 'R' && lastLevel%4 != 0)||(lastColor == 'R' && lastLevel%4 == 0)) 
@@ -287,16 +287,7 @@ void _Logic::shipToStack(){
         lastLevel = stacks[stack];
 
     lastLevel++;
-    // if(lastLevel < 5){
-        // traductor->moveMechanismForAligning(true, 600);
-        // traductor->waitForMechanism();   
-    // }
-
-    // if(needToAlign){
-    //     needToAlign=false;
-    //     currentLevel=5;
-    // }
-    //lastLevel++;
+    
     if((lastColor == 'B' && blue_boxes > 5) || (lastColor == 'G' && green_boxes > 5)){
         traductor->moveAtras(); // Se mueve poquito hacia atras
         traductor->updateMechanismMovement(currentLevel, lastLevel, false); // eleva el stack para no chocar con los demas
@@ -319,8 +310,6 @@ void _Logic::shipToStack(){
         angle *= lastColor == 'R' ? -1 : 1;
         traductor->girar(angle); // 90 es vuelta de 90 hacia la derecha, -90 es 90 hacia izquierda
         tcrt = angle < 0;
-        char direction = (tcrt)? '8' : '2';
-        // traductor->movements->movePID_nCM(0.5, false, direction);
         
         if(lastColor != 'R'){
             lines = (stack < 4 && lastColor == 'B') || (stack > 3 && lastColor == 'G') ? 2 : 1;
@@ -343,18 +332,6 @@ void _Logic::shipToStack(){
     // 2 son dos stacks, 1 es uno. negativo es frente, positivo reversa
     traductor->waitForMechanism();  
     traductor->vertical(lines); // Avanza por la linea vertical frente o reversa
-    // traductor->LcdPrint("SHIP TO STACK", "equis");
-    // delay(3000);
-    // traductor->LcdPrint("lastLevel", lastLevel);
-    // delay(3000);
-    // traductor->LcdPrint("currentLevel", currentLevel);
-    // delay(3000);
-
-    //currentLevel++;
     traductor->mecanismo(lastLevel, currentLevel+1);
-    // traductor->moveMechanismForAligning(false);
-    // traductor->waitForMechanism();    
-    // if(lastLevel < 5){      
-    // } 
     grabContainer(c, false);
 }
