@@ -967,19 +967,25 @@ void _Movements::moveToTrain(bool redRight){
     char horizontal = (redRight)? '2': '8';
     char horizontalBack = (redRight)? '8': '2';
     for (int i = 0; i < 30; i++)
-        updateSensors(0,0,0,1,0,0);      
+        updateSensors(0,0,0,1,0,0);  
     do{
         movePID(true, '6');  
-        for (int i = 0; i < 10; i++)
-            updateSensors(0,0,0,1,0,0);
-    }while(timeFlight->timeFlightLeft.kalmanDistance > 4);
-    motors->brake();
-    do{
-        movePID(true, horizontal);
-        for (int i = 0; i < 10; i++)
-            updateSensors(0,0,0,1,0,0);
-    } while(timeFlight->timeFlightLeft.kalmanDistance < 10);
-    motors->brake();
-    movePID_nCM(5, true, horizontalBack);  
+    }while(timeFlight->timeFlightLeft.kalmanDistance > 5);
+    motors->brake();    
+    delay(300);    
+    if(redRight){  
+        do{
+            movePID(true, horizontal);
+        } while(timeFlight->timeFlightRight.kalmanDistance < 7);
+        motors->brake();
+        movePID_nCM(11, true, horizontalBack); 
+    } 
+    else{
+        do{
+            movePID(true, horizontal);
+        } while(timeFlight->timeFlightLeft.kalmanDistance < 7);
+        motors->brake();
+        movePID_nCM(11, true, horizontalBack); 
+    }   
 }
 

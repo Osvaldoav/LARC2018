@@ -302,6 +302,8 @@ void _Logic::shipToStack(){
     }else{
         if(lastColor == 'R')
             traductor->setTrainLevel(false);
+        if(lastColor == 'R' && firstRed == 1)
+            traductor->movements->movePID_nCM(10, false, '8');
         traductor->moveAtrasHorizontal(); // izquierda hasta topar linea horizontal
         traductor->waitForMechanism();
         traductor->updateMechanismMovement(currentLevel, lastLevel, false);  // eleva el stack para no chocar con los demas
